@@ -19,7 +19,6 @@
 namespace Surfnet\SamlBundle\Metadata;
 
 use DOMDocument;
-use SAML2_Certificate_KeyLoader as PublicKeyLoader;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Symfony\Component\Routing\RouterInterface;
@@ -43,11 +42,6 @@ class MetadataFactory
     private $signingService;
 
     /**
-     * @var \SAML2_Certificate_KeyLoader
-     */
-    private $keyLoader;
-
-    /**
      * @var MetadataConfiguration
      */
     private $metadataConfiguration;
@@ -61,13 +55,11 @@ class MetadataFactory
         EngineInterface $templateEngine,
         RouterInterface $router,
         SigningService $signingService,
-        PublicKeyLoader $keyLoader,
         MetadataConfiguration $metadataConfiguration
     ) {
         $this->templateEngine = $templateEngine;
         $this->router = $router;
         $this->signingService = $signingService;
-        $this->keyLoader = $keyLoader;
         $this->metadataConfiguration = $metadataConfiguration;
     }
 
