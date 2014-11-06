@@ -56,6 +56,7 @@ class Configuration implements ConfigurationInterface
                     'name of the service that is the Entity Repository. Must implement the '
                     . ' Surfnet\SamlBundle\Entity\EntityRepository interface '
                 )
+            ->end()
             ->arrayNode('hosted')
                 ->children()
                     ->arrayNode('service_provider')
