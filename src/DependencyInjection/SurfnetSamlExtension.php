@@ -48,7 +48,8 @@ class SurfnetSamlExtension extends Extension
 
         if (!$container->hasDefinition($entityRepository)) {
             throw new InvalidConfigurationException(sprintf(
-                'Configured service for EntityRepository "%s" is not known in the container'
+                'Configured service for EntityRepository "%s" is not known in the container',
+                $entityRepository
             ));
         }
 
