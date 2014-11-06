@@ -23,7 +23,6 @@
             "url": "https://github.com/SURFnet/saml2"
         }
     ],
-    "target-dir": "Surfnet/SamlBundle",
     "autoload": {
         "psr-4": {
             "Surfnet\\SamlBundle\\": "src"
