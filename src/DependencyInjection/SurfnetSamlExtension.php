@@ -46,14 +46,7 @@ class SurfnetSamlExtension extends Extension
             throw new InvalidConfigurationException('entity_repository should be a string');
         }
 
-        if (!$container->hasDefinition($entityRepository)) {
-            throw new InvalidConfigurationException(sprintf(
-                'Configured service for EntityRepository "%s" is not known in the container',
-                $entityRepository
-            ));
-        }
-
-        $container->setAlias('surfnet_saml.entity.entity_repository', $entityRepository);
+        $container->setParameter('surfnet_saml.entity.entity_repository.alias', $entityRepository);
     }
 
     /**
