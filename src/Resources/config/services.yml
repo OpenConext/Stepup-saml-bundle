@@ -1,0 +1,71 @@
+services:
+    surfnet_saml.configuration.metadata:
+        class: Surfnet\SamlBundle\Metadata\MetadataConfiguration
+
+    surfnet_saml.configuration.hosted_entities:
+        public: false
+        class: Surfnet\SamlBundle\Entity\HostedEntities
+        arguments:
+            - @router
+            - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
+            - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
+
+    surfnet_saml.hosted.service_provider:
+        class:           Surfnet\SamlBundle\Entity\ServiceProvider
+        factory_service: surfnet_saml.configuration.hosted_entities
+        factory_method:  getServiceProvider
+
+    surfnet_saml.hosted.identity_provider:
+        class:           Surfnet\SamlBundle\Entity\IdenityProvider
+        factory_service: surfnet_saml.configuration.hosted_entities
+        factory_method:  getIdentityProvider
+
+    surfnet_saml.http.redirect_binding:
+        class: Surfnet\SamlBundle\Http\RedirectBinding
+        arguments:
+            - @surfnet_saml.entity.entity_repository
+            - @logger
+            - @surfnet_saml.signing.signature_verifier
+
+    surfnet_saml.http.post_binding:
+        class: Surfnet\SamlBundle\Http\PostBinding
+        arguments:
+            - @surfnet_saml.saml2.response_processor
+
+    surfnet_saml.metadata_factory:
+        class: Surfnet\SamlBundle\Metadata\MetadataFactory
+        arguments:
+            - @templating
+            - @router
+            - @surfnet_saml.signing_service
+            - @surfnet_saml.configuration.metadata
+
+    surfnet_saml.signing_service:
+        class: Surfnet\SamlBundle\Service\SigningService
+        arguments:
+            - @surfnet_saml.saml2.keyloader
+            - @surfnet_saml.saml2.privatekeyloader
+
+    surfnet_saml.signing.signature_verifier:
+        class: Surfnet\SamlBundle\Signing\SignatureVerifier
+        arguments:
+            - @surfnet_saml.saml2.keyloader
+
+    surfnet_saml.saml2.bridge_container:
+        class: Surfnet\SamlBundle\SAML2\BridgeContainer
+        arguments:
+            - @logger
+
+    surfnet_saml.saml2.keyloader:
+        public: false
+        class: SAML2_Certificate_KeyLoader
+
+    surfnet_saml.saml2.privatekeyloader:
+        public: false
+        class: SAML2_Certificate_PrivateKeyLoader
+
+    surfnet_saml.saml2.response_processor:
+        public: false
+        class: SAML2_Response_Processor
+        arguments:
+            - @logger
