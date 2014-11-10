@@ -33,6 +33,10 @@ class SpRepositoryAliasCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        if (!$container->hasParameter('surfnet_saml.configuration.service_provider_repository.alias')) {
+            return;
+        }
+
         $alias = $container->getParameter('surfnet_saml.configuration.service_provider_repository.alias');
 
         if (!$container->hasDefinition($alias)) {
