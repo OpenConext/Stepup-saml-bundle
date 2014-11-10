@@ -19,7 +19,7 @@
 namespace Surfnet\SamlBundle;
 
 use SAML2_Compat_ContainerSingleton;
-use Surfnet\SamlBundle\DependencyInjection\Compiler\EntityRepositoryAliasCompilerPass;
+use Surfnet\SamlBundle\DependencyInjection\Compiler\SpRepositoryAliasCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -29,7 +29,7 @@ class SurfnetSamlBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new EntityRepositoryAliasCompilerPass());
+        $container->addCompilerPass(new SpRepositoryAliasCompilerPass());
     }
 
     public function boot()

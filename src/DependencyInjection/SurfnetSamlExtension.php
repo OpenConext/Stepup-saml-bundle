@@ -35,18 +35,8 @@ class SurfnetSamlExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
-        $this->parseEntityRepository($config['entity_repository'], $container);
         $this->parseHostedConfiguration($config['hosted'], $container);
         $this->parseRemoteConfiguration($config['remote'], $container);
-    }
-
-    private function parseEntityRepository($entityRepository, ContainerBuilder $container)
-    {
-        if (!is_string($entityRepository)) {
-            throw new InvalidConfigurationException('entity_repository should be a string');
-        }
-
-        $container->setParameter('surfnet_saml.entity.entity_repository.alias', $entityRepository);
     }
 
     /**
@@ -61,28 +51,102 @@ class SurfnetSamlExtension extends Extension
         $serviceProvider  = array_merge($configuration['service_provider'], $entityId);
         $identityProvider = array_merge($configuration['identity_provider'], $entityId);
 
-        $container->getDefinition('surfnet_saml.configuration.hosted_entities')
-            ->replaceArgument(1, $serviceProvider)
-            ->replaceArgument(2, $identityProvider);
-
-        $metadata = $container->getDefinition('surfnet_saml.configuration.metadata');
-        $metadata->setProperties([
-            'entityIdRoute' => $configuration['metadata']['entity_id_route'],
-            'isSp' => $serviceProvider['enabled'],
-            'assertionConsumerRoute' => $serviceProvider['assertion_consumer_route'],
-            'isIdP' => $identityProvider['enabled'],
-            'ssoRoute' => $identityProvider['sso_route'],
-            'idpCertificate' => $identityProvider['public_key'],
-            'publicKey' => $configuration['metadata']['public_key'],
-            'privateKey' => $configuration['metadata']['private_key']
-        ]);
+        $this->parseHostedSpConfiguration($serviceProvider, $container);
+        $this->parseHostedIdpConfiguration($identityProvider, $container);
+        $this->parseMetadataConfiguration($configuration, $container);
     }
 
+    /**
+     * @param array            $serviceProvider
+     * @param ContainerBuilder $container
+     */
+    private function parseHostedSpConfiguration(array $serviceProvider, ContainerBuilder $container)
+    {
+        $container
+            ->getDefinition('surfnet_saml.configuration.hosted_entities')
+            ->replaceArgument(1, $serviceProvider);
+    }
+
+    /**
+     * @param array            $identityProvider
+     * @param ContainerBuilder $container
+     */
+    private function parseHostedIdpConfiguration(array $identityProvider, ContainerBuilder $container)
+    {
+        $container
+            ->getDefinition('surfnet_saml.configuration.hosted_entities')
+            ->replaceArgument(2, $identityProvider);
+
+        if (!$identityProvider['enabled']) {
+            return;
+        }
+
+        if (!is_string($identityProvider['service_provider_repository'])) {
+            throw new InvalidConfigurationException(
+                'surfnet_saml.hosted.identity_provider.service_provider_repository configuration value should be a string'
+            );
+        }
+
+        $container->setParameter(
+            'surfnet_saml.configuration.service_provider_repository.alias',
+            $identityProvider['service_provider_repository']
+        );
+    }
+
+    /**
+     * @param array            $configuration
+     * @param ContainerBuilder $container
+     */
+    private function parseMetadataConfiguration(array $configuration, ContainerBuilder $container)
+    {
+        $metadata = $container->getDefinition('surfnet_saml.configuration.metadata');
+
+        $metadataConfiguration = [
+            'entityIdRoute' => $configuration['metadata']['entity_id_route'],
+            'publicKey'     => $configuration['metadata']['public_key'],
+            'privateKey'    => $configuration['metadata']['private_key'],
+            'isSp'          => false,
+            'isIdP'         => false
+        ];
+
+        if ($configuration['service_provider']['enabled']) {
+            $spConfiguration = $configuration['service_provider'];
+            $metadataConfiguration = array_merge(
+                $metadataConfiguration,
+                [
+                    'isSp' => true,
+                    'assertionConsumerRoute' => $spConfiguration['service_provider']
+                ]
+            );
+        }
+
+        if ($configuration['identity_provider']['enabled']) {
+            $metadataConfiguration = array_merge(
+                $metadataConfiguration,
+                [
+                    'isIdP'          => true,
+                    'ssoRoute'       => $configuration['identity_provider']['sso_route'],
+                    'idpCertificate' => $configuration['identity_provider']['public_key'],
+                ]
+            );
+        }
+
+        $metadata->setProperties($metadataConfiguration);
+    }
+
+    /**
+     * @param array            $remoteConfiguration
+     * @param ContainerBuilder $container
+     */
     private function parseRemoteConfiguration(array $remoteConfiguration, ContainerBuilder $container)
     {
         $this->parseRemoteIdentityProviderConfiguration($remoteConfiguration['identity_provider'], $container);
     }
 
+    /**
+     * @param array            $identityProvider
+     * @param ContainerBuilder $container
+     */
     private function parseRemoteIdentityProviderConfiguration(array $identityProvider, ContainerBuilder $container)
     {
         if (!$identityProvider['enabled']) {

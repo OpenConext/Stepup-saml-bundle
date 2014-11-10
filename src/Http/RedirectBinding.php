@@ -19,7 +19,7 @@
 namespace Surfnet\SamlBundle\Http;
 
 use Psr\Log\LoggerInterface;
-use Surfnet\SamlBundle\Entity\EntityRepository;
+use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
@@ -32,7 +32,7 @@ use XMLSecurityKey;
 class RedirectBinding
 {
     /**
-     * @var \Surfnet\SamlBundle\Entity\EntityRepository
+     * @var \Surfnet\SamlBundle\Entity\ServiceProviderRepository
      */
     private $entityRepository;
 
@@ -47,7 +47,7 @@ class RedirectBinding
     private $signatureVerifier;
 
     public function __construct(
-        EntityRepository $repository,
+        ServiceProviderRepository $repository,
         LoggerInterface $logger,
         SignatureVerifier $signatureVerifier
     ) {

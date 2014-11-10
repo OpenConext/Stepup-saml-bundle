@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\Entity;
 
-interface EntityRepository
+interface ServiceProviderRepository
 {
     /**
      * @param string $entityId

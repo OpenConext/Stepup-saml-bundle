@@ -22,7 +22,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class EntityRepositoryAliasCompilerPass implements CompilerPassInterface
+class SpRepositoryAliasCompilerPass implements CompilerPassInterface
 {
     /**
      * You can modify the container here before it is dumped to PHP code.
@@ -33,10 +33,13 @@ class EntityRepositoryAliasCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $alias = $container->getParameter('surfnet_saml.entity.entity_repository.alias');
+        $alias = $container->getParameter('surfnet_saml.configuration.service_provider_repository.alias');
 
         if (!$container->hasDefinition($alias)) {
-            throw new InvalidConfigurationException('BUGGER');
+            throw new InvalidConfigurationException(sprintf(
+                'The container does not contain the configured entity repository service "%s"',
+                $alias
+            ));
         }
 
         $container->setAlias('surfnet_saml.entity.entity_repository', $alias);

@@ -50,19 +50,13 @@ class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-            ->scalarNode('entity_repository')
-                ->isRequired()
-                ->info(
-                    'name of the service that is the Entity Repository. Must implement the '
-                    . ' Surfnet\SamlBundle\Entity\EntityRepository interface '
-                )
-            ->end()
             ->arrayNode('hosted')
                 ->children()
                     ->arrayNode('service_provider')
                         ->canBeEnabled()
                         ->children()
                             ->scalarNode('assertion_consumer_route')
+                                ->defaultNull()
                                 ->info('The name of the route to generate the assertion consumer URL')
                             ->end()
                             ->scalarNode('public_key')
@@ -79,7 +73,15 @@ class Configuration implements ConfigurationInterface
                         ->canBeEnabled()
                         ->children()
                             ->scalarNode('sso_route')
+                                ->defaultNull()
                                 ->info('The name of the route to generate the SSO URL')
+                            ->end()
+                            ->scalarNode('service_provider_repository')
+                                ->defaultNull()
+                                ->info(
+                                    'Name of the service that is the Entity Repository. Must implement the '
+                                    . ' Surfnet\SamlBundle\Entity\ServiceProviderRepository interface.'
+                                )
                             ->end()
                             ->scalarNode('certificate')
                                 ->defaultNull()
@@ -101,7 +103,7 @@ class Configuration implements ConfigurationInterface
                     ->arrayNode('metadata')
                         ->children()
                         ->scalarNode('entity_id_route')
-                            ->defaultValue('surfnet_saml_metadata')
+                            ->defaultNull()
                             ->info('The name of the route used to generate the entity id')
                         ->end()
                         ->scalarNode('public_key')

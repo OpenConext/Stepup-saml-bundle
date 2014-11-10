@@ -46,7 +46,7 @@ MESSAGE;
 
     public function setUp()
     {
-        $this->entityRepository = m::mock('Surfnet\SamlBundle\Entity\EntityRepository');
+        $this->entityRepository = m::mock('Surfnet\SamlBundle\Entity\ServiceProviderRepository');
         $this->redirectBinding = new RedirectBinding(
             $this->entityRepository,
             m::mock('Psr\Log\LoggerInterface'),
