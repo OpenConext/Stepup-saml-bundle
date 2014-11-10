@@ -23,9 +23,9 @@ services:
     surfnet_saml.http.redirect_binding:
         class: Surfnet\SamlBundle\Http\RedirectBinding
         arguments:
-            - @surfnet_saml.entity.entity_repository
             - @logger
             - @surfnet_saml.signing.signature_verifier
+            - @?surfnet_saml.entity.entity_repository
 
     surfnet_saml.http.post_binding:
         class: Surfnet\SamlBundle\Http\PostBinding

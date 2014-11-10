@@ -20,10 +20,8 @@ namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase as UnitTest;
-use Psr\Log\NullLogger;
 use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
-use Surfnet\SamlBundle\SAML2\BridgeContainer;
 
 class RedirectBindingTest extends UnitTest
 {
@@ -48,9 +46,9 @@ MESSAGE;
     {
         $this->entityRepository = m::mock('Surfnet\SamlBundle\Entity\ServiceProviderRepository');
         $this->redirectBinding = new RedirectBinding(
-            $this->entityRepository,
             m::mock('Psr\Log\LoggerInterface'),
-            m::mock('Surfnet\SamlBundle\Signing\SignatureVerifier')
+            m::mock('Surfnet\SamlBundle\Signing\SignatureVerifier'),
+            $this->entityRepository
         );
     }
 

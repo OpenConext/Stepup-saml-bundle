@@ -20,6 +20,7 @@ namespace Surfnet\SamlBundle\Http;
 
 use Psr\Log\LoggerInterface;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
+use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
@@ -47,9 +48,9 @@ class RedirectBinding
     private $signatureVerifier;
 
     public function __construct(
-        ServiceProviderRepository $repository,
         LoggerInterface $logger,
-        SignatureVerifier $signatureVerifier
+        SignatureVerifier $signatureVerifier,
+        ServiceProviderRepository $repository = null
     ) {
         $this->entityRepository = $repository;
         $this->logger = $logger;
@@ -60,9 +61,18 @@ class RedirectBinding
      * @param Request $request
      * @return AuthnRequest
      * @throws \Exception
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function processRequest(Request $request)
     {
+        if (!$this->entityRepository) {
+            throw new LogicException(
+                'RedirectBinding::processRequest requires a ServiceProviderRepository to be configured'
+            );
+        }
+
         $rawSamlRequest = $request->get(AuthnRequest::PARAMETER_REQUEST);
 
         if (!$rawSamlRequest) {
