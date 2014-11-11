@@ -38,7 +38,8 @@ class AuthnRequestFactory
      */
     public static function createFromHttpRequest(Request $httpRequest)
     {
-        $samlRequest = gzinflate(base64_decode(urldecode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST))));
+        // the GET parameter is already urldecoded by Symfony, so we should not do it again.
+        $samlRequest = gzinflate(base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST)));
 
         $document = new DOMDocument();
         $document->loadXML($samlRequest);
