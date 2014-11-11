@@ -76,6 +76,14 @@ class AuthnRequest
     }
 
     /**
+     * @return string
+     */
+    public function getRequestId()
+    {
+        return $this->request->getId();
+    }
+
+    /**
      * @return bool
      */
     public function isSigned()
