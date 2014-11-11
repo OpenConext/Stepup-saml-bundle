@@ -132,6 +132,16 @@ class AuthnRequest
     }
 
     /**
+     * @param array $requesterIds
+     * @param int   $proxyCount
+     */
+    public function setScoping(array $requesterIds, $proxyCount = 10)
+    {
+        $this->request->setRequesterID($requesterIds);
+        $this->request->setProxyCount($proxyCount);
+    }
+
+    /**
      * @return string
      */
     public function buildRequestQuery()

@@ -73,8 +73,6 @@ class AuthnRequestFactory
         $request->setDestination($identityProvider->getSsoUrl());
         $request->setIssuer($serviceProvider->getEntityId());
         $request->setProtocolBinding(SAML2_Const::BINDING_HTTP_POST);
-        $request->setProxyCount(10);
-        $request->setRequesterID([$serviceProvider->getEntityId()]);
         $request->setSignatureKey(self::loadPrivateKey(
             $serviceProvider->getPrivateKey(SAML2_Configuration_PrivateKey::NAME_DEFAULT)
         ));
