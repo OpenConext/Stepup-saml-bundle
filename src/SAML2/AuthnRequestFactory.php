@@ -53,7 +53,7 @@ class AuthnRequestFactory
             ));
         }
 
-        return new self(
+        return AuthnRequest::create(
             $request,
             $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
             $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE),

@@ -49,25 +49,36 @@ class AuthnRequest
 
     /**
      * @param SAML2_AuthnRequest $request
+     */
+    private function __construct(SAML2_AuthnRequest $request)
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * @param SAML2_AuthnRequest $request
      * @param string             $rawRequest
      * @param string             $relayState
      * @param string             $signature
      * @param string             $signatureAlgorithm
+     * @return AuthnRequest
      */
-    private function __construct(
+    public static function create(
         SAML2_AuthnRequest $request,
-        $rawRequest = null,
-        $relayState = null,
-        $signature = null,
-        $signatureAlgorithm = null
+        $rawRequest,
+        $relayState,
+        $signature,
+        $signatureAlgorithm
     ) {
-        $this->request = $request;
-        $this->rawRequest = $rawRequest;
+        $authnRequest = new self($request);
+        $authnRequest->rawRequest = $rawRequest;
         if ($relayState) {
-            $this->request->setRelayState($relayState);
+            $authnRequest->request->setRelayState($relayState);
         }
-        $this->signature = $signature;
-        $this->signatureAlgorithm = $signatureAlgorithm;
+        $authnRequest->signature          = $signature;
+        $authnRequest->signatureAlgorithm = $signatureAlgorithm;
+
+        return $authnRequest;
     }
 
     public static function createNew(SAML2_AuthnRequest $req)
