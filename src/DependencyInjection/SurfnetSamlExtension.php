@@ -34,6 +34,7 @@ class SurfnetSamlExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('saml_attributes.yml');
 
         $this->parseHostedConfiguration($config['hosted'], $container);
         $this->parseRemoteConfiguration($config['remote'], $container);

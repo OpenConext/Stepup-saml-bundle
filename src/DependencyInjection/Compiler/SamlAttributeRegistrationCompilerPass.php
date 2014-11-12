@@ -18,27 +18,28 @@
 
 namespace Surfnet\SamlBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
-class SpRepositoryAliasCompilerPass implements CompilerPassInterface
+class SamlAttributeRegistrationCompilerPass implements CompilerPassInterface
 {
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable) - $tagData is simply not used
+     */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasParameter('surfnet_saml.configuration.service_provider_repository.alias')) {
+        if (!$container->hasDefinition('surfnet_saml.attribute_collection')) {
             return;
         }
 
-        $alias = $container->getParameter('surfnet_saml.configuration.service_provider_repository.alias');
+        $collection = $container->getDefinition('surfnet_saml.attribute_collection');
+        $attributes = $container->findTaggedServiceIds('saml.attribute');
 
-        if (!$container->hasDefinition($alias)) {
-            throw new InvalidConfigurationException(sprintf(
-                'The container does not contain the configured entity repository service "%s"',
-                $alias
-            ));
+        foreach ($attributes as $id => $tagData) {
+            $collection->addMethodCall('addAttribute', [new Reference($id)]);
         }
-
-        $container->setAlias('surfnet_saml.entity.entity_repository', $alias);
     }
 }
