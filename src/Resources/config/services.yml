@@ -1,5 +1,5 @@
 services:
-    surfnet_saml.saml.attributes:
+    surfnet_saml.saml.attribute_dictionary:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary
 
     surfnet_saml.configuration.metadata:

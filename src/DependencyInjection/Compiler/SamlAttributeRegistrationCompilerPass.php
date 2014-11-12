@@ -31,15 +31,15 @@ class SamlAttributeRegistrationCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('surfnet_saml.attribute_collection')) {
+        if (!$container->hasDefinition('surfnet_saml.saml.attribute_dictionary')) {
             return;
         }
 
-        $collection = $container->getDefinition('surfnet_saml.attribute_collection');
+        $collection = $container->getDefinition('surfnet_saml.saml.attribute_dictionary');
         $attributes = $container->findTaggedServiceIds('saml.attribute');
 
         foreach ($attributes as $id => $tagData) {
-            $collection->addMethodCall('addAttribute', [new Reference($id)]);
+            $collection->addMethodCall('addAttributeDefinition', [new Reference($id)]);
         }
     }
 }
