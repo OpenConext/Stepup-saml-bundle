@@ -3,7 +3,7 @@
 <project name="Stepup Saml Bundle-pre-commit" default="build">
 
     <target name="build"
-            depends="prepare-environment,php-lint,phpmd,phpcs,phpunit"/>
+            depends="prepare-environment,php-lint,phpmd,phpcs,php-license,phpunit"/>
 
     <target name="prepare-environment" depends="set-test-tree-location,get-changeset">
         <echo message="OK"/>
@@ -122,6 +122,24 @@
             <arg value="--ignore=*/tests/*"/>
             <arg line="${changeset.php.absolute.spacesep}"/>
         </exec>
+        <echo message="OK"/>
+    </target>
+
+    <target name="php-license" depends="get-changeset.php-spacesep" if="changeset.php.notempty">
+        <exec executable="/bin/grep" failonerror="true" outputproperty="php-license.grep.output">
+            <arg value="-L"/>
+            <arg value="LICENSE-2.0"/>
+            <arg line="${changeset.php.absolute.spacesep}"/>
+        </exec>
+        <echo message="${php-license.grep.output}"/>
+        <fail message="License header missing">
+            <condition>
+                <or>
+                    <not><equals arg1="${php-license.grep.output}" arg2=""/></not>
+                    <not><isset property="php-license.grep.output"/></not>
+                </or>
+            </condition>
+        </fail>
         <echo message="OK"/>
     </target>
 
