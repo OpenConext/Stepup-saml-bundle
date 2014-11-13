@@ -94,7 +94,7 @@ class HostedEntities
 
         $configuration = $this->createStandardEntityConfiguration($this->identityProviderConfiguration);
         $configuration['ssoUrl'] = $this->generateUrl(
-            $this->identityProviderConfiguration['sso_url']
+            $this->identityProviderConfiguration['sso_route']
         );
 
         return $this->identityProvider = new IdentityProvider($configuration);
