@@ -25,7 +25,7 @@ use Surfnet\SamlBundle\SAML2\Response\AssertionAdapter;
 class AttributeDictionary
 {
     /**
-     * @var array
+     * @var AttributeDefinition[]
      */
     private $attributes = [];
 
