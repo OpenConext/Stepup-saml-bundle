@@ -11,7 +11,7 @@ services:
     saml.attribute.eduPersonTargetedID:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - eduPersonTargetedId
+            - eduPersonTargetedID
             - 'urn:mace:dir:attribute-def:eduPersonTargetedID'
             - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.10'
         tags:
