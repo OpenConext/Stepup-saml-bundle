@@ -45,6 +45,12 @@ class AttributeDefinition
      */
     private $urnOid;
 
+    /**
+     * @param string $name
+     * @param string $urnMace
+     * @param string $urnOid
+     * @param int    $multiplicity
+     */
     public function __construct($name, $urnMace, $urnOid, $multiplicity = self::MULTIPLICITY_SINGLE)
     {
         if (!is_string($name)) {
