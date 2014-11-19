@@ -30,6 +30,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use XMLSecurityKey;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) - not much we can do about it
+ * @see https://www.pivotaltracker.com/story/show/83028366
+ */
 class RedirectBinding
 {
     /**

@@ -1,0 +1,78 @@
+<saml:Assertion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                ID="_c37841c5a1ccb8b2c1073baa3d487950593e2f62b5"
+                Version="2.0"
+                IssueInstant="2014-11-19T12:06:09Z"
+        >
+    <saml:Issuer>https://idp-dev.stepup.coin.surf.net/saml2/idp/metadata.php</saml:Issuer>
+    <saml:Subject>
+        <saml:NameID SPNameQualifier="https://gw-dev.stepup.coin.surf.net/app_dev.php/authentication/metadata"
+                     Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
+                >6baae2e409df7f0e9fd8f0c3b73bc61d0bedc9d7
+        </saml:NameID>
+        <saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+            <saml:SubjectConfirmationData NotOnOrAfter="2014-11-19T12:11:09Z"
+                                          Recipient="https://gw-dev.stepup.coin.surf.net/app_dev.php/authentication/consume-assertion"
+                                          InResponseTo="_gODK7urA+r9FMy5/oGdIuP1uumQQxOsoLcrSvZcv"
+                    />
+        </saml:SubjectConfirmation>
+    </saml:Subject>
+    <saml:Conditions NotBefore="2014-11-19T12:05:39Z"
+                     NotOnOrAfter="2014-11-19T12:11:09Z"
+            >
+        <saml:AudienceRestriction>
+            <saml:Audience>https://gw-dev.stepup.coin.surf.net/app_dev.php/authentication/metadata</saml:Audience>
+        </saml:AudienceRestriction>
+    </saml:Conditions>
+    <saml:AuthnStatement AuthnInstant="2014-11-19T12:06:09Z"
+                         SessionNotOnOrAfter="2014-11-19T20:06:09Z"
+                         SessionIndex="_7176d322a8eb8e48506d0161df6322b4c203fbc1ae"
+            >
+        <saml:AuthnContext>
+            <saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:Password</saml:AuthnContextClassRef>
+        </saml:AuthnContext>
+    </saml:AuthnStatement>
+    <saml:AttributeStatement>
+        <saml:Attribute Name="urn:oid:0.9.2342.19200300.100.1.1"
+                        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                >
+            <saml:AttributeValue xsi:type="xs:string">foobar</saml:AttributeValue>
+        </saml:Attribute>
+        <saml:Attribute Name="urn:oid:1.3.6.1.4.1.5923.1.1.1.10"
+                        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                >
+            <saml:AttributeValue xsi:type="xs:string">3858f62230ac3c915f300c664312c63f</saml:AttributeValue>
+        </saml:Attribute>
+        <saml:Attribute Name="urn:oid:2.16.840.1.113730.3.1.241"
+                        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                >
+            <saml:AttributeValue xsi:type="xs:string">Foo Bar</saml:AttributeValue>
+        </saml:Attribute>
+        <saml:Attribute Name="urn:oid:1.2.840.113549.1.9.1"
+                        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                >
+            <saml:AttributeValue xsi:type="xs:string">foo@bar.com</saml:AttributeValue>
+        </saml:Attribute>
+        <saml:Attribute Name="email"
+                        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                >
+            <saml:AttributeValue xsi:type="xs:string">foo@bar.com</saml:AttributeValue>
+        </saml:Attribute>
+        <saml:Attribute Name="urn:oid:1.3.6.1.4.1.25178.1.2.9"
+                        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                >
+            <saml:AttributeValue xsi:type="xs:string">Example Inc</saml:AttributeValue>
+        </saml:Attribute>
+        <saml:Attribute Name="eduPersonTargetedID"
+                        NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+                >
+            <saml:AttributeValue>
+                <saml:NameID NameQualifier="https://idp-dev.stepup.coin.surf.net/saml2/idp/metadata.php"
+                             SPNameQualifier="https://gw-dev.stepup.coin.surf.net/app_dev.php/authentication/metadata"
+                             Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
+                        >904e2fdaa9a2870d6cf5fb6c81fd0511ce6eefeb
+                </saml:NameID>
+            </saml:AttributeValue>
+        </saml:Attribute>
+    </saml:AttributeStatement>
+</saml:Assertion>
