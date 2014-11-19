@@ -109,6 +109,23 @@ class AuthnRequest
     }
 
     /**
+     * @param array $requestedAuthnClassRef
+     */
+    public function setAuthenticationContext(array $requestedAuthnClassRef)
+    {
+        $authnContext = ['AuthnContextClassRef' => $requestedAuthnClassRef];
+        $this->request->setRequestedAuthnContext($authnContext);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAuthenticationContext()
+    {
+        return $this->request->getRequestedAuthnContext()['AuthnContextClassRef'];
+    }
+
+    /**
      * @return string
      */
     public function getRequestId()
