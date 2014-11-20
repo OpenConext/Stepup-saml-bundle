@@ -87,6 +87,45 @@ class AuthnRequest
     }
 
     /**
+     * @param array $requestedAuthnClassRef
+     */
+    public function setRequestedAuthenticationContext(array $requestedAuthnClassRef)
+    {
+        $authnContext = ['AuthnContextClassRef' => $requestedAuthnClassRef];
+        $this->request->setRequestedAuthnContext($authnContext);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getRequestedAuthenticationContext()
+    {
+        $authnContext = $this->request->getRequestedAuthnContext();
+        if (!is_array($authnContext) || !array_key_exists('AuthnContextClassRef', $authnContext)) {
+            return null;
+        }
+
+        return $authnContext['AuthnContextClassRef'];
+    }
+
+    /**
+     * @param array $requestedAuthnClassRef
+     */
+    public function setAuthenticationContext(array $requestedAuthnClassRef)
+    {
+        $authnContext = ['AuthnContextClassRef' => $requestedAuthnClassRef];
+        $this->request->setRequestedAuthnContext($authnContext);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAuthenticationContext()
+    {
+        return $this->request->getRequestedAuthnContext()['AuthnContextClassRef'];
+    }
+
+    /**
      * @return string
      */
     public function getRequestId()

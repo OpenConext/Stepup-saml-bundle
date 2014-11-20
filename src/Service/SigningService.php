@@ -78,7 +78,7 @@ class SigningService
      * @param  string $publicKeyFile /full/path/to/the/public/key
      * @return SAML2_Certificate_X509
      */
-    private function loadPublicKeyFromFile($publicKeyFile)
+    public function loadPublicKeyFromFile($publicKeyFile)
     {
         $this->publicKeyLoader->loadCertificateFile($publicKeyFile);
         $keyCollection = $this->publicKeyLoader->getKeys();
@@ -94,7 +94,7 @@ class SigningService
      * @param  string $privateKeyFile /full/path/to/the/private/key
      * @return SAML2_Certificate_PrivateKey
      */
-    private function loadPrivateKeyFromFile($privateKeyFile)
+    public function loadPrivateKeyFromFile($privateKeyFile)
     {
         $privateKey = new PrivateKeyFile($privateKeyFile, 'metadata');
         return $this->privateKeyLoader->loadPrivateKey($privateKey);
