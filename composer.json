@@ -17,12 +17,6 @@
         "mockery/mockery": "~0.9",
         "psr/log": "~1.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/SURFnet/saml2"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "Surfnet\\SamlBundle\\": "src"
