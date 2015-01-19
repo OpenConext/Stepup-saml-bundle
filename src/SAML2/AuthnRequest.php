@@ -88,6 +88,7 @@ class AuthnRequest
 
     /**
      * @param array $requestedAuthnClassRef
+     * @deprecated Use SAML2_AuthnRequest::setAuthenticationContext()
      */
     public function setRequestedAuthenticationContext(array $requestedAuthnClassRef)
     {
@@ -96,7 +97,7 @@ class AuthnRequest
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
     public function getRequestedAuthenticationContext()
     {
@@ -105,15 +106,15 @@ class AuthnRequest
             return null;
         }
 
-        return $authnContext['AuthnContextClassRef'];
+        return reset($authnContext['AuthnContextClassRef']) ?: null;
     }
 
     /**
-     * @param array $requestedAuthnClassRef
+     * @param string $requestedAuthnClassRef
      */
-    public function setAuthenticationContext(array $requestedAuthnClassRef)
+    public function setAuthenticationContext($requestedAuthnClassRef)
     {
-        $authnContext = ['AuthnContextClassRef' => $requestedAuthnClassRef];
+        $authnContext = ['AuthnContextClassRef' => [$requestedAuthnClassRef]];
         $this->request->setRequestedAuthnContext($authnContext);
     }
 
