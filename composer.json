@@ -8,7 +8,7 @@
     "require": {
         "php": "~5.4",
         "ext-openssl": "*",
-        "simplesamlphp/saml2": "0.6.1",
+        "simplesamlphp/saml2": "dev-master",
         "symfony/framework-bundle": "~2.5"
     },
     "require-dev": {
