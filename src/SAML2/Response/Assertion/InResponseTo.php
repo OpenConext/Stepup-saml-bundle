@@ -36,7 +36,7 @@ class InResponseTo
 
     /**
      * @param SAML2_Assertion $assertion
-     * @return NULL|string
+     * @return null|string
      */
     private static function getInResponseTo(SAML2_Assertion $assertion)
     {
