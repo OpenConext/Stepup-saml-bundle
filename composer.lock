@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6fadce0b6baf32a10d5c422494928aa9",
+    "hash": "bc8b76f63684df8f62314ef30f74cc1e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -166,16 +166,16 @@
         },
         {
             "name": "simplesamlphp/saml2",
-            "version": "dev-master",
+            "version": "v1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/simplesamlphp/saml2.git",
-                "reference": "64826f28255dcc065e638b172e157da3e88640d9"
+                "reference": "32fb4d416d065aa5c84505e274055de331ef286e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplesamlphp/saml2/zipball/64826f28255dcc065e638b172e157da3e88640d9",
-                "reference": "64826f28255dcc065e638b172e157da3e88640d9",
+                "url": "https://api.github.com/repos/simplesamlphp/saml2/zipball/32fb4d416d065aa5c84505e274055de331ef286e",
+                "reference": "32fb4d416d065aa5c84505e274055de331ef286e",
                 "shasum": ""
             },
             "require": {
@@ -212,7 +212,7 @@
                 }
             ],
             "description": "SAML2 PHP library from SimpleSAMLphp",
-            "time": "2014-12-04 13:30:27"
+            "time": "2014-12-22 09:42:36"
         },
         {
             "name": "simplesamlphp/xmlseclibs",
@@ -3401,10 +3401,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "simplesamlphp/saml2": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": "~5.4",
         "ext-openssl": "*"
