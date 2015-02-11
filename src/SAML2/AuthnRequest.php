@@ -110,11 +110,11 @@ class AuthnRequest
     }
 
     /**
-     * @param string $requestedAuthnClassRef
+     * @param array $requestedAuthnClassRef
      */
-    public function setAuthenticationContext($requestedAuthnClassRef)
+    public function setAuthenticationContext(array $requestedAuthnClassRef)
     {
-        $authnContext = ['AuthnContextClassRef' => [$requestedAuthnClassRef]];
+        $authnContext = ['AuthnContextClassRef' => $requestedAuthnClassRef];
         $this->request->setRequestedAuthnContext($authnContext);
     }
 
