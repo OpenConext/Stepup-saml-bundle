@@ -27,6 +27,8 @@ use SAML2_Response_Exception_PreconditionNotMetException as PreconditionNotMetEx
 use SAML2_Response_Processor as ResponseProcessor;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
+use Surfnet\SamlBundle\Http\Exception\AuthnFailedSamlResponseException;
+use Surfnet\SamlBundle\Http\Exception\NoAuthnContextSamlResponseException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
