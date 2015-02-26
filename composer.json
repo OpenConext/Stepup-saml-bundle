@@ -8,7 +8,7 @@
     "require": {
         "php": "~5.4",
         "ext-openssl": "*",
-        "simplesamlphp/saml2": "dev-feature/authnrequest-subject-support",
+        "simplesamlphp/saml2": "dev-master",
         "symfony/framework-bundle": "~2.5"
     },
     "repositories": [

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3930f66aff374d870fa77e1df31b2423",
+    "hash": "3c2c83f955c05ff835976510cb7a3fa7",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -166,16 +166,16 @@
         },
         {
             "name": "simplesamlphp/saml2",
-            "version": "dev-feature/authnrequest-subject-support",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SURFnet/saml2.git",
-                "reference": "34ef86d3cec5398b10b5e35d46a589a9f8ce9200"
+                "reference": "fb22b707c7a4705d2d54401715c8f6d229e88a74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SURFnet/saml2/zipball/34ef86d3cec5398b10b5e35d46a589a9f8ce9200",
-                "reference": "34ef86d3cec5398b10b5e35d46a589a9f8ce9200",
+                "url": "https://api.github.com/repos/SURFnet/saml2/zipball/fb22b707c7a4705d2d54401715c8f6d229e88a74",
+                "reference": "fb22b707c7a4705d2d54401715c8f6d229e88a74",
                 "shasum": ""
             },
             "require": {
@@ -217,9 +217,9 @@
             ],
             "description": "SAML2 PHP library from SimpleSAMLphp",
             "support": {
-                "source": "https://github.com/SURFnet/saml2/tree/feature/authnrequest-subject-support"
+                "source": "https://github.com/SURFnet/saml2/tree/master"
             },
-            "time": "2015-02-23 14:59:14"
+            "time": "2015-02-24 08:29:44"
         },
         {
             "name": "simplesamlphp/xmlseclibs",
