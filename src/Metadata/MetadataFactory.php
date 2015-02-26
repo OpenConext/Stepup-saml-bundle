@@ -19,6 +19,8 @@
 namespace Surfnet\SamlBundle\Metadata;
 
 use DOMDocument;
+use SAML2_Utilities_Certificate;
+use SAML2_Utilities_File;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Symfony\Component\Routing\RouterInterface;
@@ -144,8 +146,8 @@ class MetadataFactory
      */
     private function getCertificateData($publicKeyFile)
     {
-        $certificate = \SAML2_Utilities_File::getFileContents($publicKeyFile);
-        preg_match(\SAML2_Utilities_Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
+        $certificate = SAML2_Utilities_File::getFileContents($publicKeyFile);
+        preg_match(SAML2_Utilities_Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
 
         $certificateData = str_replace(array(' ', "\n"), '', $matches[1]);
 
@@ -153,11 +155,14 @@ class MetadataFactory
     }
 
     /**
-     * @param string $routeName
+     * @param string $routeDefinition
      * @return string
      */
-    private function getUrl($routeName)
+    private function getUrl($routeDefinition)
     {
-        return $this->router->generate($routeName, [], RouterInterface::ABSOLUTE_URL);
+        $route      = is_array($routeDefinition) ? $routeDefinition['route'] : $routeDefinition;
+        $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];
+
+        return $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
     }
 }
