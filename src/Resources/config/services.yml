@@ -19,7 +19,7 @@ services:
         factory_method:  getServiceProvider
 
     surfnet_saml.hosted.identity_provider:
-        class:           Surfnet\SamlBundle\Entity\IdenityProvider
+        class:           Surfnet\SamlBundle\Entity\IdentityProvider
         factory_service: surfnet_saml.configuration.hosted_entities
         factory_method:  getIdentityProvider
 
