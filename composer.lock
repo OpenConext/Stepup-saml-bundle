@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bc8b76f63684df8f62314ef30f74cc1e",
+    "hash": "3c2c83f955c05ff835976510cb7a3fa7",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -166,16 +166,16 @@
         },
         {
             "name": "simplesamlphp/saml2",
-            "version": "v1.5.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/simplesamlphp/saml2.git",
-                "reference": "32fb4d416d065aa5c84505e274055de331ef286e"
+                "url": "https://github.com/SURFnet/saml2.git",
+                "reference": "fb22b707c7a4705d2d54401715c8f6d229e88a74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplesamlphp/saml2/zipball/32fb4d416d065aa5c84505e274055de331ef286e",
-                "reference": "32fb4d416d065aa5c84505e274055de331ef286e",
+                "url": "https://api.github.com/repos/SURFnet/saml2/zipball/fb22b707c7a4705d2d54401715c8f6d229e88a74",
+                "reference": "fb22b707c7a4705d2d54401715c8f6d229e88a74",
                 "shasum": ""
             },
             "require": {
@@ -201,7 +201,11 @@
                     "SAML2_": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-0": {
+                    "SAML2_": "tests/"
+                }
+            },
             "license": [
                 "LGPL-2.1"
             ],
@@ -212,7 +216,10 @@
                 }
             ],
             "description": "SAML2 PHP library from SimpleSAMLphp",
-            "time": "2014-12-22 09:42:36"
+            "support": {
+                "source": "https://github.com/SURFnet/saml2/tree/master"
+            },
+            "time": "2015-02-24 08:29:44"
         },
         {
             "name": "simplesamlphp/xmlseclibs",
@@ -3401,7 +3408,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "simplesamlphp/saml2": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
