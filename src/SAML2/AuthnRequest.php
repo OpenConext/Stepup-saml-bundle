@@ -87,21 +87,12 @@ class AuthnRequest
     }
 
     /**
-     * @param array $requestedAuthnClassRef
-     * @deprecated Use SAML2_AuthnRequest::setAuthenticationContext()
-     */
-    public function setRequestedAuthenticationContext(array $requestedAuthnClassRef)
-    {
-        $authnContext = ['AuthnContextClassRef' => $requestedAuthnClassRef];
-        $this->request->setRequestedAuthnContext($authnContext);
-    }
-
-    /**
      * @return string|null
      */
-    public function getRequestedAuthenticationContext()
+    public function getAuthenticationContextClassRef()
     {
         $authnContext = $this->request->getRequestedAuthnContext();
+
         if (!is_array($authnContext) || !array_key_exists('AuthnContextClassRef', $authnContext)) {
             return null;
         }
@@ -110,20 +101,12 @@ class AuthnRequest
     }
 
     /**
-     * @param string $requestedAuthnClassRef
+     * @param string $authnClassRef
      */
-    public function setAuthenticationContext($requestedAuthnClassRef)
+    public function setAuthenticationContextClassRef($authnClassRef)
     {
-        $authnContext = ['AuthnContextClassRef' => [$requestedAuthnClassRef]];
+        $authnContext = ['AuthnContextClassRef' => [$authnClassRef]];
         $this->request->setRequestedAuthnContext($authnContext);
-    }
-
-    /**
-     * @return array
-     */
-    public function getAuthenticationContext()
-    {
-        return $this->request->getRequestedAuthnContext()['AuthnContextClassRef'];
     }
 
     /**

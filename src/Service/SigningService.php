@@ -61,7 +61,7 @@ class SigningService
         $publicKey = $this->loadPublicKeyFromFile($keyPair->publicKeyFile);
         $privateKey = $this->loadPrivateKeyFromFile($keyPair->privateKeyFile);
 
-        $key = new XMLSecurityKey(XMLSecurityKey::RSA_1_5, ['type' => 'private']);
+        $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $key->loadKey($privateKey->getKeyAsString());
 
         SAML2_Utils::insertSignature(

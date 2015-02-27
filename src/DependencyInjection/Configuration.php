@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('surfnet_saml');
 
-        $this->addMetadataSection($rootNode);
+        $this->addHostedSection($rootNode);
         $this->addRemoteSection($rootNode);
 
         return $treeBuilder;
@@ -46,7 +46,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addMetadataSection(ArrayNodeDefinition $node)
+    private function addHostedSection(ArrayNodeDefinition $node)
     {
         $node
             ->children()

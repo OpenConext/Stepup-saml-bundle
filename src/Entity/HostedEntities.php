@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Entity;
 
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Symfony\Component\Routing\RouterInterface;
 use SAML2_Configuration_PrivateKey as PrivateKey;
 
@@ -118,11 +119,14 @@ class HostedEntities
     }
 
     /**
-     * @param string $route
+     * @param string|array $routeDefinition
      * @return string
      */
-    private function generateUrl($route)
+    private function generateUrl($routeDefinition)
     {
-        return $this->router->generate($route, [], RouterInterface::ABSOLUTE_URL);
+        $route      = is_array($routeDefinition) ? $routeDefinition['route'] : $routeDefinition;
+        $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];
+
+        return $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
     }
 }
