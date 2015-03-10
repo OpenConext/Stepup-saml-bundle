@@ -79,7 +79,7 @@ class SignatureVerifier
      */
     public function isSignedWith(AuthnRequest $request, SAML2_Certificate_X509 $publicKey, LoggerInterface $logger)
     {
-        $logger->debug('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate());
+        $logger->debug(sprintf('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate()));
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
         $key->loadKey($publicKey->getCertificate());
 
