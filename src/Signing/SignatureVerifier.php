@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Signing;
 
+use Psr\Log\LoggerInterface;
 use SAML2_Certificate_Key;
 use SAML2_Certificate_KeyLoader as KeyLoader;
 use SAML2_Certificate_X509;
@@ -45,16 +46,24 @@ class SignatureVerifier
      * @param ServiceProvider $serviceProvider
      * @return bool
      */
-    public function hasValidSignature(AuthnRequest $request, ServiceProvider $serviceProvider)
+    public function hasValidSignature(AuthnRequest $request, ServiceProvider $serviceProvider, LoggerInterface $logger)
     {
+        $logger->debug(sprintf('Extracting public keys for ServiceProvider "%s"', $serviceProvider->getEntityId()));
+
         $keys = $this->keyLoader->extractPublicKeys($serviceProvider);
 
+        $logger->debug(sprintf('Found "%d" keys, filtering the keys to get X509 keys', $keys->count()));
         $x509Keys = $keys->filter(function (SAML2_Certificate_Key $key) {
             return $key instanceof SAML2_Certificate_X509;
         });
 
+        $logger->debug(sprintf(
+            'Found "%d" X509 keys, attempting to use each for signature verification',
+            $x509Keys->count()
+        ));
+
         foreach ($x509Keys as $key) {
-            if ($this->isSignedWith($request, $key)) {
+            if ($this->isSignedWith($request, $key, $logger)) {
                 return true;
             }
         }
@@ -68,14 +77,18 @@ class SignatureVerifier
      * @return bool
      * @throws \Exception
      */
-    public function isSignedWith(AuthnRequest $request, SAML2_Certificate_X509 $publicKey)
+    public function isSignedWith(AuthnRequest $request, SAML2_Certificate_X509 $publicKey, LoggerInterface $logger)
     {
+        $logger->debug('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate());
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
         $key->loadKey($publicKey->getCertificate());
 
         if ($key->verifySignature($request->getSignedRequestQuery(), $request->getSignature())) {
+            $logger->debug('Signature VERIFIED');
             return true;
         }
+
+        $logger->debug('Signature NOT VERIFIED');
 
         return false;
     }

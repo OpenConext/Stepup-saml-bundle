@@ -120,7 +120,7 @@ class RedirectBinding
         }
 
         $serviceProvider = $this->entityRepository->getServiceProvider($authnRequest->getServiceProvider());
-        if (!$this->signatureVerifier->hasValidSignature($authnRequest, $serviceProvider)) {
+        if (!$this->signatureVerifier->hasValidSignature($authnRequest, $serviceProvider, $this->logger)) {
             throw new BadRequestHttpException(
                 'The SAMLRequest has been signed, but the signature could not be validated'
             );
