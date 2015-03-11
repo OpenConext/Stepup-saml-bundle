@@ -34,11 +34,18 @@ class SignatureVerifier
     private $keyLoader;
 
     /**
-     * @param KeyLoader       $keyLoader
+     * @var LoggerInterface
      */
-    public function __construct(KeyLoader $keyLoader)
+    private $logger;
+
+    /**
+     * @param KeyLoader       $keyLoader
+     * @param LoggerInterface $logger
+     */
+    public function __construct(KeyLoader $keyLoader, LoggerInterface $logger)
     {
         $this->keyLoader = $keyLoader;
+        $this->logger = $logger;
     }
 
     /**
@@ -46,24 +53,24 @@ class SignatureVerifier
      * @param ServiceProvider $serviceProvider
      * @return bool
      */
-    public function hasValidSignature(AuthnRequest $request, ServiceProvider $serviceProvider, LoggerInterface $logger)
+    public function hasValidSignature(AuthnRequest $request, ServiceProvider $serviceProvider)
     {
-        $logger->debug(sprintf('Extracting public keys for ServiceProvider "%s"', $serviceProvider->getEntityId()));
+        $this->logger->debug(sprintf('Extracting public keys for ServiceProvider "%s"', $serviceProvider->getEntityId()));
 
         $keys = $this->keyLoader->extractPublicKeys($serviceProvider);
 
-        $logger->debug(sprintf('Found "%d" keys, filtering the keys to get X509 keys', $keys->count()));
+        $this->logger->debug(sprintf('Found "%d" keys, filtering the keys to get X509 keys', $keys->count()));
         $x509Keys = $keys->filter(function (SAML2_Certificate_Key $key) {
             return $key instanceof SAML2_Certificate_X509;
         });
 
-        $logger->debug(sprintf(
+        $this->logger->debug(sprintf(
             'Found "%d" X509 keys, attempting to use each for signature verification',
             $x509Keys->count()
         ));
 
         foreach ($x509Keys as $key) {
-            if ($this->isSignedWith($request, $key, $logger)) {
+            if ($this->isSignedWith($request, $key)) {
                 return true;
             }
         }
@@ -77,18 +84,18 @@ class SignatureVerifier
      * @return bool
      * @throws \Exception
      */
-    public function isSignedWith(AuthnRequest $request, SAML2_Certificate_X509 $publicKey, LoggerInterface $logger)
+    public function isSignedWith(AuthnRequest $request, SAML2_Certificate_X509 $publicKey)
     {
-        $logger->debug(sprintf('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate()));
+        $this->logger->debug(sprintf('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate()));
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
         $key->loadKey($publicKey->getCertificate());
 
         if ($key->verifySignature($request->getSignedRequestQuery(), $request->getSignature())) {
-            $logger->debug('Signature VERIFIED');
+            $this->logger->debug('Signature VERIFIED');
             return true;
         }
 
-        $logger->debug('Signature NOT VERIFIED');
+        $this->logger->debug('Signature NOT VERIFIED');
 
         return false;
     }
