@@ -63,7 +63,6 @@
                 <tokenfilter>
                     <containsregex pattern="src/(?!Tests).*$"/>
                 </tokenfilter>
-                <deletecharacters chars="\n"/>
                 <trim/>
                 <ignoreblank/>
                 <tokenfilter delimoutput=","/>
