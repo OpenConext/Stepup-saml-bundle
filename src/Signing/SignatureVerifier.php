@@ -75,6 +75,8 @@ class SignatureVerifier
             }
         }
 
+        $this->logger->debug('Signature could not be verified with any of the found X509 keys.');
+
         return false;
     }
 
