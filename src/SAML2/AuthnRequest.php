@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\SAML2;
 
 use SAML2_AuthnRequest;
+use SAML2_Const;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 class AuthnRequest
@@ -137,8 +138,8 @@ class AuthnRequest
     }
 
     /**
-     * @param      $nameId
-     * @param null $format
+     * @param string      $nameId
+     * @param string|null $format
      */
     public function setSubject($nameId, $format = null)
     {
@@ -152,7 +153,7 @@ class AuthnRequest
 
         $nameId = [
             'Value' => $nameId,
-            'Format' => ($format ?: \SAML2_Const::NAMEID_UNSPECIFIED)
+            'Format' => ($format ?: SAML2_Const::NAMEID_UNSPECIFIED)
         ];
 
         $this->request->setNameId($nameId);
