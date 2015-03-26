@@ -2,5 +2,8 @@
 VERSION 0  FIRST MAJOR ZERO RELEASE
 ===================================
 
+   Version 0.3 - Add NameID support to AuthnRequest, more logging
+      26/03/2015 13:53  0.3.0  initial release
+
    Version 0.1 - First major zero release
       20/01/2015 15:56  0.1.0  initial release
