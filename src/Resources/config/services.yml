@@ -53,6 +53,7 @@ services:
         class: Surfnet\SamlBundle\Signing\SignatureVerifier
         arguments:
             - @surfnet_saml.saml2.keyloader
+            - @logger
 
     surfnet_saml.saml2.bridge_container:
         class: Surfnet\SamlBundle\SAML2\BridgeContainer

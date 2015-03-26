@@ -31,6 +31,7 @@ class InResponseToTest extends UnitTest
      *
      * @test
      * @group saml2-response
+     * @group saml2
      * @dataProvider provideAssertionsWithoutInResponseTo
      */
     public function assertions_without_in_response_to_are_tested_as_if_in_response_to_is_null(SAML2_Assertion $assertion)
@@ -42,6 +43,7 @@ class InResponseToTest extends UnitTest
     /**
      * @test
      * @group saml2-response
+     * @group saml2
      */
     public function in_reponse_to_equality_is_strictly_checked()
     {

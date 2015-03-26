@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Signing;
 
+use Psr\Log\LoggerInterface;
 use SAML2_Certificate_Key;
 use SAML2_Certificate_KeyLoader as KeyLoader;
 use SAML2_Certificate_X509;
@@ -33,11 +34,18 @@ class SignatureVerifier
     private $keyLoader;
 
     /**
-     * @param KeyLoader       $keyLoader
+     * @var LoggerInterface
      */
-    public function __construct(KeyLoader $keyLoader)
+    private $logger;
+
+    /**
+     * @param KeyLoader       $keyLoader
+     * @param LoggerInterface $logger
+     */
+    public function __construct(KeyLoader $keyLoader, LoggerInterface $logger)
     {
         $this->keyLoader = $keyLoader;
+        $this->logger = $logger;
     }
 
     /**
@@ -47,17 +55,27 @@ class SignatureVerifier
      */
     public function hasValidSignature(AuthnRequest $request, ServiceProvider $serviceProvider)
     {
+        $this->logger->debug(sprintf('Extracting public keys for ServiceProvider "%s"', $serviceProvider->getEntityId()));
+
         $keys = $this->keyLoader->extractPublicKeys($serviceProvider);
 
+        $this->logger->debug(sprintf('Found "%d" keys, filtering the keys to get X509 keys', $keys->count()));
         $x509Keys = $keys->filter(function (SAML2_Certificate_Key $key) {
             return $key instanceof SAML2_Certificate_X509;
         });
+
+        $this->logger->debug(sprintf(
+            'Found "%d" X509 keys, attempting to use each for signature verification',
+            $x509Keys->count()
+        ));
 
         foreach ($x509Keys as $key) {
             if ($this->isSignedWith($request, $key)) {
                 return true;
             }
         }
+
+        $this->logger->debug('Signature could not be verified with any of the found X509 keys.');
 
         return false;
     }
@@ -70,12 +88,16 @@ class SignatureVerifier
      */
     public function isSignedWith(AuthnRequest $request, SAML2_Certificate_X509 $publicKey)
     {
+        $this->logger->debug(sprintf('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate()));
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
         $key->loadKey($publicKey->getCertificate());
 
         if ($key->verifySignature($request->getSignedRequestQuery(), $request->getSignature())) {
+            $this->logger->debug('Signature VERIFIED');
             return true;
         }
+
+        $this->logger->debug('Signature NOT VERIFIED');
 
         return false;
     }
