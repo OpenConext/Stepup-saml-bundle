@@ -19,11 +19,16 @@
 namespace Surfnet\SamlBundle\Http;
 
 use DOMDocument;
+use SAML2_Assertion as Assertion;
 use SAML2_Configuration_Destination;
+use SAML2_Const;
 use SAML2_Response;
+use SAML2_Response_Exception_PreconditionNotMetException as PreconditionNotMetException;
 use SAML2_Response_Processor as ResponseProcessor;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
+use Surfnet\SamlBundle\Http\Exception\AuthnFailedSamlResponseException;
+use Surfnet\SamlBundle\Http\Exception\NoAuthnContextSamlResponseException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -39,6 +44,15 @@ class PostBinding
         $this->responseProcessor = $responseProcessor;
     }
 
+    /**
+     * @param Request $request
+     * @param IdentityProvider $identityProvider
+     * @param ServiceProvider $serviceProvider
+     * @return Assertion
+     * @throws AuthnFailedSamlResponseException
+     * @throws NoAuthnContextSamlResponseException
+     * @throws PreconditionNotMetException
+     */
     public function processResponse(
         Request $request,
         IdentityProvider $identityProvider,
@@ -53,13 +67,28 @@ class PostBinding
         $asXml    = new DOMDocument();
         $asXml->loadXML($response);
 
-        $samlResponse = new SAML2_Response($asXml->documentElement);
-        $assertions = $this->responseProcessor->process(
-            $serviceProvider,
-            $identityProvider,
-            new SAML2_Configuration_Destination($serviceProvider->getAssertionConsumerUrl()),
-            $samlResponse
-        );
+        try {
+            $assertions = $this->responseProcessor->process(
+                $serviceProvider,
+                $identityProvider,
+                new SAML2_Configuration_Destination($serviceProvider->getAssertionConsumerUrl()),
+                new SAML2_Response($asXml->documentElement)
+            );
+        } catch (PreconditionNotMetException $e) {
+            $message = $e->getMessage();
+
+            $noAuthnContext = substr(SAML2_Const::STATUS_NO_AUTHN_CONTEXT, strlen(SAML2_Const::STATUS_PREFIX));
+            if (false !== strpos($message, $noAuthnContext)) {
+                throw new NoAuthnContextSamlResponseException($message, 0, $e);
+            }
+
+            $authnFailed = substr(SAML2_Const::STATUS_AUTHN_FAILED, strlen(SAML2_Const::STATUS_PREFIX));
+            if (false !== strpos($message, $authnFailed)) {
+                throw new AuthnFailedSamlResponseException($message, 0, $e);
+            }
+
+            throw $e;
+        }
 
         return $assertions->getOnlyElement();
     }

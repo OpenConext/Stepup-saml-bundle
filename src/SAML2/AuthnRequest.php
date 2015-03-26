@@ -19,6 +19,8 @@
 namespace Surfnet\SamlBundle\SAML2;
 
 use SAML2_AuthnRequest;
+use SAML2_Const;
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 class AuthnRequest
 {
@@ -87,21 +89,12 @@ class AuthnRequest
     }
 
     /**
-     * @param array $requestedAuthnClassRef
-     * @deprecated Use SAML2_AuthnRequest::setAuthenticationContext()
-     */
-    public function setRequestedAuthenticationContext(array $requestedAuthnClassRef)
-    {
-        $authnContext = ['AuthnContextClassRef' => $requestedAuthnClassRef];
-        $this->request->setRequestedAuthnContext($authnContext);
-    }
-
-    /**
      * @return string|null
      */
-    public function getRequestedAuthenticationContext()
+    public function getAuthenticationContextClassRef()
     {
         $authnContext = $this->request->getRequestedAuthnContext();
+
         if (!is_array($authnContext) || !array_key_exists('AuthnContextClassRef', $authnContext)) {
             return null;
         }
@@ -110,20 +103,60 @@ class AuthnRequest
     }
 
     /**
-     * @param string $requestedAuthnClassRef
+     * @param string $authnClassRef
      */
-    public function setAuthenticationContext($requestedAuthnClassRef)
+    public function setAuthenticationContextClassRef($authnClassRef)
     {
-        $authnContext = ['AuthnContextClassRef' => [$requestedAuthnClassRef]];
+        $authnContext = ['AuthnContextClassRef' => [$authnClassRef]];
         $this->request->setRequestedAuthnContext($authnContext);
     }
 
     /**
-     * @return array
+     * @return string|null
      */
-    public function getAuthenticationContext()
+    public function getNameId()
     {
-        return $this->request->getRequestedAuthnContext()['AuthnContextClassRef'];
+        $nameId = $this->request->getNameId();
+        if (!is_array($nameId) || !array_key_exists('Value', $nameId)) {
+            return null;
+        }
+
+        return $nameId['Value'];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNameIdFormat()
+    {
+        $nameId = $this->request->getNameId();
+        if (!is_array($nameId) || !array_key_exists('Format', $nameId)) {
+            return null;
+        }
+
+        return $nameId['Format'];
+    }
+
+    /**
+     * @param string      $nameId
+     * @param string|null $format
+     */
+    public function setSubject($nameId, $format = null)
+    {
+        if (!is_string($nameId)) {
+            throw InvalidArgumentException::invalidType('string', 'nameId', $nameId);
+        }
+
+        if (!is_null($format) && !is_string($format)) {
+            throw InvalidArgumentException::invalidType('string', 'format', $format);
+        }
+
+        $nameId = [
+            'Value' => $nameId,
+            'Format' => ($format ?: SAML2_Const::NAMEID_UNSPECIFIED)
+        ];
+
+        $this->request->setNameId($nameId);
     }
 
     /**

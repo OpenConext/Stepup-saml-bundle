@@ -8,9 +8,15 @@
     "require": {
         "php": "~5.4",
         "ext-openssl": "*",
-        "simplesamlphp/saml2": "0.6.1",
+        "simplesamlphp/saml2": "dev-master",
         "symfony/framework-bundle": "~2.5"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/SURFnet/saml2"
+        }
+    ],
     "require-dev": {
         "ibuildings/qa-tools": "~1.1",
         "liip/rmt": "~1.1",

@@ -56,6 +56,20 @@
         </loadresource>
     </target>
 
+    <target name="get-changeset.php-commasep.notests" depends="get-changeset.php-absolute.newlinesep" if="changeset.php.notempty">
+        <loadresource property="changeset.php.absolute.notests">
+            <propertyresource name="changeset.php.absolute.newlinesep"/>
+            <filterchain>
+                <tokenfilter>
+                    <containsregex pattern="src/(?!Tests).*$"/>
+                </tokenfilter>
+                <trim/>
+                <ignoreblank/>
+                <tokenfilter delimoutput=","/>
+            </filterchain>
+        </loadresource>
+    </target>
+
     <!-- Convert newline separated to space separated -->
     <target name="get-changeset.php-spacesep" depends="get-changeset.php-relative.newlinesep,get-changeset.php-absolute.newlinesep"
             if="changeset.php.notempty">
@@ -104,11 +118,9 @@
         <echo message="OK"/>
     </target>
 
-    <target name="phpmd" depends="get-changeset.php-commasep" if="changeset.php.notempty">
+    <target name="phpmd" depends="get-changeset.php-commasep.notests" if="changeset.php.notempty">
         <exec executable="${test-tree-location}/vendor/bin/phpmd" failonerror="true">
-            <arg line="${changeset.php.absolute.commasep} text ${test-tree-location}/phpmd-pre-commit.xml" />
-            <arg value="--exclude"/>
-            <arg value="*/Tests/*"/>
+            <arg line="${changeset.php.absolute.notests} text ${test-tree-location}/phpmd-pre-commit.xml" />
         </exec>
         <echo message="OK"/>
     </target>

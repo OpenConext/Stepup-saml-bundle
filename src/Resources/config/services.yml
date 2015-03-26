@@ -19,7 +19,7 @@ services:
         factory_method:  getServiceProvider
 
     surfnet_saml.hosted.identity_provider:
-        class:           Surfnet\SamlBundle\Entity\IdenityProvider
+        class:           Surfnet\SamlBundle\Entity\IdentityProvider
         factory_service: surfnet_saml.configuration.hosted_entities
         factory_method:  getIdentityProvider
 
@@ -53,6 +53,7 @@ services:
         class: Surfnet\SamlBundle\Signing\SignatureVerifier
         arguments:
             - @surfnet_saml.saml2.keyloader
+            - @logger
 
     surfnet_saml.saml2.bridge_container:
         class: Surfnet\SamlBundle\SAML2\BridgeContainer
