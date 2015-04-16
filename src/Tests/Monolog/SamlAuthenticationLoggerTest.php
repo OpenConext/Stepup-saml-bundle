@@ -32,13 +32,20 @@ final class SamlAuthenticationLoggerTest extends TestCase
         $requestId = md5('boesboes');
 
         $innerLogger = m::mock('Psr\Log\LoggerInterface');
-        $innerLogger->shouldReceive('emergency')->with('message1', [])->once();
         $innerLogger->shouldReceive('emergency')->with('message2', ['sari' => $requestId])->once();
 
         $logger = new SamlAuthenticationLogger($innerLogger);
-        $loggerForAuthentication = $logger->forAuthentication($requestId);
+        $logger = $logger->forAuthentication($requestId);
+        $logger->emergency('message2');
+    }
 
-        $logger->emergency('message1');
-        $loggerForAuthentication->emergency('message2');
+    /**
+     * @test
+     * @expectedException \Surfnet\SamlBundle\Exception\RuntimeException
+     */
+    public function it_throws_when_no_authentication()
+    {
+        $logger = new SamlAuthenticationLogger(m::mock('Psr\Log\LoggerInterface'));
+        $logger->emergency('message2');
     }
 }

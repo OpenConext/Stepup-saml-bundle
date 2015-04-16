@@ -20,6 +20,7 @@ namespace Surfnet\SamlBundle\Monolog;
 
 use Psr\Log\LoggerInterface;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
+use Surfnet\SamlBundle\Exception\RuntimeException;
 
 /**
  * Decorates a PSR logger and adds information pertaining to a SAML request procedure to each message's context.
@@ -110,9 +111,11 @@ final class SamlAuthenticationLogger implements LoggerInterface
      */
     private function modifyContext(array $context)
     {
-        if ($this->sari) {
-            $context['sari'] = $this->sari;
+        if (!$this->sari) {
+            throw new RuntimeException('Authentication logging context is unknown');
         }
+
+        $context['sari'] = $this->sari;
 
         return $context;
     }
