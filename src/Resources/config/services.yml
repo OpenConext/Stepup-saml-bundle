@@ -73,3 +73,8 @@ services:
         class: SAML2_Response_Processor
         arguments:
             - @logger
+
+    surfnet_saml.logger:
+        class: Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger
+        arguments:
+            - @logger
