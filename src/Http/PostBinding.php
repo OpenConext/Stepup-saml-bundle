@@ -32,6 +32,9 @@ use Surfnet\SamlBundle\Http\Exception\NoAuthnContextSamlResponseException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class PostBinding
 {
     /**
