@@ -14,14 +14,12 @@ services:
             - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
 
     surfnet_saml.hosted.service_provider:
-        class:           Surfnet\SamlBundle\Entity\ServiceProvider
-        factory_service: surfnet_saml.configuration.hosted_entities
-        factory_method:  getServiceProvider
+        class:   Surfnet\SamlBundle\Entity\ServiceProvider
+        factory: [@surfnet_saml.configuration.hosted_entities, getServiceProvider]
 
     surfnet_saml.hosted.identity_provider:
-        class:           Surfnet\SamlBundle\Entity\IdentityProvider
-        factory_service: surfnet_saml.configuration.hosted_entities
-        factory_method:  getIdentityProvider
+        class:   Surfnet\SamlBundle\Entity\IdentityProvider
+        factory: [@surfnet_saml.configuration.hosted_entities, getIdentityProvider]
 
     surfnet_saml.http.redirect_binding:
         class: Surfnet\SamlBundle\Http\RedirectBinding
