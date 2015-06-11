@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\Entity;
 
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use SAML2_Configuration_PrivateKey as PrivateKey;
 
@@ -49,13 +50,21 @@ class HostedEntities
      */
     private $router;
 
+    /**
+     * @param RouterInterface $router
+     * @param RequestStack    $requestStack
+     * @param array           $serviceProviderConfiguration
+     * @param array           $identityProviderConfiguration
+     */
     public function __construct(
         RouterInterface $router,
+        RequestStack $requestStack,
         array $serviceProviderConfiguration = null,
         array $identityProviderConfiguration = null
     ) {
-        $this->router = $router;
-        $this->serviceProviderConfiguration = $serviceProviderConfiguration;
+        $this->router                        = $router;
+        $this->requestStack                  = $requestStack;
+        $this->serviceProviderConfiguration  = $serviceProviderConfiguration;
         $this->identityProviderConfiguration = $identityProviderConfiguration;
     }
 
@@ -127,6 +136,14 @@ class HostedEntities
         $route      = is_array($routeDefinition) ? $routeDefinition['route'] : $routeDefinition;
         $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];
 
-        return $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
+        $context = $this->router->getContext();
+
+        $context->fromRequest($this->requestStack->getMasterRequest());
+
+        $url = $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
+
+        $context->fromRequest($this->requestStack->getCurrentRequest());
+
+        return $url;
     }
 }
