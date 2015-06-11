@@ -65,7 +65,7 @@ class SurfnetSamlExtension extends Extension
     {
         $container
             ->getDefinition('surfnet_saml.configuration.hosted_entities')
-            ->replaceArgument(1, $serviceProvider);
+            ->replaceArgument(2, $serviceProvider);
     }
 
     /**
@@ -76,7 +76,7 @@ class SurfnetSamlExtension extends Extension
     {
         $container
             ->getDefinition('surfnet_saml.configuration.hosted_entities')
-            ->replaceArgument(2, $identityProvider);
+            ->replaceArgument(3, $identityProvider);
 
         if (!$identityProvider['enabled']) {
             return;
