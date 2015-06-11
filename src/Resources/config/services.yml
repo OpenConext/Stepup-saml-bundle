@@ -10,6 +10,7 @@ services:
         class: Surfnet\SamlBundle\Entity\HostedEntities
         arguments:
             - @router
+            - @request_stack
             - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
             - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
 
