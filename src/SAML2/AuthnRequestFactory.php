@@ -18,11 +18,11 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
-use DOMDocument;
 use SAML2_AuthnRequest;
 use SAML2_Certificate_PrivateKeyLoader;
 use SAML2_Configuration_PrivateKey;
 use SAML2_Const;
+use SAML2_DOMDocumentFactory;
 use SAML2_Message;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
@@ -41,8 +41,7 @@ class AuthnRequestFactory
         // the GET parameter is already urldecoded by Symfony, so we should not do it again.
         $samlRequest = gzinflate(base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST)));
 
-        $document = new DOMDocument();
-        $document->loadXML($samlRequest);
+        $document = SAML2_DOMDocumentFactory::fromString($samlRequest);
 
         $request = SAML2_Message::fromXML($document->firstChild);
 
