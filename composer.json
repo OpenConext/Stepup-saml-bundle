@@ -10,14 +10,9 @@
         "ext-openssl": "*",
         "simplesamlphp/saml2": "^1.6.1",
         "symfony/dependency-injection": "^2.6",
-        "symfony/framework-bundle": "~2.5"
+        "symfony/framework-bundle": "~2.5",
+        "robrichards/xmlseclibs": "^1.4.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/SURFnet/saml2"
-        }
-    ],
     "require-dev": {
         "ibuildings/qa-tools": "~1.1",
         "liip/rmt": "~1.1",
