@@ -36,9 +36,6 @@ class SurfnetSamlBundle extends Bundle
 
     public function boot()
     {
-        // additional security against XXE Processing vulnerability
-        libxml_disable_entity_loader(true);
-
         $bridgeContainer = $this->container->get('surfnet_saml.saml2.bridge_container');
         SAML2_Compat_ContainerSingleton::setContainer($bridgeContainer);
     }
