@@ -18,10 +18,10 @@
 
 namespace Surfnet\SamlBundle\Http;
 
-use DOMDocument;
 use SAML2_Assertion as Assertion;
 use SAML2_Configuration_Destination;
 use SAML2_Const;
+use SAML2_DOMDocumentFactory;
 use SAML2_Response;
 use SAML2_Response_Exception_PreconditionNotMetException as PreconditionNotMetException;
 use SAML2_Response_Processor as ResponseProcessor;
@@ -67,8 +67,7 @@ class PostBinding
         }
 
         $response = base64_decode($response);
-        $asXml    = new DOMDocument();
-        $asXml->loadXML($response);
+        $asXml    = SAML2_DOMDocumentFactory::fromString($response);
 
         try {
             $assertions = $this->responseProcessor->process(
