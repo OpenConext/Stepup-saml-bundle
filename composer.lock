@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1f1d73813c4978ee84c2d953561e0949",
+    "hash": "91336124083aa23b943c208d06ab41b9",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -167,6 +167,47 @@
             "time": "2012-12-21 11:40:51"
         },
         {
+            "name": "robrichards/xmlseclibs",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robrichards/xmlseclibs.git",
+                "reference": "e91b4272f43b7708020c995f3c58056e68bfddf0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robrichards/xmlseclibs/zipball/e91b4272f43b7708020c995f3c58056e68bfddf0",
+                "reference": "e91b4272f43b7708020c995f3c58056e68bfddf0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 5.2"
+            },
+            "suggest": {
+                "ext/mcrypt": "MCrypt extension",
+                "ext/openssl": "OpenSSL extension"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A PHP library for XML Security",
+            "homepage": "https://github.com/robrichards/xmlseclibs",
+            "keywords": [
+                "security",
+                "signature",
+                "xml",
+                "xmldsig"
+            ],
+            "time": "2015-06-23 18:50:25"
+        },
+        {
             "name": "simplesamlphp/saml2",
             "version": "v1.6.1",
             "source": {
@@ -215,57 +256,6 @@
             ],
             "description": "SAML2 PHP library from SimpleSAMLphp",
             "time": "2015-07-13 10:00:26"
-        },
-        {
-            "name": "simplesamlphp/xmlseclibs",
-            "version": "v1.3.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/simplesamlphp/xmlseclibs.git",
-                "reference": "734e80899ade295b979de08553161cad63c2dd98"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/simplesamlphp/xmlseclibs/zipball/734e80899ade295b979de08553161cad63c2dd98",
-                "reference": "734e80899ade295b979de08553161cad63c2dd98",
-                "shasum": ""
-            },
-            "replace": {
-                "cdatazone/xmlseclibs": "self.version",
-                "fr3d/xmlseclibs": "self.version",
-                "robrichards/xmlseclibs": "self.version"
-            },
-            "suggest": {
-                "ext/mcrypt": "",
-                "ext/openssl": ""
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "xmlseclibs.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Rob Richards"
-                }
-            ],
-            "description": "A PHP library for XML Security",
-            "homepage": "http://code.google.com/p/xmlseclibs/",
-            "keywords": [
-                "certificate",
-                "security",
-                "signature",
-                "signing",
-                "x.509",
-                "xml",
-                "xmlsec"
-            ],
-            "time": "2013-06-19 00:00:00"
         },
         {
             "name": "symfony/config",
