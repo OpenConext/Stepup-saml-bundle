@@ -60,12 +60,17 @@
         <loadresource property="changeset.php.absolute.notests">
             <propertyresource name="changeset.php.absolute.newlinesep"/>
             <filterchain>
-                <tokenfilter>
-                    <containsregex pattern="src/(?!Tests).*$"/>
-                </tokenfilter>
+                <linecontains negate="true">
+                    <contains value="Tests"/>
+                </linecontains>
                 <trim/>
                 <ignoreblank/>
                 <tokenfilter delimoutput=","/>
+                <tokenfilter>
+                    <replaceregex pattern="(.*),$"
+                                  flags="s"
+                                  replace="\1"/>
+                </tokenfilter>
             </filterchain>
         </loadresource>
     </target>
