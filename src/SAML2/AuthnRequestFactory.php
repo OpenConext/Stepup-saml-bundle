@@ -41,7 +41,10 @@ class AuthnRequestFactory
         // the GET parameter is already urldecoded by Symfony, so we should not do it again.
         $samlRequest = gzinflate(base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST)));
 
+        // additional security against XXE Processing vulnerability
+        $previous = libxml_disable_entity_loader(true);
         $document = SAML2_DOMDocumentFactory::fromString($samlRequest);
+        libxml_disable_entity_loader($previous);
 
         $request = SAML2_Message::fromXML($document->firstChild);
 
