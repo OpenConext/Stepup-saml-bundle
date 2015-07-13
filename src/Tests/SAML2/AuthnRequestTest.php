@@ -18,9 +18,9 @@
 
 namespace Surfnet\SamlBundle\Tests\SAML2;
 
-use DOMDocument;
 use PHPUnit_Framework_TestCase as UnitTest;
 use SAML2_AuthnRequest;
+use SAML2_DOMDocumentFactory;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 
 class AuthnRequestTest extends UnitTest
@@ -80,9 +80,8 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function setting_the_subject_generates_valid_xml($nameId, $format)
     {
-        $domDocument = new DOMDocument();
-        $domDocument->loadXML($this->authRequestNoSubject);
-        $request = new SAML2_AuthnRequest($domDocument->documentElement);
+        $domDocument = SAML2_DOMDocumentFactory::fromString($this->authRequestNoSubject);
+        $request     = new SAML2_AuthnRequest($domDocument->documentElement);
 
         $authnRequest = AuthnRequest::createNew($request);
         $authnRequest->setSubject($nameId, $format);
@@ -96,9 +95,8 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function the_nameid_and_format_can_be_retrieved_from_the_authnrequest()
     {
-        $domDocument = new DOMDocument();
-        $domDocument->loadXML($this->authRequestWithSubject);
-        $request = new SAML2_AuthnRequest($domDocument->documentElement);
+        $domDocument = SAML2_DOMDocumentFactory::fromString($this->authRequestWithSubject);
+        $request     = new SAML2_AuthnRequest($domDocument->documentElement);
 
         $authnRequest = AuthnRequest::createNew($request);
 

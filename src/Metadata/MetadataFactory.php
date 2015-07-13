@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\Metadata;
 
-use DOMDocument;
+use SAML2_DOMDocumentFactory;
 use SAML2_Utilities_Certificate;
 use SAML2_Utilities_File;
 use Surfnet\SamlBundle\Service\SigningService;
@@ -85,7 +85,7 @@ class MetadataFactory
         $metadata = $this->getMetadata();
         $keyPair = $this->buildKeyPairFrom($this->metadataConfiguration);
 
-        $metadata->document = new DOMDocument();
+        $metadata->document = SAML2_DOMDocumentFactory::create();
         $metadata->document->loadXML($this->templateEngine->render(
             'SurfnetSamlBundle:Metadata:metadata.xml.twig',
             ['metadata' => $metadata]
