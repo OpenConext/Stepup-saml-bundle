@@ -2,6 +2,9 @@
 VERSION 1  RELEASE 1.0
 ======================
 
+   Version 1.2 - Fixing composer dependencies
+      13/07/2015 14:44  1.2.0  initial release
+
    Version 1.1 - Implemented defenses against XXE
       13/07/2015 13:40  1.1.0  initial release
 
