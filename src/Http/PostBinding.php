@@ -67,7 +67,10 @@ class PostBinding
         }
 
         $response = base64_decode($response);
+
+        $previous = libxml_disable_entity_loader(true);
         $asXml    = SAML2_DOMDocumentFactory::fromString($response);
+        libxml_disable_entity_loader($previous);
 
         try {
             $assertions = $this->responseProcessor->process(
