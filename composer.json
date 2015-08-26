@@ -6,7 +6,7 @@
     "license": "Apache-2.0",
     "minimum-stability": "stable",
     "require": {
-        "php": "~5.4|^7",
+        "php": ">=5.4,<8.0-dev",
         "ext-openssl": "*",
         "simplesamlphp/saml2": "^1.6.1",
         "symfony/dependency-injection": "^2.7",
