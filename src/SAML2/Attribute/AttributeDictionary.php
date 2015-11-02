@@ -27,45 +27,60 @@ class AttributeDictionary
     /**
      * @var AttributeDefinition[]
      */
-    private $attributes = [];
+    private $definitions = [];
 
     /**
-     * @param AttributeDefinition $attribute
+     * @param AttributeDefinition $definition
      */
-    public function addAttributeDefinition(AttributeDefinition $attribute)
+    public function addAttributeDefinition(AttributeDefinition $definition)
     {
-        if (isset($this->attributes[$attribute->getName()])) {
+        if (isset($this->definitions[$definition->getName()])) {
             throw new LogicException(sprintf(
                 'Cannot add attribute "%s" as it has already been added'
             ));
         }
 
-        $this->attributes[$attribute->getName()] = $attribute;
+        $this->definitions[$definition->getName()] = $definition;
     }
 
     /**
-     * @param string $attribute
+     * @param string $attributeName
      * @return bool
      */
-    public function hasAttributeDefinition($attribute)
+    public function hasAttributeDefinition($attributeName)
     {
-        return isset($this->attributes[$attribute]);
+        return isset($this->definitions[$attributeName]);
     }
 
     /**
-     * @param string $attribute
+     * @param string $attributeName
      * @return AttributeDefinition
      */
-    public function getAttributeDefinition($attribute)
+    public function getAttributeDefinition($attributeName)
     {
-        if (!$this->hasAttributeDefinition($attribute)) {
+        if (!$this->hasAttributeDefinition($attributeName)) {
             throw new LogicException(sprintf(
                 'Cannot get AttributeDefinition "%s" as it has not been added to the collection',
-                $attribute
+                $attributeName
             ));
         }
 
-        return $this->attributes[$attribute];
+        return $this->definitions[$attributeName];
+    }
+
+    /**
+     * @param $urn
+     * @return AttributeDefinition
+     */
+    public function findAttributeDefinitionByUrn($urn)
+    {
+        foreach ($this->definitions as $definition) {
+            if ($definition->getUrnMace() === $urn || $definition->getUrnOid() === $urn) {
+                return $definition;
+            }
+        }
+
+        return null;
     }
 
     /**
