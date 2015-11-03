@@ -28,20 +28,20 @@ class AttributeDictionary
     /**
      * @var AttributeDefinition[]
      */
-    private $attributeDefinition = [];
+    private $attributeDefinitions = [];
 
     /**
      * @param AttributeDefinition $attributeDefinition
      */
     public function addAttributeDefinition(AttributeDefinition $attributeDefinition)
     {
-        if (isset($this->attributeDefinition[$attributeDefinition->getName()])) {
+        if (isset($this->attributeDefinitions[$attributeDefinition->getName()])) {
             throw new LogicException(sprintf(
                 'Cannot add attribute "%s" as it has already been added'
             ));
         }
 
-        $this->attributeDefinition[$attributeDefinition->getName()] = $attributeDefinition;
+        $this->attributeDefinitions[$attributeDefinition->getName()] = $attributeDefinition;
     }
 
     /**
@@ -50,7 +50,7 @@ class AttributeDictionary
      */
     public function hasAttributeDefinition($attributeName)
     {
-        return isset($this->attributeDefinition[$attributeName]);
+        return isset($this->attributeDefinitions[$attributeName]);
     }
 
     /**
@@ -66,24 +66,20 @@ class AttributeDictionary
             ));
         }
 
-        return $this->attributeDefinition[$attributeName];
+        return $this->attributeDefinitions[$attributeName];
     }
 
     /**
-     * @param $urn
+     * @param string $urn
      * @return AttributeDefinition|null
      */
     public function findAttributeDefinitionByUrn($urn)
     {
-        if (!is_string($urn)) {
-            throw new InvalidArgumentException(sprintf('Expected urn to be a string, %s given', gettype($urn)));
+        if (!is_string($urn) || empty($urn)) {
+            throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
         }
 
-        if (empty($urn)) {
-            throw new InvalidArgumentException(sprintf('Expected urn to be non-empty, "%s" given', $urn));
-        }
-
-        foreach ($this->attributeDefinition as $definition) {
+        foreach ($this->attributeDefinitions as $definition) {
             if ($definition->getUrnMace() === $urn || $definition->getUrnOid() === $urn) {
                 return $definition;
             }
