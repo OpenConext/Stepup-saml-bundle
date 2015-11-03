@@ -28,20 +28,20 @@ class AttributeDictionary
     /**
      * @var AttributeDefinition[]
      */
-    private $definitions = [];
+    private $attributeDefinition = [];
 
     /**
-     * @param AttributeDefinition $definition
+     * @param AttributeDefinition $attributeDefinition
      */
-    public function addAttributeDefinition(AttributeDefinition $definition)
+    public function addAttributeDefinition(AttributeDefinition $attributeDefinition)
     {
-        if (isset($this->definitions[$definition->getName()])) {
+        if (isset($this->attributeDefinition[$attributeDefinition->getName()])) {
             throw new LogicException(sprintf(
                 'Cannot add attribute "%s" as it has already been added'
             ));
         }
 
-        $this->definitions[$definition->getName()] = $definition;
+        $this->attributeDefinition[$attributeDefinition->getName()] = $attributeDefinition;
     }
 
     /**
@@ -50,7 +50,7 @@ class AttributeDictionary
      */
     public function hasAttributeDefinition($attributeName)
     {
-        return isset($this->definitions[$attributeName]);
+        return isset($this->attributeDefinition[$attributeName]);
     }
 
     /**
@@ -66,7 +66,7 @@ class AttributeDictionary
             ));
         }
 
-        return $this->definitions[$attributeName];
+        return $this->attributeDefinition[$attributeName];
     }
 
     /**
@@ -83,7 +83,7 @@ class AttributeDictionary
             throw new InvalidArgumentException(sprintf('Expected urn to be non-empty, "%s" given', $urn));
         }
 
-        foreach ($this->definitions as $definition) {
+        foreach ($this->attributeDefinition as $definition) {
             if ($definition->getUrnMace() === $urn || $definition->getUrnOid() === $urn) {
                 return $definition;
             }
