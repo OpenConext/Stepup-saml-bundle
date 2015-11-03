@@ -23,7 +23,7 @@ use Countable;
 use IteratorAggregate;
 use Serializable;
 
-class AttributeSet implements IteratorAggregate, Countable, Serializable
+class AttributeSet implements IteratorAggregate, Countable
 {
     /**
      * @var Attribute[]
@@ -63,15 +63,5 @@ class AttributeSet implements IteratorAggregate, Countable, Serializable
     public function count()
     {
         return count($this->attributes);
-    }
-
-    public function serialize()
-    {
-        return serialize($this->attributes);
-    }
-
-    public function unserialize($serialized)
-    {
-        $this->attributes = unserialize($serialized);
     }
 }
