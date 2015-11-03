@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
 use SAML2_Assertion;
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\SAML2\Response\AssertionAdapter;
 
@@ -74,6 +75,14 @@ class AttributeDictionary
      */
     public function findAttributeDefinitionByUrn($urn)
     {
+        if (!is_string($urn)) {
+            throw new InvalidArgumentException(sprintf('Expected urn to be a string, %s given', gettype($urn)));
+        }
+
+        if (empty($urn)) {
+            throw new InvalidArgumentException(sprintf('Expected urn to be non-empty, "%s" given', $urn));
+        }
+
         foreach ($this->definitions as $definition) {
             if ($definition->getUrnMace() === $urn || $definition->getUrnOid() === $urn) {
                 return $definition;

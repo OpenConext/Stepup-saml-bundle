@@ -1,15 +1,29 @@
 <?php
 
+/**
+ * Copyright 2015 SURFnet B.V.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
-use Serializable;
-
-class Attribute implements Serializable
+class Attribute
 {
     /**
-     * @var string
+     * @var AttributeDefinition
      */
-    private $name;
+    private $attributeDefinition;
 
     /**
      * @var array
@@ -17,49 +31,21 @@ class Attribute implements Serializable
     private $values;
 
     /**
-     * @var string
-     */
-    private $urnMace;
-
-    /**
-     * @var string
-     */
-    private $urnOid;
-
-    /**
-     * @param AttributeDefinition $definition
+     * @param AttributeDefinition $attributeDefinition
      * @param array $values
      */
-    public function __construct(AttributeDefinition $definition, array $values)
+    public function __construct(AttributeDefinition $attributeDefinition, array $values)
     {
-        $this->name = $definition->getName();
-        $this->urnMace = $definition->getUrnMace();
-        $this->urnOid = $definition->getUrnOid();
+        $this->attributeDefinition = $attributeDefinition;
         $this->values = $values;
     }
 
     /**
-     * @return string
+     * @return AttributeDefinition
      */
-    public function getName()
+    public function getAttributeDefinition()
     {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrnMace()
-    {
-        return $this->urnMace;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrnOid()
-    {
-        return $this->urnOid;
+        return $this->attributeDefinition;
     }
 
     /**
@@ -71,33 +57,11 @@ class Attribute implements Serializable
     }
 
     /**
-     * @param Attribute $attribute
+     * @param Attribute $other
      * @return bool
      */
-    public function equals(Attribute $attribute)
+    public function equals(Attribute $other)
     {
-        return $attribute == $this;
-    }
-
-    public function serialize()
-    {
-        return serialize([
-            $this->name,
-            $this->urnMace,
-            $this->urnOid,
-            $this->values
-        ]);
-    }
-
-    public function unserialize($serialized)
-    {
-        $data = unserialize($serialized);
-
-        list(
-            $this->name,
-            $this->urnMace,
-            $this->urnOid,
-            $this->values
-        ) = $data;
+        return $this->attributeDefinition->equals($other->attributeDefinition) && $this->values === $other->values;
     }
 }

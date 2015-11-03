@@ -110,4 +110,16 @@ class AttributeDefinition
     {
         return $this->multiplicity;
     }
+
+    /**
+     * @param AttributeDefinition $other
+     * @return bool
+     */
+    public function equals(AttributeDefinition $other)
+    {
+        return $this->name === $other->name
+            && $this->urnOid === $other->urnOid
+            && $this->urnMace === $other->urnMace
+            && $this->multiplicity === $other->multiplicity;
+    }
 }
