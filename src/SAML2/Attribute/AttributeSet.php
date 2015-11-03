@@ -41,6 +41,21 @@ class AttributeSet implements IteratorAggregate, Countable, Serializable
     }
 
     /**
+     * @param AttributeDefinition $otherAttributeDefinition
+     * @return bool
+     */
+    public function containsDefinition(AttributeDefinition $otherAttributeDefinition)
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->getAttributeDefinition()->equals($otherAttributeDefinition)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param Attribute $otherAttribute
      * @return bool
      */

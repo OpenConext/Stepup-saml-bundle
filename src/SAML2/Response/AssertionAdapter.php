@@ -114,7 +114,7 @@ class AssertionAdapter
         foreach ($this->assertionAttributes->all() as $urn => $value) {
             $definition = $this->attributeDictionary->findAttributeDefinitionByUrn($urn);
 
-            if ($definition) {
+            if ($definition && !$attributeSet->containsDefinition($definition)) {
                 $attributeSet->add(new Attribute($definition, $value));
             }
         }

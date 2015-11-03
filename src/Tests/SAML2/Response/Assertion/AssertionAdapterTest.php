@@ -119,7 +119,7 @@ class AssertionAdapterTest extends TestCase
      * @test
      * @group AssertionAdapter
      */
-    public function attribute_list_is_empty_if_no_attributes_found()
+    public function attribute_set_is_empty_if_no_attributes_found()
     {
         $assertion = m::mock('\SAML2_Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([]);
@@ -136,7 +136,7 @@ class AssertionAdapterTest extends TestCase
      * @test
      * @group AssertionAdapter
      */
-    public function attribute_list_has_content_when_attributes_found()
+    public function attribute_set_has_content_when_attributes_found()
     {
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
         $oidAttributeValue = ['oid-attribute-value'];
@@ -156,5 +156,42 @@ class AssertionAdapterTest extends TestCase
         $attributeSet = $adapter->getAttributeSet();
 
         $this->assertCount(1, $attributeSet, 'Expected attribute AttributeSet to have content, but it does not');
+    }
+
+    /**
+     * @test
+     * @group AssertionAdapter
+     */
+    public function attribute_set_has_no_duplicate_attribute_definitions_when_multiple_urns_match_one_definition()
+    {
+        $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
+        $oidAttributeValue = ['oid-attribute-value'];
+
+        $maceAttributeUrn   = 'urn:mace:some:attribute';
+        $maceAttributeValue = ['mace-attribute-value'];
+
+        $existingAttributeDefinition = new AttributeDefinition(
+            'existingOidAttribute',
+            $maceAttributeUrn,
+            $oidAttributeUrn
+        );
+
+        $assertion = m::mock('\SAML2_Assertion');
+        $assertion->shouldReceive('getAttributes')->andReturn([
+            $oidAttributeUrn => $oidAttributeValue,
+            $maceAttributeUrn => $maceAttributeValue
+        ]);
+
+        $dictionary = new AttributeDictionary();
+        $dictionary->addAttributeDefinition($existingAttributeDefinition);
+
+        $adapter      = new AssertionAdapter($assertion, $dictionary);
+        $attributeSet = $adapter->getAttributeSet();
+
+        $this->assertCount(
+            1,
+            $attributeSet,
+            'Expected attribute AttributeSet to have exactly one attribute, but it does not'
+        );
     }
 }
