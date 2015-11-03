@@ -67,8 +67,8 @@ class AssertionAdapterTest extends TestCase
         $oidAttributeValue = ['oid-attribute-value'];
         $existingOidAttributeDefinition = new AttributeDefinition(
             'existingOidAttribute',
-            $oidAttributeUrn,
-            'urn:oid:0.0.0.0.0.0.0.0.0'
+            'urn:mace:some:attribute',
+            $oidAttributeUrn
         );
 
         $assertion = m::mock('\SAML2_Assertion');
@@ -96,8 +96,8 @@ class AssertionAdapterTest extends TestCase
         $oidAttributeValue = ['oid-attribute-value'];
         $existingOidAttributeDefinition = new AttributeDefinition(
             'existingOidAttribute',
-            $oidAttributeUrn,
-            'urn:oid:0.0.0.0.0.0.0.0.0'
+            'urn:mace:some:attribute',
+            $oidAttributeUrn
         );
 
         $assertion = m::mock('\SAML2_Assertion');
@@ -142,8 +142,8 @@ class AssertionAdapterTest extends TestCase
         $oidAttributeValue = ['oid-attribute-value'];
         $existingOidAttributeDefinition = new AttributeDefinition(
             'existingOidAttribute',
-            $oidAttributeUrn,
-            'urn:oid:0.0.0.0.0.0.0.0.0'
+            'urn:mace:some:attribute',
+            $oidAttributeUrn
         );
 
         $assertion = m::mock('\SAML2_Assertion');
