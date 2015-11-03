@@ -71,7 +71,7 @@ class AttributeDictionary
 
     /**
      * @param $urn
-     * @return AttributeDefinition
+     * @return AttributeDefinition|null
      */
     public function findAttributeDefinitionByUrn($urn)
     {
