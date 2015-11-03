@@ -162,13 +162,11 @@ class AssertionAdapterTest extends TestCase
      * @test
      * @group AssertionAdapter
      */
-    public function attribute_set_has_no_duplicate_attribute_definitions_when_multiple_urns_match_one_definition()
+    public function attribute_set_has_no_duplicate_attribute_definitions_when_same_attributes_found()
     {
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
-        $oidAttributeValue = ['oid-attribute-value'];
-
         $maceAttributeUrn   = 'urn:mace:some:attribute';
-        $maceAttributeValue = ['mace-attribute-value'];
+        $attributeValue = ['oid-attribute-value'];
 
         $existingAttributeDefinition = new AttributeDefinition(
             'existingOidAttribute',
@@ -178,8 +176,8 @@ class AssertionAdapterTest extends TestCase
 
         $assertion = m::mock('\SAML2_Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([
-            $oidAttributeUrn => $oidAttributeValue,
-            $maceAttributeUrn => $maceAttributeValue
+            $oidAttributeUrn => $attributeValue,
+            $maceAttributeUrn => $attributeValue
         ]);
 
         $dictionary = new AttributeDictionary();
