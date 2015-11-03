@@ -26,13 +26,13 @@ class Attribute
     private $attributeDefinition;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $values;
 
     /**
      * @param AttributeDefinition $attributeDefinition
-     * @param array $values
+     * @param string[] $values
      */
     public function __construct(AttributeDefinition $attributeDefinition, array $values)
     {
@@ -49,7 +49,7 @@ class Attribute
     }
 
     /**
-     * @return string
+     * @return string[]
      */
     public function getValues()
     {
