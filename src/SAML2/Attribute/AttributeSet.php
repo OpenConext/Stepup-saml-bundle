@@ -5,8 +5,9 @@ namespace Surfnet\SamlBundle\SAML2\Attribute;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Serializable;
 
-class AttributeSet implements IteratorAggregate, Countable
+class AttributeSet implements IteratorAggregate, Countable, Serializable
 {
     /**
      * @var Attribute[]
@@ -52,5 +53,15 @@ class AttributeSet implements IteratorAggregate, Countable
     public function count()
     {
         return sizeof($this->attributes);
+    }
+
+    public function serialize()
+    {
+        return serialize($this->attributes);
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->attributes = unserialize($serialized);
     }
 }

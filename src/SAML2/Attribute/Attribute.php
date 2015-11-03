@@ -2,7 +2,9 @@
 
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
-class Attribute
+use Serializable;
+
+class Attribute implements Serializable
 {
     /**
      * @var string
@@ -75,5 +77,27 @@ class Attribute
     public function equals(Attribute $attribute)
     {
         return $attribute == $this;
+    }
+
+    public function serialize()
+    {
+        return serialize([
+            $this->name,
+            $this->urnMace,
+            $this->urnOid,
+            $this->values
+        ]);
+    }
+
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+
+        list(
+            $this->name,
+            $this->urnMace,
+            $this->urnOid,
+            $this->values
+        ) = $data;
     }
 }
