@@ -20,8 +20,8 @@ class AssertionAdapterTest extends TestCase
         $assertion = m::mock('\SAML2_Assertion');
         $assertion->shouldReceive('getAttributes')
             ->andReturn([
-                'urn:mace:some:attribute' => ['some value'],
-                'urn:oid:0.0.0.0.0.0.0.0.1' => ['another value']
+                'urn:mace:some:attribute' => ['some-value'],
+                'urn:oid:0.0.0.0.0.0.0.0.1' => ['another-value']
             ]);
 
         $dictionary = new AttributeDictionary();
@@ -41,20 +41,20 @@ class AssertionAdapterTest extends TestCase
         $assertion = m::mock('\SAML2_Assertion');
         $assertion->shouldReceive('getAttributes')
             ->andReturn([
-                'urn:mace:some:attribute' => ['some value'],
-                'urn:oid:0.0.0.0.0.0.0.0.1' => ['another value']
+                'urn:mace:some:attribute' => ['some-value'],
+                'urn:oid:0.0.0.0.0.0.0.0.1' => ['another-value']
             ]);
 
         $dictionary = new AttributeDictionary();
 
         $dictionary->addAttributeDefinition(new AttributeDefinition(
-            'Some Attribute',
+            'someAttribute',
             'urn:mace:some:attribute',
             'urn:oid:0.0.0.0.0.0.0.0.0'
         ));
 
         $dictionary->addAttributeDefinition(new AttributeDefinition(
-            'Another Attribute',
+            'anotherAttribute',
             'urn:mace:another:attribute',
             'urn:oid:0.0.0.0.0.0.0.0.1'
         ));
@@ -65,20 +65,20 @@ class AssertionAdapterTest extends TestCase
 
         $containsSomeAttribute = $attributeSet->contains(new Attribute(
             new AttributeDefinition(
-                'Some Attribute',
+                'someAttribute',
                 'urn:mace:some:attribute',
                 'urn:oid:0.0.0.0.0.0.0.0.0'
             ),
-            ['some value']
+            ['some-value']
         ));
 
         $containsAnotherAttribute = $attributeSet->contains(new Attribute(
             new AttributeDefinition(
-                'Another Attribute',
+                'anotherAttribute',
                 'urn:mace:another:attribute',
                 'urn:oid:0.0.0.0.0.0.0.0.1'
             ),
-            ['another value']
+            ['another-value']
         ));
 
         $this->assertCount(2, $attributeSet);
