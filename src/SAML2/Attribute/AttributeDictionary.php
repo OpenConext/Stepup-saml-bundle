@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
 use SAML2_Assertion;
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\SAML2\Response\AssertionAdapter;
 
@@ -27,45 +28,64 @@ class AttributeDictionary
     /**
      * @var AttributeDefinition[]
      */
-    private $attributes = [];
+    private $attributeDefinitions = [];
 
     /**
-     * @param AttributeDefinition $attribute
+     * @param AttributeDefinition $attributeDefinition
      */
-    public function addAttributeDefinition(AttributeDefinition $attribute)
+    public function addAttributeDefinition(AttributeDefinition $attributeDefinition)
     {
-        if (isset($this->attributes[$attribute->getName()])) {
+        if (isset($this->attributeDefinitions[$attributeDefinition->getName()])) {
             throw new LogicException(sprintf(
                 'Cannot add attribute "%s" as it has already been added'
             ));
         }
 
-        $this->attributes[$attribute->getName()] = $attribute;
+        $this->attributeDefinitions[$attributeDefinition->getName()] = $attributeDefinition;
     }
 
     /**
-     * @param string $attribute
+     * @param string $attributeName
      * @return bool
      */
-    public function hasAttributeDefinition($attribute)
+    public function hasAttributeDefinition($attributeName)
     {
-        return isset($this->attributes[$attribute]);
+        return isset($this->attributeDefinitions[$attributeName]);
     }
 
     /**
-     * @param string $attribute
+     * @param string $attributeName
      * @return AttributeDefinition
      */
-    public function getAttributeDefinition($attribute)
+    public function getAttributeDefinition($attributeName)
     {
-        if (!$this->hasAttributeDefinition($attribute)) {
+        if (!$this->hasAttributeDefinition($attributeName)) {
             throw new LogicException(sprintf(
                 'Cannot get AttributeDefinition "%s" as it has not been added to the collection',
-                $attribute
+                $attributeName
             ));
         }
 
-        return $this->attributes[$attribute];
+        return $this->attributeDefinitions[$attributeName];
+    }
+
+    /**
+     * @param string $urn
+     * @return AttributeDefinition|null
+     */
+    public function findAttributeDefinitionByUrn($urn)
+    {
+        if (!is_string($urn) || empty($urn)) {
+            throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
+        }
+
+        foreach ($this->attributeDefinitions as $definition) {
+            if ($definition->getUrnMace() === $urn || $definition->getUrnOid() === $urn) {
+                return $definition;
+            }
+        }
+
+        return null;
     }
 
     /**

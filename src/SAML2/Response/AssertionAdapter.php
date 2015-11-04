@@ -20,8 +20,11 @@ namespace Surfnet\SamlBundle\SAML2\Response;
 
 use SAML2_Assertion;
 use Surfnet\SamlBundle\Exception\UnexpectedValueException;
+use Surfnet\SamlBundle\SAML2\Attribute\Attribute;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
+use Surfnet\SamlBundle\SAML2\Attribute\AttributeList;
+use Surfnet\SamlBundle\SAML2\Attribute\AttributeSet;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class AssertionAdapter
@@ -99,5 +102,23 @@ class AssertionAdapter
         }
 
         return $attribute;
+    }
+
+    /**
+     * @return AttributeSet
+     */
+    public function getAttributeSet()
+    {
+        $attributeSet = new AttributeSet();
+
+        foreach ($this->assertionAttributes->all() as $urn => $value) {
+            $definition = $this->attributeDictionary->findAttributeDefinitionByUrn($urn);
+
+            if ($definition) {
+                $attributeSet->add(new Attribute($definition, $value));
+            }
+        }
+
+        return $attributeSet;
     }
 }
