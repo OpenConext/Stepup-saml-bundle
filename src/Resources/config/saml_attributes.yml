@@ -1,4 +1,13 @@
 services:
+    saml.attribute.commonName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - commonName
+            - 'urn:mace:dir:attribute-def:cn'
+            - 'urn:oid:2.5.4.3'
+        tags:
+            - { name: 'saml.attribute' }
+
     saml.attribute.displayName:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
@@ -8,21 +17,39 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.eduPersonTargetedID:
+    saml.attribute.eduPersonAffiliation:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - eduPersonTargetedID
-            - 'urn:mace:dir:attribute-def:eduPersonTargetedID'
-            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.10'
+            - eduPersonAffiliation
+            - 'urn:mace:dir:attribute-def:eduPersonAffiliation'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.1'
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.email:
+    saml.attribute.eduPersonEntitlement:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - email
-            - 'urn:mace:dir:attribute-def:email'
-            - 'urn:oid:1.2.840.113549.1.9.1'
+            - eduPersonEntitlement
+            - 'urn:mace:dir:attribute-def:eduPersonEntitlement'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.7'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduPersonPrincipalName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduPersonPrincipalName
+            - 'urn:mace:dir:attribute-def:eduPersonPrincipalName'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.6'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.givenName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - surName
+            - 'urn:mace:dir:attribute-def:givenName'
+            - 'urn:oid:2.5.4.42'
         tags:
             - { name: 'saml.attribute' }
 
@@ -35,20 +62,1361 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
+    saml.attribute.preferredLanguage:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - preferredLanguage
+            - 'urn:mace:dir:attribute-def:preferredLanguage'
+            - 'urn:oid:2.16.840.1.113730.3.1.39'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.surname:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - surname
+            - 'urn:mace:dir:attribute-def:sn'
+            - 'urn:oid:2.5.4.4'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.uid:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - uid
+            - 'urn:mace:dir:attribute-def:uid'
+            - 'urn:oid:0.9.2342.19200300.100.1.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.nlDigitalAuthorIdentifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - nlDigitalAuthorIdentifier
+            - 'urn:mace:surffederatie.nl:attribute-def:nlDigitalAuthorIdentifier'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.nlEduPersonHomeOrganization:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - nlEduPersonHomeOrganization
+            - 'urn:mace:surffederatie.nl:attribute-def:nlEduPersonHomeOrganization'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.nlEduPersonOrgUnit:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - nlEduPersonOrgUnit
+            - 'urn:mace:surffederatie.nl:attribute-def:nlEduPersonOrgUnit'
+            - 'urn:oid:1.3.6.1.4.1.1076.20.40.20.10.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.nlEduPersonStudyBranch:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - nlEduPersonStudyBranch
+            - 'urn:mace:surffederatie.nl:attribute-def:nlEduPersonStudyBranch'
+            - 'urn:oid:1.3.6.1.4.1.1076.20.40.20.10.2'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.nlStudielinkNummer:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - nlEduPersonStudyBranch
+            - 'urn:mace:surffederatie.nl:attribute-def:nlStudielinkNummer'
+            - 'urn:oid:1.3.6.1.4.1.1076.20.40.20.10.3'
+        tags:
+            - { name: 'saml.attribute' }
+
     saml.attribute.schacHomeOrganization:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
             - schacHomeOrganization
             - 'urn:mace:terena.org:attribute-def:schacHomeOrganization'
-            - 'urn:oid:1.3.6.1.4.1.25178.1.2.9'
+            - 'urn:oid:1.3.6.1.4.1.25178.1.2.9' # urn:oid:1.3.6.1.4.1.1466.115.121.1.15 is deprecated
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.commonName:
+    saml.attribute.schacHomeOrganizationType:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - commonName
-            - 'urn:mace:dir:attribute-def:cn'
-            - 'urn:oid:2.5.4.3'
+            - schacHomeOrganizationType
+            - 'urn:mace:terena.org:attribute-def:schacHomeOrganizationType'
+            - 'urn:oid:1.3.6.1.4.1.25178.1.2.10'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.schacPersonalUniqueCode:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - schacPersonalUniqueCode
+            - 'urn:mace:schac:attribute-def:schacPersonalUniqueCode'
+            - 'urn:oid:1.3.6.1.4.1.25178.1.2.14'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.surfconext.licenseInfo:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - surfconextLicenseInfo
+            - 'urn:nl.surfconext.licenseInfo'
+            - '' # not defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.surfconext.accountStatus:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - surfconextAccountStatus
+            - '' # not defined
+            - 'urn:oid:1.3.6.1.4.1.1076.20.100.10.10.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.surfconext.virtualOrganisationName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - surfconextVirtualOrganisationName
+            - '' # not defined
+            - 'urn:oid:1.3.6.1.4.1.1076.20.100.10.10.2'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.surfconext.id:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - surfconextId
+            - '' # not defined
+            - 'urn:oid:1.3.6.1.4.1.1076.20.40.40.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduPersonTargetedID:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduPersonTargetedID
+            - 'urn:mace:dir:attribute-def:eduPersonTargetedID'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.10'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.isMemberOf:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - isMemberOf
+            - 'urn:mace:dir:attribute-def:isMemberOf'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.5.1.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduPersonNickname:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduPersonNickname
+            - 'urn:mace:dir:attribute-def:eduPersonNickname'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.2'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduPersonOrgDN:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduPersonOrgDN
+            - 'urn:mace:dir:attribute-def:eduPersonOrgDN'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.3'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduPersonOrgUnitDN:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduPersonOrgUnitDN
+            - 'urn:mace:dir:attribute-def:eduPersonOrgUnitDN'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.4'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduPersonPrimaryAffiliation:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduPersonPrimaryAffiliation
+            - 'urn:mace:dir:attribute-def:eduPersonPrimaryAffiliation'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.5'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduPersonScopedAffiliation:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduPersonScopedAffiliation
+            - 'urn:mace:dir:attribute-def:eduPersonScopedAffiliation'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.8'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduPersonAssurance:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduPersonAssurance
+            - 'urn:mace:dir:attribute-def:eduPersonAssurance'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.audio:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - audio
+            - 'urn:mace:dir:attribute-def:audio'
+            - 'urn:oid:0.9.2342.19200300.100.1.55'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.description:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - description
+            - 'urn:mace:dir:attribute-def:description'
+            - 'urn:oid:2.5.4.13'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.facsimileTelephoneNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - facsimileTelephoneNumber
+            - 'urn:mace:dir:attribute-def:facsimileTelephoneNumber'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.homePhone:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - homePhone
+            - 'urn:mace:dir:attribute-def:homePhone'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.homePostalAddress:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - homePostalAddress
+            - 'urn:mace:dir:attribute-def:homePostalAddress'
+            - 'urn:oid:0.9.2342.19200300.100.1.39'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.initials:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - initials
+            - 'urn:mace:dir:attribute-def:initials'
+            - 'urn:oid:2.5.4.43'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.jpegPhoto:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - jpegPhoto
+            - 'urn:mace:dir:attribute-def:jpegPhoto'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.l:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - l
+            - 'urn:mace:dir:attribute-def:l'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.labeledURI:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - labeledURI
+            - 'urn:mace:dir:attribute-def:labeledURI'
+            - 'urn:oid:1.3.6.1.4.1.250.1.57'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.manager:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - labeledURI
+            - 'urn:mace:dir:attribute-def:manager'
+            - 'urn:oid:0.9.2342.19200300.100.1.10'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.mobile:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - mobile
+            - 'urn:mace:dir:attribute-def:mobile'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.o:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - o
+            - 'urn:mace:dir:attribute-def:o'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.ou:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - ou
+            - 'urn:mace:dir:attribute-def:ou'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.pager:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - pager
+            - 'urn:mace:dir:attribute-def:pager'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.postalAddress:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - postalAddress
+            - 'urn:mace:dir:attribute-def:postalAddress'
+            - 'urn:oid:2.5.4.16'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.postalCode:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - postalCode
+            - 'urn:mace:dir:attribute-def:postalCode'
+            - 'urn:oid:2.5.4.17'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.postOfficeBox:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - postOfficeBox
+            - 'urn:mace:dir:attribute-def:postOfficeBox'
+            - 'urn:oid:2.5.4.18'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.seeAlso:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - seeAlso
+            - 'urn:mace:dir:attribute-def:seeAlso'
+            - 'urn:oid:2.5.4.34'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.st:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - st
+            - 'urn:mace:dir:attribute-def:st'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.street:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - street
+            - 'urn:mace:dir:attribute-def:street'
+            - '' # none defined
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.telephoneNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - telephoneNumber
+            - 'urn:mace:dir:attribute-def:telephoneNumber'
+            - 'urn:oid:2.5.4.20'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.title:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - title
+            - 'urn:mace:dir:attribute-def:title'
+            - 'urn:oid:2.5.4.12'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.uniqueIdentifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - uniqueIdentifier
+            - 'urn:mace:dir:attribute-def:uniqueIdentifier'
+            - 'urn:oid:0.9.2342.19200300.100.1.44'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.userCertificate:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - userCertificate
+            - 'urn:mace:dir:attribute-def:userCertificate'
+            - 'urn:oid:2.5.4.36'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.userPassword:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - userPassword
+            - 'urn:mace:dir:attribute-def:userPassword'
+            - 'urn:oid:2.5.4.35'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.userSMIMECertificate:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - userSMIMECertificate
+            - 'urn:mace:dir:attribute-def:userSMIMECertificate'
+            - 'urn:oid:2.16.840.1.113730.3.1.40'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.aRecord:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - aRecord
+            - 'urn:mace:dir:attribute-def:aRecord'
+            - 'urn:oid:0.9.2342.19200300.100.1.26'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.aliasedEntryName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - aliasedEntryName
+            - 'urn:mace:dir:attribute-def:aliasedEntryName' # urn:mace:dir:attribute-def:aliasedObjectName
+            - 'urn:oid:2.5.4.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.associatedDomain:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - associatedDomain
+            - 'urn:mace:dir:attribute-def:associatedDomain'
+            - 'urn:oid:0.9.2342.19200300.100.1.37'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.associatedName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - associatedName
+            - 'urn:mace:dir:attribute-def:associatedName'
+            - 'urn:oid:0.9.2342.19200300.100.1.38'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.authorityRevocationList:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - authorityRevocationList
+            - 'urn:mace:dir:attribute-def:authorityRevocationList'
+            - 'urn:oid:2.5.4.38'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.buildingName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - buildingName
+            - 'urn:mace:dir:attribute-def:buildingName'
+            - 'urn:oid:0.9.2342.19200300.100.1.48'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.businessCategory:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - businessCategory
+            - 'urn:mace:dir:attribute-def:businessCategory'
+            - 'urn:oid:2.5.4.15'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.c: # countryName
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - c # countryName
+            - 'urn:mace:dir:attribute-def:c' # urn:mace:dir:attribute-def:countryName
+            - 'urn:oid:2.5.4.6'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.cACertificate:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - cACertificate
+            - 'urn:mace:dir:attribute-def:cACertificate'
+            - 'urn:oid:2.5.4.37'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.cNAMERecord:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - cNAMERecord
+            - 'urn:mace:dir:attribute-def:cNAMERecord'
+            - 'urn:oid:0.9.2342.19200300.100.1.31'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.carLicense:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - carLicense
+            - 'urn:mace:dir:attribute-def:carLicense'
+            - 'urn:oid:2.16.840.1.113730.3.1.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.certificateRevocationList:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - certificateRevocationList
+            - 'urn:mace:dir:attribute-def:certificateRevocationList'
+            - 'urn:oid:2.5.4.39'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.co: # friendlyCountryName
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - co # friendlyCountryName
+            - 'urn:mace:dir:attribute-def:co' # urn:mace:dir:attribute-def:friendlyCountryName
+            - 'urn:oid:0.9.2342.19200300.100.1.43'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.crossCertificatePair:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - crossCertificatePair
+            - 'urn:mace:dir:attribute-def:crossCertificatePair'
+            - 'urn:oid:2.5.4.40'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.dITRedirect:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - dITRedirect
+            - 'urn:mace:dir:attribute-def:dITRedirect'
+            - 'urn:oid:0.9.2342.19200300.100.1.54"'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.dSAQuality:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - dSAQuality
+            - 'urn:mace:dir:attribute-def:dSAQuality'
+            - 'urn:oid:0.9.2342.19200300.100.1.49'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.dc: # domainComponent
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - dc # domainComponent
+            - 'urn:mace:dir:attribute-def:dc' # urn:mace:dir:attribute-def:domainComponent
+            - 'urn:oid:0.9.2342.19200300.100.1.25'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.deltaRevocationList:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - deltaRevocationList
+            - 'urn:mace:dir:attribute-def:deltaRevocationList'
+            - 'urn:oid:2.5.4.53'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.departmentNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - departmentNumber
+            - 'urn:mace:dir:attribute-def:departmentNumber'
+            - 'urn:oid:2.16.840.1.113730.3.1.2'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.destinationIndicator:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - destinationIndicator
+            - 'urn:mace:dir:attribute-def:destinationIndicator'
+            - 'urn:oid:2.5.4.27'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.distinguishedName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - distinguishedName
+            - 'urn:mace:dir:attribute-def:distinguishedName'
+            - 'urn:oid:2.5.4.49'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.dmdName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - dmdName
+            - 'urn:mace:dir:attribute-def:dmdName'
+            - 'urn:oid:2.5.4.54'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.dnQualifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - dnQualifier
+            - 'urn:mace:dir:attribute-def:dnQualifier'
+            - 'urn:oid:2.5.4.46'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.documentAuthor:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - documentAuthor
+            - 'urn:mace:dir:attribute-def:documentAuthor'
+            - 'urn:oid:0.9.2342.19200300.100.1.14"'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.documentIdentifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - documentIdentifier
+            - 'urn:mace:dir:attribute-def:documentIdentifier'
+            - 'urn:oid:0.9.2342.19200300.100.1.11'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.documentLocation:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - documentLocation
+            - 'urn:mace:dir:attribute-def:documentLocation'
+            - 'urn:oid:0.9.2342.19200300.100.1.15'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.documentPublisher:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - documentPublisher
+            - 'urn:oid:0.9.2342.19200300.100.1.56'
+            - 'urn:mace:dir:attribute-def:documentPublisher'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.documentTitle:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - documentTitle
+            - 'urn:mace:dir:attribute-def:documentTitle'
+            - 'urn:oid:0.9.2342.19200300.100.1.12'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.documentVersion:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - documentVersion
+            - 'urn:mace:dir:attribute-def:documentVersion'
+            - 'urn:oid:0.9.2342.19200300.100.1.13'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.drink: # favouriteDrink
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - drink # favouriteDrink
+            - 'urn:mace:dir:attribute-def:drink' # urn:mace:dir:attribute-def:favouriteDrink
+            - '0.9.2342.19200300.100.1.5'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduOrgHomePageURI:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduOrgHomePageURI
+            - 'urn:mace:dir:attribute-def:eduOrgHomePageURI'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.2.1.2'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduOrgIdentityAuthNPolicyURI:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduOrgIdentityAuthNPolicyURI
+            - 'urn:mace:dir:attribute-def:eduOrgIdentityAuthNPolicyURI'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.2.1.3'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduOrgLegalName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduOrgLegalName
+            - 'urn:mace:dir:attribute-def:eduOrgLegalName'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.2.1.4'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduOrgSuperiorURI:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduOrgSuperiorURI
+            - 'urn:mace:dir:attribute-def:eduOrgSuperiorURI'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.2.1.5'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduOrgWhitePagesURI:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduOrgWhitePagesURI
+            - 'urn:mace:dir:attribute-def:eduOrgWhitePagesURI'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.2.1.6'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.email: # emailAddress, pkcs9email
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - email # emailAddress, pkcs9email
+            - 'urn:mace:dir:attribute-def:email' # urn:mace:dir:attribute-def:emailAddress, urn:mace:dir:attribute-def:pkcs9email,
+            - 'urn:oid:1.2.840.113549.1.9.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.employeeNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - employeeNumber
+            - 'urn:mace:dir:attribute-def:employeeNumber'
+            - 'urn:oid:2.16.840.1.113730.3.1.3'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.employeeType:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - employeeType
+            - 'urn:mace:dir:attribute-def:employeeType'
+            - 'urn:oid:2.16.840.1.113730.3.1.4'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.enhancedSearchGuide:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - enhancedSearchGuide
+            - 'urn:mace:dir:attribute-def:enhancedSearchGuide'
+            - 'urn:oid:2.5.4.47'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.fax:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - fax
+            - 'urn:mace:dir:attribute-def:fax'
+            - 'urn:oid:2.5.4.23'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.federationFeideSchemaVersion:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - federationFeideSchemaVersion
+            - 'urn:mace:dir:attribute-def:federationFeideSchemaVersion'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.9'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.generationQualifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - generationQualifier
+            - 'urn:mace:dir:attribute-def:generationQualifier'
+            - 'urn:oid:2.5.4.44'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.homeTelephoneNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - homeTelephoneNumber
+            - 'urn:mace:dir:attribute-def:homeTelephoneNumber'
+            - 'urn:oid:0.9.2342.19200300.100.1.20'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.host:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - host
+            - 'urn:mace:dir:attribute-def:host'
+            - 'urn:oid:0.9.2342.19200300.100.1.9'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.houseIdentifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - houseIdentifier
+            - 'urn:mace:dir:attribute-def:houseIdentifier'
+            - 'urn:oid:2.5.4.51'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.info:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - info
+            - 'urn:mace:dir:attribute-def:info'
+            - 'urn:oid:0.9.2342.19200300.100.1.4"'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.internationaliSDNNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - internationaliSDNNumber
+            - 'urn:mace:dir:attribute-def:internationaliSDNNumber'
+            - 'urn:oid:2.5.4.25'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.janetMailbox:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - janetMailbox
+            - 'urn:mace:dir:attribute-def:janetMailbox'
+            - 'urn:oid:0.9.2342.19200300.100.1.46'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.knowledgeInformation:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - knowledgeInformation
+            - 'urn:mace:dir:attribute-def:knowledgeInformation'
+            - 'urn:oid:2.5.4.2'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.localityName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - localityName
+            - 'urn:mace:dir:attribute-def:localityName'
+            - 'urn:oid:2.5.4.7'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.mDRecord:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - mDRecord
+            - 'urn:mace:dir:attribute-def:mDRecord'
+            - 'urn:oid:0.9.2342.19200300.100.1.27'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.mXRecord:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - mXRecord
+            - 'urn:mace:dir:attribute-def:mXRecord'
+            - 'urn:oid:0.9.2342.19200300.100.1.28'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.mailPreferenceOption:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - mailPreferenceOption
+            - 'urn:mace:dir:attribute-def:mailPreferenceOption'
+            - 'urn:oid:0.9.2342.19200300.100.1.47'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.member:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - member
+            - 'urn:mace:dir:attribute-def:member'
+            - 'urn:oid:2.5.4.31'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.mobileTelephoneNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - mobileTelephoneNumber
+            - 'urn:mace:dir:attribute-def:mobileTelephoneNumber'
+            - 'urn:oid:0.9.2342.19200300.100.1.41'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.nSRecord:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - nSRecord
+            - 'urn:mace:dir:attribute-def:nSRecord'
+            - 'urn:oid:0.9.2342.19200300.100.1.29'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.name:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - name
+            - 'urn:mace:dir:attribute-def:name'
+            - 'urn:oid:2.5.4.41'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.norEduOrgAcronym:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - norEduOrgAcronym
+            - 'urn:mace:dir:attribute-def:norEduOrgAcronym'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.6'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.norEduOrgNIN:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - norEduOrgNIN
+            - 'urn:mace:dir:attribute-def:norEduOrgNIN'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.12'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.norEduOrgSchemaVersion:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - norEduOrgSchemaVersion
+            - 'urn:mace:dir:attribute-def:norEduOrgSchemaVersion'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.11'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.norEduOrgUniqueIdentifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - norEduOrgUniqueIdentifier
+            - 'urn:mace:dir:attribute-def:norEduOrgUniqueIdentifier'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.7'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.norEduOrgUniqueNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - norEduOrgUniqueNumber
+            - 'urn:mace:dir:attribute-def:norEduOrgUniqueNumber'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.norEduPersonBirthDate:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - norEduPersonBirthDate
+            - 'urn:mace:dir:attribute-def:norEduPersonBirthDate'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.3'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.norEduPersonLIN:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - norEduPersonLIN
+            - 'urn:mace:dir:attribute-def:norEduPersonLIN'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.4'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.norEduPersonNIN:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - norEduPersonNIN
+            - 'urn:mace:dir:attribute-def:norEduPersonNIN'
+            - 'urn:oid:1.3.6.1.4.1.2428.90.1.5'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.objectClass:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - objectClass
+            - 'urn:mace:dir:attribute-def:objectClass'
+            - 'urn:oid:2.5.4.0'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.organizationName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - organizationName
+            - 'urn:mace:dir:attribute-def:organizationName'
+            - 'urn:oid:2.5.4.10'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.organizationalStatus:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - organizationalStatus
+            - 'urn:mace:dir:attribute-def:organizationalStatus'
+            - 'urn:oid:0.9.2342.19200300.100.1.45'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.organizationalUnitName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - organizationalUnitName
+            - 'urn:mace:dir:attribute-def:organizationalUnitName'
+            - 'urn:oid:2.5.4.11'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.otherMailbox:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - otherMailbox
+            - 'urn:mace:dir:attribute-def:otherMailbox'
+            - 'urn:oid:0.9.2342.19200300.100.1.22'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.owner:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - owner
+            - 'urn:mace:dir:attribute-def:owner'
+            - 'urn:oid:2.5.4.32'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.pagerTelephoneNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - pagerTelephoneNumber
+            - 'urn:mace:dir:attribute-def:pagerTelephoneNumber'
+            - 'urn:oid:0.9.2342.19200300.100.1.42'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.personalSignature:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        personalSignature:
+            - personalSignature
+            - 'urn:mace:dir:attribute-def:personalSignature'
+            - 'urn:oid:0.9.2342.19200300.100.1.53'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.personalTitle:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - personalTitle
+            - 'urn:mace:dir:attribute-def:personalTitle'
+            - 'urn:oid:0.9.2342.19200300.100.1.40'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.photo:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - photo
+            - 'urn:mace:dir:attribute-def:photo'
+            - 'urn:oid:0.9.2342.19200300.100.1.7'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.physicalDeliveryOfficeName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - physicalDeliveryOfficeName
+            - 'urn:mace:dir:attribute-def:physicalDeliveryOfficeName'
+            - 'urn:oid:2.5.4.19'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.preferredDeliveryMethod:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - preferredDeliveryMethod
+            - 'urn:mace:dir:attribute-def:preferredDeliveryMethod'
+            - 'urn:oid:2.5.4.28'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.presentationAddress:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - presentationAddress
+            - 'urn:mace:dir:attribute-def:presentationAddress'
+            - 'urn:oid:2.5.4.29'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.protocolInformation:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - protocolInformation
+            - 'urn:mace:dir:attribute-def:protocolInformation'
+            - 'urn:oid:2.5.4.48'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.pseudonym:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - pseudonym
+            - 'urn:mace:dir:attribute-def:pseudonym'
+            - 'urn:oid:2.5.4.65'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.registeredAddress:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - registeredAddress
+            - 'urn:mace:dir:attribute-def:registeredAddress'
+            - 'urn:oid:2.5.4.26'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.roleOccupant:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - roleOccupant
+            - 'urn:mace:dir:attribute-def:roleOccupant'
+            - 'urn:oid:2.5.4.33'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.roomNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - roomNumber
+            - 'urn:mace:dir:attribute-def:roomNumber'
+            - 'urn:oid:0.9.2342.19200300.100.1.6'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.sOARecord:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - sOARecord
+            - 'urn:mace:dir:attribute-def:sOARecord'
+            - 'urn:oid:0.9.2342.19200300.100.1.30'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.searchGuide:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - searchGuide
+            - 'urn:mace:dir:attribute-def:searchGuide'
+            - 'urn:oid:2.5.4.14'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.secretary:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - secretary
+            - 'urn:mace:dir:attribute-def:secretary'
+            - 'urn:oid:0.9.2342.19200300.100.1.21'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.serialNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - serialNumber
+            - 'urn:mace:dir:attribute-def:serialNumber'
+            - 'urn:oid:2.5.4.5'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.singleLevelQuality:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - singleLevelQuality
+            - 'urn:mace:dir:attribute-def:singleLevelQuality'
+            - 'urn:oid:0.9.2342.19200300.100.1.50'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.stateOrProvinceName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - stateOrProvinceName
+            - 'urn:mace:dir:attribute-def:stateOrProvinceName'
+            - 'urn:oid:2.5.4.8'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.streetAddress:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - streetAddress
+            - 'urn:mace:dir:attribute-def:streetAddress'
+            - 'urn:oid:2.5.4.9'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.subtreeMaximumQuality:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - subtreeMaximumQuality
+            - 'urn:mace:dir:attribute-def:subtreeMaximumQuality'
+            - 'urn:oid:0.9.2342.19200300.100.1.52'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.subtreeMinimumQuality:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - subtreeMinimumQuality
+            - 'urn:mace:dir:attribute-def:subtreeMinimumQuality'
+            - 'urn:oid:0.9.2342.19200300.100.1.51'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.supportedAlgorithms:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - supportedAlgorithms
+            - 'urn:mace:dir:attribute-def:supportedAlgorithms'
+            - 'urn:oid:2.5.4.52'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.supportedApplicationContext:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - supportedApplicationContext
+            - 'urn:mace:dir:attribute-def:supportedApplicationContext'
+            - 'urn:oid:2.5.4.30'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.teletexTerminalIdentifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - teletexTerminalIdentifier
+            - 'urn:mace:dir:attribute-def:teletexTerminalIdentifier'
+            - 'urn:oid:2.5.4.22'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.telexNumber:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - telexNumber
+            - 'urn:mace:dir:attribute-def:telexNumber'
+            - 'urn:oid:2.5.4.21'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.textEncodedORAddress:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - textEncodedORAddress
+            - 'urn:mace:dir:attribute-def:textEncodedORAddress'
+            - 'urn:oid:0.9.2342.19200300.100.1.2'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.uniqueMember:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - uniqueMember
+            - 'urn:mace:dir:attribute-def:uniqueMember'
+            - 'urn:oid:2.5.4.50'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.userClass:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - userClass
+            - 'urn:mace:dir:attribute-def:userClass'
+            - 'urn:oid:0.9.2342.19200300.100.1.8'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.userPKCS12:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - userPKCS12
+            - 'urn:mace:dir:attribute-def:userPKCS12'
+            - 'urn:oid:2.16.840.1.113730.3.1.216'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.x121Address:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - x121Address
+            - 'urn:mace:dir:attribute-def:x121Address'
+            - 'urn:oid:2.5.4.24'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.x500UniqueIdentifier:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - x500UniqueIdentifier
+            - 'urn:mace:dir:attribute-def:x500UniqueIdentifier'
+            - 'urn:oid:2.5.4.45'
         tags:
             - { name: 'saml.attribute' }
