@@ -51,18 +51,18 @@ class AttributeDefinition
      * @param string $urnOid
      * @param int    $multiplicity
      */
-    public function __construct($name, $urnMace, $urnOid, $multiplicity = self::MULTIPLICITY_SINGLE)
+    public function __construct($name, $urnMace = null, $urnOid = null, $multiplicity = self::MULTIPLICITY_SINGLE)
     {
         if (!is_string($name)) {
             throw InvalidArgumentException::invalidType('string', 'name', $name);
         }
 
-        if (!is_string($urnMace)) {
-            throw InvalidArgumentException::invalidType('string', 'urnMace', $urnMace);
+        if (!is_null($urnMace) && !is_string($urnMace)) {
+            throw InvalidArgumentException::invalidType('null or string', 'urnMace', $urnMace);
         }
 
-        if (!is_string($urnOid)) {
-            throw InvalidArgumentException::invalidType('string', 'urnOid', $urnOid);
+        if (!is_null($urnOid) && !is_string($urnOid)) {
+            throw InvalidArgumentException::invalidType('null or string', 'urnOid', $urnOid);
         }
 
         if (!in_array($multiplicity, [self::MULTIPLICITY_SINGLE, self::MULTIPLICITY_MULTIPLE])) {
@@ -90,9 +90,25 @@ class AttributeDefinition
     /**
      * @return string
      */
+    public function hasUrnMace()
+    {
+        return $this->urnMace !== null;
+    }
+
+    /**
+     * @return string
+     */
     public function getUrnMace()
     {
         return $this->urnMace;
+    }
+
+    /**
+     * @return string
+     */
+    public function hasUrnOid()
+    {
+        return $this->urnOid !== null;
     }
 
     /**

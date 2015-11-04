@@ -76,9 +76,11 @@ class AssertionAdapter
         $attributeDefinition = $this->attributeDictionary->getAttributeDefinition($name);
 
         // try first by urn:mace, then by urn:oid
-        if ($this->assertionAttributes->has($attributeDefinition->getUrnMace())) {
+        if ($attributeDefinition->hasUrnMace()
+            && $this->assertionAttributes->has($attributeDefinition->getUrnMace())) {
             $attribute = $this->assertionAttributes->get($attributeDefinition->getUrnMace());
-        } elseif ($this->assertionAttributes->has($attributeDefinition->getUrnOid())) {
+        } elseif ($attributeDefinition->hasUrnOid()
+            && $this->assertionAttributes->has($attributeDefinition->getUrnOid())) {
             $attribute = $this->assertionAttributes->get($attributeDefinition->getUrnOid());
         } else {
             return $default;

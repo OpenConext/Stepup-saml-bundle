@@ -94,7 +94,7 @@ services:
         arguments:
             - nlDigitalAuthorIdentifier
             - 'urn:mace:surffederatie.nl:attribute-def:nlDigitalAuthorIdentifier'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -103,7 +103,7 @@ services:
         arguments:
             - nlEduPersonHomeOrganization
             - 'urn:mace:surffederatie.nl:attribute-def:nlEduPersonHomeOrganization'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -139,7 +139,16 @@ services:
         arguments:
             - schacHomeOrganization
             - 'urn:mace:terena.org:attribute-def:schacHomeOrganization'
-            - 'urn:oid:1.3.6.1.4.1.25178.1.2.9' # urn:oid:1.3.6.1.4.1.1466.115.121.1.15 is deprecated
+            - 'urn:oid:1.3.6.1.4.1.25178.1.2.9'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.organizationDirectory:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - organizationDirectory
+            - ~
+            - 'urn:oid:1.3.6.1.4.1.1466.115.121.1.15' # deprecated
         tags:
             - { name: 'saml.attribute' }
 
@@ -166,7 +175,7 @@ services:
         arguments:
             - surfconextLicenseInfo
             - 'urn:nl.surfconext.licenseInfo'
-            - '' # not defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -174,7 +183,7 @@ services:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
             - surfconextAccountStatus
-            - '' # not defined
+            - ~
             - 'urn:oid:1.3.6.1.4.1.1076.20.100.10.10.1'
         tags:
             - { name: 'saml.attribute' }
@@ -183,7 +192,7 @@ services:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
             - surfconextVirtualOrganisationName
-            - '' # not defined
+            - ~
             - 'urn:oid:1.3.6.1.4.1.1076.20.100.10.10.2'
         tags:
             - { name: 'saml.attribute' }
@@ -192,7 +201,7 @@ services:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
             - surfconextId
-            - '' # not defined
+            - ~
             - 'urn:oid:1.3.6.1.4.1.1076.20.40.40.1'
         tags:
             - { name: 'saml.attribute' }
@@ -265,7 +274,7 @@ services:
         arguments:
             - eduPersonAssurance
             - 'urn:mace:dir:attribute-def:eduPersonAssurance'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -292,7 +301,7 @@ services:
         arguments:
             - facsimileTelephoneNumber
             - 'urn:mace:dir:attribute-def:facsimileTelephoneNumber'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -301,7 +310,7 @@ services:
         arguments:
             - homePhone
             - 'urn:mace:dir:attribute-def:homePhone'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -328,7 +337,7 @@ services:
         arguments:
             - jpegPhoto
             - 'urn:mace:dir:attribute-def:jpegPhoto'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -337,7 +346,7 @@ services:
         arguments:
             - l
             - 'urn:mace:dir:attribute-def:l'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -364,7 +373,7 @@ services:
         arguments:
             - mobile
             - 'urn:mace:dir:attribute-def:mobile'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -373,7 +382,7 @@ services:
         arguments:
             - o
             - 'urn:mace:dir:attribute-def:o'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -382,7 +391,7 @@ services:
         arguments:
             - ou
             - 'urn:mace:dir:attribute-def:ou'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -391,7 +400,7 @@ services:
         arguments:
             - pager
             - 'urn:mace:dir:attribute-def:pager'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -436,7 +445,7 @@ services:
         arguments:
             - st
             - 'urn:mace:dir:attribute-def:st'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -445,7 +454,7 @@ services:
         arguments:
             - street
             - 'urn:mace:dir:attribute-def:street'
-            - '' # none defined
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -516,8 +525,17 @@ services:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
             - aliasedEntryName
-            - 'urn:mace:dir:attribute-def:aliasedEntryName' # urn:mace:dir:attribute-def:aliasedObjectName
+            - 'urn:mace:dir:attribute-def:aliasedEntryName'
             - 'urn:oid:2.5.4.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.aliasedObjectName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - aliasedObjectName
+            - 'urn:mace:dir:attribute-def:aliasedObjectName'
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -566,12 +584,21 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.c: # countryName
+    saml.attribute.c:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - c # countryName
-            - 'urn:mace:dir:attribute-def:c' # urn:mace:dir:attribute-def:countryName
+            - c
+            - 'urn:mace:dir:attribute-def:c'
             - 'urn:oid:2.5.4.6'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.countryName
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - countryName
+            - 'urn:mace:dir:attribute-def:countryName'
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -611,12 +638,20 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.co: # friendlyCountryName
+    saml.attribute.co:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - co # friendlyCountryName
-            - 'urn:mace:dir:attribute-def:co' # urn:mace:dir:attribute-def:friendlyCountryName
+            - co
+            - 'urn:mace:dir:attribute-def:co'
             - 'urn:oid:0.9.2342.19200300.100.1.43'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.friendlyCountryName:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - friendlyCountryName
+            - 'urn:mace:dir:attribute-def:friendlyCountryName
         tags:
             - { name: 'saml.attribute' }
 
@@ -647,12 +682,21 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.dc: # domainComponent
+    saml.attribute.dc:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - dc # domainComponent
-            - 'urn:mace:dir:attribute-def:dc' # urn:mace:dir:attribute-def:domainComponent
+            - dc
+            - 'urn:mace:dir:attribute-def:dc'
             - 'urn:oid:0.9.2342.19200300.100.1.25'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.domainComponent:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - domainComponent
+            - 'urn:mace:dir:attribute-def:domainComponent'
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -764,12 +808,21 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.drink: # favouriteDrink
+    saml.attribute.drink:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - drink # favouriteDrink
-            - 'urn:mace:dir:attribute-def:drink' # urn:mace:dir:attribute-def:favouriteDrink
+            - drink
+            - 'urn:mace:dir:attribute-def:drink'
             - '0.9.2342.19200300.100.1.5'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.favouriteDrink:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - favouriteDrink
+            - 'urn:mace:dir:attribute-def:favouriteDrink'
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
@@ -818,12 +871,30 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.email: # emailAddress, pkcs9email
+    saml.attribute.email:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
-            - email # emailAddress, pkcs9email
-            - 'urn:mace:dir:attribute-def:email' # urn:mace:dir:attribute-def:emailAddress, urn:mace:dir:attribute-def:pkcs9email,
+            - email
+            - 'urn:mace:dir:attribute-def:email'
             - 'urn:oid:1.2.840.113549.1.9.1'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.emailAddress:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - emailAddress
+            - 'urn:mace:dir:attribute-def:emailAddress'
+            - ~
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.pkcs9email:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - pkcs9email
+            - 'urn:mace:dir:attribute-def:pkcs9email'
+            - ~
         tags:
             - { name: 'saml.attribute' }
 
