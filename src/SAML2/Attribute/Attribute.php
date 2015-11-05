@@ -61,7 +61,7 @@ class Attribute
     }
 
     /**
-     * @return string[]
+     * @return null|string[]|string
      */
     public function getValue()
     {
