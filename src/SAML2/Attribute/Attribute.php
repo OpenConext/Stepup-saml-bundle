@@ -42,8 +42,7 @@ class Attribute
             && count($value) > 1
         ) {
             throw new UnexpectedValueException(sprintf(
-                'AttributeDefinition "%s" has a single-value multiplicity, yet returned'
-                . ' "%d" values',
+                'AttributeDefinition "%s" has a single-value multiplicity, got "%d" values',
                 $attributeDefinition->getName(),
                 count($value)
             ));
