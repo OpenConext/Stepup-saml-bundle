@@ -21,23 +21,65 @@ namespace Surfnet\SamlBundle\SAML2\Attribute;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use Serializable;
+use SAML2_Assertion;
+use Surfnet\SamlBundle\Exception\RuntimeException;
 
-class AttributeSet implements IteratorAggregate, Countable
+final class AttributeSet implements IteratorAggregate, Countable
 {
     /**
      * @var Attribute[]
      */
     private $attributes = [];
 
-    /**
-     * @param Attribute $attribute
-     */
-    public function add(Attribute $attribute)
+    public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
-        if (!$this->contains($attribute)) {
-            $this->attributes[] = $attribute;
+        $attributeSet = new AttributeSet();
+
+        foreach ($assertion->getAttributes() as $urn => $attributeValue) {
+            $attribute = new Attribute($attributeDictionary->getAttributeDefinitionByUrn($urn), $attributeValue);
+
+            if (!$attributeSet->contains($attribute)) {
+                $attributeSet->attributes[] = $attribute;
+            }
         }
+
+        return $attributeSet;
+    }
+
+    private function __construct()
+    {
+    }
+
+    /**
+     * @param AttributeDefinition $attributeDefinition
+     * @return Attribute
+     */
+    public function getAttributeByDefinition(AttributeDefinition $attributeDefinition)
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attributeDefinition->equals($attribute->getAttributeDefinition())) {
+                return $attribute;
+            }
+        }
+
+        throw new RuntimeException(
+            'Attempted to get unknown attribute defined by "%s"', $attributeDefinition->getName()
+        );
+    }
+
+    /**
+     * @param AttributeDefinition $attributeDefinition
+     * @return bool
+     */
+    public function containsAttributeDefinedBy(AttributeDefinition $attributeDefinition)
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attributeDefinition->equals($attribute->getAttributeDefinition())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

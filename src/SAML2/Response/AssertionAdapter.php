@@ -35,20 +35,20 @@ class AssertionAdapter
     private $assertion;
 
     /**
-     * @var ParameterBag
+     * @var AttributeSet
      */
-    private $assertionAttributes;
+    private $attributeSet;
 
     /**
      * @var \Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary
      */
     private $attributeDictionary;
 
-    public function __construct(SAML2_Assertion $assertion, AttributeDictionary $attributes)
+    public function __construct(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
-        $this->assertion = $assertion;
-        $this->assertionAttributes = new ParameterBag($assertion->getAttributes());
-        $this->attributeDictionary = $attributes;
+        $this->assertion           = $assertion;
+        $this->attributeSet        = AttributeSet::createFrom($assertion, $attributeDictionary);
+        $this->attributeDictionary = $attributeDictionary;
     }
 
     /**
@@ -67,43 +67,33 @@ class AssertionAdapter
     /**
      * Attempt to get an attribute from the assertion.
      *
+     * @deprecated use getAttributeValue instead, to be removed in 2.0
+     *
      * @param string $name
      * @param null   $default
-     * @return mixed|null
+     * @return null|string[]
      */
     public function getAttribute($name, $default = null)
     {
-        $attributeDefinition = $this->attributeDictionary->getAttributeDefinition($name);
+        return $this->getAttributeValue($name, $default);
+    }
 
-        // try first by urn:mace, then by urn:oid
-        if ($attributeDefinition->hasUrnMace()
-            && $this->assertionAttributes->has($attributeDefinition->getUrnMace())) {
-            $attribute = $this->assertionAttributes->get($attributeDefinition->getUrnMace());
-        } elseif ($attributeDefinition->hasUrnOid()
-            && $this->assertionAttributes->has($attributeDefinition->getUrnOid())) {
-            $attribute = $this->assertionAttributes->get($attributeDefinition->getUrnOid());
-        } else {
-            return $default;
+    /**
+     * @param string $attributeName
+     * @param null   $defaultValue
+     * @return null|string[]
+     */
+    public function getAttributeValue($attributeName, $defaultValue = null)
+    {
+        $attributeDefinition = $this->attributeDictionary->getAttributeDefinition($attributeName);
+
+        if (!$this->attributeSet->containsAttributeDefinedBy($attributeDefinition)) {
+            return $defaultValue;
         }
 
-        // if it is singular, it should return the single value if it has a value
-        if ($attributeDefinition->getMultiplicity() === AttributeDefinition::MULTIPLICITY_SINGLE) {
-            $count = count($attribute);
-            if ($count > 1) {
-                throw new UnexpectedValueException(sprintf(
-                    'AttributeDefinition "%s" has a single-value multiplicity, yet returned'
-                    . ' "%d" values',
-                    $attributeDefinition->getName(),
-                    count($attribute)
-                ));
-            } elseif ($count === 0) {
-                $attribute = null;
-            } else {
-                $attribute = reset($attribute);
-            }
-        }
+        $attribute = $this->attributeSet->getAttributeByDefinition($attributeDefinition);
 
-        return $attribute;
+        return $attribute->getValue();
     }
 
     /**
@@ -111,16 +101,6 @@ class AssertionAdapter
      */
     public function getAttributeSet()
     {
-        $attributeSet = new AttributeSet();
-
-        foreach ($this->assertionAttributes->all() as $urn => $value) {
-            $definition = $this->attributeDictionary->findAttributeDefinitionByUrn($urn);
-
-            if ($definition) {
-                $attributeSet->add(new Attribute($definition, $value));
-            }
-        }
-
-        return $attributeSet;
+        return $this->attributeSet;
     }
 }

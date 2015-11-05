@@ -89,6 +89,8 @@ class AssertionAdapterTest extends TestCase
     /**
      * @test
      * @group AssertionAdapter
+     *
+     * @expectedException \Surfnet\SamlBundle\Exception\UnknownUrnException
      */
     public function no_presence_of_attribute_can_be_confirmed_if_no_attribute_definition_found()
     {
@@ -103,16 +105,14 @@ class AssertionAdapterTest extends TestCase
         $assertion = m::mock('\SAML2_Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([$oidAttributeUrn => $oidAttributeValue]);
 
-        $dictionary = new AttributeDictionary();
-
         $attributeExpectedNotToBeContained = new Attribute($existingOidAttributeDefinition, $oidAttributeValue);
 
+        // empty dictionary
+        $dictionary = new AttributeDictionary();
         $adapter      = new AssertionAdapter($assertion, $dictionary);
         $attributeSet = $adapter->getAttributeSet();
 
-        $attributeIsNotInSet = !$attributeSet->contains($attributeExpectedNotToBeContained);
-
-        $this->assertTrue($attributeIsNotInSet, 'Expected attribute to not be part of AttributeSet, but it is');
+        $attributeSet->contains($attributeExpectedNotToBeContained);
     }
 
     /**
@@ -176,7 +176,7 @@ class AssertionAdapterTest extends TestCase
 
         $assertion = m::mock('\SAML2_Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([
-            $oidAttributeUrn => $attributeValue,
+            $oidAttributeUrn  => $attributeValue,
             $maceAttributeUrn => $attributeValue
         ]);
 
@@ -189,7 +189,7 @@ class AssertionAdapterTest extends TestCase
         $this->assertCount(
             1,
             $attributeSet,
-            'Expected attribute AttributeSet to have exactly one attribute, but it does not'
+            'Expected attribute AttributeSet to have exactly one attribute'
         );
     }
 }

@@ -18,6 +18,8 @@
 
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
+use UnexpectedValueException;
+
 class Attribute
 {
     /**
@@ -28,16 +30,27 @@ class Attribute
     /**
      * @var string[]
      */
-    private $values;
+    private $value;
 
     /**
      * @param AttributeDefinition $attributeDefinition
-     * @param string[] $values
+     * @param string[] $value
      */
-    public function __construct(AttributeDefinition $attributeDefinition, array $values)
+    public function __construct(AttributeDefinition $attributeDefinition, array $value)
     {
+        if ($attributeDefinition->getMultiplicity() === AttributeDefinition::MULTIPLICITY_SINGLE
+            && count($value) > 1
+        ) {
+            throw new UnexpectedValueException(sprintf(
+                'AttributeDefinition "%s" has a single-value multiplicity, yet returned'
+                . ' "%d" values',
+                $attributeDefinition->getName(),
+                count($value)
+            ));
+        }
+
         $this->attributeDefinition = $attributeDefinition;
-        $this->values = $values;
+        $this->value = $value;
     }
 
     /**
@@ -51,9 +64,17 @@ class Attribute
     /**
      * @return string[]
      */
-    public function getValues()
+    public function getValue()
     {
-        return $this->values;
+        if ($this->attributeDefinition->getMultiplicity() === AttributeDefinition::MULTIPLICITY_SINGLE) {
+            if (empty($this->value)) {
+                return null;
+            }
+
+            return reset($this->value);
+        }
+
+        return $this->value;
     }
 
     /**
@@ -62,6 +83,6 @@ class Attribute
      */
     public function equals(Attribute $other)
     {
-        return $this->attributeDefinition->equals($other->attributeDefinition) && $this->values === $other->values;
+        return $this->attributeDefinition->equals($other->attributeDefinition) && $this->value === $other->value;
     }
 }
