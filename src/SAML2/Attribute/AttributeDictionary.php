@@ -21,6 +21,7 @@ namespace Surfnet\SamlBundle\SAML2\Attribute;
 use SAML2_Assertion;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\LogicException;
+use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Response\AssertionAdapter;
 
 class AttributeDictionary
@@ -28,20 +29,46 @@ class AttributeDictionary
     /**
      * @var AttributeDefinition[]
      */
-    private $attributeDefinitions = [];
+    private $attributeDefinitionsByName = [];
+
+    /**
+     * @var AttributeDefinition[]
+     */
+    private $attributeDefinitionsByUrn = [];
 
     /**
      * @param AttributeDefinition $attributeDefinition
+     *
+     * We store the definitions indexed both by name and by urn to ensure speedy lookups due to the amount of
+     * definitions and the amount of usages of the lookups
      */
     public function addAttributeDefinition(AttributeDefinition $attributeDefinition)
     {
-        if (isset($this->attributeDefinitions[$attributeDefinition->getName()])) {
+        if (isset($this->attributeDefinitionsByName[$attributeDefinition->getName()])) {
             throw new LogicException(sprintf(
-                'Cannot add attribute "%s" as it has already been added'
+                'Cannot add attribute "%s" as it has already been added',
+                $attributeDefinition->getName()
             ));
         }
 
-        $this->attributeDefinitions[$attributeDefinition->getName()] = $attributeDefinition;
+        $this->attributeDefinitionsByName[$attributeDefinition->getName()] = $attributeDefinition;
+
+        if ($attributeDefinition->hasUrnMace()) {
+            $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnMace()] = $attributeDefinition;
+        }
+
+        if ($attributeDefinition->hasUrnOid()) {
+            $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnOid()] = $attributeDefinition;
+        }
+    }
+
+    /**
+     * @param SAML2_Assertion $assertion
+     * @return AssertionAdapter
+     */
+    public function translate(SAML2_Assertion $assertion)
+    {
+        return new AssertionAdapter($assertion, $this);
     }
 
     /**
@@ -50,7 +77,7 @@ class AttributeDictionary
      */
     public function hasAttributeDefinition($attributeName)
     {
-        return isset($this->attributeDefinitions[$attributeName]);
+        return isset($this->attributeDefinitionsByName[$attributeName]);
     }
 
     /**
@@ -66,7 +93,7 @@ class AttributeDictionary
             ));
         }
 
-        return $this->attributeDefinitions[$attributeName];
+        return $this->attributeDefinitionsByName[$attributeName];
     }
 
     /**
@@ -79,21 +106,27 @@ class AttributeDictionary
             throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
         }
 
-        foreach ($this->attributeDefinitions as $definition) {
-            if ($definition->getUrnMace() === $urn || $definition->getUrnOid() === $urn) {
-                return $definition;
-            }
+        if (array_key_exists($urn, $this->attributeDefinitionsByUrn)) {
+            return $this->attributeDefinitionsByUrn[$urn];
         }
 
         return null;
     }
 
     /**
-     * @param SAML2_Assertion $assertion
-     * @return AssertionAdapter
+     * @param string $urn
+     * @return AttributeDefinition
      */
-    public function translate(SAML2_Assertion $assertion)
+    public function getAttributeDefinitionByUrn($urn)
     {
-        return new AssertionAdapter($assertion, $this);
+        if (!is_string($urn) || empty($urn)) {
+            throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
+        }
+
+        if (array_key_exists($urn, $this->attributeDefinitionsByUrn)) {
+            return $this->attributeDefinitionsByUrn[$urn];
+        }
+
+        throw new UnknownUrnException($urn);
     }
 }
