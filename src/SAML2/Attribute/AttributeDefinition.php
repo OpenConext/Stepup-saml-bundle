@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
+use Surfnet\SamlBundle\Exception\LogicException;
 
 class AttributeDefinition
 {
@@ -63,6 +64,10 @@ class AttributeDefinition
 
         if (!is_null($urnOid) && !is_string($urnOid)) {
             throw InvalidArgumentException::invalidType('null or string', 'urnOid', $urnOid);
+        }
+
+        if (is_null($urnOid) && is_null($urnMace)) {
+            throw new LogicException('An AttributeDefinition should have at least either a mace or an oid urn');
         }
 
         if (!in_array($multiplicity, [self::MULTIPLICITY_SINGLE, self::MULTIPLICITY_MULTIPLE])) {
