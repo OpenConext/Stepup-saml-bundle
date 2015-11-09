@@ -62,9 +62,10 @@ final class AttributeSet implements IteratorAggregate, Countable
             }
         }
 
-        throw new RuntimeException(
-            'Attempted to get unknown attribute defined by "%s"', $attributeDefinition->getName()
-        );
+        throw new RuntimeException(sprintf(
+            'Attempted to get unknown attribute defined by "%s"',
+            $attributeDefinition->getName()
+        ));
     }
 
     /**
