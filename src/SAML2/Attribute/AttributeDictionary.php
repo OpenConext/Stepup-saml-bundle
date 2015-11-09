@@ -19,7 +19,9 @@
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
 use SAML2_Assertion;
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\LogicException;
+use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Response\AssertionAdapter;
 
 class AttributeDictionary
@@ -27,45 +29,37 @@ class AttributeDictionary
     /**
      * @var AttributeDefinition[]
      */
-    private $attributes = [];
+    private $attributeDefinitionsByName = [];
 
     /**
-     * @param AttributeDefinition $attribute
+     * @var AttributeDefinition[]
      */
-    public function addAttributeDefinition(AttributeDefinition $attribute)
+    private $attributeDefinitionsByUrn = [];
+
+    /**
+     * @param AttributeDefinition $attributeDefinition
+     *
+     * We store the definitions indexed both by name and by urn to ensure speedy lookups due to the amount of
+     * definitions and the amount of usages of the lookups
+     */
+    public function addAttributeDefinition(AttributeDefinition $attributeDefinition)
     {
-        if (isset($this->attributes[$attribute->getName()])) {
+        if (isset($this->attributeDefinitionsByName[$attributeDefinition->getName()])) {
             throw new LogicException(sprintf(
-                'Cannot add attribute "%s" as it has already been added'
+                'Cannot add attribute "%s" as it has already been added',
+                $attributeDefinition->getName()
             ));
         }
 
-        $this->attributes[$attribute->getName()] = $attribute;
-    }
+        $this->attributeDefinitionsByName[$attributeDefinition->getName()] = $attributeDefinition;
 
-    /**
-     * @param string $attribute
-     * @return bool
-     */
-    public function hasAttributeDefinition($attribute)
-    {
-        return isset($this->attributes[$attribute]);
-    }
-
-    /**
-     * @param string $attribute
-     * @return AttributeDefinition
-     */
-    public function getAttributeDefinition($attribute)
-    {
-        if (!$this->hasAttributeDefinition($attribute)) {
-            throw new LogicException(sprintf(
-                'Cannot get AttributeDefinition "%s" as it has not been added to the collection',
-                $attribute
-            ));
+        if ($attributeDefinition->hasUrnMace()) {
+            $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnMace()] = $attributeDefinition;
         }
 
-        return $this->attributes[$attribute];
+        if ($attributeDefinition->hasUrnOid()) {
+            $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnOid()] = $attributeDefinition;
+        }
     }
 
     /**
@@ -75,5 +69,64 @@ class AttributeDictionary
     public function translate(SAML2_Assertion $assertion)
     {
         return new AssertionAdapter($assertion, $this);
+    }
+
+    /**
+     * @param string $attributeName
+     * @return bool
+     */
+    public function hasAttributeDefinition($attributeName)
+    {
+        return isset($this->attributeDefinitionsByName[$attributeName]);
+    }
+
+    /**
+     * @param string $attributeName
+     * @return AttributeDefinition
+     */
+    public function getAttributeDefinition($attributeName)
+    {
+        if (!$this->hasAttributeDefinition($attributeName)) {
+            throw new LogicException(sprintf(
+                'Cannot get AttributeDefinition "%s" as it has not been added to the collection',
+                $attributeName
+            ));
+        }
+
+        return $this->attributeDefinitionsByName[$attributeName];
+    }
+
+    /**
+     * @param string $urn
+     * @return AttributeDefinition|null
+     */
+    public function findAttributeDefinitionByUrn($urn)
+    {
+        if (!is_string($urn) || empty($urn)) {
+            throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
+        }
+
+        if (array_key_exists($urn, $this->attributeDefinitionsByUrn)) {
+            return $this->attributeDefinitionsByUrn[$urn];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $urn
+     * @return AttributeDefinition
+     */
+    public function getAttributeDefinitionByUrn($urn)
+    {
+        if (!is_string($urn) || empty($urn)) {
+            throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
+        }
+
+        if (array_key_exists($urn, $this->attributeDefinitionsByUrn)) {
+            return $this->attributeDefinitionsByUrn[$urn];
+        }
+
+        throw new UnknownUrnException($urn);
     }
 }
