@@ -31,6 +31,11 @@ final class AttributeSet implements IteratorAggregate, Countable
      */
     private $attributes = [];
 
+    /**
+     * @param SAML2_Assertion $assertion
+     * @param AttributeDictionary $attributeDictionary
+     * @return AttributeSet
+     */
     public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
         $attributeSet = new AttributeSet();
