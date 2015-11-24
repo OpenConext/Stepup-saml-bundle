@@ -143,7 +143,7 @@
     </target>
 
     <target name="php-license" depends="get-changeset.php-spacesep" if="changeset.php.notempty">
-        <exec executable="/bin/grep" failonerror="true" outputproperty="php-license.grep.output">
+        <exec executable="grep" failonerror="true" outputproperty="php-license.grep.output">
             <arg value="-L"/>
             <arg value="LICENSE-2.0"/>
             <arg line="${changeset.php.absolute.spacesep}"/>
