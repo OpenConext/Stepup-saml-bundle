@@ -23,6 +23,7 @@ use Countable;
 use IteratorAggregate;
 use SAML2_Assertion;
 use Surfnet\SamlBundle\Exception\RuntimeException;
+use Surfnet\SamlBundle\SAML2\Attribute\Filter\AttributeSetFilterInterface;
 
 final class AttributeSet implements IteratorAggregate, Countable
 {
@@ -42,10 +43,22 @@ final class AttributeSet implements IteratorAggregate, Countable
 
         foreach ($assertion->getAttributes() as $urn => $attributeValue) {
             $attribute = new Attribute($attributeDictionary->getAttributeDefinitionByUrn($urn), $attributeValue);
+            $attributeSet->initializeWith($attribute);
+        }
 
-            if (!$attributeSet->contains($attribute)) {
-                $attributeSet->attributes[] = $attribute;
-            }
+        return $attributeSet;
+    }
+
+    /**
+     * @param Attribute[] $attributes
+     * @return AttributeSet
+     */
+    public static function create(array $attributes)
+    {
+        $attributeSet = new AttributeSet();
+
+        foreach ($attributes as $attribute) {
+            $attributeSet->initializeWith($attribute);
         }
 
         return $attributeSet;
@@ -53,6 +66,15 @@ final class AttributeSet implements IteratorAggregate, Countable
 
     private function __construct()
     {
+    }
+
+    /**
+     * @param AttributeSetFilterInterface $attributeFilter
+     * @return AttributeSet
+     */
+    public function apply(AttributeSetFilterInterface $attributeFilter)
+    {
+        return self::create($attributeFilter->applyOn($this->attributes));
     }
 
     /**
@@ -111,5 +133,19 @@ final class AttributeSet implements IteratorAggregate, Countable
     public function count()
     {
         return count($this->attributes);
+    }
+
+    /**
+     * @param Attribute $attribute
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod) PHPMD does not see that this is being called in our static method
+     */
+    private function initializeWith(Attribute $attribute)
+    {
+        if ($this->contains($attribute)) {
+            return;
+        }
+
+        $this->attributes[] = $attribute;
     }
 }
