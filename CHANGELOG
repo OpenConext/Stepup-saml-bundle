@@ -2,6 +2,9 @@
 VERSION 1  RELEASE 1.0
 ======================
 
+   Version 1.5 - Adds attribute filter interface, which implementation can be applied to an attribute set
+      25/11/2015 15:57  1.5.0  initial release
+
    Version 1.4 - Expanded attribute definitions, added attribute set
       24/11/2015 17:10  1.4.1  Fixed license header checking in pre-commit-hook
       09/11/2015 14:14  1.4.0  initial release
