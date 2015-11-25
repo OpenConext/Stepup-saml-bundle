@@ -23,7 +23,7 @@ use Countable;
 use IteratorAggregate;
 use SAML2_Assertion;
 use Surfnet\SamlBundle\Exception\RuntimeException;
-use Surfnet\SamlBundle\SAML2\Attribute\Filter\AttributeSetFilterInterface;
+use Surfnet\SamlBundle\SAML2\Attribute\Filter\AttributeFilter;
 
 final class AttributeSet implements IteratorAggregate, Countable
 {
@@ -69,12 +69,12 @@ final class AttributeSet implements IteratorAggregate, Countable
     }
 
     /**
-     * @param AttributeSetFilterInterface $attributeFilter
+     * @param AttributeFilter $attributeFilter
      * @return AttributeSet
      */
-    public function apply(AttributeSetFilterInterface $attributeFilter)
+    public function apply(AttributeFilter $attributeFilter)
     {
-        return self::create($attributeFilter->applyOn($this->attributes));
+        return self::create(array_filter($this->attributes, [$attributeFilter, 'allows']));
     }
 
     /**

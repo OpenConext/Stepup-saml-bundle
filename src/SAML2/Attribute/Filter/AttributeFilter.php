@@ -20,11 +20,11 @@ namespace Surfnet\SamlBundle\SAML2\Attribute\Filter;
 
 use Surfnet\SamlBundle\SAML2\Attribute\Attribute;
 
-interface AttributeSetFilterInterface
+interface AttributeFilter
 {
     /**
-     * @param Attribute[] $attributes
-     * @return Attribute[]
+     * @param Attribute $attribute
+     * @return bool
      */
-    public function applyOn(array $attributes);
+    public function allows(Attribute $attribute);
 }
