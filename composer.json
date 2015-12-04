@@ -8,7 +8,7 @@
     "require": {
         "php": ">=5.4,<8.0-dev",
         "ext-openssl": "*",
-        "simplesamlphp/saml2": "^1.6.1",
+        "simplesamlphp/saml2": "^1.7",
         "symfony/dependency-injection": "^2.7",
         "symfony/framework-bundle": "^2.7",
         "robrichards/xmlseclibs": "^1.4.0"
