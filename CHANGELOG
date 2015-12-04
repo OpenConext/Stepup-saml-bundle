@@ -2,6 +2,9 @@
 VERSION 1  RELEASE 1.0
 ======================
 
+   Version 1.6 - Updated SAML2 lib for improved security
+      04/12/2015 12:18  1.6.0  initial release
+
    Version 1.5 - Adds attribute filter interface, which implementation can be applied to an attribute set
       25/11/2015 15:57  1.5.0  initial release
 
