@@ -27,6 +27,7 @@ use SAML2_Message;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Exception\RuntimeException;
+use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use XMLSecurityKey;
 
@@ -39,7 +40,27 @@ class AuthnRequestFactory
     public static function createFromHttpRequest(Request $httpRequest)
     {
         // the GET parameter is already urldecoded by Symfony, so we should not do it again.
-        $samlRequest = gzinflate(base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST)));
+        $samlRequest = base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST), true);
+        if ($samlRequest === false) {
+            throw new InvalidRequestException('Failed decoding the request, did not receive a valid base64 string');
+        }
+
+        // gzinflate throws an error
+        $errorNo = $errorMessage = null;
+        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage) {
+            $errorNo      = $number;
+            $errorMessage = $message;
+        });
+        $samlRequest = gzinflate($samlRequest);
+        restore_error_handler();
+
+        if ($samlRequest === false) {
+            throw new InvalidRequestException(sprintf(
+                'Failed inflating the request; error "%d": "%s"',
+                $errorNo,
+                $errorMessage
+            ));
+        }
 
         // additional security against XXE Processing vulnerability
         $previous = libxml_disable_entity_loader(true);
