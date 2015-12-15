@@ -26,14 +26,13 @@ class AuthnRequestFactoryTest extends UnitTest
 
     /**
      * @test
-     * @group                    saml2
+     * @group saml2
      *
      * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidRequestException
      * @expectedExceptionMessage Failed inflating the request;
      */
     public function an_exception_is_thrown_when_a_request_cannot_be_inflated()
     {
-        // the $ is invalid since it is outside the base64 alphabet and we deserialize in strict mode.
         $request = new Request([AuthnRequest::PARAMETER_REQUEST => base64_encode('nope, not deflated')]);
 
         AuthnRequestFactory::createFromHttpRequest($request);
