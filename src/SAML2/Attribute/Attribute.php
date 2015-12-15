@@ -18,8 +18,6 @@
 
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
-use UnexpectedValueException;
-
 class Attribute
 {
     /**
@@ -38,18 +36,8 @@ class Attribute
      */
     public function __construct(AttributeDefinition $attributeDefinition, array $value)
     {
-        if ($attributeDefinition->getMultiplicity() === AttributeDefinition::MULTIPLICITY_SINGLE
-            && count($value) > 1
-        ) {
-            throw new UnexpectedValueException(sprintf(
-                'AttributeDefinition "%s" has a single-value multiplicity, got "%d" values',
-                $attributeDefinition->getName(),
-                count($value)
-            ));
-        }
-
         $this->attributeDefinition = $attributeDefinition;
-        $this->value = $value;
+        $this->value               = $value;
     }
 
     /**
@@ -61,18 +49,10 @@ class Attribute
     }
 
     /**
-     * @return null|string[]|string
+     * @return string[]
      */
     public function getValue()
     {
-        if ($this->attributeDefinition->getMultiplicity() === AttributeDefinition::MULTIPLICITY_SINGLE) {
-            if (empty($this->value)) {
-                return null;
-            }
-
-            return reset($this->value);
-        }
-
         return $this->value;
     }
 
