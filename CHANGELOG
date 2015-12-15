@@ -2,6 +2,9 @@
 VERSION 1  RELEASE 1.0
 ======================
 
+   Version 1.7 - Improved request handling
+      15/12/2015 20:52  1.7.0  initial release
+
    Version 1.6 - Updated SAML2 lib for improved security
       04/12/2015 12:18  1.6.0  initial release
 
