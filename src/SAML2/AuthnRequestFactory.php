@@ -45,7 +45,7 @@ class AuthnRequestFactory
             throw new InvalidRequestException('Failed decoding the request, did not receive a valid base64 string');
         }
 
-        // gzinflate throws an error
+        // Catch any errors gzinflate triggers
         $errorNo = $errorMessage = null;
         set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage) {
             $errorNo      = $number;
