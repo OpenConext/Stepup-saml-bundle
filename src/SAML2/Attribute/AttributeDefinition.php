@@ -23,18 +23,10 @@ use Surfnet\SamlBundle\Exception\LogicException;
 
 class AttributeDefinition
 {
-    const MULTIPLICITY_SINGLE   = 1;
-    const MULTIPLICITY_MULTIPLE = 2;
-
     /**
      * @var string the name of the saml attribute
      */
     private $name;
-
-    /**
-     * @var int the multiplicity of this attribute
-     */
-    private $multiplicity;
 
     /**
      * @var string the urn:mace identifier of this attribute
@@ -50,9 +42,8 @@ class AttributeDefinition
      * @param string $name
      * @param string $urnMace
      * @param string $urnOid
-     * @param int    $multiplicity
      */
-    public function __construct($name, $urnMace = null, $urnOid = null, $multiplicity = self::MULTIPLICITY_SINGLE)
+    public function __construct($name, $urnMace = null, $urnOid = null)
     {
         if (!is_string($name)) {
             throw InvalidArgumentException::invalidType('string', 'name', $name);
@@ -70,16 +61,7 @@ class AttributeDefinition
             throw new LogicException('An AttributeDefinition should have at least either a mace or an oid urn');
         }
 
-        if (!in_array($multiplicity, [self::MULTIPLICITY_SINGLE, self::MULTIPLICITY_MULTIPLE])) {
-            throw new InvalidArgumentException(sprintf(
-                'Multiplicity should be once of "%s", "%s" given',
-                implode('", "', [self::MULTIPLICITY_SINGLE, self::MULTIPLICITY_MULTIPLE]),
-                $multiplicity
-            ));
-        }
-
         $this->name         = $name;
-        $this->multiplicity = $multiplicity;
         $this->urnMace      = $urnMace;
         $this->urnOid       = $urnOid;
     }
@@ -125,14 +107,6 @@ class AttributeDefinition
     }
 
     /**
-     * @return int
-     */
-    public function getMultiplicity()
-    {
-        return $this->multiplicity;
-    }
-
-    /**
      * @param AttributeDefinition $other
      * @return bool
      */
@@ -140,7 +114,6 @@ class AttributeDefinition
     {
         return $this->name === $other->name
             && $this->urnOid === $other->urnOid
-            && $this->urnMace === $other->urnMace
-            && $this->multiplicity === $other->multiplicity;
+            && $this->urnMace === $other->urnMace;
     }
 }
