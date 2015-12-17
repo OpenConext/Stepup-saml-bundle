@@ -60,9 +60,9 @@ class AssertionAdapter
     }
 
     /**
-     * @param string $attributeName
-     * @param null   $defaultValue
-     * @return null|string[]
+     * @param string $attributeName the name of the attribute to attempt to get the value of
+     * @param mixed  $defaultValue  the value to return should the assertion not contain the attribute
+     * @return string[]|mixed string[] if the attribute is found, the given default value otherwise
      */
     public function getAttributeValue($attributeName, $defaultValue = null)
     {
