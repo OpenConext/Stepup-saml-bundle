@@ -10,3 +10,9 @@ The multiplicity functionality has been removed from `Surfnet\SamlBundle\SAML2\A
 **WARNING** The value of an attribute is now always an array of strings, it can no longer be `null` or `string`.
  This means code relying on the values of attributes should be modified to always accept `string[]` as return value
  and handle accordingly.
+
+The following deprecated methods have been removed:
+
+| Class                                                | Removed method   | Replaced with         |
+| ---------------------------------------------------- | ---------------- | --------------------- |
+| `Surfnet\SamlBundle\SAML2\Response\AssertionAdapter` | `getAttribute()` | `getAttributeValue()` |

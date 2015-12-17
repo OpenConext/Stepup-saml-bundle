@@ -19,13 +19,8 @@
 namespace Surfnet\SamlBundle\SAML2\Response;
 
 use SAML2_Assertion;
-use Surfnet\SamlBundle\Exception\UnexpectedValueException;
-use Surfnet\SamlBundle\SAML2\Attribute\Attribute;
-use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
-use Surfnet\SamlBundle\SAML2\Attribute\AttributeList;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeSet;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class AssertionAdapter
 {
@@ -62,20 +57,6 @@ class AssertionAdapter
         }
 
         return null;
-    }
-
-    /**
-     * Attempt to get an attribute from the assertion.
-     *
-     * @deprecated use getAttributeValue instead, to be removed in 2.0
-     *
-     * @param string $name
-     * @param null   $default
-     * @return null|string[]
-     */
-    public function getAttribute($name, $default = null)
-    {
-        return $this->getAttributeValue($name, $default);
     }
 
     /**
