@@ -2,6 +2,9 @@
 VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENTED.
 ===================================================================================
 
+   Version 2.1 - Updated SAML2 lib
+      27/01/2016 16:45  2.1.0  initial release
+
    Version 2.0 - Release 2.0; changed how attribute values are retrieved and represented.
       17/12/2015 14:43  2.0.0  initial release
 
