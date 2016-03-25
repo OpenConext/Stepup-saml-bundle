@@ -170,6 +170,22 @@ class AuthnRequest
     /**
      * @return bool
      */
+    public function isPassive()
+    {
+       return $this->request->getIsPassive();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isForceAuthn()
+    {
+       return $this->request->getForceAuthn();
+    }
+
+    /**
+     * @return bool
+     */
     public function isSigned()
     {
         return isset($this->signature);
