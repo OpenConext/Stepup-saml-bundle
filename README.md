@@ -20,7 +20,7 @@ Developed as part of the [SURFnet StepUp Gateway][2]
   public function registerBundles()
   {
       // ...
-      $bundles[] = new Surfnet\StepupBundle\SurfnetSamlBundle;
+      $bundles[] = new Surfnet\SamlBundle\SurfnetSamlBundle;
   }
   ```
 
