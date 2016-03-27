@@ -172,7 +172,7 @@ class AuthnRequest
      */
     public function isSigned()
     {
-        return isset($this->signature);
+        return !empty($this->signature);
     }
 
     /**
