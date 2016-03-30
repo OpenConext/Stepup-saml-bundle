@@ -2,6 +2,9 @@
 VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENTED.
 ===================================================================================
 
+   Version 2.3 - AuthnRequest additions and fixes
+      30/03/2016 09:06  2.3.0  initial release
+
    Version 2.2 - Fixed deprecated usage of unquoted servicenames by @ddeboer
       18/03/2016 09:23  2.2.0  initial release
 
