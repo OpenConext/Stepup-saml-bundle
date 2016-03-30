@@ -172,7 +172,7 @@ class AuthnRequest
      */
     public function isPassive()
     {
-       return $this->request->getIsPassive();
+        return $this->request->getIsPassive();
     }
 
     /**
@@ -180,7 +180,7 @@ class AuthnRequest
      */
     public function isForceAuthn()
     {
-       return $this->request->getForceAuthn();
+        return $this->request->getForceAuthn();
     }
 
     /**
