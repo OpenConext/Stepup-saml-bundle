@@ -63,6 +63,56 @@ AUTHNREQUEST_NO_SUBJECT;
     /**
      * @var string
      */
+    private $authRequestIsPassiveFalseAndNoForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F
+<samlp:AuthnRequest
+    xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    AssertionConsumerServiceIndex="1"
+    Destination="https://tiqr.stepup.org/idp/profile/saml2/Redirect/SSO"
+    ID="_2b0226190ca1c22de6f66e85f5c95158"
+    IssueInstant="2014-09-22T13:42:00Z"
+    Version="2.0">
+  <saml:Issuer>https://gateway.stepup.org/saml20/sp/metadata</saml:Issuer>
+</samlp:AuthnRequest>
+AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F;
+
+    /**
+     * @var string
+     */
+    private $authRequestIsPassiveAndForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F
+<samlp:AuthnRequest
+    xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    AssertionConsumerServiceIndex="1"
+    Destination="https://tiqr.stepup.org/idp/profile/saml2/Redirect/SSO"
+    ID="_2b0226190ca1c22de6f66e85f5c95158"
+    IssueInstant="2014-09-22T13:42:00Z"
+    Version="2.0"
+    IsPassive="true">
+  <saml:Issuer>https://gateway.stepup.org/saml20/sp/metadata</saml:Issuer>
+</samlp:AuthnRequest>
+AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F;
+
+    /**
+     * @var string
+     */
+    private $authRequestIsPassiveFalseAndForceAuthn = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN
+<samlp:AuthnRequest
+    xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    AssertionConsumerServiceIndex="1"
+    Destination="https://tiqr.stepup.org/idp/profile/saml2/Redirect/SSO"
+    ID="_2b0226190ca1c22de6f66e85f5c95158"
+    IssueInstant="2014-09-22T13:42:00Z"
+    Version="2.0"
+    ForceAuthn="true">
+  <saml:Issuer>https://gateway.stepup.org/saml20/sp/metadata</saml:Issuer>
+</samlp:AuthnRequest>
+AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
+
+    /**
+     * @var string
+     */
     private $nameId = 'user@example.org';
 
     /**
@@ -102,6 +152,35 @@ AUTHNREQUEST_NO_SUBJECT;
 
         $this->assertEquals($this->nameId, $authnRequest->getNameId());
         $this->assertEquals($this->format, $authnRequest->getNameIdFormat());
+    }
+
+
+    /**
+     * @test
+     * @group saml2
+     * @dataProvider provideIsPassiveAndForceAuthnCombinations
+     *
+     * @param string $xml
+     * @param bool   $isPassive
+     * @param bool   $forceAuthn
+     */
+    public function is_passive_and_force_authn_can_be_retrieved_from_the_authnrequest($xml, $isPassive, $forceAuthn)
+    {
+        $domDocument = SAML2_DOMDocumentFactory::fromString($xml);
+        $request     = new SAML2_AuthnRequest($domDocument->documentElement);
+        $authnRequest = AuthnRequest::createNew($request);
+
+        $this->assertEquals($isPassive, $authnRequest->isPassive());
+        $this->assertEquals($forceAuthn, $authnRequest->isForceAuthn());
+    }
+
+    public function provideIsPassiveAndForceAuthnCombinations()
+    {
+        return [
+            'isPassive false and ForceAuthn false' => [$this->authRequestIsPassiveFalseAndNoForceAuthnFalse, false, false],
+            'isPassive and ForceAuthn false' => [$this->authRequestIsPassiveAndForceAuthnFalse, true, false],
+            'isPassive false and ForceAuthn' => [$this->authRequestIsPassiveFalseAndForceAuthn, false, true]
+        ];
     }
 
     public function provideNameIDAndFormatCombinations()
