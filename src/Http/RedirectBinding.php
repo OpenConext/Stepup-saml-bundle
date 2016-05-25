@@ -37,11 +37,6 @@ use XMLSecurityKey;
 class RedirectBinding
 {
     /**
-     * @var \Surfnet\SamlBundle\Entity\ServiceProviderRepository
-     */
-    private $entityRepository;
-
-    /**
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
@@ -51,14 +46,19 @@ class RedirectBinding
      */
     private $signatureVerifier;
 
+    /**
+     * @var \Surfnet\SamlBundle\Entity\ServiceProviderRepository
+     */
+    private $entityRepository;
+
     public function __construct(
         LoggerInterface $logger,
         SignatureVerifier $signatureVerifier,
         ServiceProviderRepository $repository = null
     ) {
-        $this->entityRepository = $repository;
         $this->logger = $logger;
         $this->signatureVerifier = $signatureVerifier;
+        $this->entityRepository = $repository;
     }
 
     /**
