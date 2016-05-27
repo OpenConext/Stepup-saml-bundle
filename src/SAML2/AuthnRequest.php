@@ -77,7 +77,7 @@ class AuthnRequest
         if ($relayState) {
             $authnRequest->request->setRelayState($relayState);
         }
-        $authnRequest->signature          = base64_decode($signature);
+        $authnRequest->signature          = base64_decode($signature, true);
         $authnRequest->signatureAlgorithm = $signatureAlgorithm;
 
         return $authnRequest;
