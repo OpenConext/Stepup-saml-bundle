@@ -59,18 +59,37 @@ class AuthnRequest
 
     /**
      * @param SAML2_AuthnRequest $request
-     * @param string             $rawRequest
-     * @param string             $relayState
-     * @param string             $signature
-     * @param string             $signatureAlgorithm
+     * @param string $rawRequest
+     * @param string $relayState
      * @return AuthnRequest
      */
-    public static function create(
-        SAML2_AuthnRequest $request,
-        $rawRequest,
-        $relayState,
-        $signature,
-        $signatureAlgorithm
+    public static function createUnsigned(
+      SAML2_AuthnRequest $request,
+      $rawRequest,
+      $relayState
+    ) {
+        $authnRequest = new self($request);
+        $authnRequest->rawRequest = $rawRequest;
+        if ($relayState) {
+            $authnRequest->request->setRelayState($relayState);
+        }
+        return $authnRequest;
+    }
+
+    /**
+     * @param SAML2_AuthnRequest $request
+     * @param string $rawRequest
+     * @param string $relayState
+     * @param string $signature
+     * @param string $signatureAlgorithm
+     * @return AuthnRequest
+     */
+    public static function createSigned(
+      SAML2_AuthnRequest $request,
+      $rawRequest,
+      $relayState,
+      $signature,
+      $signatureAlgorithm
     ) {
         $authnRequest = new self($request);
         $authnRequest->rawRequest = $rawRequest;
@@ -81,6 +100,31 @@ class AuthnRequest
         $authnRequest->signatureAlgorithm = $signatureAlgorithm;
 
         return $authnRequest;
+    }
+
+    /**
+     * @deprecated use ::createSigned (default) or ::createUnsigned
+     * @param SAML2_AuthnRequest $request
+     * @param string $rawRequest
+     * @param string $relayState
+     * @param string $signature
+     * @param string $signatureAlgorithm
+     * @return AuthnRequest
+     */
+    public static function create(
+      SAML2_AuthnRequest $request,
+      $rawRequest,
+      $relayState,
+      $signature,
+      $signatureAlgorithm
+    ) {
+        return static::createSigned(
+          $request,
+          $rawRequest,
+          $relayState,
+          $signature,
+          $signatureAlgorithm
+        );
     }
 
     public static function createNew(SAML2_AuthnRequest $req)

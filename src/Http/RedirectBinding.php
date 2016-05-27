@@ -51,14 +51,21 @@ class RedirectBinding
      */
     private $entityRepository;
 
+    /**
+     * @var bool
+     */
+    private $mustBeSigned;
+
     public function __construct(
         LoggerInterface $logger,
         SignatureVerifier $signatureVerifier,
-        ServiceProviderRepository $repository = null
+        ServiceProviderRepository $repository = null,
+        $mustBeSigned = TRUE
     ) {
         $this->logger = $logger;
         $this->signatureVerifier = $signatureVerifier;
         $this->entityRepository = $repository;
+        $this->mustBeSigned = $mustBeSigned;
     }
 
     /**
@@ -93,7 +100,16 @@ class RedirectBinding
             ));
         }
 
-        $authnRequest = AuthnRequestFactory::createFromHttpRequest($request);
+        if ($this->mustBeSigned) {
+            $authnRequest = AuthnRequestFactory::createSignedFromHttpRequest(
+              $request
+            );
+        }
+        else {
+            $authnRequest = AuthnRequestFactory::createUnsignedFromHttpRequest(
+              $request
+            );
+        }
 
         $currentUri = $this->getFullRequestUri($request);
         if (!$authnRequest->getDestination() === $currentUri) {
@@ -108,25 +124,45 @@ class RedirectBinding
             throw new UnknownServiceProviderException($authnRequest->getServiceProvider());
         }
 
-        if (!$authnRequest->isSigned()) {
-            return $authnRequest;
-        }
-
-        if (!$authnRequest->getSignatureAlgorithm()) {
-            throw new BadRequestHttpException(sprintf(
-                'The SAMLRequest has to be signed with SHA256 algorithm: "%s"',
-                XMLSecurityKey::RSA_SHA256
-            ));
-        }
-
-        $serviceProvider = $this->entityRepository->getServiceProvider($authnRequest->getServiceProvider());
-        if (!$this->signatureVerifier->hasValidSignature($authnRequest, $serviceProvider)) {
-            throw new BadRequestHttpException(
-                'The SAMLRequest has been signed, but the signature could not be validated'
-            );
+        if ($this->mustBeSigned) {
+            $this->verifySignature($authnRequest);
         }
 
         return $authnRequest;
+    }
+
+    /**
+     * @param $authnRequest
+     */
+    private function verifySignature(AuthnRequest $authnRequest)
+    {
+        if (!$authnRequest->isSigned()) {
+            throw new BadRequestHttpException(
+              'The SAMLRequest has to be signed'
+            );
+        }
+
+        if (!$authnRequest->getSignatureAlgorithm()) {
+            throw new BadRequestHttpException(
+              sprintf(
+                'The SAMLRequest has to be signed with SHA256 algorithm: "%s"',
+                XMLSecurityKey::RSA_SHA256
+              )
+            );
+        }
+
+        $serviceProvider = $this->entityRepository->getServiceProvider(
+          $authnRequest->getServiceProvider()
+        );
+        if (!$this->signatureVerifier->hasValidSignature(
+          $authnRequest,
+          $serviceProvider
+        )
+        ) {
+            throw new BadRequestHttpException(
+              'The SAMLRequest has been signed, but the signature could not be validated'
+            );
+        }
     }
 
     public function createRedirectResponseFor(AuthnRequest $request)
