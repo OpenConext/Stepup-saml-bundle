@@ -51,32 +51,60 @@ class RedirectBinding
      */
     private $entityRepository;
 
-    /**
-     * @var bool
-     */
-    private $mustBeSigned;
-
     public function __construct(
         LoggerInterface $logger,
         SignatureVerifier $signatureVerifier,
-        ServiceProviderRepository $repository = null,
-        $mustBeSigned = TRUE
+        ServiceProviderRepository $repository = null
     ) {
         $this->logger = $logger;
         $this->signatureVerifier = $signatureVerifier;
         $this->entityRepository = $repository;
-        $this->mustBeSigned = $mustBeSigned;
     }
 
     /**
      * @param Request $request
      * @return AuthnRequest
-     * @throws \Exception
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function processRequest(Request $request)
+    public function processUnsignedRequest(Request $request)
+    {
+        if (!$this->entityRepository) {
+            throw new LogicException(
+                'RedirectBinding::processRequest requires a ServiceProviderRepository to be configured'
+            );
+        }
+
+        $rawSamlRequest = $request->get(AuthnRequest::PARAMETER_REQUEST);
+
+        if (!$rawSamlRequest) {
+            throw new BadRequestHttpException(sprintf(
+                'Required GET parameter "%s" is missing',
+                AuthnRequest::PARAMETER_REQUEST
+            ));
+        }
+
+        $authnRequest = AuthnRequestFactory::createUnsignedFromHttpRequest($request);
+
+        $currentUri = $this->getFullRequestUri($request);
+        if (!$authnRequest->getDestination() === $currentUri) {
+            throw new BadRequestHttpException(sprintf(
+                'Actual Destination "%s" does no match the AuthnRequest Destination "%s"',
+                $currentUri,
+                $authnRequest->getDestination()
+            ));
+        }
+
+        if (!$this->entityRepository->hasServiceProvider($authnRequest->getServiceProvider())) {
+            throw new UnknownServiceProviderException($authnRequest->getServiceProvider());
+        }
+
+        return $authnRequest;
+    }
+
+    /**
+     * @param Request $request
+     * @return AuthnRequest
+     */
+    public function processSignedRequest(Request $request)
     {
         if (!$this->entityRepository) {
             throw new LogicException(
@@ -100,16 +128,7 @@ class RedirectBinding
             ));
         }
 
-        if ($this->mustBeSigned) {
-            $authnRequest = AuthnRequestFactory::createSignedFromHttpRequest(
-              $request
-            );
-        }
-        else {
-            $authnRequest = AuthnRequestFactory::createUnsignedFromHttpRequest(
-              $request
-            );
-        }
+        $authnRequest = AuthnRequestFactory::createSignedFromHttpRequest($request);
 
         $currentUri = $this->getFullRequestUri($request);
         if (!$authnRequest->getDestination() === $currentUri) {
@@ -124,9 +143,7 @@ class RedirectBinding
             throw new UnknownServiceProviderException($authnRequest->getServiceProvider());
         }
 
-        if ($this->mustBeSigned) {
-            $this->verifySignature($authnRequest);
-        }
+        $this->verifySignature($authnRequest);
 
         return $authnRequest;
     }
@@ -138,31 +155,45 @@ class RedirectBinding
     {
         if (!$authnRequest->isSigned()) {
             throw new BadRequestHttpException(
-              'The SAMLRequest has to be signed'
+                'The SAMLRequest has to be signed'
             );
         }
 
         if (!$authnRequest->getSignatureAlgorithm()) {
             throw new BadRequestHttpException(
-              sprintf(
-                'The SAMLRequest has to be signed with SHA256 algorithm: "%s"',
-                XMLSecurityKey::RSA_SHA256
-              )
+                sprintf(
+                    'The SAMLRequest has to be signed with SHA256 algorithm: "%s"',
+                    XMLSecurityKey::RSA_SHA256
+                )
             );
         }
 
         $serviceProvider = $this->entityRepository->getServiceProvider(
-          $authnRequest->getServiceProvider()
+            $authnRequest->getServiceProvider()
         );
         if (!$this->signatureVerifier->hasValidSignature(
-          $authnRequest,
-          $serviceProvider
+            $authnRequest,
+            $serviceProvider
         )
         ) {
             throw new BadRequestHttpException(
-              'The SAMLRequest has been signed, but the signature could not be validated'
+                'The SAMLRequest has been signed, but the signature could not be validated'
             );
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return AuthnRequest
+     * @throws \Exception
+     *
+     * @deprecated Use processSignedRequest or processUnsignedRequest
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function processRequest(Request $request)
+    {
+        return $this->processSignedRequest($request);
     }
 
     public function createRedirectResponseFor(AuthnRequest $request)
