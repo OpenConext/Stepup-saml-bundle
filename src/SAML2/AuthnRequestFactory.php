@@ -43,9 +43,9 @@ class AuthnRequestFactory
     public static function createUnsignedFromHttpRequest(Request $httpRequest)
     {
         return AuthnRequest::createUnsigned(
-          self::createAuthnRequestFromHttpRequest($httpRequest),
-          $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
-          $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE)
+            self::createAuthnRequestFromHttpRequest($httpRequest),
+            $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
+            $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE)
         );
     }
 
@@ -80,7 +80,7 @@ class AuthnRequestFactory
      * @throws \Exception
      */
     private static function createAuthnRequestFromHttpRequest(
-      Request $httpRequest
+        Request $httpRequest
     ) {
         // the GET parameter is already urldecoded by Symfony, so we should not do it again.
         $samlRequest = base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST), true);

@@ -64,15 +64,16 @@ class AuthnRequest
      * @return AuthnRequest
      */
     public static function createUnsigned(
-      SAML2_AuthnRequest $request,
-      $rawRequest,
-      $relayState
+        SAML2_AuthnRequest $request,
+        $rawRequest,
+        $relayState
     ) {
         $authnRequest = new self($request);
         $authnRequest->rawRequest = $rawRequest;
         if ($relayState) {
             $authnRequest->request->setRelayState($relayState);
         }
+
         return $authnRequest;
     }
 
@@ -85,18 +86,18 @@ class AuthnRequest
      * @return AuthnRequest
      */
     public static function createSigned(
-      SAML2_AuthnRequest $request,
-      $rawRequest,
-      $relayState,
-      $signature,
-      $signatureAlgorithm
+        SAML2_AuthnRequest $request,
+        $rawRequest,
+        $relayState,
+        $signature,
+        $signatureAlgorithm
     ) {
         $authnRequest = new self($request);
         $authnRequest->rawRequest = $rawRequest;
         if ($relayState) {
             $authnRequest->request->setRelayState($relayState);
         }
-        $authnRequest->signature          = base64_decode($signature, true);
+        $authnRequest->signature = base64_decode($signature, true);
         $authnRequest->signatureAlgorithm = $signatureAlgorithm;
 
         return $authnRequest;
@@ -112,18 +113,18 @@ class AuthnRequest
      * @return AuthnRequest
      */
     public static function create(
-      SAML2_AuthnRequest $request,
-      $rawRequest,
-      $relayState,
-      $signature,
-      $signatureAlgorithm
+        SAML2_AuthnRequest $request,
+        $rawRequest,
+        $relayState,
+        $signature,
+        $signatureAlgorithm
     ) {
         return static::createSigned(
-          $request,
-          $rawRequest,
-          $relayState,
-          $signature,
-          $signatureAlgorithm
+            $request,
+            $rawRequest,
+            $relayState,
+            $signature,
+            $signatureAlgorithm
         );
     }
 
