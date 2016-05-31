@@ -40,8 +40,48 @@ class AuthnRequestFactory
      * @param Request $httpRequest
      * @return AuthnRequest
      */
+    public static function createUnsignedFromHttpRequest(Request $httpRequest)
+    {
+        return AuthnRequest::createUnsigned(
+            self::createAuthnRequestFromHttpRequest($httpRequest),
+            $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
+            $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE)
+        );
+    }
+
+    /**
+     * @param Request $httpRequest
+     * @return AuthnRequest
+     */
+    public static function createSignedFromHttpRequest(Request $httpRequest)
+    {
+        return AuthnRequest::createSigned(
+            self::createAuthnRequestFromHttpRequest($httpRequest),
+            $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
+            $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE),
+            $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE),
+            $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)
+        );
+    }
+
+    /**
+     * @deprecated use createSignedFromHttpRequest or createUnsignedFromHttpRequest
+     * @param Request $httpRequest
+     * @return AuthnRequest
+     */
     public static function createFromHttpRequest(Request $httpRequest)
     {
+        return static::createSignedFromHttpRequest($httpRequest);
+    }
+
+    /**
+     * @param Request $httpRequest
+     * @return SAML2_AuthnRequest
+     * @throws \Exception
+     */
+    private static function createAuthnRequestFromHttpRequest(
+        Request $httpRequest
+    ) {
         // the GET parameter is already urldecoded by Symfony, so we should not do it again.
         $samlRequest = base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST), true);
         if ($samlRequest === false) {
@@ -79,13 +119,7 @@ class AuthnRequestFactory
             ));
         }
 
-        return AuthnRequest::create(
-            $request,
-            $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
-            $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE),
-            $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE),
-            $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)
-        );
+        return $request;
     }
 
     /**
