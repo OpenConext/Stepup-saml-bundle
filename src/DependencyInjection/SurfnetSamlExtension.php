@@ -158,8 +158,17 @@ class SurfnetSamlExtension extends Extension
         $configuration = [
             'entityId' => $identityProvider['entity_id'],
             'ssoUrl' => $identityProvider['sso_url'],
-            'certificateData' => $identityProvider['certificate'],
         ];
+
+        if (isset($identityProvider['certificate_file']) && !isset($identityProvider['certificate'])) {
+            $configuration['certificateFile'] = $identityProvider['certificate_file'];
+        } elseif (isset($identityProvider['certificate'])) {
+            $configuration['certificateData'] = $identityProvider['certificate'];
+        } else {
+            throw new InvalidConfigurationException(
+                'Either surfnet_saml.remote.identity_provider.certificate_file or surfnet_saml.remote.identity_provider.certificate must be set.'
+            );
+        }
 
         $definition->setArguments([$configuration]);
         $container->setDefinition('surfnet_saml.remote.idp', $definition);

@@ -51,9 +51,12 @@ surfnet_saml:
             sso_url: %surfnet_saml_remote_idp_sso_url%
             certificate: %surfnet_saml_remote_idp_certificate%
 ```
+
 The hosted configuration lists the configuration for the services (SP, IdP or both) that your application offers. SP and IdP
  functionality can be turned off and on individually through the repective `enabled` flags.
 The remote configuration lists, if enabled, the configuration for a remote IdP to connect to.
+The inlined certificate in the last line can be replaced with `certificate_file` containing a filesystem path to
+a file which contains said certificate.
 It is recommended to use parameters as listed above. The various `publickey` and `privatekey` variables are the
  contents of the key in a single line, without the certificate etc. delimiters. The use of parameters as listed above
  is highly recommended so that the actual key contents can be kept out of the configuration files (using for instance
