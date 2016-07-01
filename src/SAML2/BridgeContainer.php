@@ -51,7 +51,7 @@ class BridgeContainer extends SAML2_Compat_AbstractContainer
      */
     public function generateId()
     {
-        return '_' . base64_encode(openssl_random_pseudo_bytes(30));
+        return '_' . bin2hex(openssl_random_pseudo_bytes(30));
     }
 
     public function debugMessage($message, $type)

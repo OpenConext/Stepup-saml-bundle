@@ -144,10 +144,13 @@ class Configuration implements ConfigurationInterface
                         ->info('The name of the route to generate the SSO URL')
                     ->end()
                     ->scalarNode('certificate')
-                        ->isRequired()
                         ->info(
-                            'The contents of the certificate used to sign the AuthnResponse with, if different from'
-                            . ' the public key configured below'
+                            'The contents of the certificate used to sign the AuthnResponse with'
+                        )
+                    ->end()
+                    ->scalarNode('certificate_file')
+                        ->info(
+                            'A file containing the certificate used to sign the AuthnResponse with'
                         )
                     ->end()
                 ->end()
