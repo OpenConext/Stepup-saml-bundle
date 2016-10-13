@@ -1,4 +1,12 @@
 services:
+    saml.attribute.unknown:
+    class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+    arguments:
+    - unknown
+    - 'urn:mace:dir:attribute-def:unknown'
+    tags:
+    - { name: 'saml.attribute' }
+    
     saml.attribute.commonName:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
