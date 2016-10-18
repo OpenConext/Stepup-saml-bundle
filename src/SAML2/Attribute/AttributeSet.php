@@ -28,7 +28,7 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
     /**
      * @var Attribute[]
      */
-    private $attributes = [];
+    protected $attributes = [];
 
     public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
@@ -113,7 +113,7 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod) PHPMD does not see that this is being called in our static method
      */
-    private function initializeWith(Attribute $attribute)
+    protected function initializeWith(Attribute $attribute)
     {
         if ($this->contains($attribute)) {
             return;
