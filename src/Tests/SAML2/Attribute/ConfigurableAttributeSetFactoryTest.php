@@ -70,7 +70,7 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
      */
     public function the_attribute_set_to_use_can_only_be_represented_as_a_non_empty_string($nonOrEmptyString)
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'non-empty string');
+        $this->setExpectedException('\Surfnet\SamlBundle\Exception\InvalidArgumentException', 'non-empty string');
 
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate($nonOrEmptyString);
     }
@@ -82,7 +82,7 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
      */
     public function the_attribute_set_to_use_has_to_implement_attribute_set_factory()
     {
-        $this->setExpectedException(InvalidArgumentException::class, 'implement');
+        $this->setExpectedException('\Surfnet\SamlBundle\Exception\InvalidArgumentException', 'implement');
 
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate('Non\Existent\Class');
     }
