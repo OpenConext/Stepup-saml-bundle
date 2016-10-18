@@ -23,7 +23,7 @@ use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 final class ConfigurableAttributeSetFactory implements AttributeSetFactory
 {
-    private static $attributeSetClassName = AttributeSet::class;
+    private static $attributeSetClassName = 'Surfnet\SamlBundle\SAML2\Attribute\AttributeSet';
 
     /**
      * @param string $attributeSetClassName
@@ -34,11 +34,11 @@ final class ConfigurableAttributeSetFactory implements AttributeSetFactory
             throw InvalidArgumentException::invalidType('non-empty string', 'attributeSetClassName', $attributeSetClassName);
         }
 
-        if (!is_a($attributeSetClassName, AttributeSetFactory::class, true)) {
+        if (!is_a($attributeSetClassName, '\Surfnet\SamlBundle\SAML2\Attribute\AttributeSetFactory', true)) {
             throw new InvalidArgumentException(sprintf(
                 'Cannot use class "%s": it must implement "%s"',
                 $attributeSetClassName,
-                AttributeSetFactory::class
+                '\Surfnet\SamlBundle\SAML2\Attribute\AttributeSetFactory'
             ));
         }
 

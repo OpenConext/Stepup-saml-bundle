@@ -23,12 +23,12 @@ use SAML2_Assertion;
 use stdClass;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
-use Surfnet\SamlBundle\SAML2\Attribute\AttributeSet;
 use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
-use Surfnet\SamlBundle\Tests\SAML2\Attribute\Mock\DummyAttributeSet;
 
 class ConfigurableAttributeSetFactoryTest extends TestCase
 {
+    const DUMMY_ATTRIBUTE_SET_CLASS = '\Surfnet\SamlBundle\Tests\SAML2\Attribute\Mock\DummyAttributeSet';
+    
     /**
      * @test
      * @group AssertionAdapter
@@ -36,11 +36,13 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
      */
     public function which_attribute_set_is_created_from_a_saml_assertion_is_configurable()
     {
-        ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(DummyAttributeSet::class);
+        ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(self::DUMMY_ATTRIBUTE_SET_CLASS);
         $attributeSet = ConfigurableAttributeSetFactory::createFrom(new SAML2_Assertion, new AttributeDictionary);
-        ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(AttributeSet::class);
+        ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(
+            '\Surfnet\SamlBundle\SAML2\Attribute\AttributeSet'
+        );
 
-        $this->assertInstanceOf(DummyAttributeSet::class, $attributeSet);
+        $this->assertInstanceOf(self::DUMMY_ATTRIBUTE_SET_CLASS, $attributeSet);
     }
 
     /**
@@ -50,11 +52,13 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
      */
     public function which_attribute_set_is_created_from_attributes_is_configurable()
     {
-        ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(DummyAttributeSet::class);
+        ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(self::DUMMY_ATTRIBUTE_SET_CLASS);
         $attributeSet = ConfigurableAttributeSetFactory::create([]);
-        ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(AttributeSet::class);
+        ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(
+            '\Surfnet\SamlBundle\SAML2\Attribute\AttributeSet'
+        );
 
-        $this->assertInstanceOf(DummyAttributeSet::class, $attributeSet);
+        $this->assertInstanceOf(self::DUMMY_ATTRIBUTE_SET_CLASS, $attributeSet);
     }
 
     /**
