@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace SAML2\Attribute;
+namespace Surfnet\SamlBundle\Tests\SAML2\Attribute;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;

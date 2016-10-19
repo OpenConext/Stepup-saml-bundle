@@ -19,24 +19,17 @@
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
 use ArrayIterator;
-use Countable;
-use IteratorAggregate;
 use SAML2_Assertion;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\SAML2\Attribute\Filter\AttributeFilter;
 
-final class AttributeSet implements IteratorAggregate, Countable
+class AttributeSet implements AttributeSetFactory, AttributeSetInterface
 {
     /**
      * @var Attribute[]
      */
     private $attributes = [];
 
-    /**
-     * @param SAML2_Assertion $assertion
-     * @param AttributeDictionary $attributeDictionary
-     * @return AttributeSet
-     */
     public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
         $attributeSet = new AttributeSet();
@@ -49,10 +42,6 @@ final class AttributeSet implements IteratorAggregate, Countable
         return $attributeSet;
     }
 
-    /**
-     * @param Attribute[] $attributes
-     * @return AttributeSet
-     */
     public static function create(array $attributes)
     {
         $attributeSet = new AttributeSet();
@@ -68,19 +57,11 @@ final class AttributeSet implements IteratorAggregate, Countable
     {
     }
 
-    /**
-     * @param AttributeFilter $attributeFilter
-     * @return AttributeSet
-     */
     public function apply(AttributeFilter $attributeFilter)
     {
         return self::create(array_filter($this->attributes, [$attributeFilter, 'allows']));
     }
 
-    /**
-     * @param AttributeDefinition $attributeDefinition
-     * @return Attribute
-     */
     public function getAttributeByDefinition(AttributeDefinition $attributeDefinition)
     {
         foreach ($this->attributes as $attribute) {
@@ -95,10 +76,6 @@ final class AttributeSet implements IteratorAggregate, Countable
         ));
     }
 
-    /**
-     * @param AttributeDefinition $attributeDefinition
-     * @return bool
-     */
     public function containsAttributeDefinedBy(AttributeDefinition $attributeDefinition)
     {
         foreach ($this->attributes as $attribute) {
@@ -110,10 +87,6 @@ final class AttributeSet implements IteratorAggregate, Countable
         return false;
     }
 
-    /**
-     * @param Attribute $otherAttribute
-     * @return bool
-     */
     public function contains(Attribute $otherAttribute)
     {
         foreach ($this->attributes as $attribute) {
@@ -140,7 +113,7 @@ final class AttributeSet implements IteratorAggregate, Countable
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod) PHPMD does not see that this is being called in our static method
      */
-    private function initializeWith(Attribute $attribute)
+    protected function initializeWith(Attribute $attribute)
     {
         if ($this->contains($attribute)) {
             return;
