@@ -28,7 +28,7 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
     /**
      * @var Attribute[]
      */
-    protected $attributes = [];
+    private $attributes = [];
 
     public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
