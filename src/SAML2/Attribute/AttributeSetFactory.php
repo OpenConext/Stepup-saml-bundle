@@ -25,7 +25,7 @@ interface AttributeSetFactory
     /**
      * @param SAML2_Assertion $assertion
      * @param AttributeDictionary $attributeDictionary
-     * @return AttributeSetInterface
+     * @return AttributeSet
      *
      * @deprecated Will be replaced with different creation implementation
      */
@@ -33,7 +33,7 @@ interface AttributeSetFactory
 
     /**
      * @param Attribute[] $attributes
-     * @return AttributeSetInterface
+     * @return AttributeSet
      *
      * @deprecated Will be replaced with different creation implementation
      */
