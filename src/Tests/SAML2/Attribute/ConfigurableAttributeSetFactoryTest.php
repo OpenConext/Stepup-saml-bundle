@@ -21,7 +21,6 @@ namespace Surfnet\SamlBundle\Tests\SAML2\Attribute;
 use PHPUnit_Framework_TestCase as TestCase;
 use SAML2_Assertion;
 use stdClass;
-use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
 
