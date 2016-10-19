@@ -3,6 +3,7 @@ VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENT
 ===================================================================================
 
    Version 2.6 - Make configurable which attribute set to construct
+      19/10/2016 16:30  2.6.1  Make return types in doc blocks BC compliant
       19/10/2016 14:00  2.6.0  initial release
 
    Version 2.5 - Compliant ID Generation, users are now able to configure a certificate file as well as certificate contents.
