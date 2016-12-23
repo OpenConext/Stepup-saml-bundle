@@ -11,8 +11,11 @@
          syntaxCheck="false"
          bootstrap="src/Tests/Bootstrap.php">
     <testsuites>
-        <testsuite name="Test Suite">
-            <directory>src/Tests</directory>
+        <testsuite name="Unit">
+            <directory>src/Tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Component">
+            <directory>src/Tests/Component</directory>
         </testsuite>
     </testsuites>
     <filter>

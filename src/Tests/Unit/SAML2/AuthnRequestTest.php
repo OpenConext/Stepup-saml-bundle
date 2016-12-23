@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace Surfnet\SamlBundle\Tests\SAML2;
+namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
 use PHPUnit_Framework_TestCase as UnitTest;
 use SAML2_AuthnRequest;

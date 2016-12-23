@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace Surfnet\SamlBundle\Tests\SAML2\Attribute\Mock;
+namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock;
 
 use SAML2_Assertion;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;

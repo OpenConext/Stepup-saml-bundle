@@ -1,6 +1,6 @@
 <?php
 
-namespace Surfnet\SamlBundle\Tests\SAML2;
+namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
 use PHPUnit_Framework_TestCase as UnitTest;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;

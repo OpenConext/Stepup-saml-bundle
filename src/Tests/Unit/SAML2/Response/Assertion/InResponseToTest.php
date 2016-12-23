@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace Surfnet\SamlBundle\Tests\SAML2\Response\Validator;
+namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
 use PHPUnit_Framework_TestCase as UnitTest;
 use SAML2_Assertion;
