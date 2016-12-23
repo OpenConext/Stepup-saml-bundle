@@ -21,6 +21,7 @@ namespace Surfnet\SamlBundle\SAML2;
 use SAML2_AuthnRequest;
 use SAML2_Const;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
+use Surfnet\SamlBundle\Exception\RuntimeException;
 
 class AuthnRequest
 {
@@ -30,9 +31,9 @@ class AuthnRequest
     const PARAMETER_SIGNATURE_ALGORITHM = 'SigAlg';
 
     /**
-     * @var string the raw request as sent
+     * @var null|string
      */
-    private $rawRequest;
+    private $rawHttpQuery;
 
     /**
      * @var SAML2_AuthnRequest
@@ -40,12 +41,12 @@ class AuthnRequest
     private $request;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $signature;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $signatureAlgorithm;
 
@@ -59,17 +60,14 @@ class AuthnRequest
 
     /**
      * @param SAML2_AuthnRequest $request
-     * @param string $rawRequest
      * @param string $relayState
      * @return AuthnRequest
      */
     public static function createUnsigned(
         SAML2_AuthnRequest $request,
-        $rawRequest,
         $relayState
     ) {
         $authnRequest = new self($request);
-        $authnRequest->rawRequest = $rawRequest;
         if ($relayState) {
             $authnRequest->request->setRelayState($relayState);
         }
@@ -79,26 +77,26 @@ class AuthnRequest
 
     /**
      * @param SAML2_AuthnRequest $request
-     * @param string $rawRequest
-     * @param string $relayState
+     * @param string $rawHttpQuery
      * @param string $signature
      * @param string $signatureAlgorithm
+     * @param string $relayState
      * @return AuthnRequest
      */
     public static function createSigned(
         SAML2_AuthnRequest $request,
-        $rawRequest,
-        $relayState,
+        $rawHttpQuery,
         $signature,
-        $signatureAlgorithm
+        $signatureAlgorithm,
+        $relayState = null
     ) {
         $authnRequest = new self($request);
-        $authnRequest->rawRequest = $rawRequest;
-        if ($relayState) {
-            $authnRequest->request->setRelayState($relayState);
-        }
+        $authnRequest->rawHttpQuery = $rawHttpQuery;
         $authnRequest->signature = base64_decode($signature, true);
         $authnRequest->signatureAlgorithm = $signatureAlgorithm;
+        if ($relayState !== null) {
+            $authnRequest->request->setRelayState($relayState);
+        }
 
         return $authnRequest;
     }
@@ -106,25 +104,25 @@ class AuthnRequest
     /**
      * @deprecated use ::createSigned (default) or ::createUnsigned
      * @param SAML2_AuthnRequest $request
-     * @param string $rawRequest
-     * @param string $relayState
+     * @param string $rawHttpQuery
      * @param string $signature
      * @param string $signatureAlgorithm
+     * @param string $relayState
      * @return AuthnRequest
      */
     public static function create(
         SAML2_AuthnRequest $request,
-        $rawRequest,
-        $relayState,
+        $rawHttpQuery,
         $signature,
-        $signatureAlgorithm
+        $signatureAlgorithm,
+        $relayState
     ) {
         return static::createSigned(
             $request,
-            $rawRequest,
-            $relayState,
+            $rawHttpQuery,
             $signature,
-            $signatureAlgorithm
+            $signatureAlgorithm,
+            $relayState
         );
     }
 
@@ -307,15 +305,40 @@ class AuthnRequest
      */
     public function getSignedRequestQuery()
     {
-        $queryParams = [self::PARAMETER_REQUEST => $this->rawRequest];
+        $queryParamPairs = explode('&', $this->rawHttpQuery);
+        foreach ($queryParamPairs as $queryParamPair) {
+            if (strpos($queryParamPair, '=') === false) {
+                throw new RuntimeException('Could not parse signed request query: it does not contain key-value pairs');
+            }
 
-        if ($this->request->getRelayState()) {
-            $queryParams[self::PARAMETER_RELAY_STATE] = $this->request->getRelayState();
+            list($key, $value) = explode('=', $queryParamPair);
+            $queryParams[$key] = $value;
         }
 
-        $queryParams[self::PARAMETER_SIGNATURE_ALGORITHM] = $this->signatureAlgorithm;
+        if (!isset($queryParams[self::PARAMETER_REQUEST])) {
+            throw new RuntimeException(
+                sprintf('Could not parse signed request query: it does not contain the key "%s"', self::PARAMETER_REQUEST)
+            );
+        }
 
-        return http_build_query($queryParams);
+        if (!isset($queryParams[self::PARAMETER_SIGNATURE_ALGORITHM])) {
+            throw new RuntimeException(
+                sprintf(
+                    'Could not parse signed request query: it does not contain the key "%s"',
+                    self::PARAMETER_SIGNATURE_ALGORITHM
+                )
+            );
+        }
+
+        $httpQuery = self::PARAMETER_REQUEST . '=' . $queryParams[self::PARAMETER_REQUEST];
+
+        if (isset($queryParams[self::PARAMETER_RELAY_STATE])) {
+            $httpQuery .= '&' . self::PARAMETER_RELAY_STATE . '=' . $queryParams[self::PARAMETER_RELAY_STATE];
+        }
+
+        $httpQuery .= '&' . self::PARAMETER_SIGNATURE_ALGORITHM . '=' . $queryParams[self::PARAMETER_SIGNATURE_ALGORITHM];
+
+        return $httpQuery;
     }
 
     /**

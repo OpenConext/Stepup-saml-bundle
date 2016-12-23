@@ -44,7 +44,6 @@ class AuthnRequestFactory
     {
         return AuthnRequest::createUnsigned(
             self::createAuthnRequestFromHttpRequest($httpRequest),
-            $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
             $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE)
         );
     }
@@ -55,12 +54,14 @@ class AuthnRequestFactory
      */
     public static function createSignedFromHttpRequest(Request $httpRequest)
     {
+        list(, $httpQuery) = explode('?', $httpRequest->getRequestUri());
+
         return AuthnRequest::createSigned(
             self::createAuthnRequestFromHttpRequest($httpRequest),
-            $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
-            $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE),
+            $httpQuery,
             $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE),
-            $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)
+            $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM),
+            $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE)
         );
     }
 
@@ -145,7 +146,7 @@ class AuthnRequestFactory
      * @param SAML2_Configuration_PrivateKey $key
      * @return SAML2_Configuration_PrivateKey|XMLSecurityKey
      */
-    private static function loadPrivateKey(SAML2_Configuration_PrivateKey $key)
+    public static function loadPrivateKey(SAML2_Configuration_PrivateKey $key)
     {
         $keyLoader = new SAML2_Certificate_PrivateKeyLoader();
         $privateKey = $keyLoader->loadPrivateKey($key);
