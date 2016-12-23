@@ -311,7 +311,7 @@ class AuthnRequest
                 throw new RuntimeException('Could not parse signed request query: it does not contain key-value pairs');
             }
 
-            list($key, $value) = explode('=', $queryParamPair);
+            list($key, $value) = explode('=', $queryParamPair, 2);
             $queryParams[$key] = $value;
         }
 
