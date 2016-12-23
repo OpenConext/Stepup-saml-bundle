@@ -79,12 +79,12 @@ AUTHNREQUEST_NO_SUBJECT;
 
         $this->assertTrue(
             $signatureWithDefaultEncodingIsVerified,
-            'The signature of the authn request with PHP\'s default http query encoding '
-            . 'should correspond with its data to sign, but it does not'
+            'The signature of an AuthnRequest signed using data-to-sign encoded'
+            . ' according to RFC1738 should be verifiable, but it isn\'t'
         );
         $this->assertTrue($signatureWithCustomEncodingIsVerified,
-            'The signature of the authn request with a custom http query encoding '
-            . 'should correspond with its data to sign, but it does not'
+            'The signature of an AuthnRequest signed using data-to-sign encoded'.
+            ' using a custom encoding should be verifiable, but it isn\'t'
         );
     }
 
@@ -106,8 +106,9 @@ AUTHNREQUEST_NO_SUBJECT;
 
         $this->assertFalse(
             $signatureIsVerified,
-            'A signature that does not correspond with the data to sign and '
-            . 'how it is included in the http query should not be verified, but it is'
+            'The signature of an AuthnRequest signed using data-to-sign'
+            . ' that does not correspond with how it is represented'
+            . ' in the http query should not be verifiable but it is'
         );
     }
 
@@ -128,8 +129,9 @@ AUTHNREQUEST_NO_SUBJECT;
 
         $this->assertFalse(
             $signatureIsVerified,
-            'A signature that corresponds with the data to sign '
-            . 'but the data to sign is in the wrong order should not be verified, but it is'
+            'The signature of an AuthnRequest signed using data-to-sign'
+            . ' that corresponds with how it is represented'
+            . ' but the data-to-sign is in the wrong order should not be verifiable but it is'
         );
     }
 
