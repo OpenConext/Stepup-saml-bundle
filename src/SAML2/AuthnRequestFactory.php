@@ -146,7 +146,7 @@ class AuthnRequestFactory
      * @param SAML2_Configuration_PrivateKey $key
      * @return SAML2_Configuration_PrivateKey|XMLSecurityKey
      */
-    public static function loadPrivateKey(SAML2_Configuration_PrivateKey $key)
+    private static function loadPrivateKey(SAML2_Configuration_PrivateKey $key)
     {
         $keyLoader = new SAML2_Certificate_PrivateKeyLoader();
         $privateKey = $keyLoader->loadPrivateKey($key);
