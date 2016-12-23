@@ -182,7 +182,6 @@ AUTHNREQUEST_NO_SUBJECT;
         $domDocument          = SAML2_DOMDocumentFactory::fromString($this->authRequestNoSubject);
         $unsignedAuthnRequest = SAML2_AuthnRequest::fromXML($domDocument->firstChild);
         $unsignedAuthnRequest->setSignatureKey($privateKey);
-        $unsignedAuthnRequest->setCertificates([$this->getPublicKey()]);
 
         $requestAsXml   = $unsignedAuthnRequest->toUnsignedXML()->ownerDocument->saveXML();
         $encodedRequest = base64_encode(gzdeflate($requestAsXml));
