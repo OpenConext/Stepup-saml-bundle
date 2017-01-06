@@ -21,7 +21,7 @@ namespace Surfnet\SamlBundle\Tests\Http;
 use Mockery as m;
 use PHPUnit_Framework_TestCase as UnitTest;
 use Surfnet\SamlBundle\Http\RedirectBinding;
-use Surfnet\SamlBundle\SAML2\AuthnRequest;
+use Symfony\Component\HttpFoundation\Request;
 
 class RedirectBindingTest extends UnitTest
 {
@@ -53,43 +53,163 @@ MESSAGE;
     }
 
     /**
-     * @group http
      * @test
+     * @group http
      *
      * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedExceptionMessage There should be exactly one "SAMLRequest" parameter
+     * @expectedExceptionMessage There were 0
      */
-    public function an_exception_is_thrown_when_the_request_get_parameter_is_not_set()
+    public function an_exception_is_thrown_when_an_unsigned_request_has_no_saml_request_parameter()
     {
-        $request = m::mock('Symfony\Component\HttpFoundation\Request')
-            ->shouldReceive('get')
-                ->with(AuthnRequest::PARAMETER_REQUEST)
-                ->andReturnNull()
-        ->getMock();
+        $requestUri = 'https://sso.my-service.example?Signature=some-signature';
 
-        $this->redirectBinding->processRequest($request);
+        $request = new Request;
+        $request->server->set('REQUEST_URI', $requestUri);
+
+        $this->redirectBinding->processUnsignedRequest($request);
     }
 
     /**
-     * @group http
      * @test
+     * @group http
      *
      * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedExceptionMessage There should be exactly one "SAMLRequest" parameter
+     * @expectedExceptionMessage there were 2
      */
-    public function an_exception_is_thrown_when_the_request_is_signed_but_has_no_sigalg_parameter()
+    public function an_exception_is_thrown_when_an_unsigned_request_has_more_than_one_saml_request_parameter()
     {
-        $request = m::mock('Symfony\Component\HttpFoundation\Request');
-        $request->shouldReceive('get')
-            ->with(AuthnRequest::PARAMETER_REQUEST)
-            ->andReturn('foo');
+        $requestUri = 'https://sso.my-service.example?'
+            . 'SAMLRequest=some-saml-request'
+            . '&Signature=some-signature'
+            . '&SigAlg=sig-alg'
+            . '&SAMLRequest=another-saml-request';
 
-        $request->shouldReceive('get')
-            ->with(AuthnRequest::PARAMETER_SIGNATURE)
-            ->andReturn('somesignature');
+        $request = new Request;
+        $request->server->set('REQUEST_URI', $requestUri);
 
-        $request->shouldReceive('get')
-            ->with(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)
-            ->andReturn();
+        $this->redirectBinding->processUnsignedRequest($request);
+    }
 
-        $this->redirectBinding->processRequest($request);
+    /**
+     * @test
+     * @group http
+     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedExceptionMessage There should be no or one "RelayState" parameter
+     * @expectedExceptionMessage there were 2
+     */
+    public function an_exception_is_thrown_when_an_unsigned_request_has_more_than_one_relay_state()
+    {
+        $requestUri = 'https://sso.my-service.example?'
+            . 'SAMLRequest=some-saml-request'
+            . '&Signature=some-signature'
+            . '&SigAlg=some-sig-alg'
+            . '&RelayState=some-relay-state'
+            . '&RelayState=another-relay-state';
+
+        $request = new Request;
+        $request->server->set('REQUEST_URI', $requestUri);
+
+        $this->redirectBinding->processUnsignedRequest($request);
+    }
+
+    /**
+     * @test
+     * @group http
+     *
+     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedExceptionMessage There should be exactly one "SAMLRequest" parameter
+     * @expectedExceptionMessage There were 0
+     */
+    public function an_exception_is_thrown_when_a_signed_request_has_no_saml_request_parameter()
+    {
+        $requestUri = 'https://sso.my-service.example?Signature=some-signature';
+
+        $request = new Request;
+        $request->server->set('REQUEST_URI', $requestUri);
+
+        $this->redirectBinding->processSignedRequest($request);
+    }
+
+    /**
+     * @test
+     * @group http
+     *
+     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedExceptionMessage There should be exactly one "SAMLRequest" parameter
+     * @expectedExceptionMessage there were 2
+     */
+    public function an_exception_is_thrown_when_a_signed_request_has_more_than_one_saml_request_parameter()
+    {
+        $requestUri = 'https://sso.my-service.example?'
+            . 'SAMLRequest=some-saml-request'
+            . '&Signature=some-signature'
+            . '&SigAlg=sig-alg'
+            . '&SAMLRequest=another-saml-request';
+
+        $request = new Request;
+        $request->server->set('REQUEST_URI', $requestUri);
+
+        $this->redirectBinding->processSignedRequest($request);
+    }
+
+    /**
+     * @test
+     * @group http
+     *
+     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedExceptionMessage There should be exactly one "Signature" parameter
+     * @expectedExceptionMessage There were 0
+     */
+    public function an_exception_is_thrown_when_a_signed_request_has_no_signature()
+    {
+        $requestUri = 'https://sso.my-service.example?SAMLRequest=some-saml-request';
+
+        $request = new Request;
+        $request->server->set('REQUEST_URI', $requestUri);
+
+        $this->redirectBinding->processSignedRequest($request);
+    }
+
+    /**
+     * @test
+     * @group http
+     *
+     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedExceptionMessage There should be exactly one "SigAlg" parameter
+     * @expectedExceptionMessage there were 0
+     */
+    public function an_exception_is_thrown_when_a_signed_request_has_no_signature_algorithm(
+    )
+    {
+        $requestUri = 'https://sso.my-service.example?SAMLRequest=some-saml-request&Signature=some-signature';
+
+        $request = new Request;
+        $request->server->set('REQUEST_URI', $requestUri);
+
+        $this->redirectBinding->processSignedRequest($request);
+    }
+
+    /**
+     * @test
+     * @group http
+     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedExceptionMessage There should be no or one "RelayState" parameter
+     * @expectedExceptionMessage there were 2
+     */
+    public function an_exception_is_thrown_when_a_signed_request_has_more_than_one_relay_state()
+    {
+        $requestUri = 'https://sso.my-service.example?'
+            . 'SAMLRequest=some-saml-request'
+            . '&Signature=some-signature'
+            . '&SigAlg=some-sig-alg'
+            . '&RelayState=some-relay-state'
+            . '&RelayState=another-relay-state';
+
+        $request = new Request;
+        $request->server->set('REQUEST_URI', $requestUri);
+
+        $this->redirectBinding->processSignedRequest($request);
     }
 }
