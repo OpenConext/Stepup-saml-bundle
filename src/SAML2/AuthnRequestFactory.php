@@ -28,6 +28,7 @@ use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
+use Surfnet\SamlBundle\Http\QueryString;
 use Symfony\Component\HttpFoundation\Request;
 use XMLSecurityKey;
 
@@ -54,11 +55,9 @@ class AuthnRequestFactory
      */
     public static function createSignedFromHttpRequest(Request $httpRequest)
     {
-        list(, $httpQuery) = explode('?', $httpRequest->getRequestUri());
-
         return AuthnRequest::createSigned(
             self::createAuthnRequestFromHttpRequest($httpRequest),
-            $httpQuery,
+            QueryString::fromHttpRequest($httpRequest),
             $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE),
             $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM),
             $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE)
