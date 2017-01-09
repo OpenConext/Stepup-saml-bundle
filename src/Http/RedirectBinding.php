@@ -73,19 +73,12 @@ class RedirectBinding
             );
         }
 
-        $queryString = QueryString::fromHttpRequest($request);
-        if ($queryString->countParameter(AuthnRequest::PARAMETER_REQUEST) !== 1) {
+        $rawSamlRequest = $request->get(AuthnRequest::PARAMETER_REQUEST);
+
+        if (!$rawSamlRequest) {
             throw new BadRequestHttpException(sprintf(
-                'There should be exactly one "%s" parameter in the query string, but there were %d',
-                AuthnRequest::PARAMETER_REQUEST,
-                $queryString->countParameter(AuthnRequest::PARAMETER_REQUEST)
-            ));
-        }
-        if ($queryString->countParameter(AuthnRequest::PARAMETER_RELAY_STATE) > 1) {
-            throw new BadRequestHttpException(sprintf(
-                'There should be no or one "%s" parameter in the query string, but there were %d',
-                AuthnRequest::PARAMETER_RELAY_STATE,
-                $queryString->countParameter(AuthnRequest::PARAMETER_RELAY_STATE)
+                'Required GET parameter "%s" is missing',
+                AuthnRequest::PARAMETER_REQUEST
             ));
         }
 
@@ -119,33 +112,19 @@ class RedirectBinding
             );
         }
 
-        $queryString = QueryString::fromHttpRequest($request);
-        if ($queryString->countParameter(AuthnRequest::PARAMETER_REQUEST) !== 1) {
+        $rawSamlRequest = $request->get(AuthnRequest::PARAMETER_REQUEST);
+
+        if (!$rawSamlRequest) {
             throw new BadRequestHttpException(sprintf(
-                'There should be exactly one "%s" parameter in the query string, but there were %d',
-                AuthnRequest::PARAMETER_REQUEST,
-                $queryString->countParameter(AuthnRequest::PARAMETER_REQUEST)
+                'Required GET parameter "%s" is missing',
+                AuthnRequest::PARAMETER_REQUEST
             ));
         }
-        if ($queryString->countParameter(AuthnRequest::PARAMETER_SIGNATURE) !== 1) {
+
+        if ($request->get(AuthnRequest::PARAMETER_SIGNATURE) && !$request->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)) {
             throw new BadRequestHttpException(sprintf(
-                'There should be exactly one "%s" parameter in the query string, but there were %d',
-                AuthnRequest::PARAMETER_SIGNATURE,
-                $queryString->countParameter(AuthnRequest::PARAMETER_SIGNATURE)
-            ));
-        }
-        if ($queryString->countParameter(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM) !== 1) {
-            throw new BadRequestHttpException(sprintf(
-                'There should be exactly one "%s" parameter in the query string, but there were %d',
-                AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM,
-                $queryString->countParameter(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)
-            ));
-        }
-        if ($queryString->countParameter(AuthnRequest::PARAMETER_RELAY_STATE) > 1) {
-            throw new BadRequestHttpException(sprintf(
-                'There should be no or one "%s" parameter in the query string, but there were %d',
-                AuthnRequest::PARAMETER_RELAY_STATE,
-                $queryString->countParameter(AuthnRequest::PARAMETER_RELAY_STATE)
+                'The request includes a signature "%s", but does not include the signature algorithm (SigAlg) parameter',
+                $request->get('Signature')
             ));
         }
 
@@ -175,7 +154,9 @@ class RedirectBinding
     private function verifySignature(AuthnRequest $authnRequest)
     {
         if (!$authnRequest->isSigned()) {
-            throw new BadRequestHttpException('The SAMLRequest has to be signed');
+            throw new BadRequestHttpException(
+                'The SAMLRequest has to be signed'
+            );
         }
 
         if (!$authnRequest->getSignatureAlgorithm()) {
@@ -187,8 +168,14 @@ class RedirectBinding
             );
         }
 
-        $serviceProvider = $this->entityRepository->getServiceProvider($authnRequest->getServiceProvider());
-        if (!$this->signatureVerifier->hasValidSignature($authnRequest, $serviceProvider)) {
+        $serviceProvider = $this->entityRepository->getServiceProvider(
+            $authnRequest->getServiceProvider()
+        );
+        if (!$this->signatureVerifier->hasValidSignature(
+            $authnRequest,
+            $serviceProvider
+        )
+        ) {
             throw new BadRequestHttpException(
                 'The SAMLRequest has been signed, but the signature could not be validated'
             );
