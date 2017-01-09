@@ -24,10 +24,8 @@ use SAML2_AuthnRequest;
 use SAML2_Certificate_KeyLoader;
 use SAML2_Certificate_X509;
 use SAML2_DOMDocumentFactory;
-use Surfnet\SamlBundle\Http\QueryString;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
-use Symfony\Component\HttpFoundation\Request;
 use XMLSecurityKey;
 
 class AuthnRequestSigningTest extends TestCase
@@ -173,7 +171,10 @@ AUTHNREQUEST_NO_SUBJECT;
      * @param null|string $customSignature Signature to be used instead of signature to sign data to sign with
      * @return AuthnRequest
      */
-    private function createSignedAuthnRequest(callable $prepareDataToSign, $customSignature = null) {
+    private function createSignedAuthnRequest(
+        callable $prepareDataToSign,
+        $customSignature = null
+    ) {
         $keyData    = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
         $privateKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $privateKey->loadKey($keyData);
@@ -197,12 +198,9 @@ AUTHNREQUEST_NO_SUBJECT;
 
         $saml2AuthnRequest = SAML2_AuthnRequest::fromXML($unsignedAuthnRequest->toUnsignedXML());
 
-        $httpRequest = new Request;
-        $httpRequest->server->set('REQUEST_URI', 'https://sso.some-service.example?' . $httpQuery);
-
         return AuthnRequest::createSigned(
             $saml2AuthnRequest,
-            QueryString::fromHttpRequest($httpRequest),
+            $httpQuery,
             $signature,
             $privateKey->type
         );
