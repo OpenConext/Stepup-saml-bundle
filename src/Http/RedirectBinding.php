@@ -133,7 +133,7 @@ class RedirectBinding
         $currentUri = $this->getFullRequestUri($request);
         if (!$authnRequest->getDestination() === $currentUri) {
             throw new BadRequestHttpException(sprintf(
-                'Actual Destination "%s" does no match the AuthnRequest Destination "%s"',
+                'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
                 $authnRequest->getDestination()
             ));
@@ -149,14 +149,31 @@ class RedirectBinding
     }
 
     /**
+     * @param Request $request
+     * @return AuthnRequest
+     * @throws \Exception
+     *
+     * @deprecated Use processSignedRequest or processUnsignedRequest
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function processRequest(Request $request)
+    {
+        return $this->processSignedRequest($request);
+    }
+
+    public function createRedirectResponseFor(AuthnRequest $request)
+    {
+        return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
+    }
+
+    /**
      * @param $authnRequest
      */
     private function verifySignature(AuthnRequest $authnRequest)
     {
         if (!$authnRequest->isSigned()) {
-            throw new BadRequestHttpException(
-                'The SAMLRequest has to be signed'
-            );
+            throw new BadRequestHttpException('The SAMLRequest has to be signed');
         }
 
         if (!$authnRequest->getSignatureAlgorithm()) {
@@ -180,25 +197,6 @@ class RedirectBinding
                 'The SAMLRequest has been signed, but the signature could not be validated'
             );
         }
-    }
-
-    /**
-     * @param Request $request
-     * @return AuthnRequest
-     * @throws \Exception
-     *
-     * @deprecated Use processSignedRequest or processUnsignedRequest
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    public function processRequest(Request $request)
-    {
-        return $this->processSignedRequest($request);
-    }
-
-    public function createRedirectResponseFor(AuthnRequest $request)
-    {
-        return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
     }
 
     /**
