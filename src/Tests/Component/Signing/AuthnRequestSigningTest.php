@@ -24,6 +24,7 @@ use SAML2_AuthnRequest;
 use SAML2_Certificate_KeyLoader;
 use SAML2_Certificate_X509;
 use SAML2_DOMDocumentFactory;
+use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use XMLSecurityKey;
@@ -136,6 +137,98 @@ AUTHNREQUEST_NO_SUBJECT;
     }
 
     /**
+     * @test
+     * @group Signing
+     */
+    public function signatures_of_received_authn_requests_are_verified_regardless_of_their_encoding()
+    {
+        $signatureVerifier = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
+        $certificate       = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
+        $keyData           = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
+        $privateKey        = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
+        $privateKey->loadKey($keyData);
+
+        $queryParameters = [
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST => $this->createEncodedSamlRequest(),
+            ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM => $privateKey->type
+        ];
+
+        $dataToSignWithDefaultEncoding = $this->encodeDataToSignWithPhpsHttpBuildQuery($queryParameters);
+        $queryParametersWithDefaultEncoding = $queryParameters;
+        $queryParametersWithDefaultEncoding[ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE] = base64_encode(
+            $privateKey->signData($dataToSignWithDefaultEncoding)
+        );
+        $rawQueryWithDefaultEncoding = $this->encodeDataToSignWithPhpsHttpBuildQuery($queryParametersWithDefaultEncoding);
+        $queryStringWithDefaultEncoding = ReceivedAuthnRequestQueryString::parse(
+            'https://my-service-provider.example?' . $rawQueryWithDefaultEncoding
+        );
+
+        $dataToSignWithCustomEncoding = $this->encodeDataToSignWithCustomHttpQueryEncoding($queryParameters);
+        $queryParametersWithCustomEncoding = $queryParameters;
+        $queryParametersWithCustomEncoding[ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE] = base64_encode(
+            $privateKey->signData($dataToSignWithCustomEncoding)
+        );
+        $rawQueryWithCustomEncoding = $this->encodeDataToSignWithCustomHttpQueryEncoding(
+            $queryParametersWithCustomEncoding
+        );
+        $queryStringWithCustomEncoding = ReceivedAuthnRequestQueryString::parse(
+            'https://my-service-provider.example?' . $rawQueryWithCustomEncoding
+        );
+
+        $isQueryWithDefaultEncodingSigned = $signatureVerifier->isQuerySignedWith(
+            $queryStringWithDefaultEncoding,
+            $certificate
+        );
+        $isQueryWithCustomEncodingSigned  = $signatureVerifier->isQuerySignedWith(
+            $queryStringWithCustomEncoding,
+            $certificate
+        );
+
+        $this->assertTrue(
+            $isQueryWithDefaultEncodingSigned,
+            'The signature of an AuthnRequest signed using data-to-sign encoded'
+            . ' according to RFC1738 should be verifiable, but it isn\'t'
+        );
+        $this->assertTrue(
+            $isQueryWithCustomEncodingSigned,
+            'The signature of an AuthnRequest signed using data-to-sign encoded'.
+            ' using a custom encoding should be verifiable, but it isn\'t'
+        );
+    }
+
+    /**
+     * @test
+     * @group Signing
+     */
+    public function a_received_authn_requests_signature_is_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent()
+    {
+        $signatureVerifier = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
+        $certificate       = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
+        $keyData           = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
+        $privateKey        = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
+        $privateKey->loadKey($keyData);
+
+        $queryParameters = [
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST => $this->createEncodedSamlRequest(),
+            ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM => $privateKey->type,
+            ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE => base64_encode('fake-key')
+        ];
+
+        $rawQueryWithDefaultEncoding = $this->encodeDataToSignWithPhpsHttpBuildQuery($queryParameters);
+        $queryStringWithDefaultEncoding = ReceivedAuthnRequestQueryString::parse(
+            'https://my-service-provider.example?' . $rawQueryWithDefaultEncoding
+        );
+
+        $isQuerySigned = $signatureVerifier->isQuerySignedWith($queryStringWithDefaultEncoding, $certificate);
+
+        $this->assertFalse($isQuerySigned,
+            'The signature of a received AuthnRequest query string'
+            . ' that does not correspond with the data-to-sign'
+            . ' in the http query should not be verifiable but it is'
+        );
+    }
+
+    /**
      * @param array $params
      * @return string
      */
@@ -214,5 +307,18 @@ AUTHNREQUEST_NO_SUBJECT;
         }
 
         return $this->publicKey;
+    }
+
+    /**
+     * @return string
+     */
+    private function createEncodedSamlRequest()
+    {
+        $domDocument          = SAML2_DOMDocumentFactory::fromString($this->authRequestNoSubject);
+        $unsignedAuthnRequest = SAML2_AuthnRequest::fromXML($domDocument->firstChild);
+        $requestAsXml         = $unsignedAuthnRequest->toUnsignedXML()->ownerDocument->saveXML();
+        $encodedRequest       = base64_encode(gzdeflate($requestAsXml));
+
+        return $encodedRequest;
     }
 }
