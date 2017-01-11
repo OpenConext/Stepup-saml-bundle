@@ -130,8 +130,8 @@ AUTHNREQUEST_NO_SUBJECT;
         $this->assertFalse(
             $signatureIsVerified,
             'The signature of an AuthnRequest signed using data-to-sign'
-            . ' that corresponds with how it is represented'
-            . ' but the data-to-sign is in the wrong order should not be verifiable but it is'
+            . ' that corresponds with how it is represented,'
+            . ' but with the data-to-sign in the wrong order, should not be verifiable but it is'
         );
     }
 
