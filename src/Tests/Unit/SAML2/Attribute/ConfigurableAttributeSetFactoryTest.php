@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace Surfnet\SamlBundle\Tests\SAML2\Attribute;
+namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use SAML2_Assertion;
@@ -26,7 +26,7 @@ use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
 
 class ConfigurableAttributeSetFactoryTest extends TestCase
 {
-    const DUMMY_ATTRIBUTE_SET_CLASS = '\Surfnet\SamlBundle\Tests\SAML2\Attribute\Mock\DummyAttributeSet';
+    const DUMMY_ATTRIBUTE_SET_CLASS = '\Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock\DummyAttributeSet';
     
     /**
      * @test
