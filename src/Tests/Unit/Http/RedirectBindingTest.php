@@ -135,7 +135,7 @@ MESSAGE;
         $dummyEntityRepository  = m::mock('\Surfnet\SamlBundle\Entity\ServiceProviderRepository');
 
         $requestUri = 'https://my-service-provider.example?'
-            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . base64_encode(gzdeflate(self::RAW_MESSAGE));
+            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE;
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => $requestUri]);
 
         $redirectBinding = new RedirectBinding(new NullLogger(), $dummySignatureVerifier, $dummyEntityRepository);
@@ -154,21 +154,21 @@ MESSAGE;
         );
 
         $dummySignatureVerifier = m::mock('\Surfnet\SamlBundle\Signing\SignatureVerifier');
-        $dummyEntityRepository  = m::mock('\Surfnet\SamlBundle\Entity\ServiceProviderRepository');
+        $mockEntityRepository   = m::mock('\Surfnet\SamlBundle\Entity\ServiceProviderRepository');
 
         $requestUri = 'https://my-service-provider.example?'
-            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . base64_encode(gzdeflate(self::RAW_MESSAGE))
+            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=signature'
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
-        ;
+
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => $requestUri]);
 
-        $dummyEntityRepository
+        $mockEntityRepository
             ->shouldReceive('hasServiceProvider')
             ->once()
             ->andReturn(false);
 
-        $redirectBinding = new RedirectBinding(new NullLogger(), $dummySignatureVerifier, $dummyEntityRepository);
+        $redirectBinding = new RedirectBinding(new NullLogger(), $dummySignatureVerifier, $mockEntityRepository);
         $redirectBinding->receiveSignedAuthnRequestFrom($request);
     }
     /**
@@ -186,7 +186,7 @@ MESSAGE;
         $mockEntityRepository  = m::mock('\Surfnet\SamlBundle\Entity\ServiceProviderRepository');
 
         $requestUri = 'https://my-service-provider.example?'
-            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . base64_encode(gzdeflate(self::RAW_MESSAGE))
+            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=signature'
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
         ;
@@ -247,7 +247,7 @@ MESSAGE;
         $dummyEntityRepository  = m::mock('\Surfnet\SamlBundle\Entity\ServiceProviderRepository');
 
         $requestUri = 'https://my-service-provider.example?'
-            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . base64_encode(gzdeflate(self::RAW_MESSAGE))
+            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=signature'
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
         ;

@@ -122,6 +122,10 @@ final class ReceivedAuthnRequestQueryString
             ));
         }
 
+        if (base64_decode(urldecode($parameters[self::PARAMETER_REQUEST]), true) === false) {
+            throw new InvalidRequestException('Failed decoding SAML request, did not receive a valid base64 string');
+        }
+
         $parsedQueryString = new self($parameters[self::PARAMETER_REQUEST]);
 
         if (isset($parameters[self::PARAMETER_RELAY_STATE])) {
@@ -212,10 +216,7 @@ final class ReceivedAuthnRequestQueryString
      */
     public function getDecodedSamlRequest()
     {
-        $samlRequest = base64_decode($this->samlRequest, true);
-        if ($samlRequest === false) {
-            throw new InvalidRequestException('Failed decoding SAML request, did not receive a valid base64 string');
-        }
+        $samlRequest = base64_decode(urldecode($this->samlRequest), true);
 
         // Catch any errors gzinflate triggers
         $errorNo = $errorMessage = null;

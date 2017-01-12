@@ -22,8 +22,6 @@ use PHPUnit_Framework_TestCase as TestCase;
 use SAML2_AuthnRequest;
 use SAML2_DOMDocumentFactory;
 use stdClass;
-use Surfnet\SamlBundle\Exception\RuntimeException;
-use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 
 class ReceivedAuthnRequestQueryStringTest extends TestCase
@@ -92,6 +90,25 @@ AUTHNREQUEST_NO_SUBJECT;
     /**
      * @test
      * @group AuthnRequest
+     */
+    public function a_received_authn_request_query_string_must_contain_a_base64_encoded_saml_request()
+    {
+        $this->setExpectedException(
+            '\Surfnet\SamlBundle\Http\Exception\InvalidRequestException',
+            'did not receive a valid base64 string'
+        );
+
+        $notEncodedRequest = 'non-encoded-string';
+
+        $rawQuery = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode($notEncodedRequest);
+        $requestUri = 'https://my-service-provider.example?' . $rawQuery;
+
+        $query = ReceivedAuthnRequestQueryString::parse($requestUri);
+    }
+
+    /**
+     * @test
+     * @group AuthnRequest
      *
      * @dataProvider queryStringWithRepeatedSamlParametersProvider
      * @param $doubleParameterName
@@ -120,7 +137,7 @@ AUTHNREQUEST_NO_SUBJECT;
         );
 
         $queryStringWithoutSamlRequest = 
-            '?' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode('signature')
+            '?' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
         $query = ReceivedAuthnRequestQueryString::parse(
@@ -139,7 +156,8 @@ AUTHNREQUEST_NO_SUBJECT;
             'contains a signature algorithm but not a signature'
         );
 
-        $queryStringWithSignatureAlgorithmWithoutSignature = '?' . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=saml-request'
+        $queryStringWithSignatureAlgorithmWithoutSignature =
+            '?' . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
         $query = ReceivedAuthnRequestQueryString::parse(
@@ -159,8 +177,8 @@ AUTHNREQUEST_NO_SUBJECT;
         );
 
         $queryStringWithSignatureWithoutSignatureAlgorithm =
-            '?' . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=saml-request'
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode('signature');
+            '?' . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'));
 
         $query = ReceivedAuthnRequestQueryString::parse(
             'https://my-service-provider.example' . $queryStringWithSignatureWithoutSignatureAlgorithm
@@ -178,7 +196,8 @@ AUTHNREQUEST_NO_SUBJECT;
             'signature is not base64 encoded correctly'
         );
 
-        $queryStringWithSignatureWithoutSignatureAlgorithm = '?' . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=saml-request'
+        $queryStringWithSignatureWithoutSignatureAlgorithm =
+            '?' . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=not-encoded-signature';
 
         $query = ReceivedAuthnRequestQueryString::parse(
@@ -192,9 +211,10 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_request_query_string_can_be_converted_to_a_signed_query_string()
     {
-        $queryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=encoded-saml-request'
+        $queryString =
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state'
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode('signature')
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
         $query = ReceivedAuthnRequestQueryString::parse('https://my-service-provider.example?' . $queryString);
@@ -212,9 +232,10 @@ AUTHNREQUEST_NO_SUBJECT;
     {
         $arbitraryParameterToIgnore = 'arbitraryParameter=this-should-be-ignored';
 
-        $queryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=encoded-saml-request'
+        $queryString =
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state'
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode('signature')
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
         $query = ReceivedAuthnRequestQueryString::parse(
@@ -238,9 +259,10 @@ AUTHNREQUEST_NO_SUBJECT;
     {
         $arbitraryParameterToIgnore = 'arbitraryParameter=this-should-be-ignored';
 
-        $queryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=encoded-saml-request'
+        $queryString =
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state'
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode('signature')
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
         $query = ReceivedAuthnRequestQueryString::parse(
@@ -265,7 +287,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $this->setExpectedException('\Surfnet\SamlBundle\Exception\RuntimeException', 'SigAlg missing');
 
         $queryStringWithoutSignatureAndSignatureAlgorithm =
-            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=encoded-saml-request'
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state';
 
         $query = ReceivedAuthnRequestQueryString::parse(
@@ -282,15 +304,15 @@ AUTHNREQUEST_NO_SUBJECT;
     public function a_correctly_ordered_signable_query_string_can_be_acquired_from_a_received_authn_request_query_string()
     {
         $signedQueryString =
-            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=encoded-saml-request'
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode('signature')
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm'
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state';
 
         $query = ReceivedAuthnRequestQueryString::parse('https://my-service-provider.example?' . $signedQueryString);
 
         $expectedSignableQueryString =
-            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=encoded-saml-request'
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state'
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
@@ -313,8 +335,8 @@ AUTHNREQUEST_NO_SUBJECT;
         $signature = 'signature';
 
         $signedQueryString =
-            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=encoded-saml-request'
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode($signature)
+            ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode($signature))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
         $query = ReceivedAuthnRequestQueryString::parse('https://my-service-provider.example?' . $signedQueryString);
@@ -340,7 +362,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $requestAsXml   = $unsignedAuthnRequest->toUnsignedXML()->ownerDocument->saveXML();
         $encodedRequest = base64_encode(gzdeflate($requestAsXml));
 
-        $rawQuery = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . $encodedRequest;
+        $rawQuery = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode($encodedRequest);
         $requestUri = 'https://my-service-provider.example?' . $rawQuery;
 
         $query = ReceivedAuthnRequestQueryString::parse($requestUri);
@@ -357,28 +379,14 @@ AUTHNREQUEST_NO_SUBJECT;
      * @test
      * @group AuthnRequest
      */
-    public function a_saml_request_cannot_be_decoded_from_a_received_authn_request_query_string_if_it_was_not_properly_base64_encoded()
-    {
-        $this->setExpectedException('\Surfnet\SamlBundle\Http\Exception\InvalidRequestException', 'did not receive a valid base64 string');
-
-        $notEncodedRequest = 'this-is-not-encoded';
-
-        $rawQuery = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . $notEncodedRequest;
-        $requestUri = 'https://my-service-provider.example?' . $rawQuery;
-
-        $query = ReceivedAuthnRequestQueryString::parse($requestUri);
-        $decodedRequest = $query->getDecodedSamlRequest();
-    }
-
-    /**
-     * @test
-     * @group AuthnRequest
-     */
     public function a_saml_request_cannot_be_decoded_from_a_received_authn_request_query_string_if_it_was_not_properly_gzipped()
     {
-        $this->setExpectedException('\Surfnet\SamlBundle\Http\Exception\InvalidRequestException', 'Failed inflating SAML Request');
+        $this->setExpectedException(
+            '\Surfnet\SamlBundle\Http\Exception\InvalidRequestException',
+            'Failed inflating SAML Request'
+        );
 
-        $notGzippedRequest = base64_encode('this-is-not-encoded');
+        $notGzippedRequest = urlencode(base64_encode('this-is-not-gzipped'));
 
         $rawQuery = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . $notGzippedRequest;
         $requestUri = 'https://my-service-provider.example?' . $rawQuery;
@@ -393,10 +401,10 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function parameters_can_be_queried_from_the_received_authn_request_query()
     {
-        $samlRequest = 'encoded-saml-request';
+        $samlRequest = urlencode(base64_encode('encoded-saml-request'));
         $relayState = 'relay-state';
         $signatureAlgorithm = 'signature-algorithm';
-        $signature = 'signature';
+        $signature = urlencode(base64_encode('signature'));
 
         $rawQuery =
             ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . $samlRequest
@@ -448,9 +456,9 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function queryStringWithRepeatedSamlParametersProvider()
     {
-        $basicQueryString = $basicQueryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=encoded-saml-request'
+        $basicQueryString = $basicQueryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state'
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode('signature')
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
         $uri = 'https://some-service-provider.org?' . $basicQueryString;
@@ -466,7 +474,7 @@ AUTHNREQUEST_NO_SUBJECT;
             ],
             ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE           => [
                 ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE,
-                $uri .'&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . base64_encode('signature'),
+                $uri .'&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature')),
             ],
             ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM => [
                 ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM,
