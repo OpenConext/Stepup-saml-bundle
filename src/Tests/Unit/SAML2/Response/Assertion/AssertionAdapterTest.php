@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace SAML2\Response\Assertion;
+namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
 use Mockery as m;
 use PHPUnit_Framework_TestCase as TestCase;

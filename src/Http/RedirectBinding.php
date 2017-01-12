@@ -24,6 +24,7 @@ use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
+use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -133,7 +134,7 @@ class RedirectBinding
         $currentUri = $this->getFullRequestUri($request);
         if (!$authnRequest->getDestination() === $currentUri) {
             throw new BadRequestHttpException(sprintf(
-                'Actual Destination "%s" does no match the AuthnRequest Destination "%s"',
+                'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
                 $authnRequest->getDestination()
             ));
@@ -149,14 +150,118 @@ class RedirectBinding
     }
 
     /**
+     * @param Request $request
+     * @return ReceivedAuthnRequest
+     */
+    public function receiveUnsignedAuthnRequestFrom(Request $request)
+    {
+        if (!$this->entityRepository) {
+            throw new LogicException(
+                'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
+            );
+        }
+
+        if (!$request->isMethod(Request::METHOD_GET)) {
+            throw new BadRequestHttpException(sprintf(
+                'Could not receive AuthnRequest from HTTP Request: expected a GET method, got %s',
+                $request->getMethod()
+            ));
+        }
+
+        $query = ReceivedAuthnRequestQueryString::parse($request->getRequestUri());
+
+        $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
+
+        $currentUri = $this->getFullRequestUri($request);
+        if (!$authnRequest->getDestination() === $currentUri) {
+            throw new BadRequestHttpException(sprintf(
+                'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
+                $currentUri,
+                $authnRequest->getDestination()
+            ));
+        }
+
+        if (!$this->entityRepository->hasServiceProvider($authnRequest->getServiceProvider())) {
+            throw new UnknownServiceProviderException($authnRequest->getServiceProvider());
+        }
+
+        return $authnRequest;
+    }
+
+    /**
+     * @param Request $request
+     * @return ReceivedAuthnRequest
+     */
+    public function receiveSignedAuthnRequestFrom(Request $request)
+    {
+        if (!$this->entityRepository) {
+            throw new LogicException(
+                'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
+            );
+        }
+
+        if (!$request->isMethod(Request::METHOD_GET)) {
+            throw new BadRequestHttpException(sprintf(
+                'Could not receive AuthnRequest from HTTP Request: expected a GET method, got %s',
+                $request->getMethod()
+            ));
+        }
+
+        $query = ReceivedAuthnRequestQueryString::parse($request->getRequestUri());
+
+        if (!$query->isSigned()) {
+            throw new BadRequestHttpException('The SAMLRequest is expected to be signed but it was not');
+        }
+
+        $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
+
+        $currentUri = $this->getFullRequestUri($request);
+        if (!$authnRequest->getDestination() === $currentUri) {
+            throw new BadRequestHttpException(sprintf(
+                'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
+                $currentUri,
+                $authnRequest->getDestination()
+            ));
+        }
+
+        if (!$this->entityRepository->hasServiceProvider($authnRequest->getServiceProvider())) {
+            throw new UnknownServiceProviderException($authnRequest->getServiceProvider());
+        }
+
+        $serviceProvider = $this->entityRepository->getServiceProvider($authnRequest->getServiceProvider());
+        if (!$this->signatureVerifier->verify($query, $serviceProvider)) {
+            throw new BadRequestHttpException('The SAMLRequest has been signed, but the signature could not be validated');
+        }
+
+        return $authnRequest;
+    }
+
+    /**
+     * @param Request $request
+     * @return AuthnRequest
+     * @throws \Exception
+     *
+     * @deprecated Use receiveSignedAuthnRequestFrom or receiveUnsignedAuthnRequestFrom
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function processRequest(Request $request)
+    {
+        return $this->processSignedRequest($request);
+    }
+
+    public function createRedirectResponseFor(AuthnRequest $request)
+    {
+        return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
+    }
+
+    /**
      * @param $authnRequest
      */
     private function verifySignature(AuthnRequest $authnRequest)
     {
         if (!$authnRequest->isSigned()) {
-            throw new BadRequestHttpException(
-                'The SAMLRequest has to be signed'
-            );
+            throw new BadRequestHttpException('The SAMLRequest has to be signed');
         }
 
         if (!$authnRequest->getSignatureAlgorithm()) {
@@ -180,25 +285,6 @@ class RedirectBinding
                 'The SAMLRequest has been signed, but the signature could not be validated'
             );
         }
-    }
-
-    /**
-     * @param Request $request
-     * @return AuthnRequest
-     * @throws \Exception
-     *
-     * @deprecated Use processSignedRequest or processUnsignedRequest
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    public function processRequest(Request $request)
-    {
-        return $this->processSignedRequest($request);
-    }
-
-    public function createRedirectResponseFor(AuthnRequest $request)
-    {
-        return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Surfnet\SamlBundle\Tests\SAML2;
+namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
 use PHPUnit_Framework_TestCase as UnitTest;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
@@ -18,8 +18,12 @@ class AuthnRequestFactoryTest extends UnitTest
      */
     public function an_exception_is_thrown_when_a_request_is_not_properly_base64_encoded()
     {
-        // the $ is invalid since it is outside the base64 alphabet and we deserialize in strict mode.
-        $request = new Request([AuthnRequest::PARAMETER_REQUEST => '$']);
+        $invalidCharacter = '$';
+        $queryParams      = [AuthnRequest::PARAMETER_REQUEST => $invalidCharacter];
+        $serverParams     = [
+            'REQUEST_URI' => sprintf('https://test.example?%s=%s', AuthnRequest::PARAMETER_REQUEST, $invalidCharacter),
+        ];
+        $request          = new Request($queryParams, [], [], [], [], $serverParams);
 
         AuthnRequestFactory::createFromHttpRequest($request);
     }
@@ -33,7 +37,12 @@ class AuthnRequestFactoryTest extends UnitTest
      */
     public function an_exception_is_thrown_when_a_request_cannot_be_inflated()
     {
-        $request = new Request([AuthnRequest::PARAMETER_REQUEST => base64_encode('nope, not deflated')]);
+        $nonDeflated  = base64_encode('nope, not deflated');
+        $queryParams  = [AuthnRequest::PARAMETER_REQUEST => $nonDeflated];
+        $serverParams = [
+            'REQUEST_URI' => sprintf('https://test.example?%s=%s', AuthnRequest::PARAMETER_REQUEST, $nonDeflated),
+        ];
+        $request = new Request($queryParams, [], [], [], [], $serverParams);
 
         AuthnRequestFactory::createFromHttpRequest($request);
     }
