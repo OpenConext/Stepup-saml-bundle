@@ -55,15 +55,12 @@ AUTHNREQUEST_NO_SUBJECT;
     /**
      * @test
      * @group Signing
+     * @group Deprecated
      */
-    public function signatures_are_verified_regardless_of_encoding_used_by_sender(
-    )
+    public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_rfc1738_encoding()
     {
         $authnRequestWithDefaultEncoding = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignWithPhpsHttpBuildQuery']
-        );
-        $authnRequestWithCustomEncoding  = $this->createSignedAuthnRequest(
-            [$this, 'encodeDataToSignWithCustomHttpQueryEncoding']
         );
 
         $certificate = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
@@ -73,27 +70,45 @@ AUTHNREQUEST_NO_SUBJECT;
             $authnRequestWithDefaultEncoding,
             $certificate
         );
-        $signatureWithCustomEncodingIsVerified  = $signatureVerifier->isSignedWith(
-            $authnRequestWithCustomEncoding,
-            $certificate
-        );
 
         $this->assertTrue(
             $signatureWithDefaultEncodingIsVerified,
-            'The signature of an AuthnRequest signed using data-to-sign encoded'
+            'The signature of a (deprecated) AuthnRequest signed using data-to-sign encoded'
             . ' according to RFC1738 should be verifiable, but it isn\'t'
-        );
-        $this->assertTrue($signatureWithCustomEncodingIsVerified,
-            'The signature of an AuthnRequest signed using data-to-sign encoded'.
-            ' using a custom encoding should be verifiable, but it isn\'t'
         );
     }
 
     /**
      * @test
      * @group Signing
+     * @group Deprecated
      */
-    public function signatures_are_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent()
+    public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_something_other_than_rfc1738_encoding()
+    {
+        $authnRequestWithCustomEncoding  = $this->createSignedAuthnRequest(
+            [$this, 'encodeDataToSignWithCustomHttpQueryEncoding']
+        );
+
+        $certificate       = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
+        $signatureVerifier = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
+
+        $signatureWithCustomEncodingIsVerified  = $signatureVerifier->isSignedWith(
+            $authnRequestWithCustomEncoding,
+            $certificate
+        );
+
+        $this->assertFalse($signatureWithCustomEncodingIsVerified,
+            'The signature of a (deprecated) AuthnRequest signed using data-to-sign encoded'.
+            ' using a custom encoding should not be verifiable, but it is'
+        );
+    }
+
+    /**
+     * @test
+     * @group Signing
+     * @group Deprecated
+     */
+    public function deprecated_authn_request_signatures_are_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent()
     {
         $authnRequestWithModifiedDataToSign = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignWithPhpsHttpBuildQuery'],
@@ -116,8 +131,9 @@ AUTHNREQUEST_NO_SUBJECT;
     /**
      * @test
      * @group Signing
+     * @group Deprecated
      */
-    public function signatures_are_not_verified_if_the_parameter_order_of_the_sent_query_is_not_correct()
+    public function deprecated_authn_request_signatures_are_not_verified_if_the_parameter_order_of_the_sent_query_is_not_correct()
     {
         $authnRequestWithModifiedDataToSign = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignUsingIncorrectParameterOrder']
@@ -140,7 +156,7 @@ AUTHNREQUEST_NO_SUBJECT;
      * @test
      * @group Signing
      */
-    public function signatures_of_received_authn_requests_are_verified_regardless_of_their_encoding()
+    public function a_received_authn_requests_signature_is_verified_regardless_of_its_encoding()
     {
         $signatureVerifier = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
         $certificate       = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
@@ -264,10 +280,8 @@ AUTHNREQUEST_NO_SUBJECT;
      * @param null|string $customSignature Signature to be used instead of signature to sign data to sign with
      * @return AuthnRequest
      */
-    private function createSignedAuthnRequest(
-        callable $prepareDataToSign,
-        $customSignature = null
-    ) {
+    private function createSignedAuthnRequest(callable $prepareDataToSign, $customSignature = null)
+    {
         $keyData    = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
         $privateKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $privateKey->loadKey($keyData);
@@ -293,7 +307,8 @@ AUTHNREQUEST_NO_SUBJECT;
 
         return AuthnRequest::createSigned(
             $saml2AuthnRequest,
-            $httpQuery,
+            $encodedRequest,
+            null,
             $signature,
             $privateKey->type
         );

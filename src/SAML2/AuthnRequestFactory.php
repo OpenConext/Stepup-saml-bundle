@@ -37,6 +37,7 @@ use XMLSecurityKey;
 class AuthnRequestFactory
 {
     /**
+     * @deprecated use ReceivedAuthnRequest::from()
      * @param Request $httpRequest
      * @return AuthnRequest
      */
@@ -44,24 +45,24 @@ class AuthnRequestFactory
     {
         return AuthnRequest::createUnsigned(
             self::createAuthnRequestFromHttpRequest($httpRequest),
+            $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
             $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE)
         );
     }
 
     /**
+     * @deprecated use ReceivedAuthnRequest::from()
      * @param Request $httpRequest
      * @return AuthnRequest
      */
     public static function createSignedFromHttpRequest(Request $httpRequest)
     {
-        list(, $httpQuery) = explode('?', $httpRequest->getRequestUri());
-
         return AuthnRequest::createSigned(
             self::createAuthnRequestFromHttpRequest($httpRequest),
-            $httpQuery,
+            $httpRequest->get(AuthnRequest::PARAMETER_REQUEST),
+            $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE),
             $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE),
-            $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM),
-            $httpRequest->get(AuthnRequest::PARAMETER_RELAY_STATE)
+            $httpRequest->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)
         );
     }
 
