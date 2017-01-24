@@ -87,7 +87,7 @@ class SignatureVerifier
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
         $key->loadKey($publicKey->getCertificate());
 
-        if ($key->verifySignature($query->getSignableQueryString(), $query->getDecodedSignature())) {
+        if ($key->verifySignature($query->getSignedQueryString(), $query->getDecodedSignature())) {
             $this->logger->debug('Signature VERIFIED');
             return true;
         }

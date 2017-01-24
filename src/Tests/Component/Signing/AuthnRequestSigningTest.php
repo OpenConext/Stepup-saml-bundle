@@ -175,9 +175,7 @@ AUTHNREQUEST_NO_SUBJECT;
             $privateKey->signData($dataToSignWithDefaultEncoding)
         );
         $rawQueryWithDefaultEncoding = $this->encodeDataToSignWithPhpsHttpBuildQuery($queryParametersWithDefaultEncoding);
-        $queryStringWithDefaultEncoding = ReceivedAuthnRequestQueryString::parse(
-            'https://my-service-provider.example?' . $rawQueryWithDefaultEncoding
-        );
+        $queryStringWithDefaultEncoding = ReceivedAuthnRequestQueryString::parse($rawQueryWithDefaultEncoding);
 
         $dataToSignWithCustomEncoding = $this->encodeDataToSignWithCustomHttpQueryEncoding($queryParameters);
         $queryParametersWithCustomEncoding = $queryParameters;
@@ -187,9 +185,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $rawQueryWithCustomEncoding = $this->encodeDataToSignWithCustomHttpQueryEncoding(
             $queryParametersWithCustomEncoding
         );
-        $queryStringWithCustomEncoding = ReceivedAuthnRequestQueryString::parse(
-            'https://my-service-provider.example?' . $rawQueryWithCustomEncoding
-        );
+        $queryStringWithCustomEncoding = ReceivedAuthnRequestQueryString::parse($rawQueryWithCustomEncoding);
 
         $isQueryWithDefaultEncodingSigned = $signatureVerifier->isQuerySignedWith(
             $queryStringWithDefaultEncoding,
@@ -231,9 +227,7 @@ AUTHNREQUEST_NO_SUBJECT;
         ];
 
         $rawQueryWithDefaultEncoding = $this->encodeDataToSignWithPhpsHttpBuildQuery($queryParameters);
-        $queryStringWithDefaultEncoding = ReceivedAuthnRequestQueryString::parse(
-            'https://my-service-provider.example?' . $rawQueryWithDefaultEncoding
-        );
+        $queryStringWithDefaultEncoding = ReceivedAuthnRequestQueryString::parse($rawQueryWithDefaultEncoding);
 
         $isQuerySigned = $signatureVerifier->isQuerySignedWith($queryStringWithDefaultEncoding, $certificate);
 
