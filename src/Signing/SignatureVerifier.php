@@ -49,7 +49,7 @@ class SignatureVerifier
         $this->logger = $logger;
     }
 
-    public function verify(ReceivedAuthnRequestQueryString $query, ServiceProvider $serviceProvider)
+    public function verifyIsSignedBy(ReceivedAuthnRequestQueryString $query, ServiceProvider $serviceProvider)
     {
         $this->logger->debug(sprintf('Extracting public keys for ServiceProvider "%s"', $serviceProvider->getEntityId()));
 
