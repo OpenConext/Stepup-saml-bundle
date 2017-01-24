@@ -20,7 +20,7 @@ namespace Surfnet\SamlBundle\Exception;
 
 use InvalidArgumentException as CoreInvalidArgumentException;
 
-class InvalidArgumentException extends CoreInvalidArgumentException
+class InvalidArgumentException extends CoreInvalidArgumentException implements Exception
 {
     public static function invalidType($expectedType, $parameter, $value)
     {

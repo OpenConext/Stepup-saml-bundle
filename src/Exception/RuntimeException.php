@@ -20,6 +20,6 @@ namespace Surfnet\SamlBundle\Exception;
 
 use RuntimeException as CoreRuntimeException;
 
-class RuntimeException extends CoreRuntimeException
+class RuntimeException extends CoreRuntimeException implements Exception
 {
 }
