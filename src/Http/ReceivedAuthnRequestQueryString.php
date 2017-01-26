@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Http;
 
+use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
@@ -62,31 +63,32 @@ final class ReceivedAuthnRequestQueryString
     }
 
     /**
-     * @param string $requestUri
+     * @param string $query
      * @return ReceivedAuthnRequestQueryString
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity) Extensive validation
      * @SuppressWarnings(PHPMD.NPathComplexity) Extensive validation
      */
-    public static function parse($requestUri)
+    public static function parse($query)
     {
-        if (!is_string($requestUri) || strlen($requestUri) <= strlen('?SAMLRequest=')) {
+        if (!is_string($query)) {
             throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
-                'Could not parse query string: expected a non-empty string of at least %d characters, %s given',
-                strlen('?SAMLRequest='),
-                is_object($requestUri) ? get_class($requestUri) : gettype($requestUri)
+                'Could not parse query string: expected a non-empty string, %s given',
+                is_object($query) ? get_class($query) : gettype($query)
             ));
         }
 
-        if (strpos($requestUri, '?') === false) {
+        $queryWithoutSeparator = ltrim($query, '?');
+
+        if (strlen($queryWithoutSeparator) <= strlen('SAMLRequest=')) {
             throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
-                'Could not parse query string: given string ("%s") does not contain a query string separator',
-                $requestUri
+                'Could not parse query string: expected a non-empty string of at least %d characters, got "%s"',
+                strlen('SAMLRequest='),
+                $queryWithoutSeparator
             ));
         }
 
-        list(, $queryString) = explode('?', $requestUri);
-        $queryParameters = explode('&', $queryString);
+        $queryParameters = explode('&', $queryWithoutSeparator);
 
         $parameters = [];
         foreach ($queryParameters as $queryParameter) {
@@ -106,7 +108,7 @@ final class ReceivedAuthnRequestQueryString
             if (array_key_exists($key, $parameters)) {
                 throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
                     'Invalid ReceivedAuthnRequest query string ("%s"): parameter "%s" already present',
-                    $queryString,
+                    $queryWithoutSeparator,
                     $key
                 ));
             }
@@ -117,7 +119,7 @@ final class ReceivedAuthnRequestQueryString
         if (!isset($parameters[self::PARAMETER_REQUEST])) {
             throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
                 'Invalid ReceivedAuthnRequest query string ("%s"): parameter "%s" not found',
-                $queryString,
+                $queryWithoutSeparator,
                 self::PARAMETER_REQUEST
             ));
         }
@@ -131,30 +133,32 @@ final class ReceivedAuthnRequestQueryString
         if (isset($parameters[self::PARAMETER_RELAY_STATE])) {
             $parsedQueryString->relayState = $parameters[self::PARAMETER_RELAY_STATE];
         }
+
         if (isset($parameters[self::PARAMETER_SIGNATURE])) {
+            if (!isset($parameters[self::PARAMETER_SIGNATURE_ALGORITHM])) {
+                throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
+                    'Invalid ReceivedAuthnRequest query string ("%s") contains a signature but not a signature algorithm',
+                    $queryWithoutSeparator
+                ));
+            }
+
             if (base64_decode(urldecode($parameters[self::PARAMETER_SIGNATURE]), true) === false) {
                 throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
                     'Invalid ReceivedAuthnRequest query string ("%s"): signature is not base64 encoded correctly',
-                    $queryString
+                    $queryWithoutSeparator
                 ));
             }
 
             $parsedQueryString->signature = $parameters[self::PARAMETER_SIGNATURE];
-        }
-        if (isset($parameters[self::PARAMETER_SIGNATURE_ALGORITHM])) {
             $parsedQueryString->signatureAlgorithm = $parameters[self::PARAMETER_SIGNATURE_ALGORITHM];
+
+            return $parsedQueryString;
         }
 
-        if ($parsedQueryString->signatureAlgorithm === null && $parsedQueryString->signature !== null) {
-            throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
-                'Invalid ReceivedAuthnRequest query string ("%s") contains a signature but not a signature algorithm',
-                $queryString
-            ));
-        }
-        if ($parsedQueryString->signature === null && $parsedQueryString->signatureAlgorithm !== null) {
+        if (isset($parameters[self::PARAMETER_SIGNATURE_ALGORITHM])) {
             throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
                 'Invalid ReceivedAuthnRequest query string ("%s") contains a signature algorithm but not a signature',
-                $queryString
+                $queryWithoutSeparator
             ));
         }
 
@@ -174,30 +178,10 @@ final class ReceivedAuthnRequestQueryString
      */
     public function getSignedQueryString()
     {
-        $query = self::PARAMETER_REQUEST . '=' . $this->samlRequest;
-
-        if ($this->hasRelayState()) {
-            $query .= '&' . self::PARAMETER_RELAY_STATE . '=' . $this->relayState;
-        }
-
-        if ($this->isSigned()) {
-            $query .= '&' . self::PARAMETER_SIGNATURE . '=' . $this->signature
-               . '&' . self::PARAMETER_SIGNATURE_ALGORITHM . '=' . $this->signatureAlgorithm;
-        }
-
-        return $query;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSignableQueryString()
-    {
-        if ($this->signatureAlgorithm === null) {
-            throw new RuntimeException(sprintf(
-                'Cannot get signable request query from received authn request query string ("%s"): SigAlg missing',
-                $this->getSignedQueryString()
-            ));
+        if (!$this->isSigned()) {
+            throw new LogicException(
+                'Cannot get a signed query string from an unsigned ReceivedAuthnRequestQueryString'
+            );
         }
 
         $query = self::PARAMETER_REQUEST . '=' . $this->samlRequest;

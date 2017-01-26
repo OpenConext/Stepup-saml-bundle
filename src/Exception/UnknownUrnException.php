@@ -21,7 +21,7 @@ namespace Surfnet\SamlBundle\Exception;
 /**
  * Exception to be thrown when an urn cannot be found in the dictionary.
  */
-class UnknownUrnException extends LogicException
+class UnknownUrnException extends LogicException implements Exception
 {
     public function __construct($urn)
     {

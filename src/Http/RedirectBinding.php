@@ -168,7 +168,15 @@ class RedirectBinding
             ));
         }
 
-        $query = ReceivedAuthnRequestQueryString::parse($request->getRequestUri());
+        $requestUri = $request->getRequestUri();
+        if (strpos($requestUri, '?') === false) {
+            throw new BadRequestHttpException(
+                'Could not receive AuthnRequest from HTTP Request: expected query parameters, none found'
+            );
+        }
+
+        list(, $rawQueryString) = explode('?', $requestUri);
+        $query = ReceivedAuthnRequestQueryString::parse($rawQueryString);
 
         $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
 
@@ -207,7 +215,15 @@ class RedirectBinding
             ));
         }
 
-        $query = ReceivedAuthnRequestQueryString::parse($request->getRequestUri());
+        $requestUri = $request->getRequestUri();
+        if (strpos($requestUri, '?') === false) {
+            throw new BadRequestHttpException(
+                'Could not receive AuthnRequest from HTTP Request: expected query parameters, none found'
+            );
+        }
+
+        list(, $rawQueryString) = explode('?', $requestUri);
+        $query = ReceivedAuthnRequestQueryString::parse($rawQueryString);
 
         if (!$query->isSigned()) {
             throw new BadRequestHttpException('The SAMLRequest is expected to be signed but it was not');
@@ -229,8 +245,10 @@ class RedirectBinding
         }
 
         $serviceProvider = $this->entityRepository->getServiceProvider($authnRequest->getServiceProvider());
-        if (!$this->signatureVerifier->verify($query, $serviceProvider)) {
-            throw new BadRequestHttpException('The SAMLRequest has been signed, but the signature could not be validated');
+        if (!$this->signatureVerifier->verifyIsSignedBy($query, $serviceProvider)) {
+            throw new BadRequestHttpException(
+                'The SAMLRequest has been signed, but the signature could not be validated'
+            );
         }
 
         return $authnRequest;

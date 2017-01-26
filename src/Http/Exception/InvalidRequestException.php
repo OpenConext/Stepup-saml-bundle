@@ -18,8 +18,9 @@
 
 namespace Surfnet\SamlBundle\Http\Exception;
 
+use Surfnet\SamlBundle\Exception\Exception;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 
-class InvalidRequestException extends RuntimeException
+class InvalidRequestException extends RuntimeException implements Exception
 {
 }
