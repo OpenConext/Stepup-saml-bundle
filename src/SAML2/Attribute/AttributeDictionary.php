@@ -127,6 +127,6 @@ class AttributeDictionary
             return $this->attributeDefinitionsByUrn[$urn];
         }
 
-        throw new UnknownUrnException($urn);
+        return $this->attributeDefinitionsByUrn['urn:mace:dir:attribute-def:unknown'];
     }
 }
