@@ -20,6 +20,6 @@ namespace Surfnet\SamlBundle\Exception;
 
 use LogicException as CoreLogicException;
 
-class LogicException extends CoreLogicException
+class LogicException extends CoreLogicException implements Exception
 {
 }

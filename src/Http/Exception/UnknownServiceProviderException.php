@@ -18,9 +18,10 @@
 
 namespace Surfnet\SamlBundle\Http\Exception;
 
+use Surfnet\SamlBundle\Exception\Exception;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class UnknownServiceProviderException extends BadRequestHttpException
+class UnknownServiceProviderException extends BadRequestHttpException implements Exception
 {
     public function __construct($entityId)
     {

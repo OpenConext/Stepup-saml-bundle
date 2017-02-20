@@ -20,6 +20,6 @@ namespace Surfnet\SamlBundle\Exception;
 
 use UnexpectedValueException as CoreUnexpectedValueException;
 
-class UnexpectedValueException extends CoreUnexpectedValueException
+class UnexpectedValueException extends CoreUnexpectedValueException implements Exception
 {
 }

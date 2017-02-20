@@ -18,8 +18,9 @@
 
 namespace Surfnet\SamlBundle\Http\Exception;
 
+use Surfnet\SamlBundle\Exception\Exception;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 
-final class InvalidReceivedAuthnRequestQueryStringException extends RuntimeException
+final class InvalidReceivedAuthnRequestQueryStringException extends RuntimeException implements Exception
 {
 }
