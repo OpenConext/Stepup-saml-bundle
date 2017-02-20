@@ -202,7 +202,7 @@ MESSAGE;
             ->andReturn(new ServiceProvider([]));
 
         $mockSignatureVerifier
-            ->shouldReceive('verify')
+            ->shouldReceive('verifyIsSignedBy')
             ->once()
             ->andReturn(false);
 

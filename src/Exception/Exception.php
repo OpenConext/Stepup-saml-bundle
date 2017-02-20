@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2014 SURFnet bv
+ * Copyright 2017 SURFnet B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,8 @@
  * limitations under the License.
  */
 
-namespace Surfnet\SamlBundle\Http\Exception;
+namespace Surfnet\SamlBundle\Exception;
 
-use SAML2_Response_Exception_PreconditionNotMetException as PreconditionNotMetException;
-use Surfnet\SamlBundle\Exception\Exception;
-
-class NoAuthnContextSamlResponseException extends PreconditionNotMetException implements Exception
+interface Exception
 {
 }

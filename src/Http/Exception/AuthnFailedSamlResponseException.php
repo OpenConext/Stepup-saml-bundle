@@ -19,7 +19,8 @@
 namespace Surfnet\SamlBundle\Http\Exception;
 
 use SAML2_Response_Exception_PreconditionNotMetException as PreconditionNotMetException;
+use Surfnet\SamlBundle\Exception\Exception;
 
-class AuthnFailedSamlResponseException extends PreconditionNotMetException
+class AuthnFailedSamlResponseException extends PreconditionNotMetException implements Exception
 {
 }
