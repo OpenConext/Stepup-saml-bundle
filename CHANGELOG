@@ -2,6 +2,9 @@
 VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENTED.
 ===================================================================================
 
+   Version 2.7 - Fixed HTTP encoding scheme. Introduced concept of received AuthnRequest.
+      20/02/2017 15:42  2.7.0  initial release
+
    Version 2.6 - Make configurable which attribute set to construct
       12/12/2016 13:31  2.6.3  Revert previous hotfix as it imposes a too strict dependency range for SAML2
       12/12/2016 11:28  2.6.2  Update SAML2 for security hotfix
