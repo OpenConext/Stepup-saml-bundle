@@ -25,7 +25,6 @@ use Surfnet\SamlBundle\Exception\RuntimeException;
 /**
  * Decorates a PSR logger and adds information pertaining to a SAML request procedure to each message's context.
  *
- * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 final class SamlAuthenticationLogger implements LoggerInterface
