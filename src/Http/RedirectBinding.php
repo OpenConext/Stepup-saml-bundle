@@ -35,7 +35,7 @@ use XMLSecurityKey;
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) - not much we can do about it
  * @see https://www.pivotaltracker.com/story/show/83028366
  */
-class RedirectBinding
+class RedirectBinding implements HttpBinding
 {
     /**
      * @var \Psr\Log\LoggerInterface
@@ -268,6 +268,11 @@ class RedirectBinding
         return $this->processSignedRequest($request);
     }
 
+    /**
+     * @deprecated Please use the `createResponseFor` method instead
+     * @param AuthnRequest $request
+     * @return RedirectResponse
+     */
     public function createRedirectResponseFor(AuthnRequest $request)
     {
         return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
@@ -312,5 +317,14 @@ class RedirectBinding
     private function getFullRequestUri(Request $request)
     {
         return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
+    }
+
+    /**
+     * @param AuthnRequest $request
+     * @return RedirectResponse
+     */
+    public function createResponseFor(AuthnRequest $request)
+    {
+        return $this->createRedirectResponseFor($request);
     }
 }

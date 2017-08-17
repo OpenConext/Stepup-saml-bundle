@@ -24,6 +24,7 @@ use SAML2_DOMDocumentFactory;
 use SAML2_Message;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
+use XMLSecurityKey;
 
 final class ReceivedAuthnRequest
 {
@@ -31,6 +32,11 @@ final class ReceivedAuthnRequest
      * @var SAML2_AuthnRequest
      */
     private $request;
+
+    /**
+     * @var string|null
+     */
+    private $signatureValue = null;
 
     private function __construct(SAML2_AuthnRequest $request)
     {
@@ -194,5 +200,34 @@ final class ReceivedAuthnRequest
     {
         $this->request->setRequesterID($requesterIds);
         $this->request->setProxyCount($proxyCount);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSignatureMethod()
+    {
+        return $this->request->getSignatureMethod();
+    }
+
+    /**
+     * @param string $signature
+     */
+    public function setSignature($signature)
+    {
+        $this->signatureValue = $signature;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSignature()
+    {
+        return $this->signatureValue;
+    }
+
+    public function verify(XMLSecurityKey $key)
+    {
+        return $this->request->validate($key);
     }
 }
