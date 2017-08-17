@@ -66,7 +66,7 @@ class SignatureVerifier
         ));
 
         foreach ($x509Keys as $key) {
-            if ($this->isQuerySignedWith($query, $key)) {
+            if ($this->isRequestSignedWith($query, $key)) {
                 return true;
             }
         }

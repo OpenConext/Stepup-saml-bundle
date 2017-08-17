@@ -23,7 +23,7 @@ use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 
-final class ReceivedAuthnRequestQueryString
+final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
 {
     const PARAMETER_REQUEST = 'SAMLRequest';
     const PARAMETER_SIGNATURE = 'Signature';

@@ -22,6 +22,12 @@ services:
         class:   Surfnet\SamlBundle\Entity\IdentityProvider
         factory: ['@surfnet_saml.configuration.hosted_entities', getIdentityProvider]
 
+    surfnet_saml.http.binding_factory:
+        class: Surfnet\SamlBundle\Http\HttpBindingFactory
+        arguments:
+            - '@surfnet_saml.http.redirect_binding'
+            - '@surfnet_saml.http.post_binding'
+
     surfnet_saml.http.redirect_binding:
         class: Surfnet\SamlBundle\Http\RedirectBinding
         arguments:

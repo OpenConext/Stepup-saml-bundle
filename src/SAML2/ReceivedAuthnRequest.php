@@ -32,6 +32,11 @@ final class ReceivedAuthnRequest
      */
     private $request;
 
+    /**
+     * @var string|null
+     */
+    private $signatureValue = null;
+
     private function __construct(SAML2_AuthnRequest $request)
     {
         $this->request = $request;
@@ -54,7 +59,7 @@ final class ReceivedAuthnRequest
         $previous = libxml_disable_entity_loader(true);
         $document = SAML2_DOMDocumentFactory::fromString($decodedSamlRequest);
         libxml_disable_entity_loader($previous);
-
+        
         $authnRequest = SAML2_Message::fromXML($document->firstChild);
 
         if (!$authnRequest instanceof SAML2_AuthnRequest) {
@@ -194,5 +199,29 @@ final class ReceivedAuthnRequest
     {
         $this->request->setRequesterID($requesterIds);
         $this->request->setProxyCount($proxyCount);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSignatureMethod()
+    {
+        return $this->request->getSignatureMethod();
+    }
+
+    /**
+     * @param string $signature
+     */
+    public function setSignature($signature)
+    {
+        $this->signatureValue = $signature;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSignature()
+    {
+        return $this->signatureValue;
     }
 }
