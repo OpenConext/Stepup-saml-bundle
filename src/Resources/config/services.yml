@@ -39,6 +39,9 @@ services:
         class: Surfnet\SamlBundle\Http\PostBinding
         arguments:
             - '@surfnet_saml.saml2.response_processor'
+            - '@logger'
+            - '@surfnet_saml.signing.signature_verifier'
+            - '@?surfnet_saml.entity.entity_repository'
 
     surfnet_saml.metadata_factory:
         class: Surfnet\SamlBundle\Metadata\MetadataFactory

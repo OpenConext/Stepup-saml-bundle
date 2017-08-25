@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Http;
 
+use LogicException;
 use Psr\Log\LoggerInterface;
 use SAML2_Assertion as Assertion;
 use SAML2_Configuration_Destination;
@@ -146,10 +147,6 @@ class PostBinding implements HttpBinding
             ReceivedAuthnRequestPost::PARAMETER_RELAY_STATE => $request->request->get('RelayState'),
         ];
         $receivedRequest = ReceivedAuthnRequestPost::parse($params);
-
-        if (!$receivedRequest->isSigned()) {
-            throw new BadRequestHttpException('The SAMLRequest is expected to be signed but it was not');
-        }
 
         $authnRequest = ReceivedAuthnRequest::from($receivedRequest->getDecodedSamlRequest());
 

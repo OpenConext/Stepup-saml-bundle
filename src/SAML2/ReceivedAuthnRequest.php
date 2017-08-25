@@ -33,11 +33,6 @@ final class ReceivedAuthnRequest
      */
     private $request;
 
-    /**
-     * @var string|null
-     */
-    private $signatureValue = null;
-
     private function __construct(SAML2_AuthnRequest $request)
     {
         $this->request = $request;
@@ -210,21 +205,21 @@ final class ReceivedAuthnRequest
         return $this->request->getSignatureMethod();
     }
 
-    /**
-     * @param string $signature
-     */
-    public function setSignature($signature)
-    {
-        $this->signatureValue = $signature;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSignature()
-    {
-        return $this->signatureValue;
-    }
+//    /**
+//     * @param string $signature
+//     */
+//    public function setSignature($signature)
+//    {
+//        $this->signatureValue = $signature;
+//    }
+//
+//    /**
+//     * @return string|null
+//     */
+//    public function getSignature()
+//    {
+//        return $this->signatureValue;
+//    }
 
     public function verify(XMLSecurityKey $key)
     {
