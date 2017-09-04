@@ -64,94 +64,18 @@ class ReceivedAuthnRequestPostTest extends TestCase
         $this->assertEquals('/index.php', $authnRequest->getRelayState());
     }
 
-//    /**
-//     * @test
-//     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidRequestException
-//     * @expectedExceptionMessage Failed decoding SAML request, did not receive a valid base64 string
-//     */
-//    public function it_rejects_malformed_saml_request()
-//    {
-//        $parameters = [
-//            'SAMLRequest' => 'this=notvalid==',
-//            'RelayState' => '/index.php',
-//        ];
-//        ReceivedAuthnRequestPost::parse($parameters);
-//    }
-//
-//    /**
-//     * @test
-//     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestPostException
-//     * @expectedExceptionMessage Invalid ReceivedAuthnRequest: AuthnRequest contains a signature algorithm but not a signature
-//     */
-//    public function it_rejects_request_with_missing_signature()
-//    {
-//        $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/invalid-missing-signature-value.xml'));
-//        $parameters = [
-//            'SAMLRequest' => base64_encode($samlRequest),
-//            'RelayState' => '/index.php',
-//        ];
-//        ReceivedAuthnRequestPost::parse($parameters);
-//    }
-//
-//    /**
-//     * @test
-//     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestPostException
-//     * @expectedExceptionMessage Invalid ReceivedAuthnRequest:: signature is not base64 encoded correctly
-//     */
-//    public function it_rejects_request_with_malformed_signature()
-//    {
-//        $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/invalid-malformed-signature-value.xml'));
-//        $parameters = [
-//            'SAMLRequest' => base64_encode($samlRequest),
-//            'RelayState' => '/index.php',
-//        ];
-//        ReceivedAuthnRequestPost::parse($parameters);
-//    }
-//
-//    /**
-//     * @test
-//     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestPostException
-//     * @expectedExceptionMessage Invalid ReceivedAuthnRequest: AuthnRequest contains a signature algorithm but not a signature
-//     */
-//    public function it_rejects_request_with_empty_signature()
-//    {
-//        $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/invalid-empty-signature-value.xml'));
-//        $parameters = [
-//            'SAMLRequest' => base64_encode($samlRequest),
-//            'RelayState' => '/index.php',
-//        ];
-//        ReceivedAuthnRequestPost::parse($parameters);
-//    }
-//
-//    /**
-//     * @test
-//     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestPostException
-//     * @expectedExceptionMessage Invalid ReceivedAuthnRequest: AuthnRequest contains a signature but not a signature algorithm
-//     */
-//    public function it_rejects_request_with_missing_signing_algorithm()
-//    {
-//        $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/invalid-missing-signing-algorithm.xml'));
-//        $parameters = [
-//            'SAMLRequest' => base64_encode($samlRequest),
-//            'RelayState' => '/index.php',
-//        ];
-//        ReceivedAuthnRequestPost::parse($parameters);
-//    }
-//
-//    /**
-//     * @test
-//     * @expectedException \Surfnet\SamlBundle\Exception\RuntimeException
-//     * @expectedExceptionMessage Cannot decode signature: SAMLRequest is not signed
-//     */
-//    public function it_can_not_get_a_decoded_signature_of_an_unsigned_request()
-//    {
-//        $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/valid-unsigned.xml'));
-//        $parameters = [
-//            'SAMLRequest' => base64_encode($samlRequest),
-//            'RelayState' => '/index.php',
-//        ];
-//        $authnRequest = ReceivedAuthnRequestPost::parse($parameters);
-//        $authnRequest->getDecodedSignature();
-//    }
+    /**
+     * @test
+     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidRequestException
+     * @expectedExceptionMessage Failed decoding SAML request, did not receive a valid base64 string
+     */
+    public function it_rejects_malformed_saml_request()
+    {
+        $parameters = [
+            'SAMLRequest' => 'this=notvalid==',
+            'RelayState' => '/index.php',
+        ];
+        ReceivedAuthnRequestPost::parse($parameters);
+    }
 
 }
