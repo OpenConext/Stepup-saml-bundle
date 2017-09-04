@@ -158,7 +158,7 @@ MESSAGE;
 
         $requestUri = 'https://my-service-provider.example?'
             . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=signature'
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => $requestUri]);
@@ -187,7 +187,7 @@ MESSAGE;
 
         $requestUri = 'https://my-service-provider.example?'
             . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=signature'
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
         ;
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => $requestUri]);
@@ -248,7 +248,7 @@ MESSAGE;
 
         $requestUri = 'https://my-service-provider.example?'
             . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
-            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=signature'
+            . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
         ;
         $request = new Request([], [], [], [], [], ['REQUEST_URI' => $requestUri]);
