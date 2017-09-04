@@ -20,6 +20,7 @@ namespace Surfnet\SamlBundle\Http;
 
 use LogicException;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use SAML2_Assertion as Assertion;
 use SAML2_Configuration_Destination;
 use SAML2_Const;
@@ -184,6 +185,8 @@ class PostBinding implements HttpBinding
 
     public function createResponseFor(AuthnRequest $request)
     {
-        // TODO: Implement createResponseFor() method.
+        throw new RuntimeException(
+            'Not implemented: caller should implement the response for POST binding'
+        );
     }
 }
