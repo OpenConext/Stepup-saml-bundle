@@ -197,30 +197,6 @@ final class ReceivedAuthnRequest
         $this->request->setProxyCount($proxyCount);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSignatureMethod()
-    {
-        return $this->request->getSignatureMethod();
-    }
-
-//    /**
-//     * @param string $signature
-//     */
-//    public function setSignature($signature)
-//    {
-//        $this->signatureValue = $signature;
-//    }
-//
-//    /**
-//     * @return string|null
-//     */
-//    public function getSignature()
-//    {
-//        return $this->signatureValue;
-//    }
-
     public function verify(XMLSecurityKey $key)
     {
         return $this->request->validate($key);
