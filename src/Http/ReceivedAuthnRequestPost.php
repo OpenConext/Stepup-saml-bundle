@@ -112,6 +112,7 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
     /**
      * @param XMLSecurityKey $key
      * @return bool
+     * @throws \Exception when signature is invalid (@see SAML2_Utils::validateSignature)
      */
     public function verify(XMLSecurityKey $key)
     {

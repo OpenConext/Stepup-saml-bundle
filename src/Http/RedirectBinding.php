@@ -245,9 +245,11 @@ class RedirectBinding implements HttpBinding
         }
 
         $serviceProvider = $this->entityRepository->getServiceProvider($authnRequest->getServiceProvider());
+
+        // Note: verifyIsSignedBy throws an Exception when the signature does not match.
         if (!$this->signatureVerifier->verifyIsSignedBy($query, $serviceProvider)) {
             throw new BadRequestHttpException(
-                'The SAMLRequest has been signed, but the signature could not be validated'
+                'The SAMLRequest has been signed, but the signature format is not supported'
             );
         }
 
@@ -305,7 +307,7 @@ class RedirectBinding implements HttpBinding
         )
         ) {
             throw new BadRequestHttpException(
-                'The SAMLRequest has been signed, but the signature could not be validated'
+                'The SAMLRequest has been signed, but the signature format is not supported'
             );
         }
     }

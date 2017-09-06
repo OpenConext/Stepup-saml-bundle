@@ -179,7 +179,7 @@ MESSAGE;
     {
         $this->setExpectedException(
             '\Symfony\Component\HttpKernel\Exception\BadRequestHttpException',
-            'signature could not be validated'
+            'signature format is not supported'
         );
 
         $mockSignatureVerifier = m::mock('\Surfnet\SamlBundle\Signing\SignatureVerifier');

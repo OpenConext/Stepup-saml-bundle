@@ -197,6 +197,11 @@ final class ReceivedAuthnRequest
         $this->request->setProxyCount($proxyCount);
     }
 
+    /**
+     * @param XMLSecurityKey $key
+     * @return bool
+     * @throws \Exception when signature is invalid (@see SAML2_Utils::validateSignature)
+     */
     public function verify(XMLSecurityKey $key)
     {
         return $this->request->validate($key);
