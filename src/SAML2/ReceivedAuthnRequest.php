@@ -188,6 +188,14 @@ final class ReceivedAuthnRequest
     }
 
     /**
+     * @return string
+     */
+    public function getAssertionConsumerServiceURL()
+    {
+        return $this->request->getAssertionConsumerServiceURL();
+    }
+
+    /**
      * @param array $requesterIds
      * @param int   $proxyCount
      */
