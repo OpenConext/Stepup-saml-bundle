@@ -2,6 +2,9 @@
 VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENTED.
 ===================================================================================
 
+   Version 2.9 - Support for Symfony 3
+      25/09/2017 11:52  2.9.0  initial release
+
    Version 2.8 - POST binding support
       25/09/2017 11:21  2.8.2  Allow authentication using POST binding
 
