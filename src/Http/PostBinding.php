@@ -18,6 +18,9 @@
 
 namespace Surfnet\SamlBundle\Http;
 
+use LogicException;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 use SAML2_Assertion as Assertion;
 use SAML2_Configuration_Destination;
 use SAML2_Const;
@@ -27,24 +30,51 @@ use SAML2_Response_Exception_PreconditionNotMetException as PreconditionNotMetEx
 use SAML2_Response_Processor as ResponseProcessor;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
+use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Http\Exception\AuthnFailedSamlResponseException;
 use Surfnet\SamlBundle\Http\Exception\NoAuthnContextSamlResponseException;
+use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
+use Surfnet\SamlBundle\SAML2\AuthnRequest;
+use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
+use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class PostBinding
+class PostBinding implements HttpBinding
 {
     /**
      * @var \SAML2_Response_Processor
      */
     private $responseProcessor;
 
-    public function __construct(ResponseProcessor $responseProcessor)
-    {
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var \SAML2_Certificate_KeyLoader
+     */
+    private $signatureVerifier;
+
+    /**
+     * @var \Surfnet\SamlBundle\Entity\ServiceProviderRepository
+     */
+    private $entityRepository;
+
+    public function __construct(
+        ResponseProcessor $responseProcessor,
+        LoggerInterface $logger,
+        SignatureVerifier $signatureVerifier,
+        ServiceProviderRepository $repository = null
+    ) {
         $this->responseProcessor = $responseProcessor;
+        $this->logger = $logger;
+        $this->signatureVerifier = $signatureVerifier;
+        $this->entityRepository = $repository;
     }
 
     /**
@@ -96,5 +126,69 @@ class PostBinding
         }
 
         return $assertions->getOnlyElement();
+    }
+
+    public function receiveSignedAuthnRequestFrom(Request $request)
+    {
+        if (!$this->entityRepository) {
+            throw new LogicException(
+                'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
+            );
+        }
+
+        if (!$request->isMethod(Request::METHOD_POST)) {
+            throw new BadRequestHttpException(sprintf(
+                'Could not receive AuthnRequest from HTTP Request: expected a POST method, got %s',
+                $request->getMethod()
+            ));
+        }
+
+        $params = [
+            ReceivedAuthnRequestPost::PARAMETER_REQUEST => $request->request->get('SAMLRequest'),
+            ReceivedAuthnRequestPost::PARAMETER_RELAY_STATE => $request->request->get('RelayState'),
+        ];
+        $receivedRequest = ReceivedAuthnRequestPost::parse($params);
+
+        $authnRequest = ReceivedAuthnRequest::from($receivedRequest->getDecodedSamlRequest());
+
+        $currentUri = $this->getFullRequestUri($request);
+        if (!$authnRequest->getDestination() === $currentUri) {
+            throw new BadRequestHttpException(sprintf(
+                'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
+                $currentUri,
+                $authnRequest->getDestination()
+            ));
+        }
+
+        if (!$this->entityRepository->hasServiceProvider($authnRequest->getServiceProvider())) {
+            throw new UnknownServiceProviderException($authnRequest->getServiceProvider());
+        }
+
+        $serviceProvider = $this->entityRepository->getServiceProvider($authnRequest->getServiceProvider());
+
+        // Note: verifyIsSignedBy throws an Exception when the signature does not match.
+        if (!$this->signatureVerifier->verifyIsSignedBy($receivedRequest, $serviceProvider)) {
+            throw new BadRequestHttpException(
+                'The SAMLRequest has been signed, but the signature format is not supported'
+            );
+        }
+
+        return $authnRequest;
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    private function getFullRequestUri(Request $request)
+    {
+        return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
+    }
+
+    public function createResponseFor(AuthnRequest $request)
+    {
+        throw new RuntimeException(
+            'Not implemented: caller should implement the response for POST binding'
+        );
     }
 }

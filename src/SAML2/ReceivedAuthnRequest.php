@@ -24,6 +24,7 @@ use SAML2_DOMDocumentFactory;
 use SAML2_Message;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
+use XMLSecurityKey;
 
 final class ReceivedAuthnRequest
 {
@@ -187,6 +188,14 @@ final class ReceivedAuthnRequest
     }
 
     /**
+     * @return string
+     */
+    public function getAssertionConsumerServiceURL()
+    {
+        return $this->request->getAssertionConsumerServiceURL();
+    }
+
+    /**
      * @param array $requesterIds
      * @param int   $proxyCount
      */
@@ -194,5 +203,15 @@ final class ReceivedAuthnRequest
     {
         $this->request->setRequesterID($requesterIds);
         $this->request->setProxyCount($proxyCount);
+    }
+
+    /**
+     * @param XMLSecurityKey $key
+     * @return bool
+     * @throws \Exception when signature is invalid (@see SAML2_Utils::validateSignature)
+     */
+    public function verify(XMLSecurityKey $key)
+    {
+        return $this->request->validate($key);
     }
 }

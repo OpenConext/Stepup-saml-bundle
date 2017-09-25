@@ -22,8 +22,9 @@ use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
+use XMLSecurityKey;
 
-final class ReceivedAuthnRequestQueryString
+final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
 {
     const PARAMETER_REQUEST = 'SAMLRequest';
     const PARAMETER_SIGNATURE = 'Signature';
@@ -151,7 +152,6 @@ final class ReceivedAuthnRequestQueryString
 
             $parsedQueryString->signature = $parameters[self::PARAMETER_SIGNATURE];
             $parsedQueryString->signatureAlgorithm = $parameters[self::PARAMETER_SIGNATURE_ALGORITHM];
-
             return $parsedQueryString;
         }
 
@@ -272,5 +272,25 @@ final class ReceivedAuthnRequestQueryString
     public function getRelayState()
     {
         return $this->relayState;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSignedRequestPayload()
+    {
+        return $this->getSignedQueryString();
+    }
+
+    /**
+     * @param XMLSecurityKey $key
+     * @return bool
+     */
+    public function verify(XMLSecurityKey $key)
+    {
+        if ($key->verifySignature($this->getSignedRequestPayload(), $this->getDecodedSignature())) {
+            return true;
+        }
+        return false;
     }
 }
