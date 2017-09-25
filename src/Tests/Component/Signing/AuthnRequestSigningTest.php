@@ -187,11 +187,11 @@ AUTHNREQUEST_NO_SUBJECT;
         );
         $queryStringWithCustomEncoding = ReceivedAuthnRequestQueryString::parse($rawQueryWithCustomEncoding);
 
-        $isQueryWithDefaultEncodingSigned = $signatureVerifier->isQuerySignedWith(
+        $isQueryWithDefaultEncodingSigned = $signatureVerifier->isRequestSignedWith(
             $queryStringWithDefaultEncoding,
             $certificate
         );
-        $isQueryWithCustomEncodingSigned  = $signatureVerifier->isQuerySignedWith(
+        $isQueryWithCustomEncodingSigned  = $signatureVerifier->isRequestSignedWith(
             $queryStringWithCustomEncoding,
             $certificate
         );
@@ -229,7 +229,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $rawQueryWithDefaultEncoding = $this->encodeDataToSignWithPhpsHttpBuildQuery($queryParameters);
         $queryStringWithDefaultEncoding = ReceivedAuthnRequestQueryString::parse($rawQueryWithDefaultEncoding);
 
-        $isQuerySigned = $signatureVerifier->isQuerySignedWith($queryStringWithDefaultEncoding, $certificate);
+        $isQuerySigned = $signatureVerifier->isRequestSignedWith($queryStringWithDefaultEncoding, $certificate);
 
         $this->assertFalse($isQuerySigned,
             'The signature of a received AuthnRequest query string'

@@ -24,6 +24,7 @@ use SAML2_Certificate_KeyLoader as KeyLoader;
 use SAML2_Certificate_X509;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
+use Surfnet\SamlBundle\Http\SignatureVerifiable;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use XMLSecurityKey;
 
@@ -49,7 +50,7 @@ class SignatureVerifier
         $this->logger = $logger;
     }
 
-    public function verifyIsSignedBy(ReceivedAuthnRequestQueryString $query, ServiceProvider $serviceProvider)
+    public function verifyIsSignedBy(SignatureVerifiable $request, ServiceProvider $serviceProvider)
     {
         $this->logger->debug(sprintf('Extracting public keys for ServiceProvider "%s"', $serviceProvider->getEntityId()));
 
@@ -66,7 +67,7 @@ class SignatureVerifier
         ));
 
         foreach ($x509Keys as $key) {
-            if ($this->isQuerySignedWith($query, $key)) {
+            if ($this->isRequestSignedWith($request, $key)) {
                 return true;
             }
         }
@@ -77,17 +78,17 @@ class SignatureVerifier
     }
 
     /**
-     * @param ReceivedAuthnRequestQueryString $query
+     * @param SignatureVerifiable $request
      * @param SAML2_Certificate_X509 $publicKey
      * @return bool
      */
-    public function isQuerySignedWith(ReceivedAuthnRequestQueryString $query, SAML2_Certificate_X509 $publicKey)
+    public function isRequestSignedWith(SignatureVerifiable $request, SAML2_Certificate_X509 $publicKey)
     {
         $this->logger->debug(sprintf('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate()));
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
         $key->loadKey($publicKey->getCertificate());
 
-        if ($key->verifySignature($query->getSignedQueryString(), $query->getDecodedSignature())) {
+        if ($request->verify($key)) {
             $this->logger->debug('Signature VERIFIED');
             return true;
         }
