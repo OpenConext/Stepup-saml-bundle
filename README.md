@@ -29,6 +29,8 @@ Developed as part of the [SURFnet StepUp Gateway][2]
 ```yaml
 surfnet_saml:
     hosted:
+        attribute_dictionary:
+            ignore_unknown_attributes: false
         service_provider:
             enabled: true
             assertion_consumer_route: name_of_the_route_of_the_assertion_consumer_url

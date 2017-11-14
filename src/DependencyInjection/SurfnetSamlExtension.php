@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\DependencyInjection;
 
+use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -51,6 +52,10 @@ class SurfnetSamlExtension extends Extension
         $entityId = ['entity_id_route' => $configuration['metadata']['entity_id_route']];
         $serviceProvider  = array_merge($configuration['service_provider'], $entityId);
         $identityProvider = array_merge($configuration['identity_provider'], $entityId);
+
+        $container
+            ->getDefinition('surfnet_saml.saml.attribute_dictionary')
+            ->replaceArgument(0, $configuration['attribute_dictionary']['ignore_unknown_attributes']);
 
         $this->parseHostedSpConfiguration($serviceProvider, $container);
         $this->parseHostedIdpConfiguration($identityProvider, $container);
