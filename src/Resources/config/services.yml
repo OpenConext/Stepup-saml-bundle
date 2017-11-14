@@ -1,6 +1,8 @@
 services:
     surfnet_saml.saml.attribute_dictionary:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary
+        arguments:
+            - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
 
     surfnet_saml.configuration.metadata:
         class: Surfnet\SamlBundle\Metadata\MetadataConfiguration
