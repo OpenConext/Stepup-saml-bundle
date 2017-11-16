@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\DependencyInjection;
 
-use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
+use Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -147,6 +147,7 @@ class SurfnetSamlExtension extends Extension
     private function parseRemoteConfiguration(array $remoteConfiguration, ContainerBuilder $container)
     {
         $this->parseRemoteIdentityProviderConfiguration($remoteConfiguration['identity_provider'], $container);
+        $this->parseRemoteServiceProviderConfigurations($remoteConfiguration['service_providers'], $container);
     }
 
     /**
@@ -159,23 +160,77 @@ class SurfnetSamlExtension extends Extension
             return;
         }
 
-        $definition = new Definition('Surfnet\SamlBundle\Entity\IdentityProvider');
+        $definition = new Definition('\Surfnet\SamlBundle\Entity\IdentityProvider');
         $configuration = [
             'entityId' => $identityProvider['entity_id'],
             'ssoUrl' => $identityProvider['sso_url'],
         ];
 
-        if (isset($identityProvider['certificate_file']) && !isset($identityProvider['certificate'])) {
-            $configuration['certificateFile'] = $identityProvider['certificate_file'];
-        } elseif (isset($identityProvider['certificate'])) {
-            $configuration['certificateData'] = $identityProvider['certificate'];
-        } else {
-            throw new InvalidConfigurationException(
-                'Either surfnet_saml.remote.identity_provider.certificate_file or surfnet_saml.remote.identity_provider.certificate must be set.'
-            );
-        }
+        $configuration = array_merge(
+            $configuration,
+            $this->parseCertificateData('surfnet_saml.remote.identity_provider', $identityProvider)
+        );
 
         $definition->setArguments([$configuration]);
         $container->setDefinition('surfnet_saml.remote.idp', $definition);
+    }
+
+    /**
+     * @param array $serviceProviders
+     * @param $container
+     * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
+     */
+    private function parseRemoteServiceProviderConfigurations(array $serviceProviders, ContainerBuilder $container)
+    {
+        $definitions = array_map(function ($config) {
+            return $this->parseRemoteServiceProviderConfiguration($config);
+        }, $serviceProviders);
+
+        $definition = new Definition('\Surfnet\SamlBundle\Entity\StaticServiceProviderRepository', [
+            $definitions
+        ]);
+        $container->setDefinition('surfnet_saml.remote.service_providers', $definition);
+    }
+
+    /**
+     * @param array $serviceProvider
+     *
+     * @return Definition
+     * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
+     */
+    private function parseRemoteServiceProviderConfiguration(
+        $serviceProvider
+    ) {
+        $configuration = $this->parseCertificateData('surfnet_saml.remote.service_provider[]', $serviceProvider);
+        $configuration['entityId'] = $serviceProvider['entity_id'];
+        $configuration['assertionConsumerUrl'] = $serviceProvider['assertion_consumer_service_url'];
+
+        $definition = new Definition('\Surfnet\SamlBundle\Entity\ServiceProvider', [$configuration]);
+        $definition->setPublic(false);
+
+        return $definition;
+    }
+
+    /**
+     * @param string $path
+     *   The path where to espect the configuration.
+     * @param array $provider
+     *   The provider configuration.
+     *
+     * @return array
+     * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
+     *   the certificate data
+     */
+    private function parseCertificateData($path, array $provider)
+    {
+        if (isset($provider['certificate_file']) && !isset($provider['certificate'])) {
+            $configuration['certificateFile'] = $provider['certificate_file'];
+        } elseif (isset($provider['certificate'])) {
+            $configuration['certificateData'] = $provider['certificate'];
+        } else {
+            throw SamlInvalidConfigurationException::missingCertificate($path);
+        }
+
+        return $configuration;
     }
 }

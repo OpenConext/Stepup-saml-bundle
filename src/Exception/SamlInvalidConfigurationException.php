@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2017 SURFnet bv
+ * Copyright 2014 SURFnet bv
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,14 @@
  * limitations under the License.
  */
 
-namespace Surfnet\SamlBundle\Http;
+namespace Surfnet\SamlBundle\Exception;
 
-use Surfnet\SamlBundle\SAML2\AuthnRequest;
-use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
-/**
- * Interface HttpBinding
- *
- *
- *
- * @package Surfnet\SamlBundle\Http
- */
-interface HttpBinding
+class SamlInvalidConfigurationException extends InvalidConfigurationException implements Exception
 {
-    /**
-     * @param Request $request
-     *
-     * @return ReceivedAuthnRequest
-     */
-    public function receiveSignedAuthnRequestFrom(Request $request);
-
-    public function createResponseFor(AuthnRequest $request);
+    public static function missingCertificate($path)
+    {
+        return new self(sprintf('Either %s.certificate_file or %s.certificate must be set.', $path, $path));
+    }
 }
