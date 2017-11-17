@@ -37,6 +37,33 @@ class AttributeDictionary
     private $attributeDefinitionsByUrn = [];
 
     /**
+     * Ignore unknown attributes coming from the IDP
+     *
+     * @var bool
+     */
+    private $ignoreUnknowAttributes = false;
+
+    /**
+     * AttributeDictionary constructor.
+     *
+     * @param bool $ignoreUnknowAttributes
+     */
+    public function __construct($ignoreUnknowAttributes = false)
+    {
+        $this->ignoreUnknowAttributes = $ignoreUnknowAttributes;
+    }
+
+    /**
+     * Whether to ignore unknown SAML attributes.
+     *
+     * @return bool
+     */
+    public function ignoreUnknownAttributes()
+    {
+        return $this->ignoreUnknowAttributes;
+    }
+
+    /**
      * @param AttributeDefinition $attributeDefinition
      *
      * We store the definitions indexed both by name and by urn to ensure speedy lookups due to the amount of
