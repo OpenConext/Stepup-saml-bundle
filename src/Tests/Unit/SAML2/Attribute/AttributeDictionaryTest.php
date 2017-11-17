@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 
@@ -142,5 +143,46 @@ class AttributeDictionaryTest extends TestCase
             $foundDefinition,
             'Expected to find an attribute definition, but found none'
         );
+    }
+
+    /**
+     * @test
+     * @group AttributeDictionary
+     * @expectedException \Surfnet\SamlBundle\Exception\UnknownUrnException
+     */
+    public function shouldThrowExceptionForUnknownAttrib()
+    {
+        $oidAttributeUrn = 'urn:oid:0.0.0.0.0.0.0.0.0';
+
+        $existingOidAttributeDefinition = new AttributeDefinition(
+            'existingOidAttribute',
+            'urn:mace:some:attribute',
+            $oidAttributeUrn
+        );
+        $attributeDictionary = new AttributeDictionary();
+        $attributeDictionary->addAttributeDefinition($existingOidAttributeDefinition);
+        $attributeDictionary->getAttributeDefinitionByUrn('unknown:0.0.0.0.0');
+    }
+
+    /**
+     * @test
+     * @group AttributeDictionary
+     */
+    public function shouldIgnoreUnknownAttributes()
+    {
+        $attributeDictionary = new AttributeDictionary(true);
+        $this->assertTrue($attributeDictionary->ignoreUnknownAttributes());
+    }
+
+    /**
+     * @test
+     * @group AttributeDictionary
+     */
+    public function shouldNotIgnoreUnknownAttributes()
+    {
+        $attributeDictionary = new AttributeDictionary();
+        $this->assertFalse($attributeDictionary->ignoreUnknownAttributes());
+        $attributeDictionary = new AttributeDictionary(false);
+        $this->assertFalse($attributeDictionary->ignoreUnknownAttributes());
     }
 }
