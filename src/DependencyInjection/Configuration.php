@@ -52,6 +52,18 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->arrayNode('hosted')
                 ->children()
+                    ->arrayNode('attribute_dictionary')
+                        ->canBeEnabled()
+                        ->children()
+                            ->booleanNode('ignore_unknown_attributes')
+                            ->defaultFalse()
+                            ->info(
+                                'If the IDP provides atttributes which are not in the dictionary the SAML assertion'
+                                . 'will fail with an UnknownUrnException. Unless this value is true.'
+                            )
+                            ->end()
+                        ->end()
+                    ->end()
                     ->arrayNode('service_provider')
                         ->canBeEnabled()
                         ->children()
