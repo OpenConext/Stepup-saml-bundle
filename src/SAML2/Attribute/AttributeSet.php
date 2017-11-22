@@ -21,6 +21,7 @@ namespace Surfnet\SamlBundle\SAML2\Attribute;
 use ArrayIterator;
 use SAML2_Assertion;
 use Surfnet\SamlBundle\Exception\RuntimeException;
+use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\Filter\AttributeFilter;
 
 class AttributeSet implements AttributeSetFactory, AttributeSetInterface
@@ -35,8 +36,17 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
         $attributeSet = new AttributeSet();
 
         foreach ($assertion->getAttributes() as $urn => $attributeValue) {
-            $attribute = new Attribute($attributeDictionary->getAttributeDefinitionByUrn($urn), $attributeValue);
-            $attributeSet->initializeWith($attribute);
+            try {
+                $attribute = new Attribute(
+                    $attributeDictionary->getAttributeDefinitionByUrn($urn),
+                    $attributeValue
+                );
+                $attributeSet->initializeWith($attribute);
+            } catch (UnknownUrnException $e) {
+                if (!$attributeDictionary->ignoreUnknownAttributes()) {
+                    throw $e;
+                }
+            }
         }
 
         return $attributeSet;

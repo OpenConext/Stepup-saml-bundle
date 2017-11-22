@@ -52,6 +52,18 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->arrayNode('hosted')
                 ->children()
+                    ->arrayNode('attribute_dictionary')
+                        ->canBeEnabled()
+                        ->children()
+                            ->booleanNode('ignore_unknown_attributes')
+                            ->defaultFalse()
+                            ->info(
+                                'If the IDP provides atttributes which are not in the dictionary the SAML assertion'
+                                . 'will fail with an UnknownUrnException. Unless this value is true.'
+                            )
+                            ->end()
+                        ->end()
+                    ->end()
                     ->arrayNode('service_provider')
                         ->canBeEnabled()
                         ->children()
@@ -126,6 +138,7 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('remote');
 
         $this->addRemoteIdentityProviderSection($remoteNode);
+        $this->addRemoteServiceProvidersSection($remoteNode);
     }
 
     private function addRemoteIdentityProviderSection(ArrayNodeDefinition $remoteNode)
@@ -152,6 +165,36 @@ class Configuration implements ConfigurationInterface
                         ->info(
                             'A file containing the certificate used to sign the AuthnResponse with'
                         )
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function addRemoteServiceProvidersSection(ArrayNodeDefinition $remoteNode)
+    {
+        $remoteNode
+            ->children()
+                ->arrayNode('service_providers')
+                    ->arrayPrototype()
+                            ->children()
+                                ->scalarNode('entity_id')
+                                    ->isRequired()
+                                    ->info('The EntityID of the remote service provider')
+                                ->end()
+                                ->scalarNode('certificate')
+                                    ->info(
+                                        'The contents of the certificate used to sign and verify the AuthnResponse with'
+                                    )
+                                ->end()
+                                ->scalarNode('certificate_file')
+                                    ->info(
+                                        'A file containing the certificate used to sign and verify the AuthnResponse with'
+                                    )
+                                ->end()
+                                ->scalarNode('assertion_consumer_service_url')
+                                    ->isRequired()
+                                ->end()
+                            ->end()
                     ->end()
                 ->end()
             ->end();
