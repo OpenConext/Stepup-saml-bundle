@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5f1f5fd5-4099-4c81-bbc4-ce377473c5cf" name="Default" comment="" />
+    <list default="true" id="4be79d98-3d14-4bc9-89cf-2a5d18c98797" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,90 +14,95 @@
       <file leaf-file-name="PostBinding.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Http/PostBinding.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1683">
-              <caret line="133" column="37" lean-forward="false" selection-start-line="133" selection-start-column="37" selection-end-line="133" selection-end-column="37" />
-              <folding>
-                <element signature="e#639#658#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SignatureVerifier.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Signing/SignatureVerifier.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="72" column="9" lean-forward="false" selection-start-line="72" selection-start-column="9" selection-end-line="72" selection-end-column="9" />
+            <state relative-caret-position="2880">
+              <caret line="192" column="5" lean-forward="false" selection-start-line="192" selection-start-column="5" selection-end-line="192" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SignatureVerifiable.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Http/SignatureVerifiable.php">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+            <state relative-caret-position="30">
+              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReceivedAuthnRequestPost.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Http/ReceivedAuthnRequestPost.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1717">
-              <caret line="118" column="43" lean-forward="false" selection-start-line="118" selection-start-column="43" selection-end-line="118" selection-end-column="43" />
-              <folding />
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="390">
+                <caret line="60" column="64" lean-forward="true" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
+                <folding>
+                  <marker date="1511364628000" expanded="true" signature="1001:1035" ph="surfnet_saml: &lt;2 keys&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1001:2326" ph="surfnet_saml: &lt;2 keys&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1019:1035" ph="hosted: &lt;3 keys&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1035:1101" ph="attribute_dictionary: &lt;1 key&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1096:1101" ph="false" />
+                  <marker date="1511364628000" expanded="true" signature="1110:1345" ph="service_provider: &lt;4 keys&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1149:1153" ph="true" />
+                  <marker date="1511364628000" expanded="true" signature="1192:1239" ph="name_of_t…nsumer_url" />
+                  <marker date="1511364628000" expanded="true" signature="1264:1291" ph="%surfnet_…publickey%" />
+                  <marker date="1511364628000" expanded="true" signature="1317:1345" ph="%surfnet_…rivatekey%" />
+                  <marker date="1511364628000" expanded="true" signature="1354:1648" ph="identity_provider: &lt;5 keys&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1394:1398" ph="true" />
+                  <marker date="1511364628000" expanded="true" signature="1440:1473" ph="service.n…repository" />
+                  <marker date="1511364628000" expanded="true" signature="1497:1540" ph="name_of_t…ign_on_url" />
+                  <marker date="1511364628000" expanded="true" signature="1565:1593" ph="%surfnet_…publickey%" />
+                  <marker date="1511364628000" expanded="true" signature="1619:1648" ph="%surfnet_…rivatekey%" />
+                  <marker date="1511364628000" expanded="true" signature="1657:1847" ph="metadata: &lt;3 keys&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1696:1729" ph="name_of_t…tadata_url" />
+                  <marker date="1511364628000" expanded="true" signature="1754:1787" ph="%surfnet_…publickey%" />
+                  <marker date="1511364628000" expanded="true" signature="1813:1847" ph="%surfnet_…rivatekey%" />
+                  <marker date="1511364628000" expanded="true" signature="1852:2326" ph="remote: &lt;2 keys&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1868:2089" ph="identity_provider: &lt;4 keys&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="1908:1912" ph="true" />
+                  <marker date="1511364628000" expanded="true" signature="1936:1971" ph="%surfnet_…entity_id%" />
+                  <marker date="1511364628000" expanded="true" signature="1993:2026" ph="%surfnet_…p_sso_url%" />
+                  <marker date="1511364628000" expanded="true" signature="2052:2089" ph="%surfnet_…rtificate%" />
+                  <marker date="1511364628000" expanded="true" signature="2098:2326" ph="service_providers: &lt;1 item&gt;" />
+                  <marker date="1511364628000" expanded="true" signature="2142:2178" ph="%surfnet_…entity_id%" />
+                  <marker date="1511364628000" expanded="true" signature="2211:2249" ph="%surfnet_…rtificate%" />
+                  <marker date="1511364628000" expanded="true" signature="2296:2326" ph="%surfnet_…te_sp_acs%" />
+                  <marker date="1511364628000" expanded="true" signature="3753:3893" ph="..." />
+                  <marker date="1511364628000" expanded="true" signature="3938:4224" ph="{...}" />
+                  <marker date="1511364628000" expanded="true" signature="3993:4222" ph="{...}" />
+                </folding>
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReceivedAuthnRequestQueryString.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Http/ReceivedAuthnRequestQueryString.php">
+      <file leaf-file-name="ServiceProviderRepository.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Entity/ServiceProviderRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4624">
-              <caret line="290" column="88" lean-forward="false" selection-start-line="290" selection-start-column="75" selection-end-line="290" selection-end-column="88" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReceivedAuthnRequest.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/SAML2/ReceivedAuthnRequest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="647">
-              <caret line="194" column="64" lean-forward="false" selection-start-line="194" selection-start-column="64" selection-end-line="194" selection-end-column="64" />
+            <state relative-caret-position="510">
+              <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="AuthnRequest.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/simplesamlphp/saml2/src/SAML2/AuthnRequest.php">
+        <entry file="file://$PROJECT_DIR$/src/SAML2/AuthnRequest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7718">
-              <caret line="454" column="32" lean-forward="false" selection-start-line="454" selection-start-column="20" selection-end-line="454" selection-end-column="32" />
+            <state relative-caret-position="630">
+              <caret line="42" column="23" lean-forward="false" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Message.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/simplesamlphp/saml2/src/SAML2/Message.php">
+      <file leaf-file-name="build.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2941">
-              <caret line="173" column="39" lean-forward="false" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Utils.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/vendor/simplesamlphp/saml2/src/SAML2/Utils.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
+            <state relative-caret-position="945">
+              <caret line="63" column="13" lean-forward="false" selection-start-line="63" selection-start-column="13" selection-end-line="63" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -106,29 +111,14 @@
       <file leaf-file-name="RedirectBinding.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Http/RedirectBinding.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3808">
-              <caret line="249" column="45" lean-forward="false" selection-start-line="249" selection-start-column="45" selection-end-line="249" selection-end-column="45" />
-              <folding>
-                <element signature="e#639#667#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="4950">
+              <caret line="330" column="5" lean-forward="false" selection-start-line="330" selection-start-column="5" selection-end-line="330" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>PostBind</find>
-      <find>LogicEx</find>
-      <find>verifySig</find>
-      <find>invalidRe</find>
-      <find>EntityId</find>
-      <find>UnknownService</find>
-      <find>validateSignature</find>
-      <find>getdecodedSig</find>
-      <find>getAssertion</find>
-    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -141,6 +131,7 @@
         <option value="$PROJECT_DIR$/src/Http/PostBinding.php" />
         <option value="$PROJECT_DIR$/src/Http/RedirectBinding.php" />
         <option value="$PROJECT_DIR$/src/SAML2/ReceivedAuthnRequest.php" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -154,10 +145,13 @@
     <handled-path value="$PROJECT_DIR$/vendor/ibuildings/qa-tools/node_modules" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="width" value="1600" />
-    <option name="height" value="864" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="2131" />
+    <option name="y" value="130" />
+    <option name="width" value="1920" />
+    <option name="height" value="1173" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -173,118 +167,24 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="Http" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="Http" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="Exception" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="SAML2" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="SAML2" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="Response" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="Signing" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="robrichards" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="robrichards" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="xmlseclibs" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="robrichards" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="xmlseclibs" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="simplesamlphp" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="simplesamlphp" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="saml2" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="simplesamlphp" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="saml2" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="Stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="vendor" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="simplesamlphp" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="saml2" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="SAML2" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="stepup-saml-bundle" type="b2602c69:ProjectViewProjectNode" />
+              <item name="stepup-saml-bundle" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../surf/Service-provider-registration" />
-    <property name="SearchEverywhereHistoryKey" value="AuthnRe&#9;FILE&#9;file:///home/steyn/repos/stepup/Stepup-saml-bundle/vendor/simplesamlphp/saml2/src/SAML2/AuthnRequest.php&#10;Authn&#9;FILE&#9;file:///home/steyn/repos/stepup/Stepup-saml-bundle/src/SAML2/ReceivedAuthnRequest.php&#10;Redirect&#9;FILE&#9;file:///home/steyn/repos/stepup/Stepup-saml-bundle/src/Http/RedirectBinding.php&#10;Saml2_Utils&#9;null&#9;null&#10;RedirectBinding&#9;FILE&#9;file:///home/steyn/repos/stepup/Stepup-saml-bundle/src/Http/RedirectBinding.php&#10;HttpBinding&#9;FILE&#9;file:///home/steyn/repos/stepup/Stepup-saml-bundle/src/Http/HttpBindingFactory.php&#10;ReceivedAuthnR&#9;FILE&#9;file:///home/steyn/repos/stepup/Stepup-saml-bundle/src/SAML2/ReceivedAuthnRequest.php&#10;BindingFac&#9;null&#9;null&#10;PreconditionNot&#9;null&#9;null" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -301,40 +201,33 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5f1f5fd5-4099-4c81-bbc4-ce377473c5cf" name="Default" comment="" />
-      <created>1504086309060</created>
+      <changelist id="4be79d98-3d14-4bc9-89cf-2a5d18c98797" name="Default" comment="" />
+      <created>1511364678582</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1504086309060</updated>
-      <workItem from="1504086310966" duration="622000" />
-      <workItem from="1504512054518" duration="9562000" />
-      <workItem from="1504698156021" duration="3301000" />
-      <workItem from="1504795065275" duration="921000" />
-      <workItem from="1505129321202" duration="44000" />
+      <updated>1511364678582</updated>
+      <workItem from="1511364683753" duration="197000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14450000" />
+    <option name="totallyTimeSpent" value="233000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1600" height="864" extended-state="6" />
+    <frame x="2131" y="130" width="1920" height="1173" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.6879022" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22736955" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24980111" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32985783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -348,6 +241,32 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -356,11 +275,69 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/Entity/ImmutableCollection/ServiceProviders.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="17" lean-forward="false" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Entity/StaticServiceProviderRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="1" lean-forward="false" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="390">
+            <caret line="60" column="64" lean-forward="true" selection-start-line="60" selection-start-column="64" selection-end-line="60" selection-end-column="64" />
+            <folding>
+              <marker date="1511364628000" expanded="true" signature="1001:1035" ph="surfnet_saml: &lt;2 keys&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1001:2326" ph="surfnet_saml: &lt;2 keys&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1019:1035" ph="hosted: &lt;3 keys&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1035:1101" ph="attribute_dictionary: &lt;1 key&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1096:1101" ph="false" />
+              <marker date="1511364628000" expanded="true" signature="1110:1345" ph="service_provider: &lt;4 keys&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1149:1153" ph="true" />
+              <marker date="1511364628000" expanded="true" signature="1192:1239" ph="name_of_t…nsumer_url" />
+              <marker date="1511364628000" expanded="true" signature="1264:1291" ph="%surfnet_…publickey%" />
+              <marker date="1511364628000" expanded="true" signature="1317:1345" ph="%surfnet_…rivatekey%" />
+              <marker date="1511364628000" expanded="true" signature="1354:1648" ph="identity_provider: &lt;5 keys&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1394:1398" ph="true" />
+              <marker date="1511364628000" expanded="true" signature="1440:1473" ph="service.n…repository" />
+              <marker date="1511364628000" expanded="true" signature="1497:1540" ph="name_of_t…ign_on_url" />
+              <marker date="1511364628000" expanded="true" signature="1565:1593" ph="%surfnet_…publickey%" />
+              <marker date="1511364628000" expanded="true" signature="1619:1648" ph="%surfnet_…rivatekey%" />
+              <marker date="1511364628000" expanded="true" signature="1657:1847" ph="metadata: &lt;3 keys&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1696:1729" ph="name_of_t…tadata_url" />
+              <marker date="1511364628000" expanded="true" signature="1754:1787" ph="%surfnet_…publickey%" />
+              <marker date="1511364628000" expanded="true" signature="1813:1847" ph="%surfnet_…rivatekey%" />
+              <marker date="1511364628000" expanded="true" signature="1852:2326" ph="remote: &lt;2 keys&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1868:2089" ph="identity_provider: &lt;4 keys&gt;" />
+              <marker date="1511364628000" expanded="true" signature="1908:1912" ph="true" />
+              <marker date="1511364628000" expanded="true" signature="1936:1971" ph="%surfnet_…entity_id%" />
+              <marker date="1511364628000" expanded="true" signature="1993:2026" ph="%surfnet_…p_sso_url%" />
+              <marker date="1511364628000" expanded="true" signature="2052:2089" ph="%surfnet_…rtificate%" />
+              <marker date="1511364628000" expanded="true" signature="2098:2326" ph="service_providers: &lt;1 item&gt;" />
+              <marker date="1511364628000" expanded="true" signature="2142:2178" ph="%surfnet_…entity_id%" />
+              <marker date="1511364628000" expanded="true" signature="2211:2249" ph="%surfnet_…rtificate%" />
+              <marker date="1511364628000" expanded="true" signature="2296:2326" ph="%surfnet_…te_sp_acs%" />
+              <marker date="1511364628000" expanded="true" signature="3753:3893" ph="..." />
+              <marker date="1511364628000" expanded="true" signature="3938:4224" ph="{...}" />
+              <marker date="1511364628000" expanded="true" signature="3993:4222" ph="{...}" />
+            </folding>
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/simplesamlphp/saml2/src/SAML2/Message.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2941">
           <caret line="173" column="39" lean-forward="false" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -368,9 +345,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1683">
           <caret line="133" column="37" lean-forward="false" selection-start-line="133" selection-start-column="37" selection-end-line="133" selection-end-column="37" />
-          <folding>
-            <element signature="e#639#658#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -378,7 +353,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
           <caret line="72" column="9" lean-forward="false" selection-start-line="72" selection-start-column="9" selection-end-line="72" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -386,7 +360,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -394,7 +367,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1717">
           <caret line="118" column="43" lean-forward="false" selection-start-line="118" selection-start-column="43" selection-end-line="118" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -402,7 +374,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4624">
           <caret line="290" column="88" lean-forward="false" selection-start-line="290" selection-start-column="75" selection-end-line="290" selection-end-column="88" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -410,7 +381,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7718">
           <caret line="454" column="32" lean-forward="false" selection-start-line="454" selection-start-column="20" selection-end-line="454" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -418,7 +388,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -426,9 +395,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3808">
           <caret line="249" column="45" lean-forward="false" selection-start-line="249" selection-start-column="45" selection-end-line="249" selection-end-column="45" />
-          <folding>
-            <element signature="e#639#667#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -436,7 +403,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2958">
           <caret line="194" column="64" lean-forward="false" selection-start-line="194" selection-start-column="64" selection-end-line="194" selection-end-column="64" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -444,9 +410,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#639#658#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -454,7 +418,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
           <caret line="72" column="9" lean-forward="false" selection-start-line="72" selection-start-column="9" selection-end-line="72" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -462,7 +425,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -470,7 +432,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="714">
           <caret line="57" column="35" lean-forward="false" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -478,7 +439,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1717">
           <caret line="118" column="43" lean-forward="false" selection-start-line="118" selection-start-column="43" selection-end-line="118" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -486,7 +446,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4624">
           <caret line="290" column="88" lean-forward="false" selection-start-line="290" selection-start-column="75" selection-end-line="290" selection-end-column="88" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -494,7 +453,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3128">
           <caret line="204" column="20" lean-forward="false" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -502,7 +460,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2941">
           <caret line="173" column="39" lean-forward="false" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -510,7 +467,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -518,9 +474,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3808">
           <caret line="249" column="45" lean-forward="false" selection-start-line="249" selection-start-column="45" selection-end-line="249" selection-end-column="45" />
-          <folding>
-            <element signature="e#639#667#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -528,9 +482,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#639#658#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -538,7 +490,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1156">
           <caret line="90" column="26" lean-forward="false" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -546,7 +497,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="29" column="20" lean-forward="false" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -554,7 +504,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="714">
           <caret line="57" column="35" lean-forward="false" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -562,7 +511,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1700">
           <caret line="117" column="5" lean-forward="false" selection-start-line="117" selection-start-column="5" selection-end-line="117" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -570,7 +518,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3162">
           <caret line="206" column="36" lean-forward="false" selection-start-line="206" selection-start-column="36" selection-end-line="206" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -578,7 +525,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2941">
           <caret line="173" column="39" lean-forward="false" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -586,7 +532,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -594,9 +539,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3791">
           <caret line="248" column="0" lean-forward="false" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="88" />
-          <folding>
-            <element signature="e#639#667#0#PHP" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -604,7 +547,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="30" column="10" lean-forward="false" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -612,7 +554,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="20" column="60" lean-forward="false" selection-start-line="20" selection-start-column="60" selection-end-line="20" selection-end-column="60" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -620,9 +561,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="e#649#737#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -630,9 +568,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="25" column="20" lean-forward="false" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
-          <folding>
-            <element signature="e#649#692#0#PHP" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -647,7 +582,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
           <caret line="57" column="27" lean-forward="false" selection-start-line="57" selection-start-column="27" selection-end-line="57" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -662,7 +596,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="30" column="10" lean-forward="false" selection-start-line="30" selection-start-column="10" selection-end-line="30" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -670,7 +603,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="714">
           <caret line="57" column="35" lean-forward="false" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -678,7 +610,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2941">
           <caret line="173" column="39" lean-forward="false" selection-start-line="173" selection-start-column="39" selection-end-line="173" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -686,7 +617,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -694,7 +624,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4624">
           <caret line="290" column="88" lean-forward="false" selection-start-line="290" selection-start-column="75" selection-end-line="290" selection-end-column="88" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -702,7 +631,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -710,17 +638,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
           <caret line="72" column="9" lean-forward="false" selection-start-line="72" selection-start-column="9" selection-end-line="72" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Http/RedirectBinding.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3808">
-          <caret line="249" column="45" lean-forward="false" selection-start-line="249" selection-start-column="45" selection-end-line="249" selection-end-column="45" />
-          <folding>
-            <element signature="e#639#667#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="4950">
+          <caret line="330" column="5" lean-forward="false" selection-start-line="330" selection-start-column="5" selection-end-line="330" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -728,17 +653,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1717">
           <caret line="118" column="43" lean-forward="false" selection-start-line="118" selection-start-column="43" selection-end-line="118" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Http/PostBinding.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1683">
-          <caret line="133" column="37" lean-forward="false" selection-start-line="133" selection-start-column="37" selection-end-line="133" selection-end-column="37" />
-          <folding>
-            <element signature="e#639#658#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="2880">
+          <caret line="192" column="5" lean-forward="false" selection-start-line="192" selection-start-column="5" selection-end-line="192" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -746,7 +668,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7718">
           <caret line="454" column="32" lean-forward="false" selection-start-line="454" selection-start-column="20" selection-end-line="454" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -754,7 +675,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="647">
           <caret line="194" column="64" lean-forward="false" selection-start-line="194" selection-start-column="64" selection-end-line="194" selection-end-column="64" />
-          <folding />
         </state>
       </provider>
     </entry>
