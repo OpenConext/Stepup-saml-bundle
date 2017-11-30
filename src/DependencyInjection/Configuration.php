@@ -175,7 +175,7 @@ class Configuration implements ConfigurationInterface
         $remoteNode
             ->children()
                 ->arrayNode('service_providers')
-                    ->arrayPrototype()
+                    ->prototype('array')
                             ->children()
                                 ->scalarNode('entity_id')
                                     ->isRequired()
