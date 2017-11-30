@@ -3,6 +3,7 @@ VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENT
 ===================================================================================
 
    Version 2.11 - Add the configuration option to configure static service providers
+      30/11/2017 09:29  2.11.1  Make configuration work with previous versions of symphony
       22/11/2017 15:34  2.11.0  initial release
 
    Version 2.10 - The ability to disable AttributeDictionary lookups has been added.
