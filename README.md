@@ -52,6 +52,10 @@ surfnet_saml:
             entity_id: %surfnet_saml_remote_idp_entity_id%
             sso_url: %surfnet_saml_remote_idp_sso_url%
             certificate: %surfnet_saml_remote_idp_certificate%
+        service_providers:
+            - entity_id: "%surfnet_saml_remote_sp_entity_id%"
+              certificate_file: "%surfnet_saml_remote_sp_certificate%"
+              assertion_consumer_service_url: "%surfnet_saml_remote_sp_acs%"            
 ```
 
 The hosted configuration lists the configuration for the services (SP, IdP or both) that your application offers. SP and IdP
@@ -66,6 +70,9 @@ It is recommended to use parameters as listed above. The various `publickey` and
 
 The `service_provider_repository` is a repository of service providers for which you offer IdP services. The service
 configured _must_ implement the `Surfnet\SamlBundle\Entity\ServiceProviderRepository` interface.
+
+Service providers can be provided statically by using the remote.service_providers configuration option. To use these configured service 
+providers keep in mind that you need to assign `surfnet_saml.remote.service_providers` as `service_provider_repository`.
 
 ## Example Usage
 

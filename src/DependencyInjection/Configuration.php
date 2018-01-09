@@ -138,6 +138,7 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('remote');
 
         $this->addRemoteIdentityProviderSection($remoteNode);
+        $this->addRemoteServiceProvidersSection($remoteNode);
     }
 
     private function addRemoteIdentityProviderSection(ArrayNodeDefinition $remoteNode)
@@ -164,6 +165,36 @@ class Configuration implements ConfigurationInterface
                         ->info(
                             'A file containing the certificate used to sign the AuthnResponse with'
                         )
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function addRemoteServiceProvidersSection(ArrayNodeDefinition $remoteNode)
+    {
+        $remoteNode
+            ->children()
+                ->arrayNode('service_providers')
+                    ->prototype('array')
+                            ->children()
+                                ->scalarNode('entity_id')
+                                    ->isRequired()
+                                    ->info('The EntityID of the remote service provider')
+                                ->end()
+                                ->scalarNode('certificate')
+                                    ->info(
+                                        'The contents of the certificate used to sign and verify the AuthnResponse with'
+                                    )
+                                ->end()
+                                ->scalarNode('certificate_file')
+                                    ->info(
+                                        'A file containing the certificate used to sign and verify the AuthnResponse with'
+                                    )
+                                ->end()
+                                ->scalarNode('assertion_consumer_service_url')
+                                    ->isRequired()
+                                ->end()
+                            ->end()
                     ->end()
                 ->end()
             ->end();
