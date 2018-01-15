@@ -86,12 +86,6 @@ class AssertionAdapterTest extends TestCase
         $this->assertTrue($attributeIsInSet, 'Expected attribute to be part of AttributeSet, but it is not');
     }
 
-    protected function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     /**
      * @test
      * @group AssertionAdapter

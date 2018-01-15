@@ -18,10 +18,9 @@
 
 namespace Surfnet\SamlBundle\Http;
 
-use Surfnet\SamlBundle\Exception\RuntimeException;
+use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
-use XMLSecurityKey;
 
 final class ReceivedAuthnRequestPost implements SignatureVerifiable
 {

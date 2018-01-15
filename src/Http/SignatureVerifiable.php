@@ -18,8 +18,7 @@
 
 namespace Surfnet\SamlBundle\Http;
 
-
-use XMLSecurityKey;
+use RobRichards\XMLSecLibs\XMLSecurityKey;
 
 interface SignatureVerifiable
 {

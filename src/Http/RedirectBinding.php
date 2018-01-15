@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\Http;
 
 use Psr\Log\LoggerInterface;
+use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
@@ -29,7 +30,6 @@ use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use XMLSecurityKey;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) - not much we can do about it
