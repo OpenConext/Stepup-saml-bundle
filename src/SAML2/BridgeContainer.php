@@ -20,13 +20,13 @@ namespace Surfnet\SamlBundle\SAML2;
 
 use BadMethodCallException;
 use Psr\Log\LoggerInterface;
-use SAML2_Compat_AbstractContainer;
+use SAML2\Compat\AbstractContainer;
 
 /**
  * Container that is required so that we can make the SAML2 lib work.
  * This container is set as the container in the SurfnetSamlBundle::boot() method
  */
-class BridgeContainer extends SAML2_Compat_AbstractContainer
+class BridgeContainer extends AbstractContainer
 {
     /**
      * @var \Psr\Log\LoggerInterface

@@ -18,9 +18,10 @@
 
 namespace Surfnet\SamlBundle\Metadata;
 
-use SAML2_DOMDocumentFactory;
-use SAML2_Utilities_Certificate;
-use SAML2_Utilities_File;
+use SAML2\Certificate\PrivateKeyLoader;
+use SAML2\DOMDocumentFactory;
+use SAML2\Utilities\Certificate;
+use SAML2\Utilities\File;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Symfony\Component\Routing\RouterInterface;
@@ -39,7 +40,7 @@ class MetadataFactory
     private $router;
 
     /**
-     * @var \SAML2_Certificate_PrivateKeyLoader
+     * @var PrivateKeyLoader
      */
     private $signingService;
 
@@ -85,7 +86,7 @@ class MetadataFactory
         $metadata = $this->getMetadata();
         $keyPair = $this->buildKeyPairFrom($this->metadataConfiguration);
 
-        $metadata->document = SAML2_DOMDocumentFactory::create();
+        $metadata->document = DOMDocumentFactory::create();
         $metadata->document->loadXML($this->templateEngine->render(
             'SurfnetSamlBundle:Metadata:metadata.xml.twig',
             ['metadata' => $metadata]
@@ -146,8 +147,8 @@ class MetadataFactory
      */
     private function getCertificateData($publicKeyFile)
     {
-        $certificate = SAML2_Utilities_File::getFileContents($publicKeyFile);
-        preg_match(SAML2_Utilities_Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
+        $certificate = File::getFileContents($publicKeyFile);
+        preg_match(Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
 
         $certificateData = str_replace(array(' ', "\n"), '', $matches[1]);
 

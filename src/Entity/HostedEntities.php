@@ -21,7 +21,7 @@ namespace Surfnet\SamlBundle\Entity;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use SAML2_Configuration_PrivateKey as PrivateKey;
+use SAML2\Configuration\PrivateKey;
 
 class HostedEntities
 {

@@ -42,7 +42,7 @@ class AssertionAdapterTest extends TestCase
             'urn:oid:0.0.0.0.0.0.0.0.0'
         );
 
-        $assertion = m::mock('\SAML2_Assertion');
+        $assertion = m::mock('\\SAML2\\Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([$maceAttributeUrn => $maceAttributeValue]);
 
         $dictionary = new AttributeDictionary();
@@ -71,7 +71,7 @@ class AssertionAdapterTest extends TestCase
             $oidAttributeUrn
         );
 
-        $assertion = m::mock('\SAML2_Assertion');
+        $assertion = m::mock('\\SAML2\\Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([$oidAttributeUrn => $oidAttributeValue]);
 
         $dictionary = new AttributeDictionary();
@@ -84,6 +84,12 @@ class AssertionAdapterTest extends TestCase
         $attributeIsInSet = $attributeSet->contains($attributeExpectedToBeContained);
 
         $this->assertTrue($attributeIsInSet, 'Expected attribute to be part of AttributeSet, but it is not');
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+        m::close();
     }
 
     /**
@@ -102,7 +108,7 @@ class AssertionAdapterTest extends TestCase
             $oidAttributeUrn
         );
 
-        $assertion = m::mock('\SAML2_Assertion');
+        $assertion = m::mock('\\SAML2\\Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([$oidAttributeUrn => $oidAttributeValue]);
 
         $attributeExpectedNotToBeContained = new Attribute($existingOidAttributeDefinition, $oidAttributeValue);
@@ -121,7 +127,7 @@ class AssertionAdapterTest extends TestCase
      */
     public function attribute_set_is_empty_if_no_attributes_found()
     {
-        $assertion = m::mock('\SAML2_Assertion');
+        $assertion = m::mock('\\SAML2\\Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([]);
 
         $dictionary = new AttributeDictionary();
@@ -146,7 +152,7 @@ class AssertionAdapterTest extends TestCase
             $oidAttributeUrn
         );
 
-        $assertion = m::mock('\SAML2_Assertion');
+        $assertion = m::mock('\\SAML2\\Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([$oidAttributeUrn => $oidAttributeValue]);
 
         $dictionary = new AttributeDictionary();
@@ -174,7 +180,7 @@ class AssertionAdapterTest extends TestCase
             $oidAttributeUrn
         );
 
-        $assertion = m::mock('\SAML2_Assertion');
+        $assertion = m::mock('\\SAML2\\Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([
             $oidAttributeUrn  => $attributeValue,
             $maceAttributeUrn => $attributeValue

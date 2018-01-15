@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
-use SAML2_Assertion;
+use SAML2\Assertion;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 final class ConfigurableAttributeSetFactory implements AttributeSetFactory
@@ -45,7 +45,7 @@ final class ConfigurableAttributeSetFactory implements AttributeSetFactory
         self::$attributeSetClassName = $attributeSetClassName;
     }
 
-    public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
+    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
         $class = self::$attributeSetClassName;
 

@@ -19,7 +19,7 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use SAML2_Assertion;
+use SAML2\Assertion;
 use stdClass;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
@@ -36,7 +36,7 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
     public function which_attribute_set_is_created_from_a_saml_assertion_is_configurable()
     {
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(self::DUMMY_ATTRIBUTE_SET_CLASS);
-        $attributeSet = ConfigurableAttributeSetFactory::createFrom(new SAML2_Assertion, new AttributeDictionary);
+        $attributeSet = ConfigurableAttributeSetFactory::createFrom(new Assertion, new AttributeDictionary);
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(
             '\Surfnet\SamlBundle\SAML2\Attribute\AttributeSet'
         );

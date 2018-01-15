@@ -18,7 +18,9 @@
 
 namespace Surfnet\SamlBundle\Entity;
 
-class ServiceProvider extends \SAML2_Configuration_ServiceProvider
+use SAML2\Configuration\ServiceProvider as ServiceProviderConfiguration;
+
+class ServiceProvider extends ServiceProviderConfiguration
 {
     public function getAssertionConsumerUrl()
     {

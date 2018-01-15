@@ -18,25 +18,25 @@
 
 namespace Surfnet\SamlBundle\Service;
 
-use SAML2_Certificate_KeyLoader as PublicKeyLoader;
-use SAML2_Certificate_PrivateKey;
-use SAML2_Certificate_PrivateKeyLoader as PrivateKeyLoader;
-use SAML2_Certificate_X509;
-use SAML2_Configuration_PrivateKey as PrivateKeyFile;
-use SAML2_Utils;
+use RobRichards\XMLSecLibs\XMLSecurityKey;
+use SAML2\Certificate\KeyLoader as PublicKeyLoader;
+use SAML2\Certificate\PrivateKey;
+use SAML2\Certificate\PrivateKeyLoader;
+use SAML2\Certificate\X509;
+use SAML2\Configuration\PrivateKey as PrivateKeyFile;
+use SAML2\Utils;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Surfnet\SamlBundle\Signing\Signable;
-use XMLSecurityKey;
 
 class SigningService
 {
     /**
-     * @var \SAML2_Certificate_KeyLoader
+     * @var KeyLoader
      */
     private $publicKeyLoader;
 
     /**
-     * @var \SAML2_Certificate_PrivateKeyLoader
+     * @var PrivateKeyLoader
      */
     private $privateKeyLoader;
 
@@ -64,7 +64,7 @@ class SigningService
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $key->loadKey($privateKey->getKeyAsString());
 
-        SAML2_Utils::insertSignature(
+        Utils::insertSignature(
             $key,
             [$publicKey->getCertificate()],
             $signable->getRootDomElement(),
@@ -76,7 +76,7 @@ class SigningService
 
     /**
      * @param  string $publicKeyFile /full/path/to/the/public/key
-     * @return SAML2_Certificate_X509
+     * @return X509
      */
     public function loadPublicKeyFromFile($publicKeyFile)
     {
@@ -92,7 +92,7 @@ class SigningService
 
     /**
      * @param  string $privateKeyFile /full/path/to/the/private/key
-     * @return SAML2_Certificate_PrivateKey
+     * @return PrivateKey
      */
     public function loadPrivateKeyFromFile($privateKeyFile)
     {

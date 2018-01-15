@@ -18,13 +18,13 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock;
 
-use SAML2_Assertion;
+use SAML2\Assertion;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeSetFactory;
 
 final class DummyAttributeSet implements AttributeSetFactory
 {
-    public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
+    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
         return new self;
     }

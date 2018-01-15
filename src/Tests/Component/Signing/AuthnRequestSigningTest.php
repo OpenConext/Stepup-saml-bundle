@@ -20,14 +20,14 @@ namespace Surfnet\SamlBundle\Tests\Component\Signing;
 
 use PHPUnit_Framework_TestCase as TestCase;
 use Psr\Log\NullLogger;
-use SAML2_AuthnRequest;
-use SAML2_Certificate_KeyLoader;
-use SAML2_Certificate_X509;
-use SAML2_DOMDocumentFactory;
+use RobRichards\XMLSecLibs\XMLSecurityKey;
+use SAML2\AuthnRequest as SAML2AuthnRequest;
+use SAML2\Certificate\KeyLoader;
+use SAML2\Certificate\X509;
+use SAML2\DOMDocumentFactory;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
-use XMLSecurityKey;
 
 class AuthnRequestSigningTest extends TestCase
 {
@@ -63,9 +63,9 @@ AUTHNREQUEST_NO_SUBJECT;
             [$this, 'encodeDataToSignWithPhpsHttpBuildQuery']
         );
 
-        $certificate = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
+        $certificate = X509::createFromCertificateData($this->getPublicKey());
 
-        $signatureVerifier    = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
+        $signatureVerifier    = new SignatureVerifier(new KeyLoader, new NullLogger);
         $signatureWithDefaultEncodingIsVerified = $signatureVerifier->isSignedWith(
             $authnRequestWithDefaultEncoding,
             $certificate
@@ -89,8 +89,8 @@ AUTHNREQUEST_NO_SUBJECT;
             [$this, 'encodeDataToSignWithCustomHttpQueryEncoding']
         );
 
-        $certificate       = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
-        $signatureVerifier = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
+        $certificate       = X509::createFromCertificateData($this->getPublicKey());
+        $signatureVerifier = new SignatureVerifier(new KeyLoader, new NullLogger);
 
         $signatureWithCustomEncodingIsVerified  = $signatureVerifier->isSignedWith(
             $authnRequestWithCustomEncoding,
@@ -115,9 +115,9 @@ AUTHNREQUEST_NO_SUBJECT;
             'this-is-a-custom-signature'
         );
 
-        $certificate = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
+        $certificate = X509::createFromCertificateData($this->getPublicKey());
 
-        $signatureVerifier   = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
+        $signatureVerifier   = new SignatureVerifier(new KeyLoader, new NullLogger);
         $signatureIsVerified = $signatureVerifier->isSignedWith($authnRequestWithModifiedDataToSign, $certificate);
 
         $this->assertFalse(
@@ -139,9 +139,9 @@ AUTHNREQUEST_NO_SUBJECT;
             [$this, 'encodeDataToSignUsingIncorrectParameterOrder']
         );
 
-        $certificate = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
+        $certificate = X509::createFromCertificateData($this->getPublicKey());
 
-        $signatureVerifier   = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
+        $signatureVerifier   = new SignatureVerifier(new KeyLoader, new NullLogger);
         $signatureIsVerified = $signatureVerifier->isSignedWith($authnRequestWithModifiedDataToSign, $certificate);
 
         $this->assertFalse(
@@ -158,8 +158,8 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_requests_signature_is_verified_regardless_of_its_encoding()
     {
-        $signatureVerifier = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
-        $certificate       = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
+        $signatureVerifier = new SignatureVerifier(new KeyLoader, new NullLogger);
+        $certificate       = X509::createFromCertificateData($this->getPublicKey());
         $keyData           = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
         $privateKey        = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $privateKey->loadKey($keyData);
@@ -214,8 +214,8 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_requests_signature_is_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent()
     {
-        $signatureVerifier = new SignatureVerifier(new SAML2_Certificate_KeyLoader, new NullLogger);
-        $certificate       = SAML2_Certificate_X509::createFromCertificateData($this->getPublicKey());
+        $signatureVerifier = new SignatureVerifier(new KeyLoader, new NullLogger);
+        $certificate       = X509::createFromCertificateData($this->getPublicKey());
         $keyData           = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
         $privateKey        = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $privateKey->loadKey($keyData);
@@ -280,8 +280,8 @@ AUTHNREQUEST_NO_SUBJECT;
         $privateKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $privateKey->loadKey($keyData);
 
-        $domDocument          = SAML2_DOMDocumentFactory::fromString($this->authRequestNoSubject);
-        $unsignedAuthnRequest = SAML2_AuthnRequest::fromXML($domDocument->firstChild);
+        $domDocument          = DOMDocumentFactory::fromString($this->authRequestNoSubject);
+        $unsignedAuthnRequest = SAML2AuthnRequest::fromXML($domDocument->firstChild);
 
         $requestAsXml   = $unsignedAuthnRequest->toUnsignedXML()->ownerDocument->saveXML();
         $encodedRequest = base64_encode(gzdeflate($requestAsXml));
@@ -297,7 +297,7 @@ AUTHNREQUEST_NO_SUBJECT;
         }
         $httpQuery = $toSign . '&Signature=' . urlencode($signature);
 
-        $saml2AuthnRequest = SAML2_AuthnRequest::fromXML($unsignedAuthnRequest->toUnsignedXML());
+        $saml2AuthnRequest = SAML2AuthnRequest::fromXML($unsignedAuthnRequest->toUnsignedXML());
 
         return AuthnRequest::createSigned(
             $saml2AuthnRequest,
@@ -323,8 +323,8 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     private function createEncodedSamlRequest()
     {
-        $domDocument          = SAML2_DOMDocumentFactory::fromString($this->authRequestNoSubject);
-        $unsignedAuthnRequest = SAML2_AuthnRequest::fromXML($domDocument->firstChild);
+        $domDocument          = DOMDocumentFactory::fromString($this->authRequestNoSubject);
+        $unsignedAuthnRequest = SAML2AuthnRequest::fromXML($domDocument->firstChild);
         $requestAsXml         = $unsignedAuthnRequest->toUnsignedXML()->ownerDocument->saveXML();
         $encodedRequest       = base64_encode(gzdeflate($requestAsXml));
 

@@ -43,7 +43,7 @@ class RedirectBinding implements HttpBinding
     private $logger;
 
     /**
-     * @var \SAML2_Certificate_KeyLoader
+     * @var \SAML2\Certificate\KeyLoader
      */
     private $signatureVerifier;
 
