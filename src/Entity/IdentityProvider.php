@@ -18,7 +18,9 @@
 
 namespace Surfnet\SamlBundle\Entity;
 
-class IdentityProvider extends \SAML2_Configuration_IdentityProvider
+use SAML2\Configuration\IdentityProvider as IdentityProviderConfiguration;
+
+class IdentityProvider extends IdentityProviderConfiguration
 {
     public function getSsoUrl()
     {

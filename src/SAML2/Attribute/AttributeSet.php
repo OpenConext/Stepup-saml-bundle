@@ -19,7 +19,7 @@
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
 use ArrayIterator;
-use SAML2_Assertion;
+use SAML2\Assertion;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\Filter\AttributeFilter;
@@ -31,7 +31,7 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
      */
     private $attributes = [];
 
-    public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary)
+    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary)
     {
         $attributeSet = new AttributeSet();
 

@@ -72,15 +72,15 @@ services:
 
     surfnet_saml.saml2.keyloader:
         public: false
-        class: SAML2_Certificate_KeyLoader
+        class: SAML2\Certificate\KeyLoader
 
     surfnet_saml.saml2.privatekeyloader:
         public: false
-        class: SAML2_Certificate_PrivateKeyLoader
+        class: SAML2\Certificate\PrivateKeyLoader
 
     surfnet_saml.saml2.response_processor:
         public: false
-        class: SAML2_Response_Processor
+        class: SAML2\Response\Processor
         arguments:
             - '@logger'
 

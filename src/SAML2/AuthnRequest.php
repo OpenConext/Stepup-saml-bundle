@@ -18,8 +18,8 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
-use SAML2_AuthnRequest;
-use SAML2_Const;
+use SAML2\AuthnRequest as SAML2AuthnRequest;
+use SAML2\Constants;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 class AuthnRequest
@@ -35,7 +35,7 @@ class AuthnRequest
     private $rawRequest;
 
     /**
-     * @var SAML2_AuthnRequest
+     * @var SAML2AuthnRequest
      */
     private $request;
 
@@ -50,22 +50,22 @@ class AuthnRequest
     private $signatureAlgorithm;
 
     /**
-     * @param SAML2_AuthnRequest $request
+     * @param SAML2AuthnRequest $request
      */
-    private function __construct(SAML2_AuthnRequest $request)
+    private function __construct(SAML2AuthnRequest $request)
     {
         $this->request = $request;
     }
 
     /**
      * @deprecated use ReceivedAuthnRequest::from()
-     * @param SAML2_AuthnRequest $request
+     * @param SAML2AuthnRequest $request
      * @param string $rawRequest
      * @param string $relayState
      * @return AuthnRequest
      */
     public static function createUnsigned(
-        SAML2_AuthnRequest $request,
+        SAML2AuthnRequest $request,
         $rawRequest,
         $relayState
     ) {
@@ -80,7 +80,7 @@ class AuthnRequest
 
     /**
      * @deprecated use ReceivedAuthnRequest::from()
-     * @param SAML2_AuthnRequest $request
+     * @param SAML2AuthnRequest $request
      * @param string $rawRequest
      * @param string $relayState
      * @param string $signature
@@ -88,7 +88,7 @@ class AuthnRequest
      * @return AuthnRequest
      */
     public static function createSigned(
-        SAML2_AuthnRequest $request,
+        SAML2AuthnRequest $request,
         $rawRequest,
         $relayState,
         $signature,
@@ -107,7 +107,7 @@ class AuthnRequest
 
     /**
      * @deprecated use ReceivedAuthnRequest::from()
-     * @param SAML2_AuthnRequest $request
+     * @param SAML2AuthnRequest $request
      * @param string $rawRequest
      * @param string $relayState
      * @param string $signature
@@ -115,7 +115,7 @@ class AuthnRequest
      * @return AuthnRequest
      */
     public static function create(
-        SAML2_AuthnRequest $request,
+        SAML2AuthnRequest $request,
         $rawRequest,
         $relayState,
         $signature,
@@ -130,7 +130,7 @@ class AuthnRequest
         );
     }
 
-    public static function createNew(SAML2_AuthnRequest $req)
+    public static function createNew(SAML2AuthnRequest $req)
     {
         return new self($req);
     }
@@ -164,11 +164,8 @@ class AuthnRequest
     public function getNameId()
     {
         $nameId = $this->request->getNameId();
-        if (!is_array($nameId) || !array_key_exists('Value', $nameId)) {
-            return null;
-        }
 
-        return $nameId['Value'];
+        return $nameId->value;
     }
 
     /**
@@ -177,11 +174,8 @@ class AuthnRequest
     public function getNameIdFormat()
     {
         $nameId = $this->request->getNameId();
-        if (!is_array($nameId) || !array_key_exists('Format', $nameId)) {
-            return null;
-        }
 
-        return $nameId['Format'];
+        return $nameId->Format;
     }
 
     /**
@@ -200,7 +194,7 @@ class AuthnRequest
 
         $nameId = [
             'Value' => $nameId,
-            'Format' => ($format ?: SAML2_Const::NAMEID_UNSPECIFIED)
+            'Format' => ($format ?: Constants::NAMEID_UNSPECIFIED)
         ];
 
         $this->request->setNameId($nameId);

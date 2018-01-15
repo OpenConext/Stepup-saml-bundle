@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
-use SAML2_Assertion;
+use SAML2\Assertion;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Exception\UnknownUrnException;
@@ -90,10 +90,10 @@ class AttributeDictionary
     }
 
     /**
-     * @param SAML2_Assertion $assertion
+     * @param Assertion $assertion
      * @return AssertionAdapter
      */
-    public function translate(SAML2_Assertion $assertion)
+    public function translate(Assertion $assertion)
     {
         return new AssertionAdapter($assertion, $this);
     }

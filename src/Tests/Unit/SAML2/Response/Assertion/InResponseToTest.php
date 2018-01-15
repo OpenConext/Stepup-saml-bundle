@@ -19,22 +19,22 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
 use PHPUnit_Framework_TestCase as UnitTest;
-use SAML2_Assertion;
-use SAML2_XML_saml_SubjectConfirmation;
-use SAML2_XML_saml_SubjectConfirmationData;
+use SAML2\Assertion;
+use SAML2\XML\saml\SubjectConfirmation;
+use SAML2\XML\saml\SubjectConfirmationData;
 use Surfnet\SamlBundle\SAML2\Response\Assertion\InResponseTo;
 
 class InResponseToTest extends UnitTest
 {
     /**
-     * @param SAML2_Assertion $assertion
+     * @param Assertion $assertion
      *
      * @test
      * @group saml2-response
      * @group saml2
      * @dataProvider provideAssertionsWithoutInResponseTo
      */
-    public function assertions_without_in_response_to_are_tested_as_if_in_response_to_is_null(SAML2_Assertion $assertion)
+    public function assertions_without_in_response_to_are_tested_as_if_in_response_to_is_null(Assertion $assertion)
     {
         $this->assertTrue(InResponseTo::assertEquals($assertion, null));
         $this->assertFalse(InResponseTo::assertEquals($assertion, 'some not-null-value'));
@@ -47,9 +47,9 @@ class InResponseToTest extends UnitTest
      */
     public function in_reponse_to_equality_is_strictly_checked()
     {
-        $assertion                   = new SAML2_Assertion();
-        $subjectConfirmationWithData = new SAML2_XML_saml_SubjectConfirmation();
-        $subjectConfirmationData     = new SAML2_XML_saml_SubjectConfirmationData();
+        $assertion                   = new Assertion();
+        $subjectConfirmationWithData = new SubjectConfirmation();
+        $subjectConfirmationData     = new SubjectConfirmationData();
         $subjectConfirmationData->InResponseTo = '1';
         $subjectConfirmationWithData->SubjectConfirmationData = $subjectConfirmationData;
         $assertion->setSubjectConfirmation([$subjectConfirmationWithData]);
@@ -63,15 +63,15 @@ class InResponseToTest extends UnitTest
      */
     public function provideAssertionsWithoutInResponseTo()
     {
-        $assertionWithoutSubjectConfirmation = new SAML2_Assertion();
+        $assertionWithoutSubjectConfirmation = new Assertion();
 
-        $assertionWithoutSubjectConfirmationData = new SAML2_Assertion();
-        $subjectConfirmation = new SAML2_XML_saml_SubjectConfirmation();
+        $assertionWithoutSubjectConfirmationData = new Assertion();
+        $subjectConfirmation = new SubjectConfirmation();
         $assertionWithoutSubjectConfirmationData->setSubjectConfirmation([$subjectConfirmation]);
 
-        $assertionWithEmptyInResponseTo = new SAML2_Assertion();
-        $subjectConfirmationWithData = new SAML2_XML_saml_SubjectConfirmation();
-        $subjectConfirmationWithData->SubjectConfirmationData = new SAML2_XML_saml_SubjectConfirmationData();
+        $assertionWithEmptyInResponseTo = new Assertion();
+        $subjectConfirmationWithData = new SubjectConfirmation();
+        $subjectConfirmationWithData->SubjectConfirmationData = new SubjectConfirmationData();
         $assertionWithEmptyInResponseTo->setSubjectConfirmation([$subjectConfirmationWithData]);
 
         return [

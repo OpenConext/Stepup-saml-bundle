@@ -21,13 +21,13 @@ namespace Surfnet\SamlBundle\Http;
 use LogicException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SAML2_Assertion as Assertion;
-use SAML2_Configuration_Destination;
-use SAML2_Const;
-use SAML2_DOMDocumentFactory;
-use SAML2_Response;
-use SAML2_Response_Exception_PreconditionNotMetException as PreconditionNotMetException;
-use SAML2_Response_Processor as ResponseProcessor;
+use SAML2\Assertion;
+use SAML2\Configuration\Destination;
+use SAML2\Constants;
+use SAML2\DOMDocumentFactory;
+use SAML2\Response;
+use SAML2\Response\Exception\PreconditionNotMetException;
+use SAML2\Response\Processor;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
@@ -46,7 +46,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class PostBinding implements HttpBinding
 {
     /**
-     * @var \SAML2_Response_Processor
+     * @var Processor
      */
     private $responseProcessor;
 
@@ -56,7 +56,7 @@ class PostBinding implements HttpBinding
     private $logger;
 
     /**
-     * @var \SAML2_Certificate_KeyLoader
+     * @var KeyLoader
      */
     private $signatureVerifier;
 
@@ -66,7 +66,7 @@ class PostBinding implements HttpBinding
     private $entityRepository;
 
     public function __construct(
-        ResponseProcessor $responseProcessor,
+        Processor $responseProcessor,
         LoggerInterface $logger,
         SignatureVerifier $signatureVerifier,
         ServiceProviderRepository $repository = null
@@ -99,25 +99,25 @@ class PostBinding implements HttpBinding
         $response = base64_decode($response);
 
         $previous = libxml_disable_entity_loader(true);
-        $asXml    = SAML2_DOMDocumentFactory::fromString($response);
+        $asXml    = DOMDocumentFactory::fromString($response);
         libxml_disable_entity_loader($previous);
 
         try {
             $assertions = $this->responseProcessor->process(
                 $serviceProvider,
                 $identityProvider,
-                new SAML2_Configuration_Destination($serviceProvider->getAssertionConsumerUrl()),
-                new SAML2_Response($asXml->documentElement)
+                new Destination($serviceProvider->getAssertionConsumerUrl()),
+                new Response($asXml->documentElement)
             );
         } catch (PreconditionNotMetException $e) {
             $message = $e->getMessage();
 
-            $noAuthnContext = substr(SAML2_Const::STATUS_NO_AUTHN_CONTEXT, strlen(SAML2_Const::STATUS_PREFIX));
+            $noAuthnContext = substr(Constants::STATUS_NO_AUTHN_CONTEXT, strlen(Constants::STATUS_PREFIX));
             if (false !== strpos($message, $noAuthnContext)) {
                 throw new NoAuthnContextSamlResponseException($message, 0, $e);
             }
 
-            $authnFailed = substr(SAML2_Const::STATUS_AUTHN_FAILED, strlen(SAML2_Const::STATUS_PREFIX));
+            $authnFailed = substr(Constants::STATUS_AUTHN_FAILED, strlen(Constants::STATUS_PREFIX));
             if (false !== strpos($message, $authnFailed)) {
                 throw new AuthnFailedSamlResponseException($message, 0, $e);
             }
