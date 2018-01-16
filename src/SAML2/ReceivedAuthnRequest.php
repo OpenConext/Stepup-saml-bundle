@@ -97,11 +97,11 @@ final class ReceivedAuthnRequest
     public function getNameId()
     {
         $nameId = $this->request->getNameId();
-        if (!is_array($nameId) || !array_key_exists('Value', $nameId)) {
+        if (!$nameId) {
             return null;
         }
 
-        return $nameId['Value'];
+        return $nameId->value;
     }
 
     /**
@@ -110,11 +110,11 @@ final class ReceivedAuthnRequest
     public function getNameIdFormat()
     {
         $nameId = $this->request->getNameId();
-        if (!is_array($nameId) || !array_key_exists('Format', $nameId)) {
+        if (!$nameId) {
             return null;
         }
 
-        return $nameId['Format'];
+        return $nameId->Format;
     }
 
     /**
