@@ -32,7 +32,7 @@ interface AttributeSetInterface extends IteratorAggregate, Countable
 
     /**
      * @param AttributeDefinition $attributeDefinition
-     * @return AttributeSetInterface
+     * @return Attribute
      */
     public function getAttributeByDefinition(AttributeDefinition $attributeDefinition);
 
