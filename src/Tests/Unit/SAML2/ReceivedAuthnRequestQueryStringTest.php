@@ -56,7 +56,7 @@ AUTHNREQUEST_NO_SUBJECT;
             'expected a non-empty string'
         );
 
-        $query = ReceivedAuthnRequestQueryString::parse($nonOrEmptyString);
+        ReceivedAuthnRequestQueryString::parse($nonOrEmptyString);
     }
 
     /**
@@ -70,7 +70,7 @@ AUTHNREQUEST_NO_SUBJECT;
             'does not contain a valid key-value pair'
         );
 
-        $query = ReceivedAuthnRequestQueryString::parse('a-key-without-a-value');
+        ReceivedAuthnRequestQueryString::parse('a-key-without-a-value');
     }
 
     /**
@@ -88,7 +88,7 @@ AUTHNREQUEST_NO_SUBJECT;
 
         $rawQuery = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode($notEncodedRequest);
 
-        $query = ReceivedAuthnRequestQueryString::parse($rawQuery);
+        ReceivedAuthnRequestQueryString::parse($rawQuery);
     }
 
     /**
@@ -107,7 +107,7 @@ AUTHNREQUEST_NO_SUBJECT;
             sprintf('parameter "%s" already present', $doubleParameterName)
         );
 
-        $query = ReceivedAuthnRequestQueryString::parse($queryStringWithDoubleParameter);
+        ReceivedAuthnRequestQueryString::parse($queryStringWithDoubleParameter);
     }
 
     /**
@@ -125,7 +125,7 @@ AUTHNREQUEST_NO_SUBJECT;
             '?' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
-        $query = ReceivedAuthnRequestQueryString::parse($queryStringWithoutSamlRequest);
+        ReceivedAuthnRequestQueryString::parse($queryStringWithoutSamlRequest);
     }
 
     /**
@@ -143,7 +143,7 @@ AUTHNREQUEST_NO_SUBJECT;
             '?' . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
-        $query = ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureAlgorithmWithoutSignature);
+        ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureAlgorithmWithoutSignature);
     }
 
     /**
@@ -161,7 +161,7 @@ AUTHNREQUEST_NO_SUBJECT;
             '?' . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'));
 
-        $query = ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureWithoutSignatureAlgorithm);
+        ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureWithoutSignatureAlgorithm);
     }
 
     /**
@@ -180,7 +180,7 @@ AUTHNREQUEST_NO_SUBJECT;
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=not-encoded-signature'
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=sig-alg';
 
-        $query = ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureWithoutSignatureAlgorithm);
+        ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureWithoutSignatureAlgorithm);
     }
 
     /**
@@ -291,7 +291,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $rawQuery = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . $notGzippedRequest;
 
         $query = ReceivedAuthnRequestQueryString::parse($rawQuery);
-        $decodedRequest = $query->getDecodedSamlRequest();
+        $query->getDecodedSamlRequest();
     }
 
     /**

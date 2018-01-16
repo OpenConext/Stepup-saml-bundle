@@ -24,7 +24,6 @@ use SAML2\Certificate\Key;
 use SAML2\Certificate\KeyLoader as KeyLoader;
 use SAML2\Certificate\X509;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
-use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 use Surfnet\SamlBundle\Http\SignatureVerifiable;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 
