@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
+use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Constants;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
@@ -320,7 +321,7 @@ class AuthnRequest
      */
     private function signRequestQuery(array $queryParams)
     {
-        /** @var \XMLSecurityKey $securityKey */
+        /** @var XMLSecurityKey $securityKey */
         $securityKey = $this->request->getSignatureKey();
         $queryParams[self::PARAMETER_SIGNATURE_ALGORITHM] = $securityKey->type;
 

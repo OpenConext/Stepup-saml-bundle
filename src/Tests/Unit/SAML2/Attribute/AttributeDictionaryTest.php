@@ -19,7 +19,6 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 

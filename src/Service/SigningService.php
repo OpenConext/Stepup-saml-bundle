@@ -31,7 +31,7 @@ use Surfnet\SamlBundle\Signing\Signable;
 class SigningService
 {
     /**
-     * @var KeyLoader
+     * @var PublicKeyLoader
      */
     private $publicKeyLoader;
 
@@ -53,7 +53,7 @@ class SigningService
     /**
      * @param Signable $signable
      * @param KeyPair  $keyPair
-     * @return \DOMDocument
+     * @return Signable
      * @throws \Exception
      */
     public function sign(Signable $signable, KeyPair $keyPair)
