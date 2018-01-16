@@ -18,6 +18,9 @@
 
 namespace Surfnet\SamlBundle\DependencyInjection;
 
+use Surfnet\SamlBundle\Entity\IdentityProvider;
+use Surfnet\SamlBundle\Entity\ServiceProvider;
+use Surfnet\SamlBundle\Entity\StaticServiceProviderRepository;
 use Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -160,7 +163,7 @@ class SurfnetSamlExtension extends Extension
             return;
         }
 
-        $definition = new Definition('\Surfnet\SamlBundle\Entity\IdentityProvider');
+        $definition = new Definition(IdentityProvider::class);
         $configuration = [
             'entityId' => $identityProvider['entity_id'],
             'ssoUrl' => $identityProvider['sso_url'],
@@ -186,7 +189,7 @@ class SurfnetSamlExtension extends Extension
             return $this->parseRemoteServiceProviderConfiguration($config);
         }, $serviceProviders);
 
-        $definition = new Definition('\Surfnet\SamlBundle\Entity\StaticServiceProviderRepository', [
+        $definition = new Definition(StaticServiceProviderRepository::class, [
             $definitions
         ]);
         $container->setDefinition('surfnet_saml.remote.service_providers', $definition);
@@ -205,7 +208,7 @@ class SurfnetSamlExtension extends Extension
         $configuration['entityId'] = $serviceProvider['entity_id'];
         $configuration['assertionConsumerUrl'] = $serviceProvider['assertion_consumer_service_url'];
 
-        $definition = new Definition('\Surfnet\SamlBundle\Entity\ServiceProvider', [$configuration]);
+        $definition = new Definition(ServiceProvider::class, [$configuration]);
         $definition->setPublic(false);
 
         return $definition;
