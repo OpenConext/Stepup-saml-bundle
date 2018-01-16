@@ -295,7 +295,6 @@ AUTHNREQUEST_NO_SUBJECT;
         } else {
             $signature = base64_encode($customSignature);
         }
-        $httpQuery = $toSign . '&Signature=' . urlencode($signature);
 
         $saml2AuthnRequest = SAML2AuthnRequest::fromXML($unsignedAuthnRequest->toUnsignedXML());
 

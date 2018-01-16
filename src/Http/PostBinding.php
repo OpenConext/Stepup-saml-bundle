@@ -22,6 +22,7 @@ use LogicException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SAML2\Assertion;
+use SAML2\Certificate\KeyLoader;
 use SAML2\Configuration\Destination;
 use SAML2\Constants;
 use SAML2\DOMDocumentFactory;
