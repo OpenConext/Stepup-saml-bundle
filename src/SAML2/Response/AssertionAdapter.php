@@ -53,8 +53,8 @@ class AssertionAdapter
     public function getNameID()
     {
         $data = $this->assertion->getNameId();
-        if (is_array($data) && array_key_exists('Value', $data)) {
-            return $data['Value'];
+        if ($data) {
+            return $data->value;
         }
 
         return null;
