@@ -18,10 +18,10 @@
 
 namespace Surfnet\SamlBundle\Tests;
 
-use SAML2_Compat_AbstractContainer;
+use SAML2\Compat\AbstractContainer;
 use Psr\Log\LoggerInterface;
 
-class TestSaml2Container extends SAML2_Compat_AbstractContainer
+class TestSaml2Container extends AbstractContainer
 {
     /**
      * @var \Psr\Log\LoggerInterface

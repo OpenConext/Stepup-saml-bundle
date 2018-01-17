@@ -18,16 +18,16 @@
 
 namespace Surfnet\SamlBundle\SAML2\Response\Assertion;
 
-use SAML2_Assertion;
+use SAML2\Assertion;
 
 class InResponseTo
 {
     /**
-     * @param SAML2_Assertion $assertion
-     * @param string          $inResponseTo
+     * @param Assertion $assertion
+     * @param string    $inResponseTo
      * @return bool
      */
-    public static function assertEquals(SAML2_Assertion $assertion, $inResponseTo)
+    public static function assertEquals(Assertion $assertion, $inResponseTo)
     {
         $assertionInResponseTo = static::getInResponseTo($assertion);
 
@@ -35,10 +35,10 @@ class InResponseTo
     }
 
     /**
-     * @param SAML2_Assertion $assertion
+     * @param Assertion $assertion
      * @return null|string
      */
-    private static function getInResponseTo(SAML2_Assertion $assertion)
+    private static function getInResponseTo(Assertion $assertion)
     {
         $subjectConfirmationArray = $assertion->getSubjectConfirmation();
 
@@ -46,7 +46,7 @@ class InResponseTo
             return null;
         }
 
-        /** @var \SAML2_XML_saml_SubjectConfirmation $subjectConfirmation */
+        /** @var \SAML2\XML\saml\SubjectConfirmation $subjectConfirmation */
         $subjectConfirmation = $subjectConfirmationArray[0];
         if (!$subjectConfirmation->SubjectConfirmationData) {
             return null;

@@ -21,8 +21,6 @@ namespace Surfnet\SamlBundle\Tests\Http;
 use Mockery;
 use PHPUnit_Framework_TestCase as UnitTest;
 use Surfnet\SamlBundle\Http\HttpBindingFactory;
-use Surfnet\SamlBundle\Http\PostBinding;
-use Surfnet\SamlBundle\Http\RedirectBinding;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 

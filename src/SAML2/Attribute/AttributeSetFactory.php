@@ -18,18 +18,18 @@
 
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
-use SAML2_Assertion;
+use SAML2\Assertion;
 
 interface AttributeSetFactory
 {
     /**
-     * @param SAML2_Assertion $assertion
+     * @param Assertion $assertion
      * @param AttributeDictionary $attributeDictionary
      * @return AttributeSet
      *
      * @deprecated Will be replaced with different creation implementation
      */
-    public static function createFrom(SAML2_Assertion $assertion, AttributeDictionary $attributeDictionary);
+    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary);
 
     /**
      * @param Attribute[] $attributes

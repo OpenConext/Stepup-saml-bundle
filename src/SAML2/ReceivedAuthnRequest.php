@@ -18,22 +18,22 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
-use SAML2_AuthnRequest;
-use SAML2_Const;
-use SAML2_DOMDocumentFactory;
-use SAML2_Message;
+use RobRichards\XMLSecLibs\XMLSecurityKey;
+use SAML2\AuthnRequest as SAML2AuthnRequest;
+use SAML2\Constants;
+use SAML2\DOMDocumentFactory;
+use SAML2\Message;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
-use XMLSecurityKey;
 
 final class ReceivedAuthnRequest
 {
     /**
-     * @var SAML2_AuthnRequest
+     * @var SAML2AuthnRequest
      */
     private $request;
 
-    private function __construct(SAML2_AuthnRequest $request)
+    private function __construct(SAML2AuthnRequest $request)
     {
         $this->request = $request;
     }
@@ -53,12 +53,12 @@ final class ReceivedAuthnRequest
 
         // additional security against XXE Processing vulnerability
         $previous = libxml_disable_entity_loader(true);
-        $document = SAML2_DOMDocumentFactory::fromString($decodedSamlRequest);
+        $document = DOMDocumentFactory::fromString($decodedSamlRequest);
         libxml_disable_entity_loader($previous);
 
-        $authnRequest = SAML2_Message::fromXML($document->firstChild);
+        $authnRequest = Message::fromXML($document->firstChild);
 
-        if (!$authnRequest instanceof SAML2_AuthnRequest) {
+        if (!$authnRequest instanceof SAML2AuthnRequest) {
             throw new RuntimeException(sprintf(
                 'The received request is not an AuthnRequest, "%s" received instead',
                 substr(get_class($authnRequest), strrpos($authnRequest, '_') + 1)
@@ -97,11 +97,11 @@ final class ReceivedAuthnRequest
     public function getNameId()
     {
         $nameId = $this->request->getNameId();
-        if (!is_array($nameId) || !array_key_exists('Value', $nameId)) {
+        if (!$nameId) {
             return null;
         }
 
-        return $nameId['Value'];
+        return $nameId->value;
     }
 
     /**
@@ -110,11 +110,11 @@ final class ReceivedAuthnRequest
     public function getNameIdFormat()
     {
         $nameId = $this->request->getNameId();
-        if (!is_array($nameId) || !array_key_exists('Format', $nameId)) {
+        if (!$nameId) {
             return null;
         }
 
-        return $nameId['Format'];
+        return $nameId->Format;
     }
 
     /**
@@ -133,7 +133,7 @@ final class ReceivedAuthnRequest
 
         $nameId = [
             'Value' => $nameId,
-            'Format' => ($format ?: SAML2_Const::NAMEID_UNSPECIFIED)
+            'Format' => ($format ?: Constants::NAMEID_UNSPECIFIED)
         ];
 
         $this->request->setNameId($nameId);
@@ -208,7 +208,7 @@ final class ReceivedAuthnRequest
     /**
      * @param XMLSecurityKey $key
      * @return bool
-     * @throws \Exception when signature is invalid (@see SAML2_Utils::validateSignature)
+     * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
      */
     public function verify(XMLSecurityKey $key)
     {

@@ -19,8 +19,8 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
 use PHPUnit_Framework_TestCase as UnitTest;
-use SAML2_AuthnRequest;
-use SAML2_DOMDocumentFactory;
+use SAML2\AuthnRequest as SAML2AuthnRequest;
+use SAML2\DOMDocumentFactory;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 
 class AuthnRequestTest extends UnitTest
@@ -130,8 +130,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
      */
     public function setting_the_subject_generates_valid_xml($nameId, $format)
     {
-        $domDocument = SAML2_DOMDocumentFactory::fromString($this->authRequestNoSubject);
-        $request     = new SAML2_AuthnRequest($domDocument->documentElement);
+        $domDocument = DOMDocumentFactory::fromString($this->authRequestNoSubject);
+        $request     = new SAML2AuthnRequest($domDocument->documentElement);
 
         $authnRequest = AuthnRequest::createNew($request);
         $authnRequest->setSubject($nameId, $format);
@@ -145,8 +145,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
      */
     public function the_nameid_and_format_can_be_retrieved_from_the_authnrequest()
     {
-        $domDocument = SAML2_DOMDocumentFactory::fromString($this->authRequestWithSubject);
-        $request     = new SAML2_AuthnRequest($domDocument->documentElement);
+        $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
+        $request     = new SAML2AuthnRequest($domDocument->documentElement);
 
         $authnRequest = AuthnRequest::createNew($request);
 
@@ -166,8 +166,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
      */
     public function is_passive_and_force_authn_can_be_retrieved_from_the_authnrequest($xml, $isPassive, $forceAuthn)
     {
-        $domDocument = SAML2_DOMDocumentFactory::fromString($xml);
-        $request     = new SAML2_AuthnRequest($domDocument->documentElement);
+        $domDocument = DOMDocumentFactory::fromString($xml);
+        $request     = new SAML2AuthnRequest($domDocument->documentElement);
         $authnRequest = AuthnRequest::createNew($request);
 
         $this->assertEquals($isPassive, $authnRequest->isPassive());

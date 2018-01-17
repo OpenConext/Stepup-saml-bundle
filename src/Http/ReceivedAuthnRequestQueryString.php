@@ -18,11 +18,11 @@
 
 namespace Surfnet\SamlBundle\Http;
 
+use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
-use XMLSecurityKey;
 
 final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
 {
