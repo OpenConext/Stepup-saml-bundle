@@ -1,3 +1,49 @@
+# UPGRADE FROM 2.X to 3.X
+
+## SimpleSamlPHP SAML2
+The most noticable change is the upgrade of the `simplesamlphp/saml2` library upgrade from version 1 to 3. This
+resulted in a bundle wide upgrade of the SAML2 namespaces and the implementation of the SAML2 NameID implementaion.
+
+### Update instruction
+When upgrading the library some other dependencies are to be upgraded most notable is `robrichards/xmlseclibs`. To
+streamline the upgrade the following installtion instructions are recommended:
+
+```
+composer remove surfnet/stepup-saml-bundle --ignore-platform-reqs
+composer require surfnet/stepup-saml-bundle "^3.0" --ignore-platform-reqs
+```
+
+:grey_exclamation: Simply running `composer update surfnet/stepup-saml-bundle "^3.0"` will probably fail as other 
+dependencies will block the update of the package.
+
+### Code changes
+After updating the SAML2 library, we advice you to scan your project for usages of the SAML2 library. You can do 
+this by grepping your project for usages of the old PEAR style SAML2 classnames.
+
+**Namespace**
+
+Grep for usages `SAML2_` in your application. PEAR style class references should be updated to their PSR 
+counterparts. Doing so is quite easy.
+
+```
+// old style
+use SAML2_Assertion;
+
+// new style
+use SAML2\Assertion;
+```
+
+**NameID**
+
+Using NameID values was changed in the SAML2 library. Instead of receiving an array representation of the NameId 
+`['Value' => 'john_doe', 'Format' => 'unspecified')`, a value object is returned. Please inspect your project
+for usages of the getNameId method on assertions.
+
+**XMLSecurityKey**
+
+Finally all usages of `XMLSecurityKey` should be checked. The `XMLSecurityKey` objects are now loaded from the
+`RobRichards` namespace.
+
 # UPGRADE FROM 1.X to 2.X
 
 ## Multiplicity
