@@ -166,6 +166,10 @@ class AuthnRequest
     {
         $nameId = $this->request->getNameId();
 
+        if (!isset($nameId->value)) {
+            return;
+        }
+
         return $nameId->value;
     }
 
@@ -175,6 +179,10 @@ class AuthnRequest
     public function getNameIdFormat()
     {
         $nameId = $this->request->getNameId();
+
+        if (!isset($nameId->Format)) {
+            return;
+        }
 
         return $nameId->Format;
     }
