@@ -3,6 +3,7 @@ VERSION 3  UPGRADED SAML2 LIBRARY
 =================================
 
    Version 3.0 - Upgraded SAML2 library
+      08/03/2018 14:55  3.0.1  Allow empty NameID in authn request
       17/01/2018 13:59  3.0.0  initial release
 
 VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENTED.
