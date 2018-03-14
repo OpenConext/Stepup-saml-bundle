@@ -263,7 +263,7 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
      */
     public function getSignatureAlgorithm()
     {
-        return $this->signatureAlgorithm;
+        return urldecode($this->signatureAlgorithm);
     }
 
     /**

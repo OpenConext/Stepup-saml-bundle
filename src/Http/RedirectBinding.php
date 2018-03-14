@@ -22,7 +22,10 @@ use Psr\Log\LoggerInterface;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Exception\LogicException;
+use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
 use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
+use Surfnet\SamlBundle\Http\Exception\UnsignedRequestException;
+use Surfnet\SamlBundle\Http\Exception\UnsupportedSignatureException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
@@ -123,10 +126,7 @@ class RedirectBinding implements HttpBinding
         }
 
         if ($request->get(AuthnRequest::PARAMETER_SIGNATURE) && !$request->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)) {
-            throw new BadRequestHttpException(sprintf(
-                'The request includes a signature "%s", but does not include the signature algorithm (SigAlg) parameter',
-                $request->get('Signature')
-            ));
+            throw new UnsignedRequestException('The request includes a signature, but does not include the signature algorithm (SigAlg) parameter');
         }
 
         $authnRequest = AuthnRequestFactory::createSignedFromHttpRequest($request);
@@ -199,6 +199,8 @@ class RedirectBinding implements HttpBinding
     /**
      * @param Request $request
      * @return ReceivedAuthnRequest
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function receiveSignedAuthnRequestFrom(Request $request)
     {
@@ -226,7 +228,13 @@ class RedirectBinding implements HttpBinding
         $query = ReceivedAuthnRequestQueryString::parse($rawQueryString);
 
         if (!$query->isSigned()) {
-            throw new BadRequestHttpException('The SAMLRequest is expected to be signed but it was not');
+            throw new UnsignedRequestException('The SAMLRequest is expected to be signed but it was not');
+        }
+
+        if (!$this->signatureVerifier->verifySignatureAlgorithmSupported($query)) {
+            throw new UnsupportedSignatureException(
+                $query->getSignatureAlgorithm()
+            );
         }
 
         $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
@@ -248,8 +256,8 @@ class RedirectBinding implements HttpBinding
 
         // Note: verifyIsSignedBy throws an Exception when the signature does not match.
         if (!$this->signatureVerifier->verifyIsSignedBy($query, $serviceProvider)) {
-            throw new BadRequestHttpException(
-                'The SAMLRequest has been signed, but the signature format is not supported'
+            throw new SignatureValidationFailedException(
+                'Validation of the signature in the AuthnRequest failed'
             );
         }
 
@@ -286,15 +294,12 @@ class RedirectBinding implements HttpBinding
     private function verifySignature(AuthnRequest $authnRequest)
     {
         if (!$authnRequest->isSigned()) {
-            throw new BadRequestHttpException('The SAMLRequest has to be signed');
+            throw new UnsignedRequestException('The SAMLRequest is expected to be signed but it was not');
         }
 
-        if (!$authnRequest->getSignatureAlgorithm()) {
-            throw new BadRequestHttpException(
-                sprintf(
-                    'The SAMLRequest has to be signed with SHA256 algorithm: "%s"',
-                    XMLSecurityKey::RSA_SHA256
-                )
+        if ($authnRequest->getSignatureAlgorithm() !== XMLSecurityKey::RSA_SHA256) {
+            throw new UnsupportedSignatureException(
+                $authnRequest->getSignatureAlgorithm()
             );
         }
 
@@ -306,8 +311,8 @@ class RedirectBinding implements HttpBinding
             $serviceProvider
         )
         ) {
-            throw new BadRequestHttpException(
-                'The SAMLRequest has been signed, but the signature format is not supported'
+            throw new SignatureValidationFailedException(
+                'Validation of the signature in the AuthnRequest failed'
             );
         }
     }

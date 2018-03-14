@@ -34,6 +34,7 @@ use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Http\Exception\AuthnFailedSamlResponseException;
 use Surfnet\SamlBundle\Http\Exception\NoAuthnContextSamlResponseException;
+use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
 use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
@@ -169,8 +170,8 @@ class PostBinding implements HttpBinding
 
         // Note: verifyIsSignedBy throws an Exception when the signature does not match.
         if (!$this->signatureVerifier->verifyIsSignedBy($receivedRequest, $serviceProvider)) {
-            throw new BadRequestHttpException(
-                'The SAMLRequest has been signed, but the signature format is not supported'
+            throw new SignatureValidationFailedException(
+                'Validation of the signature in the AuthnRequest failed'
             );
         }
 

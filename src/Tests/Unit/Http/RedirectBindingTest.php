@@ -22,6 +22,8 @@ use Mockery as m;
 use PHPUnit_Framework_TestCase as UnitTest;
 use Psr\Log\NullLogger;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
+use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
+use Surfnet\SamlBundle\Http\Exception\UnsignedRequestException;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
@@ -77,10 +79,15 @@ MESSAGE;
      * @test
      * @group http
      *
-     * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @expectedException UnsignedRequestException
      */
     public function an_exception_is_thrown_when_the_request_is_signed_but_has_no_sigalg_parameter()
     {
+        $this->setExpectedException(
+            UnsignedRequestException::class,
+            'The request includes a signature, but does not include the signature algorithm (SigAlg) parameter'
+        );
+
         $request = m::mock('Symfony\Component\HttpFoundation\Request');
         $request->shouldReceive('get')
             ->with(AuthnRequest::PARAMETER_REQUEST)
@@ -127,7 +134,7 @@ MESSAGE;
     public function a_signed_authn_request_cannot_be_received_from_a_request_that_has_no_signed_saml_request()
     {
         $this->setExpectedException(
-            '\Symfony\Component\HttpKernel\Exception\BadRequestHttpException',
+            UnsignedRequestException::class,
             'The SAMLRequest is expected to be signed but it was not'
         );
 
@@ -168,6 +175,11 @@ MESSAGE;
             ->once()
             ->andReturn(false);
 
+        $dummySignatureVerifier
+            ->shouldReceive('verifySignatureAlgorithmSupported')
+            ->once()
+            ->andReturn(true);
+
         $redirectBinding = new RedirectBinding(new NullLogger(), $dummySignatureVerifier, $mockEntityRepository);
         $redirectBinding->receiveSignedAuthnRequestFrom($request);
     }
@@ -178,8 +190,8 @@ MESSAGE;
     public function a_signed_authn_request_cannot_be_received_if_the_signature_is_invalid()
     {
         $this->setExpectedException(
-            '\Symfony\Component\HttpKernel\Exception\BadRequestHttpException',
-            'signature format is not supported'
+            SignatureValidationFailedException::class,
+            'Validation of the signature in the AuthnRequest failed'
         );
 
         $mockSignatureVerifier = m::mock('\Surfnet\SamlBundle\Signing\SignatureVerifier');
@@ -200,6 +212,11 @@ MESSAGE;
             ->shouldReceive('getServiceProvider')
             ->once()
             ->andReturn(new ServiceProvider([]));
+
+        $mockSignatureVerifier
+            ->shouldReceive('verifySignatureAlgorithmSupported')
+            ->once()
+            ->andReturn(true);
 
         $mockSignatureVerifier
             ->shouldReceive('verifyIsSignedBy')
