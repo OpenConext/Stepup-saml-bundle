@@ -1,9 +1,15 @@
+# 4.0.0
+This release makes error reporting more specific. This release changed the API of the
+ `ReceivedAuthnRequestQueryString::getSignatureAlgorithm` method, returning the signature algorithm url decoded. Any
+ code using this method should be updated removing the url_decode call to prevent double decoding of the sigalg value.
+
+## New features
+ * Throw specific exceptions on signature errors #78
 
 VERSION 3  UPGRADED SAML2 LIBRARY
 =================================
 
    Version 3.0 - Upgraded SAML2 library
-      08/03/2018 14:55  3.0.1  Allow empty NameID in authn request
       17/01/2018 13:59  3.0.0  initial release
 
 VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENTED.
