@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2014 SURFnet bv
+ * Copyright 2018 SURFnet bv
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,25 +21,6 @@ namespace Surfnet\SamlBundle\Http\Exception;
 use Surfnet\SamlBundle\Exception\Exception;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class UnknownServiceProviderException extends BadRequestHttpException implements Exception
+class UnsignedRequestException extends BadRequestHttpException implements Exception
 {
-    /**
-     * @var string
-     */
-    private $entityId;
-
-    public function __construct($entityId)
-    {
-        $this->entityId = $entityId;
-
-        parent::__construct(sprintf(
-            'AuthnRequest received from ServiceProvider with an unknown EntityId: "%s"',
-            $entityId
-        ));
-    }
-
-    public function getEntityId()
-    {
-        return $this->entityId;
-    }
 }
