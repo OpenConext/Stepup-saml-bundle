@@ -24,6 +24,7 @@ use SAML2\Certificate\Key;
 use SAML2\Certificate\KeyLoader as KeyLoader;
 use SAML2\Certificate\X509;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
+use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 use Surfnet\SamlBundle\Http\SignatureVerifiable;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 
@@ -74,6 +75,15 @@ class SignatureVerifier
         $this->logger->debug('Signature could not be verified with any of the found X509 keys.');
 
         return false;
+    }
+
+    /**
+     * @param ReceivedAuthnRequestQueryString $request
+     * @return bool
+     */
+    public function verifySignatureAlgorithmSupported(ReceivedAuthnRequestQueryString $request)
+    {
+        return $request->getSignatureAlgorithm() === XMLSecurityKey::RSA_SHA256;
     }
 
     /**
