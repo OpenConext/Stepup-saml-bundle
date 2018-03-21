@@ -1,3 +1,8 @@
+# UPGRADE FROM 3.X to 4.X
+This release makes error reporting more specific. This release changed the API of the
+`ReceivedAuthnRequestQueryString::getSignatureAlgorithm` method, returning the signature algorithm url decoded. Any
+code using this method should be updated removing the url_decode call to prevent double decoding of the sigalg value.
+
 # UPGRADE FROM 2.X to 3.X
 
 ## SimpleSamlPHP SAML2
