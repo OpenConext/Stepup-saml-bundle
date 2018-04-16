@@ -1,3 +1,10 @@
+# 4.1.0
+
+Changes:
+
+ * Expose assertion consumer service URL in the AuthnRequest request wrapper class (https://github.com/OpenConext/Stepup-saml-bundle/pull/80)
+ * Internal refactoring (https://github.com/OpenConext/Stepup-saml-bundle/pull/79)
+
 # 4.0.0
 This release makes error reporting more specific. This release changed the API of the
  `ReceivedAuthnRequestQueryString::getSignatureAlgorithm` method, returning the signature algorithm url decoded. Any
