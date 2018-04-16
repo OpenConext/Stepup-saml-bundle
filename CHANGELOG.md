@@ -3,17 +3,18 @@ This release makes error reporting more specific. This release changed the API o
  `ReceivedAuthnRequestQueryString::getSignatureAlgorithm` method, returning the signature algorithm url decoded. Any
  code using this method should be updated removing the url_decode call to prevent double decoding of the sigalg value.
 
-## New features
- * Throw specific exceptions on signature errors #78
+Changes:
 
-VERSION 3  UPGRADED SAML2 LIBRARY
-=================================
+  * Throw specific exceptions on signature errors #78
+
+# Older versions
+
+## VERSION 3  UPGRADED SAML2 LIBRARY
 
    Version 3.0 - Upgraded SAML2 library
       17/01/2018 13:59  3.0.0  initial release
 
-VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENTED.
-===================================================================================
+## VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENTED.
 
    Version 2.11 - Add the configuration option to configure static service providers
       09/01/2018 15:13  2.11.2  Add dictionary support for eduPersonOrcid
@@ -56,8 +57,7 @@ VERSION 2  RELEASE 2.0; CHANGED HOW ATTRIBUTE VALUES ARE RETRIEVED AND REPRESENT
    Version 2.0 - Release 2.0; changed how attribute values are retrieved and represented.
       17/12/2015 14:43  2.0.0  initial release
 
-VERSION 1  RELEASE 1.0
-======================
+## VERSION 1  RELEASE 1.0
 
    Version 1.7 - Improved request handling
       15/12/2015 20:52  1.7.0  initial release
@@ -84,8 +84,7 @@ VERSION 1  RELEASE 1.0
    Version 1.0 - Release 1.0
       19/06/2015 12:11  1.0.0  initial release
 
-VERSION 0  FIRST MAJOR ZERO RELEASE
-===================================
+## VERSION 0  FIRST MAJOR ZERO RELEASE
 
    Version 0.5 - Release 0.5.0
       11/06/2015 13:24  0.5.0  initial release
