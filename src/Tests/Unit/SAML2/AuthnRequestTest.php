@@ -32,7 +32,7 @@ class AuthnRequestTest extends UnitTest
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-    AssertionConsumerServiceIndex="1"
+    AssertionConsumerServiceURL="https://example.org"
     Destination="https://tiqr.stepup.org/idp/profile/saml2/Redirect/SSO"
     ID="_2b0226190ca1c22de6f66e85f5c95158"
     IssueInstant="2014-09-22T13:42:00Z"
@@ -51,7 +51,7 @@ AUTHNREQUEST_WITH_SUBJECT;
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-    AssertionConsumerServiceIndex="1"
+    AssertionConsumerServiceURL="https://example.org"
     Destination="https://tiqr.stepup.org/idp/profile/saml2/Redirect/SSO"
     ID="_2b0226190ca1c22de6f66e85f5c95158"
     IssueInstant="2014-09-22T13:42:00Z"
@@ -67,7 +67,7 @@ AUTHNREQUEST_NO_SUBJECT;
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-    AssertionConsumerServiceIndex="1"
+    AssertionConsumerServiceURL="https://example.org"
     Destination="https://tiqr.stepup.org/idp/profile/saml2/Redirect/SSO"
     ID="_2b0226190ca1c22de6f66e85f5c95158"
     IssueInstant="2014-09-22T13:42:00Z"
@@ -83,7 +83,7 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F;
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-    AssertionConsumerServiceIndex="1"
+    AssertionConsumerServiceURL="https://example.org"
     Destination="https://tiqr.stepup.org/idp/profile/saml2/Redirect/SSO"
     ID="_2b0226190ca1c22de6f66e85f5c95158"
     IssueInstant="2014-09-22T13:42:00Z"
@@ -100,7 +100,7 @@ AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F;
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-    AssertionConsumerServiceIndex="1"
+    AssertionConsumerServiceURL="https://example.org"
     Destination="https://tiqr.stepup.org/idp/profile/saml2/Redirect/SSO"
     ID="_2b0226190ca1c22de6f66e85f5c95158"
     IssueInstant="2014-09-22T13:42:00Z"
@@ -109,6 +109,11 @@ AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F;
   <saml:Issuer>https://gateway.stepup.org/saml20/sp/metadata</saml:Issuer>
 </samlp:AuthnRequest>
 AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
+
+    /**
+     * @var string
+     */
+    private $acsUrl = 'https://example.org';
 
     /**
      * @var string
@@ -152,6 +157,20 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
 
         $this->assertEquals($this->nameId, $authnRequest->getNameId());
         $this->assertEquals($this->format, $authnRequest->getNameIdFormat());
+    }
+
+    /**
+     * @test
+     * @group saml2
+     */
+    public function the_acs_url_can_be_retrieved_from_the_authnrequest()
+    {
+        $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
+        $request     = new SAML2AuthnRequest($domDocument->documentElement);
+
+        $authnRequest = AuthnRequest::createNew($request);
+
+        $this->assertEquals($this->acsUrl, $authnRequest->getAssertionConsumerServiceURL());
     }
 
 
