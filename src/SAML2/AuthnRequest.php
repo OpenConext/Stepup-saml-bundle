@@ -242,6 +242,14 @@ class AuthnRequest
     }
 
     /**
+     * @return null|string
+     */
+    public function getAssertionConsumerServiceURL()
+    {
+        return $this->request->getAssertionConsumerServiceURL();
+    }
+
+    /**
      * @return string
      */
     public function getDestination()

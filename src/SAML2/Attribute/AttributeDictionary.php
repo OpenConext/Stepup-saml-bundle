@@ -41,16 +41,16 @@ class AttributeDictionary
      *
      * @var bool
      */
-    private $ignoreUnknowAttributes = false;
+    private $ignoreUnknownAttributes = false;
 
     /**
      * AttributeDictionary constructor.
      *
-     * @param bool $ignoreUnknowAttributes
+     * @param bool $ignoreUnknownAttributes
      */
-    public function __construct($ignoreUnknowAttributes = false)
+    public function __construct($ignoreUnknownAttributes = false)
     {
-        $this->ignoreUnknowAttributes = $ignoreUnknowAttributes;
+        $this->ignoreUnknownAttributes = $ignoreUnknownAttributes;
     }
 
     /**
@@ -60,7 +60,7 @@ class AttributeDictionary
      */
     public function ignoreUnknownAttributes()
     {
-        return $this->ignoreUnknowAttributes;
+        return $this->ignoreUnknownAttributes;
     }
 
     /**
