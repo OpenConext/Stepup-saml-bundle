@@ -27,7 +27,7 @@ use Surfnet\SamlBundle\Exception\RuntimeException;
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
-final class SamlAuthenticationLogger implements LoggerInterface
+final class SamlAuthenticationLogger implements SamlAuthenticationLoggerInterface
 {
     /**
      * @var \Psr\Log\LoggerInterface
