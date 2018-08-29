@@ -1,3 +1,9 @@
+# 4.1.1
+
+Changes: 
+
+ * Add Symfony 3.4 support
+
 # 4.1.0
 
 Changes:

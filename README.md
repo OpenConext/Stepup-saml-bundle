@@ -15,6 +15,8 @@ Developed as part of the [SURFnet StepUp Gateway][2]
   composer require surfnet/stepup-saml-bundle
   ```
 
+For Syfony 3.4 support use version 4.1.1 or greater.
+
 * Add the bundle to your kernel in `app/AppKernel.php`
   ```php
   public function registerBundles()
