@@ -1,4 +1,8 @@
 services:
+    # Remove the public: true default once DI is implemented throughout the StepUp applications. See Pivotal #138225085
+    _defaults:
+        public: true
+
     surfnet_saml.saml.attribute_dictionary:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary
         arguments:
