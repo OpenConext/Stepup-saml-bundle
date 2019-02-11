@@ -197,15 +197,6 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.surfconext.id:
-        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
-        arguments:
-            - surfconextId
-            - ~
-            - 'urn:oid:1.3.6.1.4.1.1076.20.40.40.1'
-        tags:
-            - { name: 'saml.attribute' }
-
     saml.attribute.eduPersonTargetedID:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
