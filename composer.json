@@ -14,7 +14,6 @@
         "robrichards/xmlseclibs": "^3.0"
     },
     "require-dev": {
-        "mockery/mockery": "~1.0",
         "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "^5.7",
         "sebastian/exporter": "~2.0",
