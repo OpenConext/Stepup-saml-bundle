@@ -1,3 +1,10 @@
+# 4.1.3
+**Improvements**
+ * Remove the unused SURFconextID attribute from dict #85 
+ * Fix the failing Travis builds #86
+
+# 4.1.2
+
 # 4.1.1
 
 Changes: 
