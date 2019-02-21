@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\Metadata;
 
-
 class MetadataConfiguration
 {
     /**
