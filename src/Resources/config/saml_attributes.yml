@@ -222,7 +222,7 @@ services:
             - 'urn:mace:dir:attribute-def:eduPersonScopedAffiliation'
             - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.9'
         tags:
-            - { name: 'saml.ateduPersonScopedAffiliationtribute' }
+            - { name: 'saml.attribute' }
 
     saml.attribute.eduPersonAssurance:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
