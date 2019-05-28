@@ -89,15 +89,6 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.nlDigitalAuthorIdentifier:
-        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
-        arguments:
-            - nlDigitalAuthorIdentifier
-            - 'urn:mace:surffederatie.nl:attribute-def:nlDigitalAuthorIdentifier'
-            - ~
-        tags:
-            - { name: 'saml.attribute' }
-
     saml.attribute.nlEduPersonHomeOrganization:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
@@ -170,33 +161,6 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
-    saml.attribute.surfconext.licenseInfo:
-        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
-        arguments:
-            - surfconextLicenseInfo
-            - 'urn:nl.surfconext.licenseInfo'
-            - ~
-        tags:
-            - { name: 'saml.attribute' }
-
-    saml.attribute.surfconext.accountStatus:
-        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
-        arguments:
-            - surfconextAccountStatus
-            - ~
-            - 'urn:oid:1.3.6.1.4.1.1076.20.100.10.10.1'
-        tags:
-            - { name: 'saml.attribute' }
-
-    saml.attribute.surfconext.virtualOrganisationName:
-        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
-        arguments:
-            - surfconextVirtualOrganisationName
-            - ~
-            - 'urn:oid:1.3.6.1.4.1.1076.20.100.10.10.2'
-        tags:
-            - { name: 'saml.attribute' }
-
     saml.attribute.eduPersonTargetedID:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
@@ -256,7 +220,7 @@ services:
         arguments:
             - eduPersonScopedAffiliation
             - 'urn:mace:dir:attribute-def:eduPersonScopedAffiliation'
-            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.8'
+            - 'urn:oid:1.3.6.1.4.1.5923.1.1.1.9'
         tags:
             - { name: 'saml.attribute' }
 
