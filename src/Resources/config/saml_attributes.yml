@@ -242,6 +242,15 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
+    saml.attribute.eckId:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eckId
+            - 'urn:mace:surf.nl:attribute-def:eckid'
+            - ~
+        tags:
+            - { name: 'saml.attribute' }
+
     saml.attribute.audio:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
