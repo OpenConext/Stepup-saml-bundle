@@ -1,4 +1,13 @@
-# 4.1.3
+# 4.1.5
+**New feature**
+* Add new attribute eckId #88
+
+# 4.1.4
+**Improvements**
+ * Add WantAuthnRequestsSigned="true" to the IDPSSODescriptor in the Metadata #87
+ * Add knowledge about attribute eduPersonScopedAffiliation #84
+ 
+ # 4.1.3
 **Improvements**
  * Remove the unused SURFconextID attribute from dict #85 
  * Fix the failing Travis builds #86
