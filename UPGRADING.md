@@ -1,3 +1,14 @@
+# UPGRADE FROM X to 4.1.9
+
+When using this bundle with Symfony 4.3 you should configure the templating engine:
+
+```yaml
+framework:
+    templating:
+        engines:
+            - twig
+```        
+
 # UPGRADE FROM 3.X to 4.X
 This release makes error reporting more specific. This release changed the API of the
 `ReceivedAuthnRequestQueryString::getSignatureAlgorithm` method, returning the signature algorithm url decoded. Any
