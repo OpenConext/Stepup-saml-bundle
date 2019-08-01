@@ -104,7 +104,7 @@ class MetadataController extends Controller
 ## Release strategy
 
 ### CHANGELOG.md
-Please read: https://github.com/OpenConext/Stepup-Deploy/wiki/Release-Management fro more information on the release strategy used in Stepup projects.
+Please read: https://github.com/OpenConext/Stepup-Deploy/wiki/Release-Management for more information on the release strategy used in Stepup projects.
 
 ### UPGRADING.md
 When introducing backwards compatible breaking changes in the bundle. Please update the UPGRADING.md file to instruct

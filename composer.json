@@ -9,8 +9,8 @@
         "php": ">=5.6,<8.0-dev",
         "ext-openssl": "*",
         "simplesamlphp/saml2": "3.2.*",
-        "symfony/dependency-injection": ">=2.7,<4",
-        "symfony/framework-bundle": ">=2.7,<4",
+        "symfony/dependency-injection": ">=2.7,<4 || ~4.3",
+        "symfony/framework-bundle": ">=2.7,<4 || ~4.3",
         "robrichards/xmlseclibs": "^3.0"
     },
     "require-dev": {
@@ -21,7 +21,8 @@
         "squizlabs/php_codesniffer": "^3.0",
         "mockery/mockery": "~0.9",
         "psr/log": "~1.0",
-        "sensiolabs/security-checker": "^5.0"
+        "sensiolabs/security-checker": "^5.0",
+        "symfony/phpunit-bridge": "^4.3"
     },
     "autoload": {
         "psr-4": {
