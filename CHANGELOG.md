@@ -1,3 +1,8 @@
+# 4.1.7
+**New feature**
+* Compatible with sf4
+* Classname alias support for sf4 auto-wiring 
+
 # 4.1.5
 **New feature**
 * Add new attribute eckId #88
