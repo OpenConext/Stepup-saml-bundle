@@ -7,13 +7,13 @@ services:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary
         arguments:
             - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
-        deprecated: ~
+
     Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary:
         alias: surfnet_saml.saml.attribute_dictionary
 
     surfnet_saml.configuration.metadata:
         class: Surfnet\SamlBundle\Metadata\MetadataConfiguration
-        deprecated: ~
+
     Surfnet\SamlBundle\Metadata\MetadataConfiguration:
         alias: surfnet_saml.configuration.metadata
 
@@ -25,7 +25,7 @@ services:
             - '@request_stack'
             - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
             - null # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration
-        deprecated: ~
+
     Surfnet\SamlBundle\Entity\HostedEntities:
         alias: surfnet_saml.configuration.hosted_entities
         public: false
@@ -33,14 +33,14 @@ services:
     surfnet_saml.hosted.service_provider:
         class:   Surfnet\SamlBundle\Entity\ServiceProvider
         factory: ['@surfnet_saml.configuration.hosted_entities', getServiceProvider]
-        deprecated: ~
+
     Surfnet\SamlBundle\Entity\ServiceProvider:
         alias: surfnet_saml.hosted.service_provider
 
     surfnet_saml.hosted.identity_provider:
         class:   Surfnet\SamlBundle\Entity\IdentityProvider
         factory: ['@surfnet_saml.configuration.hosted_entities', getIdentityProvider]
-        deprecated: ~
+
     Surfnet\SamlBundle\Entity\IdentityProvider:
         alias: surfnet_saml.hosted.identity_provider
 
@@ -49,7 +49,7 @@ services:
         arguments:
             - '@surfnet_saml.http.redirect_binding'
             - '@surfnet_saml.http.post_binding'
-        deprecated: ~
+
     Surfnet\SamlBundle\Http\HttpBindingFactory:
         alias: surfnet_saml.http.binding_factory
 
@@ -59,7 +59,7 @@ services:
             - '@logger'
             - '@surfnet_saml.signing.signature_verifier'
             - '@?surfnet_saml.entity.entity_repository'
-        deprecated: ~
+
     Surfnet\SamlBundle\Http\RedirectBinding:
         alias: surfnet_saml.http.redirect_binding
 
@@ -70,7 +70,7 @@ services:
             - '@logger'
             - '@surfnet_saml.signing.signature_verifier'
             - '@?surfnet_saml.entity.entity_repository'
-        deprecated: ~
+
     Surfnet\SamlBundle\Http\PostBinding:
         alias: surfnet_saml.http.post_binding
 
@@ -81,7 +81,7 @@ services:
             - '@router'
             - '@surfnet_saml.signing_service'
             - '@surfnet_saml.configuration.metadata'
-        deprecated: ~
+
     Surfnet\SamlBundle\Metadata\MetadataFactory:
         alias: surfnet_saml.metadata_factory
 
@@ -90,7 +90,7 @@ services:
         arguments:
             - '@surfnet_saml.saml2.keyloader'
             - '@surfnet_saml.saml2.privatekeyloader'
-        deprecated: ~
+
     Surfnet\SamlBundle\Service\SigningService:
         alias: surfnet_saml.signing_service
 
@@ -99,7 +99,7 @@ services:
         arguments:
             - '@surfnet_saml.saml2.keyloader'
             - '@logger'
-        deprecated: ~
+
     Surfnet\SamlBundle\Signing\SignatureVerifier:
         alias: surfnet_saml.signing.signature_verifier
 
@@ -107,14 +107,14 @@ services:
         class: Surfnet\SamlBundle\SAML2\BridgeContainer
         arguments:
             - '@logger'
-        deprecated: ~
+
     Surfnet\SamlBundle\SAML2\BridgeContainer:
         alias: surfnet_saml.saml2.bridge_container
 
     surfnet_saml.saml2.keyloader:
         public: false
         class: SAML2\Certificate\KeyLoader
-        deprecated: ~
+
     SAML2\Certificate\KeyLoader:
         public: false
         alias: surfnet_saml.saml2.keyloader
@@ -122,7 +122,7 @@ services:
     surfnet_saml.saml2.privatekeyloader:
         public: false
         class: SAML2\Certificate\PrivateKeyLoader
-        deprecated: ~
+
     SAML2\Certificate\PrivateKeyLoader:
         public: false
         alias: surfnet_saml.saml2.privatekeyloader
@@ -132,7 +132,7 @@ services:
         class: SAML2\Response\Processor
         arguments:
             - '@logger'
-        deprecated: ~
+
     SAML2\Response\Processor:
         public: false
         alias: surfnet_saml.saml2.response_processor
@@ -141,6 +141,6 @@ services:
         class: Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger
         arguments:
             - '@logger'
-        deprecated: ~
+
     Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger:
         alias: surfnet_saml.logger

@@ -26,6 +26,15 @@ For Syfony 3.4 support use version 4.1.1 or greater.
   }
   ```
 
+For sf 4.3 you should configure the templating engine:
+
+```yaml
+framework:
+    templating:
+        engines:
+        - twig
+```      
+
 ## Configuration
 
 ```yaml
