@@ -1,3 +1,15 @@
+# 4.1.8
+This is a security release that will harden the application against CVE 2019-3465
+ * Force upgrade of xmlseclibs to version 3.0.4 #90
+ * Enable ant on Travis builds #91
+
+# 4.1.7
+Remove deprecation notices
+ * Alias will also give warnings, service names should be fixed completely in the future.
+  
+# 4.1.6
+No release notes specified for this release
+
 # 4.1.5
 **New feature**
 * Add new attribute eckId #88
