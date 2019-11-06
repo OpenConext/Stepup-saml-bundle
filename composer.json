@@ -11,7 +11,7 @@
         "simplesamlphp/saml2": "3.2.*",
         "symfony/dependency-injection": ">=2.7,<4",
         "symfony/framework-bundle": ">=2.7,<4",
-        "robrichards/xmlseclibs": "^3.0"
+        "robrichards/xmlseclibs": "^3.0.4"
     },
     "require-dev": {
         "phpmd/phpmd": "^2.6",
