@@ -1,3 +1,7 @@
+# 4.1.9
+**New feature**
+* Provide minimal Symfony 4 support #89 
+
 # 4.1.8
 This is a security release that will harden the application against CVE 2019-3465
  * Force upgrade of xmlseclibs to version 3.0.4 #90
