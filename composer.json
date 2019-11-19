@@ -10,8 +10,8 @@
         "ext-openssl": "*",
         "robrichards/xmlseclibs": "^3.0.4",
         "simplesamlphp/saml2": "3.2.*",
-        "symfony/dependency-injection": "^3.4 || ^4.3",
-        "symfony/framework-bundle": "^3.4 || ^4.3",
+        "symfony/dependency-injection": "^3.4.26 || ^4.3",
+        "symfony/framework-bundle": "^3.4.26 || ^4.3",
         "symfony/templating": "^3.4 || ^4.3"
     },
     "require-dev": {
