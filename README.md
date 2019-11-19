@@ -15,7 +15,7 @@ Developed as part of the [SURFnet StepUp Gateway][2]
   composer require surfnet/stepup-saml-bundle
   ```
 
-For Syfony 3.4 support use version 4.1.1 or greater.
+For Symfony 3.4 support use version 4.1.1 or greater.
 
 * Add the bundle to your kernel in `app/AppKernel.php`
   ```php
@@ -26,13 +26,21 @@ For Syfony 3.4 support use version 4.1.1 or greater.
   }
   ```
 
-For sf 4.3 you should configure the templating engine:
+For use of this bundle in Symfony 4.3
+ 
+1. Require the bundle in the composer.json (version 4.1.9 or higher)
+2. Enable the bundle in `config/bundles.php` add to the return statement: `Surfnet\SamlBundle\SurfnetSamlBundle::class => ['all' => true],`
+3. Specify the bundle configuration in `config/packages/surfnet_saml.yml`, consult the configuration section below for available options.
+ 
+And, on top of that you should explicitly configure the Twig templating engine:
+
+In `config/packages/framework.yaml` add:
 
 ```yaml
 framework:
     templating:
         engines:
-        - twig
+            - twig
 ```      
 
 ## Configuration
