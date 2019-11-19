@@ -1,0 +1,6 @@
+{
+  "bundles": {
+    "Surfnet\\SamlBundle\\SurfnetSamlBundle": ["all"]
+  },
+  "aliases": ["stepup-saml"]
+}

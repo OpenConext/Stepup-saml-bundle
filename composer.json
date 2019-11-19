@@ -1,17 +1,18 @@
 {
     "name": "surfnet/stepup-saml-bundle",
     "type": "symfony-bundle",
-    "description": "A Symfony2 bundle that integrates the simplesamlphp\\saml2 library with Symfony",
+    "description": "A Symfony 3 (with SF 4 support) bundle that integrates the simplesamlphp\\saml2 library with Symfony.",
     "keywords": ["surfnet", "StepUp", "simplesamlphp", "SAML", "SAML2"],
     "license": "Apache-2.0",
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.6,<8.0-dev",
         "ext-openssl": "*",
+        "robrichards/xmlseclibs": "^3.0.4",
         "simplesamlphp/saml2": "3.2.*",
-        "symfony/dependency-injection": ">=2.7,<4",
-        "symfony/framework-bundle": ">=2.7,<4",
-        "robrichards/xmlseclibs": "^3.0.4"
+        "symfony/dependency-injection": "^3.4.26 || ^4.3",
+        "symfony/framework-bundle": "^3.4.26 || ^4.3",
+        "symfony/templating": "^3.4 || ^4.3"
     },
     "require-dev": {
         "phpmd/phpmd": "^2.6",
@@ -21,7 +22,11 @@
         "squizlabs/php_codesniffer": "^3.0",
         "mockery/mockery": "~0.9",
         "psr/log": "~1.0",
-        "sensiolabs/security-checker": "^5.0"
+        "sensiolabs/security-checker": "^5.0",
+        "symfony/phpunit-bridge": "^4.3"
+    },
+    "config": {
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
