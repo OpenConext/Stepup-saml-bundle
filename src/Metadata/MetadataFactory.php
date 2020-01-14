@@ -110,6 +110,10 @@ class MetadataFactory
         if ($metadataConfiguration->isSp) {
             $metadata->hasSpMetadata = true;
             $metadata->assertionConsumerUrl = $this->getUrl($metadataConfiguration->assertionConsumerRoute);
+
+            if ($metadataConfiguration->spCertificate) {
+                $metadata->spCertificate = $this->getCertificateData($metadataConfiguration->spCertificate);
+            }
         }
 
         if ($metadataConfiguration->isIdP) {
