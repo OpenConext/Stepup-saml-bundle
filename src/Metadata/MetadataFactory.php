@@ -152,6 +152,8 @@ class MetadataFactory
     private function getCertificateData($publicKeyFile)
     {
         $certificate = File::getFileContents($publicKeyFile);
+
+        $matches = [];
         preg_match(Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
 
         $certificateData = str_replace(array(' ', "\n"), '', $matches[1]);

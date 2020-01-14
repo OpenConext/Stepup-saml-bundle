@@ -227,6 +227,8 @@ class SurfnetSamlExtension extends Extension
      */
     private function parseCertificateData($path, array $provider)
     {
+        $configuration = [];
+
         if (isset($provider['certificate_file']) && !isset($provider['certificate'])) {
             $configuration['certificateFile'] = $provider['certificate_file'];
         } elseif (isset($provider['certificate'])) {
