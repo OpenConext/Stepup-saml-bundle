@@ -110,6 +110,10 @@ class MetadataFactory
         if ($metadataConfiguration->isSp) {
             $metadata->hasSpMetadata = true;
             $metadata->assertionConsumerUrl = $this->getUrl($metadataConfiguration->assertionConsumerRoute);
+
+            if ($metadataConfiguration->spCertificate) {
+                $metadata->spCertificate = $this->getCertificateData($metadataConfiguration->spCertificate);
+            }
         }
 
         if ($metadataConfiguration->isIdP) {
@@ -148,6 +152,8 @@ class MetadataFactory
     private function getCertificateData($publicKeyFile)
     {
         $certificate = File::getFileContents($publicKeyFile);
+
+        $matches = [];
         preg_match(Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
 
         $certificateData = str_replace(array(' ', "\n"), '', $matches[1]);

@@ -48,6 +48,11 @@ class MetadataConfiguration
     /**
      * @var string
      */
+    public $spCertificate;
+
+    /**
+     * @var string
+     */
     public $idpCertificate;
 
     /**

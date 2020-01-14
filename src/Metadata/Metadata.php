@@ -55,6 +55,11 @@ class Metadata implements Signable
     public $idpCertificate;
 
     /**
+     * @var string
+     */
+    public $spCertificate;
+
+    /**
      * @var DOMDocument
      */
     public $document;
