@@ -124,7 +124,8 @@ class SurfnetSamlExtension extends Extension
                 $metadataConfiguration,
                 [
                     'isSp' => true,
-                    'assertionConsumerRoute' => $spConfiguration['assertion_consumer_route']
+                    'assertionConsumerRoute' => $spConfiguration['assertion_consumer_route'],
+                    'spCertificate' => $configuration['service_provider']['public_key'],
                 ]
             );
         }
