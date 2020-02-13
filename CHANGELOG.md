@@ -1,3 +1,7 @@
+# 4.1.10
+**New feature**
+* Allow setting the ForceAuthn property on AuthNRequest objects #96
+
 # 4.1.9
 **New feature**
 * Provide minimal Symfony 4 support #89 
