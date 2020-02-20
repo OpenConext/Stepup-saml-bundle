@@ -127,15 +127,20 @@ class AuthnRequestFactory
     /**
      * @param ServiceProvider  $serviceProvider
      * @param IdentityProvider $identityProvider
+     * @param bool $forceAuthn
      * @return AuthnRequest
      */
-    public static function createNewRequest(ServiceProvider $serviceProvider, IdentityProvider $identityProvider)
-    {
+    public static function createNewRequest(
+        ServiceProvider $serviceProvider,
+        IdentityProvider $identityProvider,
+        $forceAuthn = false
+    ) {
         $request = new SAML2AuthnRequest();
         $request->setAssertionConsumerServiceURL($serviceProvider->getAssertionConsumerUrl());
         $request->setDestination($identityProvider->getSsoUrl());
         $request->setIssuer($serviceProvider->getEntityId());
         $request->setProtocolBinding(Constants::BINDING_HTTP_POST);
+        $request->setForceAuthn($forceAuthn);
         $request->setSignatureKey(self::loadPrivateKey(
             $serviceProvider->getPrivateKey(PrivateKey::NAME_DEFAULT)
         ));
