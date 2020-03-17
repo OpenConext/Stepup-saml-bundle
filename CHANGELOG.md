@@ -1,3 +1,7 @@
+# 4.1.11
+**New feature**
+* Allow retrieval of Scoping -> RequesterIds #97
+
 # 4.1.10
 **New feature**
 * Allow setting the ForceAuthn property on AuthNRequest objects #96

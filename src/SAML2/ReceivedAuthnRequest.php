@@ -206,6 +206,14 @@ final class ReceivedAuthnRequest
     }
 
     /**
+     * @return string[]
+     */
+    public function getScopingRequesterIds()
+    {
+        return $this->request->getRequesterID();
+    }
+    
+    /**
      * @param XMLSecurityKey $key
      * @return bool
      * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
