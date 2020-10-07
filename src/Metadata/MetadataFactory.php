@@ -25,15 +25,9 @@ use SAML2\Utilities\File;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 class MetadataFactory
 {
-    /**
-     * @var \Symfony\Component\Templating\EngineInterface
-     */
-    private $templateEngine;
-
     /**
      * @var \Symfony\Component\Routing\RouterInterface
      */
@@ -55,12 +49,10 @@ class MetadataFactory
     private $metadata;
 
     public function __construct(
-        EngineInterface $templateEngine,
         RouterInterface $router,
         SigningService $signingService,
         MetadataConfiguration $metadataConfiguration
     ) {
-        $this->templateEngine = $templateEngine;
         $this->router = $router;
         $this->signingService = $signingService;
         $this->metadataConfiguration = $metadataConfiguration;
@@ -86,11 +78,39 @@ class MetadataFactory
         $metadata = $this->getMetadata();
         $keyPair = $this->buildKeyPairFrom($this->metadataConfiguration);
 
+        $template = sprintf('<?xml version="1.0" encoding="UTF-8"?>
+            <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="%s">',
+            $metadata->entityId
+        );
+
+        if ($metadata->hasIdPMetadata) {
+            $template .= sprintf('<md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" WantAuthnRequestsSigned="true">
+                <md:KeyDescriptor xmlns:ds="http://www.w3.org/2000/09/xmldsig#" use="signing">
+                    <ds:KeyInfo>
+                        <ds:X509Data>
+                            <ds:X509Certificate>%s</ds:X509Certificate>
+                        </ds:X509Data>
+                    </ds:KeyInfo>
+                </md:KeyDescriptor>
+                <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="%s"/>
+                </md:IDPSSODescriptor>',
+                $metadata->idpCertificate,
+                $metadata->ssoUrl
+            );
+        }
+
+        if ($metadata->hasSpMetadata) {
+            $template .= sprintf('<md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+                <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="%s" index="0"/>
+                </md:SPSSODescriptor>',
+                $metadata->assertionConsumerUrl
+            );
+        }
+
+        $template .= "</md:EntityDescriptor>";
+
         $metadata->document = DOMDocumentFactory::create();
-        $metadata->document->loadXML($this->templateEngine->render(
-            'SurfnetSamlBundle:Metadata:metadata.xml.twig',
-            ['metadata' => $metadata]
-        ));
+        $metadata->document->loadXML($template);
 
         $this->signingService->sign($metadata, $keyPair);
 
