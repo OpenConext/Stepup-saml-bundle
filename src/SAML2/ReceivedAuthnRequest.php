@@ -25,6 +25,7 @@ use SAML2\DOMDocumentFactory;
 use SAML2\Message;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
+use Surfnet\SamlBundle\SAML2\Extensions\Extensions;
 
 final class ReceivedAuthnRequest
 {
@@ -32,6 +33,10 @@ final class ReceivedAuthnRequest
      * @var SAML2AuthnRequest
      */
     private $request;
+    /**
+     * @var Extensions
+     */
+    private $extensions;
 
     private function __construct(SAML2AuthnRequest $request)
     {
@@ -221,5 +226,15 @@ final class ReceivedAuthnRequest
     public function verify(XMLSecurityKey $key)
     {
         return $this->request->validate($key);
+    }
+
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
+
+    public function setExtensions(Extensions $extensions)
+    {
+        $this->extensions = $extensions;
     }
 }
