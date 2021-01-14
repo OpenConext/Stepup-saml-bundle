@@ -22,6 +22,7 @@ use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Constants;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
+use Surfnet\SamlBundle\SAML2\Extensions\Extensions;
 
 class AuthnRequest
 {
@@ -51,11 +52,17 @@ class AuthnRequest
     private $signatureAlgorithm;
 
     /**
+     * @var Extensions
+     */
+    private $extensions;
+
+    /**
      * @param SAML2AuthnRequest $request
      */
     private function __construct(SAML2AuthnRequest $request)
     {
         $this->request = $request;
+        $this->extensions = Extensions::fromSaml2AuthNRequest($request);
     }
 
     /**
@@ -347,5 +354,10 @@ class AuthnRequest
         $signedQuery = $toSign . '&Signature=' . urlencode(base64_encode($signature));
 
         return $signedQuery;
+    }
+
+    public function getExtensions()
+    {
+        return $this->extensions;
     }
 }
