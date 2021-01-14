@@ -360,4 +360,9 @@ class AuthnRequest
     {
         return $this->extensions;
     }
+
+    public function setExtensions(Extensions $extensions)
+    {
+        $this->extensions = $extensions;
+    }
 }

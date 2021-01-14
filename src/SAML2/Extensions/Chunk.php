@@ -18,6 +18,8 @@
 
 namespace Surfnet\SamlBundle\SAML2\Extensions;
 
+use DOMElement;
+
 class Chunk
 {
     private $name;
@@ -27,11 +29,11 @@ class Chunk
     private $value;
 
     /**
-     * @param $name
-     * @param $namespace
-     * @param string|array $value
+     * @param string $name
+     * @param string $namespace
+     * @param DOMElement $value
      */
-    public function __construct($name, $namespace, $value)
+    public function __construct($name, $namespace, DOMElement $value)
     {
         $this->name = $name;
         $this->namespace = $namespace;
@@ -39,7 +41,7 @@ class Chunk
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -47,20 +49,15 @@ class Chunk
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getNamespace()
     {
         return $this->namespace;
     }
 
-    public function isCollection()
-    {
-        return is_array($this->value);
-    }
-
     /**
-     * @return mixed
+     * @return DOMElement
      */
     public function getValue()
     {

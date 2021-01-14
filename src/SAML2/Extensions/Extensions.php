@@ -19,10 +19,13 @@
 namespace Surfnet\SamlBundle\SAML2\Extensions;
 
 use SAML2\AuthnRequest;
-use function array_key_exists;
+use SAML2\XML\Chunk as SAML2Chunk;
 
 class Extensions
 {
+    /**
+     * @var Chunk[]
+     */
     private $chunks = [];
 
     public static function fromSaml2AuthNRequest(AuthnRequest $authnRequest)
@@ -38,7 +41,6 @@ class Extensions
                         $rawChunk->xml
                     )
                 );
-
             }
         }
         return $extensions;
@@ -56,8 +58,20 @@ class Extensions
         return null;
     }
 
-    private function addChunk(Chunk $chunk)
+    public function addChunk(Chunk $chunk)
     {
         $this->chunks[$chunk->getName()] = $chunk;
+    }
+
+    /**
+     * @return array
+     */
+    public function toSaml2Format()
+    {
+        $extensions = [];
+        foreach ($this->chunks as $chunk) {
+            $extensions[] = new SAML2Chunk($chunk->getValue());
+        }
+        return $extensions;
     }
 }
