@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+                    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+                    ID="_92dbb2d48fa7962f3523ea301e85ec5dc52b2d09d9affc84e9b8163c843f" Version="2.0"
+                    IssueInstant="2017-04-18T07:46:45Z" Destination="https://tiqr.tld/saml/sso"
+                    AssertionConsumerServiceURL="https://gateway.tld/gssp/tiqr/consume-assertion"
+                    ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST">
+    <saml:Issuer>https://gateway.example.com/gssp/tiqr/metadata</saml:Issuer>
+    <samlp:Scoping ProxyCount="10">
+        <samlp:RequesterID>https://selfservice.stepup.example.com/registration/gssf/tiqr/metadata</samlp:RequesterID>
+    </samlp:Scoping>
+</samlp:AuthnRequest>

@@ -25,9 +25,12 @@ use SAML2\DOMDocumentFactory;
 use SAML2\Message;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
+use Surfnet\SamlBundle\SAML2\Extensions\ExtensionsMapperTrait;
 
 final class ReceivedAuthnRequest
 {
+    use ExtensionsMapperTrait;
+
     /**
      * @var SAML2AuthnRequest
      */
@@ -36,6 +39,7 @@ final class ReceivedAuthnRequest
     private function __construct(SAML2AuthnRequest $request)
     {
         $this->request = $request;
+        $this->loadExtensionsFromSaml2AuthNRequest();
     }
 
     /**
@@ -212,7 +216,7 @@ final class ReceivedAuthnRequest
     {
         return $this->request->getRequesterID();
     }
-    
+
     /**
      * @param XMLSecurityKey $key
      * @return bool
