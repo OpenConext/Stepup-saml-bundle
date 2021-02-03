@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -137,37 +138,67 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->arrayNode('remote');
 
-        $this->addRemoteIdentityProviderSection($remoteNode);
+        $this->addRemoteIdentityProvidersSection($remoteNode);
         $this->addRemoteServiceProvidersSection($remoteNode);
+
+        // For backwards compatibility: support configuring a single remote IDP
+        $this->addRemoteIdentityProviderSection($remoteNode);
     }
 
     private function addRemoteIdentityProviderSection(ArrayNodeDefinition $remoteNode)
     {
-        $remoteNode
+        $arrayNode = $remoteNode
             ->children()
             ->arrayNode('identity_provider')
                 ->canBeEnabled()
-                ->children()
-                    ->scalarNode('entity_id')
-                        ->isRequired()
-                        ->info('The EntityID of the remote identity provider')
-                    ->end()
-                    ->scalarNode('sso_url')
-                        ->isRequired()
-                        ->info('The name of the route to generate the SSO URL')
-                    ->end()
-                    ->scalarNode('certificate')
-                        ->info(
-                            'The contents of the certificate used to sign the AuthnResponse with'
-                        )
-                    ->end()
-                    ->scalarNode('certificate_file')
-                        ->info(
-                            'A file containing the certificate used to sign the AuthnResponse with'
-                        )
-                    ->end()
+                ->children();
+
+        $this->addRemoteIdentityProviderConfiguration($arrayNode);
+
+        $arrayNode
                 ->end()
             ->end();
+    }
+
+
+    private function addRemoteIdentityProviderConfiguration(NodeBuilder $arrayNode)
+    {
+        $arrayNode
+          ->scalarNode('entity_id')
+              ->isRequired()
+              ->info('The EntityID of the remote identity provider')
+          ->end()
+          ->scalarNode('sso_url')
+              ->isRequired()
+              ->info('The name of the route to generate the SSO URL')
+          ->end()
+          ->scalarNode('certificate')
+              ->info(
+                  'The contents of the certificate used to sign the AuthnResponse with'
+              )
+          ->end()
+          ->scalarNode('certificate_file')
+              ->info(
+                  'A file containing the certificate used to sign the AuthnResponse with'
+              )
+          ->end();
+    }
+
+    private function addRemoteIdentityProvidersSection(ArrayNodeDefinition $remoteNode)
+    {
+        $arrayNode = $remoteNode
+            ->children()
+                ->arrayNode('identity_providers')
+                     ->prototype('array')
+                        ->children();
+
+        $this->addRemoteIdentityProviderConfiguration($arrayNode);
+
+        $arrayNode
+                      ->end()
+                  ->end()
+              ->end()
+          ->end();
     }
 
     private function addRemoteServiceProvidersSection(ArrayNodeDefinition $remoteNode)

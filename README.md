@@ -66,9 +66,25 @@ surfnet_saml:
               assertion_consumer_service_url: "%surfnet_saml_remote_sp_acs%"            
 ```
 
-The hosted configuration lists the configuration for the services (SP, IdP or both) that your application offers. SP and IdP
+The `hosted:` configuration lists the configuration for the services (SP, IdP or both) that your application offers. SP and IdP
  functionality can be turned off and on individually through the repective `enabled` flags.
-The remote configuration lists, if enabled, the configuration for a remote IdP to connect to.
+
+The `remote:` configuration lists, if enabled, the configuration for one or more remote service providers and identity providers to connect to.
+If your application authenticates with a single identity provider, you can use the `identity_provider:` option as shown above. The identity
+provider can be accessed runtime using the `@surfnet_saml.remote.idp` service.
+
+If your application authenticates with more than one identity providers, you can omit the `identity_provider:` key from configuration and list all
+identity providers under `identity_providers:`. The identity providers can be accessed by using the `@surfnet_saml.remote.identity_providers` service.
+```yaml
+    remote:
+        identity_providers:
+            -  enabled: true
+               entity_id: %surfnet_saml_remote_idp_entity_id%
+               sso_url: %surfnet_saml_remote_idp_sso_url%
+               certificate: %surfnet_saml_remote_idp_certificate%
+
+```
+
 The inlined certificate in the last line can be replaced with `certificate_file` containing a filesystem path to
 a file which contains said certificate.
 It is recommended to use parameters as listed above. The various `publickey` and `privatekey` variables are the
