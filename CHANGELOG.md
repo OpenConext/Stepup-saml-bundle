@@ -1,3 +1,7 @@
+# 4.2.0
+**New feature**
+* Support for SAML extensions on Authn SAML requests
+
 # 4.1.11
 **New feature**
 * Allow retrieval of Scoping -> RequesterIds #97
