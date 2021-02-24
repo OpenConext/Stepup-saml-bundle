@@ -2,7 +2,7 @@
 
 <project name="Stepup Saml Bundle-ci" default="build">
         <target name="build"
-            depends="php-lint-ci,phpmd-ci,phpcs-ci,phpcpd-ci,php-security-checker,phpunit-ci"/>
+            depends="php-lint-ci,phpmd-ci,phpcs-ci,phpcpd-ci,phpunit-ci"/>
 
     <target name="get-changeset.php.raw"
             description="creates a list of changed php files separated by newline">
@@ -42,12 +42,6 @@
             <arg value="echo '${changeset.php.spacesep}' | xargs -n 1 -P 4 php -l 1>/dev/null"/>
         </exec>
         <echo message="OK"/>
-    </target>
-
-    <target name="php-security-checker" description="Check your composer dependencies for insecure components">
-        <exec executable="vendor/bin/security-checker" failonerror="false">
-            <arg line="security:check" />
-        </exec>
     </target>
 
     <target name="phpmd-ci"

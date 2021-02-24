@@ -15,18 +15,7 @@ Developed as part of the [SURFnet StepUp Gateway][2]
   composer require surfnet/stepup-saml-bundle
   ```
 
-For Symfony 3.4 support use version 4.1.1 or greater.
-
-* Add the bundle to your kernel in `app/AppKernel.php`
-  ```php
-  public function registerBundles()
-  {
-      // ...
-      $bundles[] = new Surfnet\SamlBundle\SurfnetSamlBundle;
-  }
-  ```
-
-For use of this bundle in Symfony 4.3
+How to install with SF4.3+
  
 1. Require the bundle in the composer.json (version 4.1.9 or higher)
 2. Enable the bundle in `config/bundles.php` add to the return statement: `Surfnet\SamlBundle\SurfnetSamlBundle::class => ['all' => true],`
