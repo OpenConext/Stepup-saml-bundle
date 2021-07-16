@@ -1,3 +1,15 @@
+# 4.2.0
+**New feature**
+* Support for SAML extensions on Authn SAML requests
+
+# 4.1.11
+**New feature**
+* Allow retrieval of Scoping -> RequesterIds #97
+
+# 4.1.10
+**New feature**
+* Allow setting the ForceAuthn property on AuthNRequest objects #96
+
 # 4.1.9
 **New feature**
 * Provide minimal Symfony 4 support #89 

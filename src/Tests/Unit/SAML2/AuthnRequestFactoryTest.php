@@ -2,7 +2,12 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
+use Mockery as m;
 use PHPUnit_Framework_TestCase as UnitTest;
+use RobRichards\XMLSecLibs\XMLSecurityKey;
+use SAML2\Configuration\PrivateKey;
+use Surfnet\SamlBundle\Entity\IdentityProvider;
+use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,5 +50,28 @@ class AuthnRequestFactoryTest extends UnitTest
         $request = new Request($queryParams, [], [], [], [], $serverParams);
 
         AuthnRequestFactory::createFromHttpRequest($request);
+    }
+
+    /**
+     * @test
+     * @group saml2
+     */
+    public function verify_force_authn_works_as_intended()
+    {
+        $sp = m::mock(ServiceProvider::class);
+        $sp->shouldReceive('getAssertionConsumerUrl')->andReturn('https://example-sp.com/acs');
+        $sp->shouldReceive('getEntityId')->andReturn('https://example-sp.com/');
+
+        $pk = new PrivateKey(__DIR__.'/../../../Resources/keys/development_privatekey.pem', 'key-for-test', '');
+
+        $sp->shouldReceive('getPrivateKey')->andReturn($pk);
+
+        $idp = m::mock(IdentityProvider::class);
+        $idp->shouldReceive('getSsoUrl')->andReturn('https://example-idp.com/sso');
+
+        $authnRequest = AuthnRequestFactory::createNewRequest($sp, $idp, true);
+        $this->assertTrue($authnRequest->isForceAuthn());
+        $authnRequest = AuthnRequestFactory::createNewRequest($sp, $idp, false);
+        $this->assertFalse($authnRequest->isForceAuthn());
     }
 }
