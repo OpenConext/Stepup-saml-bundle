@@ -35,8 +35,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('surfnet_saml');
+        $treeBuilder = new TreeBuilder('surfnet_saml');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addHostedSection($rootNode);
         $this->addRemoteSection($rootNode);
