@@ -30,7 +30,7 @@ use Twig\Environment;
 class MetadataFactory
 {
     /**
-     * @var Environment 
+     * @var Environment
      */
     private $templateEngine;
 
