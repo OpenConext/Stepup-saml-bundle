@@ -1,3 +1,8 @@
+# 4.3.0
+**New feature**
+* Further support Symfony 4 by adhering to the Twig environment in favor of
+  the old 'Environment' solution
+
 # 4.2.0
 **New feature**
 * Support for SAML extensions on Authn SAML requests
