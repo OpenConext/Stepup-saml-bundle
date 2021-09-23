@@ -7,22 +7,24 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.2,<8.0-dev",
+        "ext-dom": "*",
         "ext-openssl": "*",
         "robrichards/xmlseclibs": "^3.0.4",
         "simplesamlphp/saml2": "3.2.*",
         "symfony/dependency-injection": "^4.4",
         "symfony/framework-bundle": "^4.4",
         "symfony/templating": "^4.4",
-        "ext-dom": "*"
+        "twig/twig": "^2"
     },
     "require-dev": {
+        "jasny/phpunit-xsdvalidation": "^1.0",
+        "mockery/mockery": "~0.9",
         "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "^5.7",
+        "psr/log": "~1.0",
         "sebastian/exporter": "~2.0",
         "sebastian/phpcpd": "^2.0",
         "squizlabs/php_codesniffer": "^3.0",
-        "mockery/mockery": "~0.9",
-        "psr/log": "~1.0",
         "symfony/phpunit-bridge": "^4.4"
     },
     "config": {

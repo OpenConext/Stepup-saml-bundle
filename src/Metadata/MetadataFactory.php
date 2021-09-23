@@ -25,12 +25,12 @@ use SAML2\Utilities\File;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class MetadataFactory
 {
     /**
-     * @var \Symfony\Component\Templating\EngineInterface
+     * @var Environment
      */
     private $templateEngine;
 
@@ -55,7 +55,7 @@ class MetadataFactory
     private $metadata;
 
     public function __construct(
-        EngineInterface $templateEngine,
+        Environment $templateEngine,
         RouterInterface $router,
         SigningService $signingService,
         MetadataConfiguration $metadataConfiguration
