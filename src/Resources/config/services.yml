@@ -77,7 +77,7 @@ services:
     surfnet_saml.metadata_factory:
         class: Surfnet\SamlBundle\Metadata\MetadataFactory
         arguments:
-            - '@templating'
+            - '@twig'
             - '@router'
             - '@surfnet_saml.signing_service'
             - '@surfnet_saml.configuration.metadata'

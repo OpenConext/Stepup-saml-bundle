@@ -56,6 +56,10 @@ class BridgeContainer extends AbstractContainer
 
     public function debugMessage($message, $type)
     {
+        if ($message instanceof \DOMElement) {
+            $message = $message->ownerDocument->saveXML($message);
+        }
+
         $this->logger->debug($message, ['type' => $type]);
     }
 
