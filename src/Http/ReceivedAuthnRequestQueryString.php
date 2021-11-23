@@ -288,9 +288,10 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
      */
     public function verify(XMLSecurityKey $key)
     {
-        if ($key->verifySignature($this->getSignedRequestPayload(), $this->getDecodedSignature())) {
-            return true;
+        $isVerified = $key->verifySignature($this->getSignedRequestPayload(), $this->getDecodedSignature());
+        if ($isVerified !== 1) {
+            return false;
         }
-        return false;
+        return true;
     }
 }

@@ -142,7 +142,7 @@ class HostedEntities
 
         $context = $this->router->getContext();
 
-        $context->fromRequest($this->requestStack->getMasterRequest());
+        $context->fromRequest($this->requestStack->getMainRequest());
 
         $url = $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
 

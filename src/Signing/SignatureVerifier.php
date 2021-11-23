@@ -21,7 +21,7 @@ namespace Surfnet\SamlBundle\Signing;
 use Psr\Log\LoggerInterface;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Certificate\Key;
-use SAML2\Certificate\KeyLoader as KeyLoader;
+use SAML2\Certificate\KeyLoader;
 use SAML2\Certificate\X509;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
@@ -151,13 +151,13 @@ class SignatureVerifier
         $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
         $key->loadKey($publicKey->getCertificate());
 
-        if ($key->verifySignature($request->getSignedRequestQuery(), $request->getSignature())) {
-            $this->logger->debug('Signature VERIFIED');
-            return true;
+        $isVerified = $key->verifySignature($request->getSignedRequestQuery(), $request->getSignature());
+        if ($isVerified !== 1) {
+            $this->logger->debug('Signature NOT VERIFIED');
+            return false;
         }
 
-        $this->logger->debug('Signature NOT VERIFIED');
-
-        return false;
+        $this->logger->debug('Signature VERIFIED');
+        return true;
     }
 }
