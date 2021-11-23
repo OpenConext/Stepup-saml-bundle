@@ -88,7 +88,7 @@ class MetadataFactory
 
         $metadata->document = DOMDocumentFactory::create();
         $metadata->document->loadXML($this->templateEngine->render(
-            'SurfnetSamlBundle:Metadata:metadata.xml.twig',
+            '@SurfnetSaml/Metadata/metadata.xml.twig',
             ['metadata' => $metadata]
         ));
 
