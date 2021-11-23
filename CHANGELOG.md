@@ -1,3 +1,7 @@
+# 4.3.1
+**Bugfix**
+* Update metadata.xml template reference
+
 # 4.3.0
 **New feature**
 * Further support Symfony 4 by adhering to the Twig environment in favor of
