@@ -1,3 +1,7 @@
+# 4.3.2
+**Bugfix**
+* Secure the way the verifySignature method is used #104
+
 # 4.3.1
 **Bugfix**
 * Update metadata.xml template reference
