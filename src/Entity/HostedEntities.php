@@ -144,9 +144,9 @@ class HostedEntities
         
         if (method_exists($this->requestStack, 'getMainRequest')) {
             $context->fromRequest($this->requestStack->getMainRequest());
+        } else {
+            $context->fromRequest($this->requestStack->getMasterRequest());
         }
-        else $context->fromRequest($this->requestStack->getMasterRequest());
-        
         $url = $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
 
         $context->fromRequest($this->requestStack->getCurrentRequest());
