@@ -170,6 +170,15 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
+    saml.attribute.internalCollabPersonId:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - internalCollabPersonId
+            - 'urn:mace:surf.nl:attribute-def:internal-collabPersonId'
+            - ~
+        tags:
+            - { name: 'saml.attribute' }
+
     saml.attribute.isMemberOf:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
