@@ -1,3 +1,7 @@
+4.3.3
+**Feature**
+*  Add internal-collabPersonId to attribute dictionary #111 
+
 # 4.3.2
 **Bugfix**
 * Secure the way the verifySignature method is used #104
