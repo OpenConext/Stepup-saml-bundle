@@ -260,6 +260,24 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
+    saml.attribute.surf-crm-id:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - surf-crm-id
+            - 'urn:mace:surf.nl:attribute-def:surf-crm-id'
+            - 'urn:oid:1.3.6.1.4.1.1076.20.100.10.50.2'
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.eduId:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - eduId
+            - 'urn:mace:eduid.nl:1.1'
+            - ~
+        tags:
+            - { name: 'saml.attribute' }
+
     saml.attribute.audio:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
