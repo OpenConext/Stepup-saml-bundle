@@ -123,6 +123,9 @@ class MetadataController extends Controller
 }
 ```
 
+See more examples in [EXAMPLES.md](EXAMPLES.md).
+
+
 ## Release strategy
 
 ### CHANGELOG.md
