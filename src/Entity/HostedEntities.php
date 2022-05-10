@@ -141,9 +141,12 @@ class HostedEntities
         $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];
 
         $context = $this->router->getContext();
-
-        $context->fromRequest($this->requestStack->getMainRequest());
-
+        
+        if (method_exists($this->requestStack, 'getMainRequest')) {
+            $context->fromRequest($this->requestStack->getMainRequest());
+        } else {
+            $context->fromRequest($this->requestStack->getMasterRequest());
+        }
         $url = $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
 
         $context->fromRequest($this->requestStack->getCurrentRequest());
