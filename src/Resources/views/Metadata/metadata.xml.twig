@@ -14,7 +14,16 @@
     </md:IDPSSODescriptor>
 {% endif %}
 {% if metadata.hasSpMetadata %}
-    <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"{% if metadata.spCertificate %} AuthnRequestsSigned="true"{% endif %}>
+        {% if metadata.spCertificate %}
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>{{ metadata.spCertificate }}</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        {% endif %}
         <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
                                      Location="{{ metadata.assertionConsumerUrl }}"
                                      index="0"/>

@@ -1,4 +1,10 @@
-4.3.3
+# 4.4.0
+**Feature**
+* Include SP certificate in generated metadata when present #104
+* Add eduId and surf-crm-id to attribute dictionary
+* Add two code examples in the file EXAMPLES.md
+
+# 4.3.3
 **Feature**
 *  Add internal-collabPersonId to attribute dictionary #111 
 
