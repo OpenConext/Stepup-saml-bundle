@@ -1,4 +1,22 @@
 services:
+    saml.attribute.subjectId:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - subjectId
+            - 'urn:oasis:names:tc:SAML:attribute:subject-id'
+            - ~
+        tags:
+            - { name: 'saml.attribute' }
+
+    saml.attribute.pairwiseId:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - pairwiseId
+            - 'urn:oasis:names:tc:SAML:attribute:pairwise-id'
+            - ~
+        tags:
+            - { name: 'saml.attribute' }
+
     saml.attribute.commonName:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
