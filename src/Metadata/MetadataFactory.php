@@ -170,6 +170,6 @@ class MetadataFactory
         $route      = is_array($routeDefinition) ? $routeDefinition['route'] : $routeDefinition;
         $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];
 
-        return $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
+        return $this->router->generate($route ?? '', $parameters, RouterInterface::ABSOLUTE_URL);
     }
 }
