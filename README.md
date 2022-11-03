@@ -19,7 +19,7 @@ How to install with SF4.3+
  
 1. Require the bundle in the composer.json (version 4.1.9 or higher)
 2. Enable the bundle in `config/bundles.php` add to the return statement: `Surfnet\SamlBundle\SurfnetSamlBundle::class => ['all' => true],`
-3. Specify the bundle configuration in `config/packages/surfnet_saml.yml`, consult the configuration section below for available options.
+3. Specify the bundle configuration in `config/packages/surfnet_saml.yaml`, consult the configuration section below for available options.
  
 And, on top of that you should explicitly configure the Twig templating engine:
 
