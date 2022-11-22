@@ -50,8 +50,8 @@ class InResponseToTest extends UnitTest
         $assertion                   = new Assertion();
         $subjectConfirmationWithData = new SubjectConfirmation();
         $subjectConfirmationData     = new SubjectConfirmationData();
-        $subjectConfirmationData->InResponseTo = '1';
-        $subjectConfirmationWithData->SubjectConfirmationData = $subjectConfirmationData;
+        $subjectConfirmationData->setInResponseTo('1');
+        $subjectConfirmationWithData->setSubjectConfirmationData($subjectConfirmationData);
         $assertion->setSubjectConfirmation([$subjectConfirmationWithData]);
 
         $this->assertTrue(InResponseTo::assertEquals($assertion, '1'));
@@ -71,7 +71,7 @@ class InResponseToTest extends UnitTest
 
         $assertionWithEmptyInResponseTo = new Assertion();
         $subjectConfirmationWithData = new SubjectConfirmation();
-        $subjectConfirmationWithData->SubjectConfirmationData = new SubjectConfirmationData();
+        $subjectConfirmationWithData->setSubjectConfirmationData(new SubjectConfirmationData());
         $assertionWithEmptyInResponseTo->setSubjectConfirmation([$subjectConfirmationWithData]);
 
         return [
