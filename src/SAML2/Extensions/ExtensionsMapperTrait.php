@@ -19,18 +19,18 @@ trait ExtensionsMapperTrait
             $rawExtensions = $this->request->getExtensions();
             /** @var SAML2Chunk $rawChunk */
             foreach ($rawExtensions as $rawChunk) {
-                switch ($rawChunk->localName) {
+                switch ($rawChunk->getLocalName()) {
                     case 'UserAttributes':
                         $this->extensions->addChunk(
-                            new GsspUserAttributesChunk($rawChunk->xml)
+                            new GsspUserAttributesChunk($rawChunk->getXML())
                         );
                         break;
                     default:
                         $this->extensions->addChunk(
                             new Chunk(
-                                $rawChunk->localName,
-                                $rawChunk->namespaceURI,
-                                $rawChunk->xml
+                                $rawChunk->getLocalName(),
+                                $rawChunk->getNamespaceURI(),
+                                $rawChunk->getXML()
                             )
                         );
                 }
