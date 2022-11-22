@@ -25,6 +25,7 @@ use SAML2\Configuration\PrivateKey;
 use SAML2\Constants;
 use SAML2\DOMDocumentFactory;
 use SAML2\Message;
+use SAML2\XML\saml\Issuer;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Exception\RuntimeException;
@@ -138,7 +139,9 @@ class AuthnRequestFactory
         $request = new SAML2AuthnRequest();
         $request->setAssertionConsumerServiceURL($serviceProvider->getAssertionConsumerUrl());
         $request->setDestination($identityProvider->getSsoUrl());
-        $request->setIssuer($serviceProvider->getEntityId());
+        $issuer = new Issuer();
+        $issuer->setValue($serviceProvider->getEntityId());
+        $request->setIssuer($issuer);
         $request->setProtocolBinding(Constants::BINDING_HTTP_POST);
         $request->setForceAuthn($forceAuthn);
         $request->setSignatureKey(self::loadPrivateKey(
