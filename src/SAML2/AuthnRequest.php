@@ -177,13 +177,7 @@ class AuthnRequest
      */
     public function getNameIdFormat()
     {
-        $nameId = $this->request->getNameId();
-
-        if (!isset($nameId->Format)) {
-            return;
-        }
-
-        return $nameId->Format;
+        return $this->request->getNameId()->getFormat();
     }
 
     /**
@@ -202,7 +196,7 @@ class AuthnRequest
 
 
         $nameId = new NameID();
-        $nameId->setValue($nameId);
+        $nameId->setValue($nameIdValue);
         $nameId->setFormat($format ?: Constants::NAMEID_UNSPECIFIED);
 
         $this->request->setNameId($nameId);
