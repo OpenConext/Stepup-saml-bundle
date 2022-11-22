@@ -10,7 +10,7 @@
         "ext-dom": "*",
         "ext-openssl": "*",
         "robrichards/xmlseclibs": "^3.1.1",
-        "simplesamlphp/saml2": "3.2.*",
+        "simplesamlphp/saml2": "^4.6.4",
         "symfony/dependency-injection": "^4.4",
         "symfony/framework-bundle": "^4.4",
         "symfony/templating": "^4.4",
