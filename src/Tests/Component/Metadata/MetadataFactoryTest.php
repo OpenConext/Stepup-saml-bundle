@@ -119,7 +119,8 @@ XML;
         $metadata = $this->factory->generate();
         self::assertEquals($expectedResult, $metadata->__toString());
 
-        $document = XMLReader::XML($metadata->__toString());
+        $document = new XMLReader();
+        $document->XML($metadata->__toString());
         $this->assertTrue($this->validateDocument($document, __DIR__ . '/xsd/metadata.xsd'));
     }
 
@@ -139,7 +140,8 @@ XML;
         $this->buildFactory($metadataConfiguration, $signingService);
         $metadata = $this->factory->generate();
 
-        $document = XMLReader::XML($metadata->__toString());
+        $document = new XMLReader();
+        $document->XML($metadata->__toString());
         $this->assertTrue($this->validateDocument($document, __DIR__ . '/xsd/metadata.xsd'));
     }
 
