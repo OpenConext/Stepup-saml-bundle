@@ -48,7 +48,8 @@ class ReceivedAuthnRequestPostTest extends TestCase
             'SAMLRequest' => base64_encode($samlRequest),
             'RelayState' => '/index.php',
         ];
-        ReceivedAuthnRequestPost::parse($parameters);
+        $parsed = ReceivedAuthnRequestPost::parse($parameters);
+        $this->assertInstanceOf(ReceivedAuthnRequestPost::class, $parsed);
     }
 
     /**
