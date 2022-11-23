@@ -17,7 +17,6 @@
         "twig/twig": "^2"
     },
     "require-dev": {
-        "jasny/phpunit-xsdvalidation": "^1.0",
         "mockery/mockery": "^1.5",
         "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "^9.5",

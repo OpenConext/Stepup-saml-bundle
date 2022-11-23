@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\Tests\Component\Metadata;
 
 use Jasny\PHPUnit\Constraint\XSDValidation;
+use libXMLError;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use SAML2\Certificate\KeyLoader;
@@ -30,6 +31,7 @@ use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\Environment;
+use XMLReader;
 
 use function file_get_contents;
 
@@ -115,9 +117,10 @@ XML;
         $metadataConfiguration->entityIdRoute = 'https://foobar.example.com';
         $this->buildFactory($metadataConfiguration);
         $metadata = $this->factory->generate();
-        $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
         self::assertEquals($expectedResult, $metadata->__toString());
-        self::assertThat($metadata->document, $constraint);
+
+        $document = XMLReader::XML($metadata->__toString());
+        $this->assertTrue($this->validateDocument($document, __DIR__ . '/xsd/metadata.xsd'));
     }
 
     public function test_builds_idp_metadata_signed()
@@ -135,8 +138,9 @@ XML;
         $signingService = new SigningService($keyLoader, $privateKeyLoader);
         $this->buildFactory($metadataConfiguration, $signingService);
         $metadata = $this->factory->generate();
-        $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
-        self::assertThat($metadata->document, $constraint);
+
+        $document = XMLReader::XML($metadata->__toString());
+        $this->assertTrue($this->validateDocument($document, __DIR__ . '/xsd/metadata.xsd'));
     }
 
     private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null)
@@ -148,4 +152,25 @@ XML;
         $this->factory = new MetadataFactory($this->twig, $this->router, $signingService, $metadata);
     }
 
+    /**
+     * @param \XMLReader $doc
+     * @param string $schema
+     * @return boolean
+     */
+    private function validateDocument(XMLReader $xmlReader, string $schema): bool
+    {
+        $xmlReader->setSchema($schema);
+
+        libxml_use_internal_errors(true);
+
+        while ($xmlReader->read()) {
+            if (!$xmlReader->isValid()) {
+                if ($err instanceof libXMLError) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
