@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
-use PHPUnit_Framework_TestCase as UnitTest;
+use PHPUnit\Framework\TestCase as UnitTest;
 use SAML2\Assertion;
 use SAML2\XML\saml\SubjectConfirmation;
 use SAML2\XML\saml\SubjectConfirmationData;

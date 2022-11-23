@@ -3,7 +3,7 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase as UnitTest;
+use PHPUnit\Framework\TestCase as UnitTest;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Configuration\PrivateKey;
 use Surfnet\SamlBundle\Entity\IdentityProvider;

@@ -18,7 +18,7 @@
 
 namespace Tests\Unit\SAML2;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\DOMDocumentFactory;
 use stdClass;

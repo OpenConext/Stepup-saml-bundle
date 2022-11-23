@@ -19,7 +19,7 @@
 namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase as UnitTest;
+use PHPUnit\Framework\TestCase as UnitTest;
 use Psr\Log\NullLogger;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
@@ -48,7 +48,7 @@ MESSAGE;
      */
     private $entityRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->entityRepository = m::mock('Surfnet\SamlBundle\Entity\ServiceProviderRepository');
         $this->redirectBinding = new RedirectBinding(

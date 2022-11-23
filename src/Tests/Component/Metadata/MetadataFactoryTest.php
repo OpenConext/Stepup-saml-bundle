@@ -20,7 +20,7 @@ namespace Surfnet\SamlBundle\Tests\Component\Metadata;
 
 use Jasny\PHPUnit\Constraint\XSDValidation;
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use SAML2\Certificate\KeyLoader;
 use SAML2\Certificate\PrivateKeyLoader;
 use Surfnet\SamlBundle\Metadata\MetadataConfiguration;
@@ -43,7 +43,7 @@ class MetadataFactoryTest extends TestCase
 
     public $signingService;
 
-    public function setUp()
+    public function setUp(): void
     {
         // Load the XML template from filesystem as the FilesystemLoader does not honour the bundle prefix
         $loader = new ArrayLoader(

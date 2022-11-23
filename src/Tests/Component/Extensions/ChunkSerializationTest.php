@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Extensions;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use Surfnet\SamlBundle\SAML2\Extensions\GsspUserAttributesChunk;
 
 class ChunkSerializationTest extends TestCase

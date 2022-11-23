@@ -18,7 +18,7 @@
 
 namespace Tests\Unit\SAML2;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestPost;
 
 class ReceivedAuthnRequestPostTest extends TestCase

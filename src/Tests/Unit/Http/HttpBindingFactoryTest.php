@@ -19,7 +19,7 @@
 namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery;
-use PHPUnit_Framework_TestCase as UnitTest;
+use PHPUnit\Framework\TestCase as UnitTest;
 use Surfnet\SamlBundle\Http\HttpBindingFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,7 @@ class HttpBindingFactoryTest extends UnitTest
     /** @var ParameterBag|Mockery\Mock */
     private $bag;
 
-    public function setUp()
+    public function setUp(): void
     {
         $redirectBinding = Mockery::mock('\Surfnet\SamlBundle\Http\RedirectBinding');
         $postBinding = Mockery::mock('\Surfnet\SamlBundle\Http\PostBinding');
@@ -44,7 +44,6 @@ class HttpBindingFactoryTest extends UnitTest
         $this->bag = Mockery::mock('\Symfony\Component\HttpFoundation\ParameterBag');
         $this->request->request = $this->bag;
         $this->request->query = $this->bag;
-
     }
 
     /**
