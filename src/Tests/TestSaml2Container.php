@@ -30,7 +30,7 @@ use function sys_get_temp_dir;
 class TestSaml2Container extends AbstractContainer
 {
     /** @var \Psr\Log\LoggerInterface */
-    private LoggerInterface $logger;
+    private $logger;
 
 
     /**
