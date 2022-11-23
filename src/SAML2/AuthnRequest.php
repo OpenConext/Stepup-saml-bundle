@@ -169,7 +169,7 @@ class AuthnRequest
      */
     public function getNameId()
     {
-        return $this->request->getNameId();
+        return $this->request->getNameId()->getValue();
     }
 
     /**

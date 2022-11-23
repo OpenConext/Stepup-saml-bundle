@@ -156,8 +156,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
 
         $authnRequest = AuthnRequest::createNew($request);
 
-        $this->assertEquals($this->nameId, $authnRequest->getNameId()->getValue());
-        $this->assertEquals($this->format, $authnRequest->getNameId()->getFormat());
+        $this->assertEquals($this->nameId, $authnRequest->getNameId());
+        $this->assertEquals($this->format, $authnRequest->getNameIdFormat());
     }
 
     /**
