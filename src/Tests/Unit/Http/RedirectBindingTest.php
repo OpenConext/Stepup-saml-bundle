@@ -19,7 +19,7 @@
 namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery as m;
-use PHPUnit\Framework\TestCase as UnitTest;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Psr\Log\NullLogger;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
@@ -29,7 +29,7 @@ use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Symfony\Component\HttpFoundation\Request;
 
-class RedirectBindingTest extends UnitTest
+class RedirectBindingTest extends MockeryTestCase
 {
     const ENCODED_MESSAGE = 'fZFfa8IwFMXfBb9DyXvaJtZ1BqsURRC2Mabbw95ivc5Am3TJrXPffmmLY3%2FA15Pzuyf33On8XJXBCaxTRmeEhTEJQBdmr%2FRbRp63K3pL5rPhYOpkVdYib%2FCon%2BC9AYfDQRB4WDvRvWWksVoY6ZQTWlbgBBZik9%2FfCR7GorYGTWFK8pu6DknnwKL%2FWEetlxmR8sBHbHJDWZqOKGdsRJM0kfQAjCUJ43KX8s78ctnIz%2Blp5xpYa4dSo1fjOKGM03i8jSeCMzGevHa2%2FBK5MNo1FdgN2JMqPLmHc0b6WTmiVbsGoTf5qv66Zq2t60x0wXZ2RKydiCJXh3CWVV1CWJgqanfl0%2Bin8xutxYOvZL18NKUqPlvZR5el%2BVhYkAgZQdsA6fWVsZXE63W2itrTQ2cVaKV2CjSSqL1v9P%2FAXv4C';
     const RAW_MESSAGE = <<<MESSAGE

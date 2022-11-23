@@ -20,7 +20,7 @@ namespace Surfnet\SamlBundle\Tests\Component\Metadata;
 
 use Jasny\PHPUnit\Constraint\XSDValidation;
 use Mockery as m;
-use PHPUnit\Framework\TestCase as TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use SAML2\Certificate\KeyLoader;
 use SAML2\Certificate\PrivateKeyLoader;
 use Surfnet\SamlBundle\Metadata\MetadataConfiguration;
@@ -30,9 +30,10 @@ use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\Environment;
+
 use function file_get_contents;
 
-class MetadataFactoryTest extends TestCase
+class MetadataFactoryTest extends MockeryTestCase
 {
     /** @var MetadataFactory */
     public $factory;

@@ -3,6 +3,7 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use PHPUnit\Framework\TestCase as UnitTest;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Configuration\PrivateKey;
@@ -12,7 +13,7 @@ use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
 use Symfony\Component\HttpFoundation\Request;
 
-class AuthnRequestFactoryTest extends UnitTest
+class AuthnRequestFactoryTest extends MockeryTestCase
 {
     /**
      * @test

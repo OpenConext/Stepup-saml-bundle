@@ -19,12 +19,13 @@
 namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use PHPUnit\Framework\TestCase as UnitTest;
 use Surfnet\SamlBundle\Http\HttpBindingFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
-class HttpBindingFactoryTest extends UnitTest
+class HttpBindingFactoryTest extends MockeryTestCase
 {
     /** @var HttpBindingFactory */
     private $factory;

@@ -18,11 +18,13 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use PHPUnit\Framework\TestCase as TestCase;
+use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 
-class AttributeDictionaryTest extends TestCase
+class AttributeDictionaryTest extends MockeryTestCase
 {
     /**
      * @test
@@ -147,7 +149,6 @@ class AttributeDictionaryTest extends TestCase
     /**
      * @test
      * @group AttributeDictionary
-     * @expectedException \Surfnet\SamlBundle\Exception\UnknownUrnException
      */
     public function shouldThrowExceptionForUnknownAttrib()
     {
@@ -160,6 +161,8 @@ class AttributeDictionaryTest extends TestCase
         );
         $attributeDictionary = new AttributeDictionary();
         $attributeDictionary->addAttributeDefinition($existingOidAttributeDefinition);
+
+        $this->expectException(UnknownUrnException::class);
         $attributeDictionary->getAttributeDefinitionByUrn('unknown:0.0.0.0.0');
     }
 

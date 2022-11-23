@@ -19,10 +19,11 @@
 namespace Surfnet\SamlBundle\Tests;
 
 use Mockery as m;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use PHPUnit\Framework\TestCase as TestCase;
 use Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger;
 
-final class SamlAuthenticationLoggerTest extends TestCase
+final class SamlAuthenticationLoggerTest extends MockeryTestCase
 {
     /**
      * @test

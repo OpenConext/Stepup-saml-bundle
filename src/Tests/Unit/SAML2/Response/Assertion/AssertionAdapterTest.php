@@ -19,13 +19,13 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
 use Mockery as m;
-use PHPUnit\Framework\TestCase as TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Surfnet\SamlBundle\SAML2\Attribute\Attribute;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Response\AssertionAdapter;
 
-class AssertionAdapterTest extends TestCase
+class AssertionAdapterTest extends MockeryTestCase
 {
     /**
      * @test
