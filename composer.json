@@ -14,7 +14,7 @@
         "symfony/dependency-injection": "^4.4",
         "symfony/framework-bundle": "^4.4",
         "symfony/templating": "^4.4",
-        "twig/twig": "^2"
+        "twig/twig": "^2 || ^3"
     },
     "require-dev": {
         "mockery/mockery": "^1.5",
