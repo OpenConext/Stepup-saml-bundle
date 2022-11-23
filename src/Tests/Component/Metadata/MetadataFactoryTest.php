@@ -167,9 +167,7 @@ XML;
 
         while ($xmlReader->read()) {
             if (!$xmlReader->isValid()) {
-                if ($err instanceof libXMLError) {
-                    return false;
-                }
+                return false;
             }
         }
 
