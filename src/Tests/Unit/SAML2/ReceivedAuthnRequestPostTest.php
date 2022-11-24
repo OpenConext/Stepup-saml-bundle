@@ -50,6 +50,7 @@ class ReceivedAuthnRequestPostTest extends TestCase
         ];
         $parsed = ReceivedAuthnRequestPost::parse($parameters);
         $this->assertInstanceOf(ReceivedAuthnRequestPost::class, $parsed);
+        $this->assertEquals('/index.php', $parsed->getRelayState());
     }
 
     /**
