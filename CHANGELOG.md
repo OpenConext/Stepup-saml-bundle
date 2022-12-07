@@ -1,3 +1,12 @@
+# 4.4.2
+**Feature**
+* Allow setting ForceAuthn on AuthnRequest #117
+
+# 4.4.1
+**Bugfix**
+* Support both `getMainRequest` and `getMasterRequest` when using the Symfony request stack.
+  As drafted by @epidoux in: Fix getMainRequest incompatible with symfony 4.4 #107 (thank you @epidoux)
+
 # 4.4.0
 **Feature**
 * Include SP certificate in generated metadata when present #104
