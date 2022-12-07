@@ -229,12 +229,14 @@ class AuthnRequest
         return $this->request->getIsPassive();
     }
 
-    /**
-     * @return bool
-     */
-    public function isForceAuthn()
+    public function isForceAuthn(): bool
     {
         return $this->request->getForceAuthn();
+    }
+
+    public function setForceAuthn(bool $isForceAuthN): void
+    {
+        $this->request->setForceAuthn($isForceAuthN);
     }
 
     /**
