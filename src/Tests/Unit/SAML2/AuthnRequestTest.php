@@ -193,6 +193,17 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertEquals($forceAuthn, $authnRequest->isForceAuthn());
     }
 
+    public function test_force_authn_can_be_set()
+    {
+        $domDocument = DOMDocumentFactory::fromString($this->authRequestIsPassiveFalseAndNoForceAuthnFalse);
+        $request     = new SAML2AuthnRequest($domDocument->documentElement);
+        $authnRequest = AuthnRequest::createNew($request);
+
+        $this->assertFalse($authnRequest->isForceAuthn());
+        $authnRequest->setForceAuthn(true);
+        $this->assertTrue($authnRequest->isForceAuthn());
+    }
+
     public function provideIsPassiveAndForceAuthnCombinations()
     {
         return [
