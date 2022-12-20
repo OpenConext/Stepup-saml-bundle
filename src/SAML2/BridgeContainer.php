@@ -39,9 +39,9 @@ class BridgeContainer extends AbstractContainer
     }
 
     /**
-     * @return LoggerInterface
+     * @return \Psr\Log\LoggerInterface
      */
-    public function getLogger()
+    public function getLogger(): LoggerInterface
     {
         return $this->logger;
     }
@@ -49,12 +49,12 @@ class BridgeContainer extends AbstractContainer
     /**
      * Generate a random identifier for identifying SAML2 documents.
      */
-    public function generateId()
+    public function generateId(): string
     {
         return '_' . bin2hex(openssl_random_pseudo_bytes(30));
     }
 
-    public function debugMessage($message, $type)
+    public function debugMessage($message, string $type): void
     {
         if ($message instanceof \DOMElement) {
             $message = $message->ownerDocument->saveXML($message);
@@ -63,7 +63,7 @@ class BridgeContainer extends AbstractContainer
         $this->logger->debug($message, ['type' => $type]);
     }
 
-    public function redirect($url, $data = array())
+    public function redirect(string $url, array $data = []): void
     {
         throw new BadMethodCallException(sprintf(
             "%s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
@@ -72,12 +72,35 @@ class BridgeContainer extends AbstractContainer
         ));
     }
 
-    public function postRedirect($url, $data = array())
+    public function postRedirect(string $url, array $data = []): void
     {
         throw new BadMethodCallException(sprintf(
             "%s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
             __CLASS__,
             __METHOD__
         ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getTempDir() : string
+    {
+        return sys_get_temp_dir();
+    }
+
+    /**
+     * @param string $filename
+     * @param string $data
+     * @param int|null $mode
+     * @return void
+     */
+    public function writeFile(string $filename, string $data, int $mode = null) : void
+    {
+        if ($mode === null) {
+            $mode = 0600;
+        }
+        file_put_contents($filename, $data);
+        chmod($filename, $mode);
     }
 }

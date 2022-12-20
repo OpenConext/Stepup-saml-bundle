@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Signing;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use Psr\Log\NullLogger;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;

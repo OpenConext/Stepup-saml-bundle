@@ -18,7 +18,8 @@
 
 namespace Tests\Unit\SAML2;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
+use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestPost;
 
 class ReceivedAuthnRequestPostTest extends TestCase
@@ -47,7 +48,9 @@ class ReceivedAuthnRequestPostTest extends TestCase
             'SAMLRequest' => base64_encode($samlRequest),
             'RelayState' => '/index.php',
         ];
-        ReceivedAuthnRequestPost::parse($parameters);
+        $parsed = ReceivedAuthnRequestPost::parse($parameters);
+        $this->assertInstanceOf(ReceivedAuthnRequestPost::class, $parsed);
+        $this->assertEquals('/index.php', $parsed->getRelayState());
     }
 
     /**
@@ -66,8 +69,6 @@ class ReceivedAuthnRequestPostTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidRequestException
-     * @expectedExceptionMessage Failed decoding SAML request, did not receive a valid base64 string
      */
     public function it_rejects_malformed_saml_request()
     {
@@ -75,6 +76,9 @@ class ReceivedAuthnRequestPostTest extends TestCase
             'SAMLRequest' => 'this=notvalid==',
             'RelayState' => '/index.php',
         ];
+
+        $this->expectException(InvalidRequestException::class);
+        $this->expectExceptionMessage('Failed decoding SAML request, did not receive a valid base64 string');
         ReceivedAuthnRequestPost::parse($parameters);
     }
 

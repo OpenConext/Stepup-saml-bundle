@@ -105,7 +105,7 @@ final class ReceivedAuthnRequest
             return null;
         }
 
-        return $nameId->value;
+        return $nameId->getValue();
     }
 
     /**
@@ -118,7 +118,7 @@ final class ReceivedAuthnRequest
             return null;
         }
 
-        return $nameId->Format;
+        return $nameId->getFormat();
     }
 
     /**

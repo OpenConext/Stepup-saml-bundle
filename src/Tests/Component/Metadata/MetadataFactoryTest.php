@@ -19,8 +19,9 @@
 namespace Surfnet\SamlBundle\Tests\Component\Metadata;
 
 use Jasny\PHPUnit\Constraint\XSDValidation;
+use libXMLError;
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
 use SAML2\Certificate\KeyLoader;
 use SAML2\Certificate\PrivateKeyLoader;
 use Surfnet\SamlBundle\Metadata\MetadataConfiguration;
@@ -30,9 +31,11 @@ use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\Environment;
+use XMLReader;
+
 use function file_get_contents;
 
-class MetadataFactoryTest extends TestCase
+class MetadataFactoryTest extends MockeryTestCase
 {
     /** @var MetadataFactory */
     public $factory;
@@ -43,7 +46,7 @@ class MetadataFactoryTest extends TestCase
 
     public $signingService;
 
-    public function setUp()
+    public function setUp(): void
     {
         // Load the XML template from filesystem as the FilesystemLoader does not honour the bundle prefix
         $loader = new ArrayLoader(
@@ -114,9 +117,11 @@ XML;
         $metadataConfiguration->entityIdRoute = 'https://foobar.example.com';
         $this->buildFactory($metadataConfiguration);
         $metadata = $this->factory->generate();
-        $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
         self::assertEquals($expectedResult, $metadata->__toString());
-        self::assertThat($metadata->document, $constraint);
+
+        $document = new XMLReader();
+        $document->XML($metadata->__toString());
+        $this->assertTrue($this->validateDocument($document, __DIR__ . '/xsd/metadata.xsd'));
     }
 
     public function test_builds_idp_metadata_signed()
@@ -134,8 +139,10 @@ XML;
         $signingService = new SigningService($keyLoader, $privateKeyLoader);
         $this->buildFactory($metadataConfiguration, $signingService);
         $metadata = $this->factory->generate();
-        $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
-        self::assertThat($metadata->document, $constraint);
+
+        $document = new XMLReader();
+        $document->XML($metadata->__toString());
+        $this->assertTrue($this->validateDocument($document, __DIR__ . '/xsd/metadata.xsd'));
     }
 
     private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null)
@@ -147,4 +154,23 @@ XML;
         $this->factory = new MetadataFactory($this->twig, $this->router, $signingService, $metadata);
     }
 
+    /**
+     * @param \XMLReader $doc
+     * @param string $schema
+     * @return boolean
+     */
+    private function validateDocument(XMLReader $xmlReader, string $schema): bool
+    {
+        $xmlReader->setSchema($schema);
+
+        libxml_use_internal_errors(true);
+
+        while ($xmlReader->read()) {
+            if (!$xmlReader->isValid()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

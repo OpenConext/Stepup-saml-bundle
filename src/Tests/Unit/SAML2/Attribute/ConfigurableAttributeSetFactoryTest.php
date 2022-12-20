@@ -18,16 +18,17 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 use SAML2\Assertion;
 use stdClass;
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
 
 class ConfigurableAttributeSetFactoryTest extends TestCase
 {
     const DUMMY_ATTRIBUTE_SET_CLASS = '\Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock\DummyAttributeSet';
-    
+
     /**
      * @test
      * @group AssertionAdapter
@@ -69,7 +70,8 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
      */
     public function the_attribute_set_to_use_can_only_be_represented_as_a_non_empty_string($nonOrEmptyString)
     {
-        $this->setExpectedException('\Surfnet\SamlBundle\Exception\InvalidArgumentException', 'non-empty string');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('non-empty string');
 
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate($nonOrEmptyString);
     }
@@ -81,7 +83,8 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
      */
     public function the_attribute_set_to_use_has_to_implement_attribute_set_factory()
     {
-        $this->setExpectedException('\Surfnet\SamlBundle\Exception\InvalidArgumentException', 'implement');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('implement');
 
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate('Non\Existent\Class');
     }
