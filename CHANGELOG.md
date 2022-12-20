@@ -73,6 +73,7 @@ No release notes specified for this release
  * Fix the failing Travis builds #86
 
 # 4.1.2
+Removed RMT from the project
 
 # 4.1.1
 
