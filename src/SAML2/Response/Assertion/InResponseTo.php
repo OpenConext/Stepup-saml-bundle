@@ -48,10 +48,10 @@ class InResponseTo
 
         /** @var \SAML2\XML\saml\SubjectConfirmation $subjectConfirmation */
         $subjectConfirmation = $subjectConfirmationArray[0];
-        if (!$subjectConfirmation->SubjectConfirmationData) {
+        if (!$subjectConfirmation->getSubjectConfirmationData()) {
             return null;
         }
 
-        return $subjectConfirmation->SubjectConfirmationData->InResponseTo;
+        return $subjectConfirmation->getSubjectConfirmationData()->getInResponseTo();
     }
 }

@@ -18,12 +18,13 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
-use PHPUnit_Framework_TestCase as UnitTest;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase as UnitTest;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\DOMDocumentFactory;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 
-class AuthnRequestTest extends UnitTest
+class AuthnRequestTest extends MockeryTestCase
 {
     /**
      * @var string

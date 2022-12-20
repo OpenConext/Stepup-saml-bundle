@@ -54,7 +54,7 @@ class AssertionAdapter
     {
         $data = $this->assertion->getNameId();
         if ($data) {
-            return $data->value;
+            return $data->getValue();
         }
 
         return null;

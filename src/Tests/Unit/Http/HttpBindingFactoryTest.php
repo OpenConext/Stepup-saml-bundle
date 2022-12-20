@@ -19,12 +19,14 @@
 namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery;
-use PHPUnit_Framework_TestCase as UnitTest;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase as UnitTest;
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Http\HttpBindingFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
-class HttpBindingFactoryTest extends UnitTest
+class HttpBindingFactoryTest extends MockeryTestCase
 {
     /** @var HttpBindingFactory */
     private $factory;
@@ -35,7 +37,7 @@ class HttpBindingFactoryTest extends UnitTest
     /** @var ParameterBag|Mockery\Mock */
     private $bag;
 
-    public function setUp()
+    public function setUp(): void
     {
         $redirectBinding = Mockery::mock('\Surfnet\SamlBundle\Http\RedirectBinding');
         $postBinding = Mockery::mock('\Surfnet\SamlBundle\Http\PostBinding');
@@ -44,7 +46,6 @@ class HttpBindingFactoryTest extends UnitTest
         $this->bag = Mockery::mock('\Symfony\Component\HttpFoundation\ParameterBag');
         $this->request->request = $this->bag;
         $this->request->query = $this->bag;
-
     }
 
     /**
@@ -90,8 +91,6 @@ class HttpBindingFactoryTest extends UnitTest
     /**
      * @test
      * @group http
-     * @expectedException \Surfnet\SamlBundle\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Request type of "PUT" is not supported.
      */
     public function a_put_binding_can_not_be_built()
     {
@@ -99,14 +98,14 @@ class HttpBindingFactoryTest extends UnitTest
             ->shouldReceive('getMethod')
             ->andReturn(Request::METHOD_PUT);
 
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Request type of "PUT" is not supported.');
         $this->factory->build($this->request);
     }
 
     /**
      * @test
      * @group http
-     * @expectedException \Surfnet\SamlBundle\Exception\InvalidArgumentException
-     * @expectedExceptionMessage POST-binding is supported for SAMLRequest.
      */
     public function an_invalid_post_authn_request_is_rejected()
     {
@@ -119,14 +118,14 @@ class HttpBindingFactoryTest extends UnitTest
             ->with('SAMLRequest')
             ->andReturn(false);
 
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('POST-binding is supported for SAMLRequest.');
         $this->factory->build($this->request);
     }
 
     /**
      * @test
      * @group http
-     * @expectedException \Surfnet\SamlBundle\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Redirect binding is supported for SAMLRequest and Response.
      */
     public function an_invalid_get_authn_request_is_rejected()
     {
@@ -143,6 +142,8 @@ class HttpBindingFactoryTest extends UnitTest
             ->with('SAMLResponse')
             ->andReturn(false);
 
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Redirect binding is supported for SAMLRequest and Response.');
         $this->factory->build($this->request);
     }
 }

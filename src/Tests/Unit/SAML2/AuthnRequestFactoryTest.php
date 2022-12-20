@@ -3,23 +3,22 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase as UnitTest;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase as UnitTest;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Configuration\PrivateKey;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
+use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
 use Symfony\Component\HttpFoundation\Request;
 
-class AuthnRequestFactoryTest extends UnitTest
+class AuthnRequestFactoryTest extends MockeryTestCase
 {
     /**
      * @test
      * @group saml2
-     *
-     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidRequestException
-     * @expectedExceptionMessage Failed decoding the request, did not receive a valid base64 string
      */
     public function an_exception_is_thrown_when_a_request_is_not_properly_base64_encoded()
     {
@@ -30,15 +29,14 @@ class AuthnRequestFactoryTest extends UnitTest
         ];
         $request          = new Request($queryParams, [], [], [], [], $serverParams);
 
+        $this->expectException(InvalidRequestException::class);
+        $this->expectExceptionMessage('Failed decoding the request, did not receive a valid base64 string');
         AuthnRequestFactory::createFromHttpRequest($request);
     }
 
     /**
      * @test
      * @group saml2
-     *
-     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidRequestException
-     * @expectedExceptionMessage Failed inflating the request;
      */
     public function an_exception_is_thrown_when_a_request_cannot_be_inflated()
     {
@@ -49,6 +47,8 @@ class AuthnRequestFactoryTest extends UnitTest
         ];
         $request = new Request($queryParams, [], [], [], [], $serverParams);
 
+        $this->expectException(InvalidRequestException::class);
+        $this->expectExceptionMessage('Failed inflating the request;');
         AuthnRequestFactory::createFromHttpRequest($request);
     }
 

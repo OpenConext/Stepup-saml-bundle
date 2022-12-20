@@ -19,13 +19,14 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\Attribute;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Response\AssertionAdapter;
 
-class AssertionAdapterTest extends TestCase
+class AssertionAdapterTest extends MockeryTestCase
 {
     /**
      * @test
@@ -89,8 +90,6 @@ class AssertionAdapterTest extends TestCase
     /**
      * @test
      * @group AssertionAdapter
-     *
-     * @expectedException \Surfnet\SamlBundle\Exception\UnknownUrnException
      */
     public function no_presence_of_attribute_can_be_confirmed_if_no_attribute_definition_found()
     {
@@ -109,10 +108,9 @@ class AssertionAdapterTest extends TestCase
 
         // empty dictionary
         $dictionary = new AttributeDictionary();
-        $adapter      = new AssertionAdapter($assertion, $dictionary);
-        $attributeSet = $adapter->getAttributeSet();
 
-        $attributeSet->contains($attributeExpectedNotToBeContained);
+        $this->expectException(UnknownUrnException::class);
+        new AssertionAdapter($assertion, $dictionary);
     }
 
     /**

@@ -19,10 +19,12 @@
 namespace Surfnet\SamlBundle\Tests;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use PHPUnit\Framework\TestCase as TestCase;
+use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger;
 
-final class SamlAuthenticationLoggerTest extends TestCase
+final class SamlAuthenticationLoggerTest extends MockeryTestCase
 {
     /**
      * @test
@@ -41,11 +43,11 @@ final class SamlAuthenticationLoggerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Surfnet\SamlBundle\Exception\RuntimeException
      */
     public function it_throws_when_no_authentication()
     {
         $logger = new SamlAuthenticationLogger(m::mock('Psr\Log\LoggerInterface'));
+        $this->expectException(RuntimeException::class);
         $logger->emergency('message2');
     }
 }
