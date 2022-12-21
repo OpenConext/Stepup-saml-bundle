@@ -1,6 +1,10 @@
-# 4.4.2
-**Feature**
+# 5.0.0 (next release)
+Still in drafting process
+
+**Features**
 * Allow setting ForceAuthn on AuthnRequest #117
+* Upgrade composer dependencies including SAML2 library (thanks @tvdijen!)
+* Improve compatibility with PHP 8 and Symfony 5 #114 (thank you for your collaboration @wdttilburg!)
 
 # 4.4.1
 **Bugfix**
