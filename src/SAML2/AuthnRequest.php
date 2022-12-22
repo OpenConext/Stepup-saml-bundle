@@ -252,12 +252,9 @@ class AuthnRequest
         return $this->request->getDestination();
     }
 
-    /**
-     * @return string
-     */
-    public function getServiceProvider()
+    public function getServiceProvider(): string
     {
-        return $this->request->getIssuer();
+        return $this->request->getIssuer()->getValue();
     }
 
     /**
