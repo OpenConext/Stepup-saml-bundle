@@ -100,6 +100,12 @@ providers keep in mind that you need to assign `surfnet_saml.remote.service_prov
 
 ## Example Usage
 
+### Symfony Authentication
+As of version 5 of this bundle, we started supporting SAML authentications via the Stepup SAML bundle. This ties into 
+the Symfony Security component. 
+
+Details about how to install this into your SP, see the [EXAMPLES.md](EXAMPLES.md).
+
 ### Metadata Publishing
 
 ```php

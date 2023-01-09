@@ -197,3 +197,109 @@ class AcsRespondController
 That is more than a few lines of code, but most of it is just logging. The SAML
 bundle does not check the InResponseTo of the assertion, so that too is included
 in this example.
+
+## SAML Authentications
+As of version 5 of this bundle, a Symfony Security Authentication SamlAuthenticator was added to the project. 
+The simplified Authentication mechanism added in Symfony 5 made it much easier to facilitate this feature via the 
+Stepup Saml Bundle. Allowing SP's to also perform SAML 2.0 HTTP authentications. 
+
+Only HTTP Redirect binding is implemented for authentication. The SAML response assertion consumption service (ACS) is 
+performed using HTTP POST binding.
+
+To get this feature to work you will need to perform the following steps
+
+1. Configure your project as an SP and set up at least one remote IdP. See steps above on some help with setting this up, or consult the README.md
+2. Create a `Security\Authentication\Provider\SamlProvider` And have it implement the `Surfnet\SamlBundle\Security\Authentication\Provider\SamlProviderInterface` and the `UserProviderInterface`
+3. In `config/packages/security.yaml`: setup a `saml_based` firewall and create a `providers` entry. See code example 1 below.
+4. Add the `SamlProvider` service to your services.yaml. See example below in block 2.
+5. Configure the ACS route name of SP in your `.env` file. Example:  `acs_location_route_name='assertion_consumer_service'`. Your Saml Controller ACS location action should use the same route name. 
+6. Optionally create a `Security\Authentication\Handler\FailureHandler`. Here you can define what behavior is required when authentication failed. For example you can do a redirect to a certain page. Or show an error page. Must implement the `AuthenticationFailureHandlerInterface`. See code example 3 for details. A very simple implementation is provided in the bundle. Showing a very simple unstyled authn failed error page.
+ 
+### Code example 1: setting up security.yaml
+
+```yaml
+security:
+  # Other security entries are not shown in this code example. Only the required entries for getting SAML 
+  # authentications with the stepup-saml-bundle are stated below
+
+  access_control:
+    - { path: ^/saml, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+    - { path: ^/, roles: IS_AUTHENTICATED_FULLY, requires_channel: https }
+  
+  providers:
+    saml-provider:
+      id: YourApp\Security\Authentication\Provider\SamlProvider
+      
+  firewalls:
+    login_firewall:
+      pattern:    ^/saml/metadata
+    
+    saml_based:
+      custom_authenticators:
+        - Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator
+```
+
+### Code example 2: services.yaml
+```yaml
+
+    # This is just an example of the dependencies a SamlProvider could have, tailor this provider to your own needs
+    surfnet_saml.saml_provider:
+        class: YourApp\Security\Authentication\Provider\SamlProvider
+        arguments:
+            - '@YourApp\Repository\UserRepository'
+            - '@surfnet_saml.saml.attribute_dictionary'
+            - '@logger'
+
+    # Be sure to create an alias to the `surfnet_saml.saml_provider`, otherwise Symfony will not be able to autowire the
+    # `security.listener.user_provider` service.
+    Surfnet\ServiceProviderDashboard\Infrastructure\DashboardSamlBundle\Security\Authentication\Provider\SamlProvider:
+        alias: surfnet_saml.saml_provider
+
+```
+
+### Code example 3: example failure handler
+```php
+<?php
+
+namespace YourApp\Security\Authentication\Handler;
+
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler;
+use Symfony\Component\Security\Http\HttpUtils;
+use Twig\Environment;
+
+class FailureHandler extends DefaultAuthenticationFailureHandler
+{
+    public function __construct(
+        HttpKernelInterface $httpKernel,
+        HttpUtils $httpUtils,
+        array $options = [],
+        LoggerInterface $logger = null,
+        private Environment $templating,
+    ) {
+        parent::__construct($httpKernel, $httpUtils, $options, $logger);
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
+    {
+        $this->logger->notice(
+            sprintf(
+                'Authentication failure %s: %s',
+                $exception->getMessageKey(),
+                $exception->getMessage()
+            )
+        );
+
+        $responseBody = $this->templating->render(
+            '@YourApp/Exception/authnFailed.html.twig',
+            ['exception' => $exception]
+        );
+
+        return new Response($responseBody, Response::HTTP_UNAUTHORIZED);
+    }
+}
+```
