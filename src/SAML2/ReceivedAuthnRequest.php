@@ -23,6 +23,7 @@ use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Constants;
 use SAML2\DOMDocumentFactory;
 use SAML2\Message;
+use SAML2\XML\saml\NameID;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\SAML2\Extensions\ExtensionsMapperTrait;
@@ -56,9 +57,7 @@ final class ReceivedAuthnRequest
         }
 
         // additional security against XXE Processing vulnerability
-        $previous = libxml_disable_entity_loader(true);
         $document = DOMDocumentFactory::fromString($decodedSamlRequest);
-        libxml_disable_entity_loader($previous);
 
         $authnRequest = Message::fromXML($document->firstChild);
 
@@ -105,7 +104,7 @@ final class ReceivedAuthnRequest
             return null;
         }
 
-        return $nameId->value;
+        return $nameId->getValue();
     }
 
     /**
@@ -118,7 +117,7 @@ final class ReceivedAuthnRequest
             return null;
         }
 
-        return $nameId->Format;
+        return $nameId->getFormat();
     }
 
     /**
@@ -135,10 +134,9 @@ final class ReceivedAuthnRequest
             throw InvalidArgumentException::invalidType('string', 'format', $format);
         }
 
-        $nameId = [
-            'Value' => $nameId,
-            'Format' => ($format ?: Constants::NAMEID_UNSPECIFIED)
-        ];
+        $nameId = new NameID();
+        $nameId->setValue($nameId);
+        $nameId->setFormat(($format ?: Constants::NAMEID_UNSPECIFIED));
 
         $this->request->setNameId($nameId);
     }

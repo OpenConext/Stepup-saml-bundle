@@ -21,6 +21,7 @@ namespace Surfnet\SamlBundle\SAML2;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Constants;
+use SAML2\XML\saml\NameID;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\SAML2\Extensions\ExtensionsMapperTrait;
 
@@ -170,11 +171,11 @@ class AuthnRequest
     {
         $nameId = $this->request->getNameId();
 
-        if (!isset($nameId->value)) {
+        if (!$nameId->getValue()) {
             return;
         }
 
-        return $nameId->value;
+        return $nameId->getValue();
     }
 
     /**
@@ -184,33 +185,24 @@ class AuthnRequest
     {
         $nameId = $this->request->getNameId();
 
-        if (!isset($nameId->Format)) {
+        if (!$nameId->getFormat()) {
             return;
         }
 
-        return $nameId->Format;
+        return $nameId->getFormat();
     }
 
     /**
      * @param string      $nameId
      * @param string|null $format
      */
-    public function setSubject($nameId, $format = null)
+    public function setSubject(string $nameId, ?string $format = null)
     {
-        if (!is_string($nameId)) {
-            throw InvalidArgumentException::invalidType('string', 'nameId', $nameId);
-        }
+        $nameIdVo = new NameID();
+        $nameIdVo->setValue($nameId);
+        $nameIdVo->setFormat(($format ?: Constants::NAMEID_UNSPECIFIED));
 
-        if (!is_null($format) && !is_string($format)) {
-            throw InvalidArgumentException::invalidType('string', 'format', $format);
-        }
-
-        $nameId = [
-            'Value' => $nameId,
-            'Format' => ($format ?: Constants::NAMEID_UNSPECIFIED)
-        ];
-
-        $this->request->setNameId($nameId);
+        $this->request->setNameId($nameIdVo);
     }
 
     /**

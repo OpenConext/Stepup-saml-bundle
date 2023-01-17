@@ -18,7 +18,8 @@
 
 namespace Tests\Unit\SAML2;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
+use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestPost;
 
 class ReceivedAuthnRequestPostTest extends TestCase
@@ -26,7 +27,7 @@ class ReceivedAuthnRequestPostTest extends TestCase
     /**
      * @test
      */
-    public function it_can_decode_a_signed_saml_request()
+    public function it_can_decode_a_signed_saml_request(): void
     {
         $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/valid-signed.xml'));
         $parameters = [
@@ -40,20 +41,21 @@ class ReceivedAuthnRequestPostTest extends TestCase
     /**
      * @test
      */
-    public function it_can_decode_a_signed_saml_request_from_adfs_origin()
+    public function it_can_decode_a_signed_saml_request_from_adfs_origin(): void
     {
         $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/valid-signed-adfs.xml'));
         $parameters = [
             'SAMLRequest' => base64_encode($samlRequest),
             'RelayState' => '/index.php',
         ];
-        ReceivedAuthnRequestPost::parse($parameters);
+        $parsed = ReceivedAuthnRequestPost::parse($parameters);
+        $this->assertInstanceOf(ReceivedAuthnRequestPost::class, $parsed);
     }
 
     /**
      * @test
      */
-    public function it_can_decode_an_usigned_saml_request()
+    public function it_can_decode_an_usigned_saml_request(): void
     {
         $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/valid-unsigned.xml'));
         $parameters = [
@@ -66,11 +68,11 @@ class ReceivedAuthnRequestPostTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Surfnet\SamlBundle\Http\Exception\InvalidRequestException
-     * @expectedExceptionMessage Failed decoding SAML request, did not receive a valid base64 string
      */
-    public function it_rejects_malformed_saml_request()
+    public function it_rejects_malformed_saml_request(): void
     {
+        $this->expectExceptionMessage("Failed decoding SAML request, did not receive a valid base64 string");
+        $this->expectException(InvalidRequestException::class);
         $parameters = [
             'SAMLRequest' => 'this=notvalid==',
             'RelayState' => '/index.php',

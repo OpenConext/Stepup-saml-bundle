@@ -19,7 +19,6 @@
 namespace Surfnet\SamlBundle\Monolog;
 
 use Psr\Log\LoggerInterface;
-use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 
 /**
@@ -29,15 +28,9 @@ use Surfnet\SamlBundle\Exception\RuntimeException;
  */
 final class SamlAuthenticationLogger implements LoggerInterface
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var string|null
-     */
-    private $sari;
+    private ?string $sari;
 
     public function __construct(LoggerInterface $logger)
     {
@@ -46,72 +39,64 @@ final class SamlAuthenticationLogger implements LoggerInterface
 
     /**
      * @param string $requestId The SAML authentication request ID of the initial request (not subsequent proxy requests).
-     * @return self
      */
-    public function forAuthentication($requestId)
+    public function forAuthentication(string $requestId): self
     {
-        if (!is_string($requestId)) {
-            throw InvalidArgumentException::invalidType('string', 'requestId', $requestId);
-        }
-
         $logger = new self($this->logger);
         $logger->sari = $requestId;
 
         return $logger;
     }
 
-    public function emergency($message, array $context = [])
+    public function emergency($message, array $context = []): void
     {
         $this->logger->emergency($message, $this->modifyContext($context));
     }
 
-    public function alert($message, array $context = [])
+    public function alert($message, array $context = []): void
     {
         $this->logger->alert($message, $this->modifyContext($context));
     }
 
-    public function critical($message, array $context = [])
+    public function critical($message, array $context = []): void
     {
         $this->logger->critical($message, $this->modifyContext($context));
     }
 
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
         $this->logger->error($message, $this->modifyContext($context));
     }
 
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
         $this->logger->warning($message, $this->modifyContext($context));
     }
 
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
         $this->logger->notice($message, $this->modifyContext($context));
     }
 
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
         $this->logger->info($message, $this->modifyContext($context));
     }
 
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
         $this->logger->debug($message, $this->modifyContext($context));
     }
 
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         $this->logger->log($level, $message, $this->modifyContext($context));
     }
 
     /**
-     * Adds the SARI to the log context.
-     *
-     * @param array $context
-     * @return array
+     * Adds the SARI to the log context
      */
-    private function modifyContext(array $context)
+    private function modifyContext(array $context): array
     {
         if (!$this->sari) {
             throw new RuntimeException('Authentication logging context is unknown');
