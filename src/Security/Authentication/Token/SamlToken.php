@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\Security\Authentication\Token;
 
-use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
@@ -31,33 +30,7 @@ class SamlToken extends PostAuthenticationToken
         $this->setAttributes($attributes);
     }
 
-    /**
-     * Check if token contains given role.
-     *
-     * @param string $expected
-     * @return bool
-     */
-    public function hasRole($expected)
-    {
-        foreach ($this->getRoleNames() as $role) {
-            if ($role instanceof Role) {
-                $role = $role->getRole();
-            }
-
-            if ($role === $expected) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns the user credentials.
-     *
-     * @return mixed The user credentials
-     */
-    public function getCredentials()
+    public function getCredentials(): string
     {
         return '';
     }

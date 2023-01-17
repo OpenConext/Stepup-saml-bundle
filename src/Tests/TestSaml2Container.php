@@ -36,7 +36,7 @@ class TestSaml2Container extends AbstractContainer
     /**
      * @return LoggerInterface
      */
-    public function getLogger()
+    public function getLogger(): LoggerInterface
     {
         return $this->logger;
     }
@@ -44,17 +44,17 @@ class TestSaml2Container extends AbstractContainer
     /**
      * Generate a random identifier for identifying SAML2 documents.
      */
-    public function generateId()
+    public function generateId() : string
     {
         return 1;
     }
 
-    public function debugMessage($message, $type)
+    public function debugMessage($message, string $type) : void
     {
         $this->logger->debug($message, ['type' => $type]);
     }
 
-    public function redirect($url, $data = array())
+    public function redirect(string $url, array $data = []) : void
     {
         throw new \BadMethodCallException(sprintf(
             "[TEST] %s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
@@ -63,12 +63,22 @@ class TestSaml2Container extends AbstractContainer
         ));
     }
 
-    public function postRedirect($url, $data = array())
+    public function postRedirect(string $url, array $data = []) : void
     {
         throw new \BadMethodCallException(sprintf(
             "[TEST] %s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
             __CLASS__,
             __METHOD__
         ));
+    }
+
+    public function getTempDir(): string
+    {
+        // TODO: Implement getTempDir() method.
+    }
+
+    public function writeFile(string $filename, string $data, int $mode = null): void
+    {
+        // TODO: Implement writeFile() method.
     }
 }
