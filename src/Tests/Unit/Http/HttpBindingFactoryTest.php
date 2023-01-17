@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2017 SURFnet bv
@@ -29,14 +29,11 @@ class HttpBindingFactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /** @var HttpBindingFactory */
-    private $factory;
+    private HttpBindingFactory $factory;
 
-    /** @var Request|Mockery\Mock */
-    private $request;
+    private Request|Mockery\Mock $request;
 
-    /** @var ParameterBag|Mockery\Mock */
-    private $bag;
+    private ParameterBag|Mockery\Mock $bag;
 
     public function setUp(): void
     {
@@ -53,7 +50,7 @@ class HttpBindingFactoryTest extends TestCase
      * @test
      * @group http
      */
-    public function a_redirect_binding_can_be_built()
+    public function a_redirect_binding_can_be_built(): void
     {
         $this->request
             ->shouldReceive('getMethod')
@@ -73,7 +70,7 @@ class HttpBindingFactoryTest extends TestCase
      * @test
      * @group http
      */
-    public function a_post_binding_can_be_built()
+    public function a_post_binding_can_be_built(): void
     {
         $this->request
             ->shouldReceive('getMethod')
@@ -93,7 +90,7 @@ class HttpBindingFactoryTest extends TestCase
      * @test
      * @group http
      */
-    public function a_put_binding_can_not_be_built()
+    public function a_put_binding_can_not_be_built(): void
     {
         $this->expectExceptionMessage("Request type of \"PUT\" is not supported.");
         $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
@@ -108,7 +105,7 @@ class HttpBindingFactoryTest extends TestCase
      * @test
      * @group http
      */
-    public function an_invalid_post_authn_request_is_rejected()
+    public function an_invalid_post_authn_request_is_rejected(): void
     {
         $this->expectExceptionMessage("POST-binding is supported for SAMLRequest.");
         $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
@@ -128,7 +125,7 @@ class HttpBindingFactoryTest extends TestCase
      * @test
      * @group http
      */
-    public function an_invalid_get_authn_request_is_rejected()
+    public function an_invalid_get_authn_request_is_rejected(): void
     {
         $this->expectExceptionMessage("Redirect binding is supported for SAMLRequest and Response.");
         $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);

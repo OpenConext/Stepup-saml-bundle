@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2017 SURFnet B.V.
@@ -26,37 +26,25 @@ use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 
 final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
 {
-    const PARAMETER_REQUEST = 'SAMLRequest';
-    const PARAMETER_SIGNATURE = 'Signature';
-    const PARAMETER_SIGNATURE_ALGORITHM = 'SigAlg';
-    const PARAMETER_RELAY_STATE = 'RelayState';
+    public const PARAMETER_REQUEST = 'SAMLRequest';
+    public const PARAMETER_SIGNATURE = 'Signature';
+    public const PARAMETER_SIGNATURE_ALGORITHM = 'SigAlg';
+    public const PARAMETER_RELAY_STATE = 'RelayState';
 
-    private static $samlParameters = [
+    private static array $samlParameters = [
         self::PARAMETER_REQUEST,
         self::PARAMETER_SIGNATURE,
         self::PARAMETER_SIGNATURE_ALGORITHM,
         self::PARAMETER_RELAY_STATE,
     ];
 
-    /**
-     * @var string
-     */
-    private $samlRequest;
+    private string $samlRequest;
 
-    /**
-     * @var string|null
-     */
-    private $signature;
+    private ?string $signature = null;
 
-    /**
-     * @var string|null
-     */
-    private $signatureAlgorithm;
+    private ?string $signatureAlgorithm = null;
 
-    /**
-     * @var string|null
-     */
-    private $relayState;
+    private ?string $relayState = null;
 
     private function __construct($samlRequest)
     {
@@ -64,21 +52,11 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
     }
 
     /**
-     * @param string $query
-     * @return ReceivedAuthnRequestQueryString
-     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity) Extensive validation
      * @SuppressWarnings(PHPMD.NPathComplexity) Extensive validation
      */
-    public static function parse($query)
+    public static function parse(string $query): ReceivedAuthnRequestQueryString
     {
-        if (!is_string($query)) {
-            throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
-                'Could not parse query string: expected a non-empty string, %s given',
-                is_object($query) ? get_class($query) : gettype($query)
-            ));
-        }
-
         $queryWithoutSeparator = ltrim($query, '?');
 
         if (strlen($queryWithoutSeparator) <= strlen('SAMLRequest=')) {
@@ -165,18 +143,12 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
         return $parsedQueryString;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasRelayState()
+    public function hasRelayState(): bool
     {
         return $this->relayState !== null;
     }
 
-    /**
-     * @return string
-     */
-    public function getSignedQueryString()
+    public function getSignedQueryString(): string
     {
         if (!$this->isSigned()) {
             throw new LogicException(
@@ -195,10 +167,7 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
         return $query;
     }
 
-    /**
-     * @return string
-     */
-    public function getDecodedSamlRequest()
+    public function getDecodedSamlRequest(): string
     {
         $samlRequest = base64_decode(urldecode($this->samlRequest), true);
 
@@ -222,10 +191,7 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
         return $samlRequest;
     }
 
-    /**
-     * @return string
-     */
-    public function getDecodedSignature()
+    public function getDecodedSignature(): string
     {
         if (!$this->isSigned()) {
             throw new RuntimeException('Cannot decode signature: SAMLRequest is not signed');
@@ -234,59 +200,37 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
         return base64_decode(urldecode($this->signature), true);
     }
 
-    /**
-     * @return null|string
-     */
-    public function getSignature()
+    public function getSignature(): ?string
     {
         return $this->signature;
     }
 
-    /**
-     * @return bool
-     */
     public function isSigned()
     {
         return $this->signature !== null && $this->signatureAlgorithm !== null;
     }
 
-    /**
-     * @return string
-     */
-    public function getSamlRequest()
+    public function getSamlRequest(): string
     {
         return $this->samlRequest;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getSignatureAlgorithm()
+    public function getSignatureAlgorithm(): ?string
     {
         return urldecode($this->signatureAlgorithm);
     }
 
-    /**
-     * @return null|string
-     */
-    public function getRelayState()
+    public function getRelayState(): ?string
     {
         return $this->relayState;
     }
 
-    /**
-     * @return string
-     */
-    public function getSignedRequestPayload()
+    public function getSignedRequestPayload(): string
     {
         return $this->getSignedQueryString();
     }
 
-    /**
-     * @param XMLSecurityKey $key
-     * @return bool
-     */
-    public function verify(XMLSecurityKey $key)
+    public function verify(XMLSecurityKey $key): bool
     {
         $isVerified = $key->verifySignature($this->getSignedRequestPayload(), $this->getDecodedSignature());
         if ($isVerified !== 1) {
