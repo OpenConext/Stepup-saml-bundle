@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2014 SURFnet bv
@@ -27,8 +27,6 @@ use Surfnet\SamlBundle\SAML2\Response\Assertion\InResponseTo;
 class InResponseToTest extends TestCase
 {
     /**
-     * @param Assertion $assertion
-     *
      * @test
      * @group saml2-response
      * @group saml2

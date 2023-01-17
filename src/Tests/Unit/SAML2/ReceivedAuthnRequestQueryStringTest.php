@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2017 SURFnet B.V.
@@ -26,10 +26,7 @@ use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 
 class ReceivedAuthnRequestQueryStringTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $authRequestNoSubject = <<<AUTHNREQUEST_NO_SUBJECT
+    private string $authRequestNoSubject = <<<AUTHNREQUEST_NO_SUBJECT
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -46,14 +43,27 @@ AUTHNREQUEST_NO_SUBJECT;
      * @test
      * @group AuthnRequest
      *
-     * @dataProvider nonOrEmptyStringProvider
+     * @dataProvider emptyStringProvider
      * @param $nonOrEmptyString
      */
-    public function a_received_authn_request_query_string_cannot_be_parsed_from_non_or_empty_strings($nonOrEmptyString): void
+    public function a_received_authn_request_query_string_cannot_be_parsed_from_empty_strings($nonOrEmptyString): void
     {
         $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
         $this->expectExceptionMessage('expected a non-empty string');
 
+        ReceivedAuthnRequestQueryString::parse($nonOrEmptyString);
+    }
+
+    /**
+     * @test
+     * @group AuthnRequest
+     *
+     * @dataProvider nonStringProvider
+     * @param $nonOrEmptyString
+     */
+    public function a_received_authn_request_query_string_cannot_be_parsed_from_non_strings($nonOrEmptyString): void
+    {
+        $this->expectError();
         ReceivedAuthnRequestQueryString::parse($nonOrEmptyString);
     }
 
@@ -94,7 +104,7 @@ AUTHNREQUEST_NO_SUBJECT;
      * @param $queryStringWithDoubleParameter
      */
     public function a_received_authn_request_query_string_cannot_contain_a_saml_parameter_twice(
-        $doubleParameterName, $queryStringWithDoubleParameter
+        string $doubleParameterName, string $queryStringWithDoubleParameter
     ): void {
         $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
         $this->expectExceptionMessage(sprintf('parameter "%s" already present', $doubleParameterName));
@@ -316,11 +326,16 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    public function nonOrEmptyStringProvider(): array
+    public function emptyStringProvider(): array
     {
         return [
             'empty string' => [''],
-            'string with spaces' => ['   '],
+            'string with spaces' => ['   ']
+        ];
+    }
+    public function nonStringProvider(): array
+    {
+        return [
             'integer' => [123],
             'float' => [1.23],
             'object' => [new stdClass()],

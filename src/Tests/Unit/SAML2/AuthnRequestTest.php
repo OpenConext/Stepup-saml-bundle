@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2014 SURFnet bv
@@ -26,10 +26,7 @@ use Surfnet\SamlBundle\SAML2\AuthnRequest;
 
 class AuthnRequestTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $authRequestWithSubject = <<<AUTHNREQUEST_WITH_SUBJECT
+    private string $authRequestWithSubject = <<<AUTHNREQUEST_WITH_SUBJECT
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -45,10 +42,7 @@ class AuthnRequestTest extends TestCase
 </samlp:AuthnRequest>
 AUTHNREQUEST_WITH_SUBJECT;
 
-    /**
-     * @var string
-     */
-    private $authRequestNoSubject = <<<AUTHNREQUEST_NO_SUBJECT
+    private string $authRequestNoSubject = <<<AUTHNREQUEST_NO_SUBJECT
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -61,10 +55,7 @@ AUTHNREQUEST_WITH_SUBJECT;
 </samlp:AuthnRequest>
 AUTHNREQUEST_NO_SUBJECT;
 
-    /**
-     * @var string
-     */
-    private $authRequestIsPassiveFalseAndNoForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F
+    private string $authRequestIsPassiveFalseAndNoForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -77,10 +68,7 @@ AUTHNREQUEST_NO_SUBJECT;
 </samlp:AuthnRequest>
 AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F;
 
-    /**
-     * @var string
-     */
-    private $authRequestIsPassiveAndForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F
+    private string $authRequestIsPassiveAndForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -94,10 +82,7 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F;
 </samlp:AuthnRequest>
 AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F;
 
-    /**
-     * @var string
-     */
-    private $authRequestIsPassiveFalseAndForceAuthn = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN
+    private string $authRequestIsPassiveFalseAndForceAuthn = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -111,10 +96,7 @@ AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F;
 </samlp:AuthnRequest>
 AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
 
-    /**
-     * @var string
-     */
-    private $acsUrl = 'https://example.org';
+    private string $acsUrl = 'https://example.org';
 
     /**
      * @test

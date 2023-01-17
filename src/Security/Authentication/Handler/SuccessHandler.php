@@ -18,14 +18,8 @@
 
 namespace Surfnet\SamlBundle\Security\Authentication\Handler;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
-use Symfony\Component\Security\Http\HttpUtils;
 
 class SuccessHandler extends DefaultAuthenticationSuccessHandler
 {
-    public function __construct(HttpUtils $httpUtils, array $options = [], LoggerInterface $logger = null)
-    {
-        parent::__construct($httpUtils, $options, $logger);
-    }
 }

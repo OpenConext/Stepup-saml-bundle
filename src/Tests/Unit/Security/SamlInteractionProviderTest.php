@@ -48,8 +48,6 @@ class SamlInteractionProviderTest extends TestCase
         $this->identityProvider = Mockery::mock(IdentityProvider::class);
         $this->redirectBinding = Mockery::mock(RedirectBinding::class);
         $this->postBinding = Mockery::mock(PostBinding::class);
-
-
     }
 
     private function createProvider()
