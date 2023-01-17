@@ -53,18 +53,18 @@ class SamlAuthenticatorTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private readonly SamlAuthenticator $authenticator;
-    private readonly IdentityProvider $idp;
-    private readonly ServiceProvider $sp;
-    private readonly RedirectBinding $redirectBinding;
-    private readonly SamlAuthenticationStateHandler $samlAuthenticationStateHandler;
-    private readonly ProcessSamlAuthenticationHandler $processSamlAuthenticationHandler;
-    private readonly AuthenticationSuccessHandlerInterface $successHandler;
-    private readonly AuthenticationFailureHandlerInterface $failureHandler;
-    private readonly SamlProviderInterface $samlProvider;
-    private readonly RouterInterface $router;
-    private readonly LoggerInterface $logger;
-    private readonly string $acsRouteName;
+    private SamlAuthenticator $authenticator;
+    private IdentityProvider $idp;
+    private ServiceProvider $sp;
+    private RedirectBinding $redirectBinding;
+    private SamlAuthenticationStateHandler $samlAuthenticationStateHandler;
+    private ProcessSamlAuthenticationHandler $processSamlAuthenticationHandler;
+    private AuthenticationSuccessHandlerInterface $successHandler;
+    private AuthenticationFailureHandlerInterface $failureHandler;
+    private SamlProviderInterface $samlProvider;
+    private RouterInterface $router;
+    private LoggerInterface $logger;
+    private string $acsRouteName;
 
     protected function setUp(): void
     {
