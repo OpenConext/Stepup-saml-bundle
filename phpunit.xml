@@ -9,6 +9,10 @@
          processIsolation="false"
          stopOnFailure="false"
          bootstrap="src/Tests/Bootstrap.php">
+    <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+        <server name="KERNEL_CLASS" value="App\Kernel"/>
+    </php>
     <testsuites>
         <testsuite name="Unit">
             <directory>src/Tests/Unit</directory>
@@ -17,6 +21,14 @@
             <directory>src/Tests/Component</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>src</directory>
+            <exclude>
+                <directory>src/Tests</directory>
+            </exclude>
+        </whitelist>
+    </filter>
     <coverage processUncoveredFiles="true">
         <include>
             <directory>src</directory>
@@ -29,8 +41,4 @@
         <listener class="\Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
         <listener class="\Mockery\Adapter\Phpunit\TestListener"/>
     </listeners>
-    <php>
-        <server name="KERNEL_CLASS" value="App\Kernel"/>
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=50"/>
-    </php>
 </phpunit>

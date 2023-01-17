@@ -42,10 +42,15 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
-use function dd;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuthenticatorInterface, AuthenticationEntryPointInterface
 {
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
     public function __construct(
         private readonly IdentityProvider $identityProvider,
         private readonly ServiceProvider $serviceProvider,
@@ -61,7 +66,7 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
     ) {
     }
 
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null): Response
     {
         $authnRequest = AuthnRequestFactory::createNewRequest(
             $this->serviceProvider,
@@ -80,7 +85,7 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
             $request->request->has('SAMLResponse');
     }
 
-    public function authenticate(Request $request)
+    public function authenticate(Request $request): Passport
     {
         $assertion = $this->processSamlAuthenticationHandler->process($request);
         $this->logger->notice('Successfully processed SAMLResponse, attempting to authenticate');

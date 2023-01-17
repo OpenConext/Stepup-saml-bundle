@@ -19,9 +19,9 @@
 namespace Surfnet\SamlBundle\Tests\Component\Metadata;
 
 use Jasny\PHPUnit\Constraint\XSDValidation;
-use libXMLError;
 use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use SAML2\Certificate\KeyLoader;
 use SAML2\Certificate\PrivateKeyLoader;
 use Surfnet\SamlBundle\Metadata\MetadataConfiguration;
@@ -31,12 +31,10 @@ use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\Environment;
-use XMLReader;
 
-use function file_get_contents;
-
-class MetadataFactoryTest extends MockeryTestCase
+class MetadataFactoryTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
     /** @var MetadataFactory */
     public $factory;
 
@@ -59,7 +57,7 @@ class MetadataFactoryTest extends MockeryTestCase
         $this->router->shouldReceive('generate')->andReturn('https://foobar.example.com');
     }
 
-    public function test_valid_metadata_xml()
+    public function test_valid_metadata_xml(): void
     {
         $expectedResult = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -67,14 +65,12 @@ class MetadataFactoryTest extends MockeryTestCase
 </md:EntityDescriptor>
 
 XML;
-        $metadataConfiguration = new MetadataConfiguration();
-        $metadataConfiguration->entityIdRoute = 'https://foobar.example.com';
-        $this->buildFactory($metadataConfiguration);
+        $this->buildFactory(m::mock(MetadataConfiguration::class));
         $metadata = $this->factory->generate();
         self::assertEquals($expectedResult, $metadata->__toString());
     }
 
-    public function test_builds_sp_metadata()
+    public function test_builds_sp_metadata(): void
     {
         $expectedResult = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -94,7 +90,7 @@ XML;
         self::assertEquals($expectedResult, $metadata->__toString());
     }
 
-    public function test_builds_idp_metadata()
+    public function test_builds_idp_metadata(): void
     {
         $expectedResult = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -119,14 +115,12 @@ XML;
         $metadataConfiguration->entityIdRoute = 'https://foobar.example.com';
         $this->buildFactory($metadataConfiguration);
         $metadata = $this->factory->generate();
+        $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
         self::assertEquals($expectedResult, $metadata->__toString());
-
-        $document = new XMLReader();
-        $document->XML($metadata->__toString());
-        $this->assertTrue($this->validateDocument($document, __DIR__ . '/xsd/metadata.xsd'));
+        self::assertThat($metadata->document, $constraint);
     }
 
-    public function test_builds_idp_metadata_signed()
+    public function test_builds_idp_metadata_signed(): void
     {
         $metadataConfiguration = new MetadataConfiguration();
         $metadataConfiguration->isIdP = true;
@@ -141,13 +135,11 @@ XML;
         $signingService = new SigningService($keyLoader, $privateKeyLoader);
         $this->buildFactory($metadataConfiguration, $signingService);
         $metadata = $this->factory->generate();
-
-        $document = new XMLReader();
-        $document->XML($metadata->__toString());
-        $this->assertTrue($this->validateDocument($document, __DIR__ . '/xsd/metadata.xsd'));
+        $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
+        self::assertThat($metadata->document, $constraint);
     }
 
-    private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null)
+    private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null): void
     {
         if (!$signingService) {
             $signingService = m::mock(SigningService::class);
@@ -156,23 +148,4 @@ XML;
         $this->factory = new MetadataFactory($this->twig, $this->router, $signingService, $metadata);
     }
 
-    /**
-     * @param \XMLReader $doc
-     * @param string $schema
-     * @return boolean
-     */
-    private function validateDocument(XMLReader $xmlReader, string $schema): bool
-    {
-        $xmlReader->setSchema($schema);
-
-        libxml_use_internal_errors(true);
-
-        while ($xmlReader->read()) {
-            if (!$xmlReader->isValid()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
