@@ -18,19 +18,18 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use PHPUnit\Framework\TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 
-class AttributeDictionaryTest extends MockeryTestCase
+class AttributeDictionaryTest extends TestCase
 {
     /**
      * @test
      * @group AttributeDictionary
      */
-    public function finds_no_definition_when_no_definition_given()
+    public function finds_no_definition_when_no_definition_given(): void
     {
         $maceAttributeUrn = 'urn:mace:some:attribute';
 
@@ -48,7 +47,7 @@ class AttributeDictionaryTest extends MockeryTestCase
      * @test
      * @group AttributeDictionary
      */
-    public function finds_no_definition_when_urn_matches_no_mace_urn()
+    public function finds_no_definition_when_urn_matches_no_mace_urn(): void
     {
         $maceAttributeUrn = 'urn:mace:some:attribute';
         $otherMaceAttributeUrn = 'urn:mace:other:attribute';
@@ -74,7 +73,7 @@ class AttributeDictionaryTest extends MockeryTestCase
      * @test
      * @group AttributeDictionary
      */
-    public function finds_no_definition_when_urn_matches_no_oid_urn()
+    public function finds_no_definition_when_urn_matches_no_oid_urn(): void
     {
         $oidAttributeUrn = 'urn:oid:0.0.0.0.0.0.0.0.0';
         $otherOidAttributeUrn = 'urn:oid:0.0.0.0.0.0.0.0.1';
@@ -100,7 +99,7 @@ class AttributeDictionaryTest extends MockeryTestCase
      * @test
      * @group AttributeDictionary
      */
-    public function finds_definition_when_urn_matches_urn_mace()
+    public function finds_definition_when_urn_matches_urn_mace(): void
     {
         $maceAttributeUrn = 'urn:mace:some:attribute';
 
@@ -125,7 +124,7 @@ class AttributeDictionaryTest extends MockeryTestCase
      * @test
      * @group AttributeDictionary
      */
-    public function finds_definition_when_urn_matches_urn_oid()
+    public function finds_definition_when_urn_matches_urn_oid(): void
     {
         $oidAttributeUrn = 'urn:oid:0.0.0.0.0.0.0.0.0';
 
@@ -149,9 +148,11 @@ class AttributeDictionaryTest extends MockeryTestCase
     /**
      * @test
      * @group AttributeDictionary
+     *
      */
-    public function shouldThrowExceptionForUnknownAttrib()
+    public function shouldThrowExceptionForUnknownAttrib(): void
     {
+        $this->expectException(UnknownUrnException::class);
         $oidAttributeUrn = 'urn:oid:0.0.0.0.0.0.0.0.0';
 
         $existingOidAttributeDefinition = new AttributeDefinition(
@@ -161,8 +162,6 @@ class AttributeDictionaryTest extends MockeryTestCase
         );
         $attributeDictionary = new AttributeDictionary();
         $attributeDictionary->addAttributeDefinition($existingOidAttributeDefinition);
-
-        $this->expectException(UnknownUrnException::class);
         $attributeDictionary->getAttributeDefinitionByUrn('unknown:0.0.0.0.0');
     }
 
@@ -170,7 +169,7 @@ class AttributeDictionaryTest extends MockeryTestCase
      * @test
      * @group AttributeDictionary
      */
-    public function shouldIgnoreUnknownAttributes()
+    public function shouldIgnoreUnknownAttributes(): void
     {
         $attributeDictionary = new AttributeDictionary(true);
         $this->assertTrue($attributeDictionary->ignoreUnknownAttributes());
@@ -180,7 +179,7 @@ class AttributeDictionaryTest extends MockeryTestCase
      * @test
      * @group AttributeDictionary
      */
-    public function shouldNotIgnoreUnknownAttributes()
+    public function shouldNotIgnoreUnknownAttributes(): void
     {
         $attributeDictionary = new AttributeDictionary();
         $this->assertFalse($attributeDictionary->ignoreUnknownAttributes());

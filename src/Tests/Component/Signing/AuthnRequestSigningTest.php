@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Signing;
 
-use PHPUnit\Framework\TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
@@ -57,7 +57,7 @@ AUTHNREQUEST_NO_SUBJECT;
      * @group Signing
      * @group Deprecated
      */
-    public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_rfc1738_encoding()
+    public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_rfc1738_encoding(): void
     {
         $authnRequestWithDefaultEncoding = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignWithPhpsHttpBuildQuery']
@@ -83,7 +83,7 @@ AUTHNREQUEST_NO_SUBJECT;
      * @group Signing
      * @group Deprecated
      */
-    public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_something_other_than_rfc1738_encoding()
+    public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_something_other_than_rfc1738_encoding(): void
     {
         $authnRequestWithCustomEncoding  = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignWithCustomHttpQueryEncoding']
@@ -108,7 +108,7 @@ AUTHNREQUEST_NO_SUBJECT;
      * @group Signing
      * @group Deprecated
      */
-    public function deprecated_authn_request_signatures_are_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent()
+    public function deprecated_authn_request_signatures_are_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent(): void
     {
         $authnRequestWithModifiedDataToSign = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignWithPhpsHttpBuildQuery'],
@@ -133,7 +133,7 @@ AUTHNREQUEST_NO_SUBJECT;
      * @group Signing
      * @group Deprecated
      */
-    public function deprecated_authn_request_signatures_are_not_verified_if_the_parameter_order_of_the_sent_query_is_not_correct()
+    public function deprecated_authn_request_signatures_are_not_verified_if_the_parameter_order_of_the_sent_query_is_not_correct(): void
     {
         $authnRequestWithModifiedDataToSign = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignUsingIncorrectParameterOrder']
@@ -156,7 +156,7 @@ AUTHNREQUEST_NO_SUBJECT;
      * @test
      * @group Signing
      */
-    public function a_received_authn_requests_signature_is_verified_regardless_of_its_encoding()
+    public function a_received_authn_requests_signature_is_verified_regardless_of_its_encoding(): void
     {
         $signatureVerifier = new SignatureVerifier(new KeyLoader, new NullLogger);
         $certificate       = X509::createFromCertificateData($this->getPublicKey());
@@ -212,7 +212,7 @@ AUTHNREQUEST_NO_SUBJECT;
      * @test
      * @group Signing
      */
-    public function a_received_authn_requests_signature_is_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent()
+    public function a_received_authn_requests_signature_is_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent(): void
     {
         $signatureVerifier = new SignatureVerifier(new KeyLoader, new NullLogger);
         $certificate       = X509::createFromCertificateData($this->getPublicKey());
@@ -238,20 +238,12 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @param array $params
-     * @return string
-     */
-    private function encodeDataToSignWithPhpsHttpBuildQuery(array $params)
+    private function encodeDataToSignWithPhpsHttpBuildQuery(array $params): string
     {
         return http_build_query($params);
     }
 
-    /**
-     * @param array $params
-     * @return string
-     */
-    private function encodeDataToSignWithCustomHttpQueryEncoding(array $params)
+    private function encodeDataToSignWithCustomHttpQueryEncoding(array $params): string
     {
         $encodedParams = http_build_query($params);
 
@@ -260,11 +252,7 @@ AUTHNREQUEST_NO_SUBJECT;
         return str_replace('%3A', ':', $encodedParams);
     }
 
-    /**
-     * @param array $params
-     * @return string
-     */
-    private function encodeDataToSignUsingIncorrectParameterOrder(array $params)
+    private function encodeDataToSignUsingIncorrectParameterOrder(array $params): string
     {
         return http_build_query(array_reverse($params, true));
     }
@@ -272,9 +260,8 @@ AUTHNREQUEST_NO_SUBJECT;
     /**
      * @param callable $prepareDataToSign Expects an associative array of data to sign and returns a string to sign
      * @param null|string $customSignature Signature to be used instead of signature to sign data to sign with
-     * @return AuthnRequest
      */
-    private function createSignedAuthnRequest(callable $prepareDataToSign, $customSignature = null)
+    private function createSignedAuthnRequest(callable $prepareDataToSign, ?string $customSignature = null): AuthnRequest
     {
         $keyData    = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
         $privateKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
@@ -307,7 +294,7 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    private function getPublicKey()
+    private function getPublicKey(): string
     {
         if ($this->publicKey === null) {
             $file = file_get_contents(__DIR__.'/../../../Resources/keys/development_publickey.cer');
@@ -317,10 +304,7 @@ AUTHNREQUEST_NO_SUBJECT;
         return $this->publicKey;
     }
 
-    /**
-     * @return string
-     */
-    private function createEncodedSamlRequest()
+    private function createEncodedSamlRequest(): string
     {
         $domDocument          = DOMDocumentFactory::fromString($this->authRequestNoSubject);
         $unsignedAuthnRequest = SAML2AuthnRequest::fromXML($domDocument->firstChild);

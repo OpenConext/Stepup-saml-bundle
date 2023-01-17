@@ -19,15 +19,16 @@
 namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use PHPUnit\Framework\TestCase as UnitTest;
-use Surfnet\SamlBundle\Exception\InvalidArgumentException;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use Surfnet\SamlBundle\Http\HttpBindingFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
-class HttpBindingFactoryTest extends MockeryTestCase
+class HttpBindingFactoryTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /** @var HttpBindingFactory */
     private $factory;
 
@@ -94,12 +95,12 @@ class HttpBindingFactoryTest extends MockeryTestCase
      */
     public function a_put_binding_can_not_be_built()
     {
+        $this->expectExceptionMessage("Request type of \"PUT\" is not supported.");
+        $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
         $this->request
             ->shouldReceive('getMethod')
             ->andReturn(Request::METHOD_PUT);
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Request type of "PUT" is not supported.');
         $this->factory->build($this->request);
     }
 
@@ -109,6 +110,8 @@ class HttpBindingFactoryTest extends MockeryTestCase
      */
     public function an_invalid_post_authn_request_is_rejected()
     {
+        $this->expectExceptionMessage("POST-binding is supported for SAMLRequest.");
+        $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
         $this->request
             ->shouldReceive('getMethod')
             ->andReturn(Request::METHOD_POST);
@@ -118,8 +121,6 @@ class HttpBindingFactoryTest extends MockeryTestCase
             ->with('SAMLRequest')
             ->andReturn(false);
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('POST-binding is supported for SAMLRequest.');
         $this->factory->build($this->request);
     }
 
@@ -129,6 +130,8 @@ class HttpBindingFactoryTest extends MockeryTestCase
      */
     public function an_invalid_get_authn_request_is_rejected()
     {
+        $this->expectExceptionMessage("Redirect binding is supported for SAMLRequest and Response.");
+        $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
         $this->request
             ->shouldReceive('getMethod')
             ->andReturn(Request::METHOD_GET);
@@ -142,8 +145,6 @@ class HttpBindingFactoryTest extends MockeryTestCase
             ->with('SAMLResponse')
             ->andReturn(false);
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Redirect binding is supported for SAMLRequest and Response.');
         $this->factory->build($this->request);
     }
 }

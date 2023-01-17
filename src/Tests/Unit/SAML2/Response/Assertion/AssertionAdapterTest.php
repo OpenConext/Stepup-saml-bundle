@@ -19,20 +19,22 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
 use Mockery as m;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Surfnet\SamlBundle\Exception\UnknownUrnException;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use Surfnet\SamlBundle\SAML2\Attribute\Attribute;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Response\AssertionAdapter;
 
-class AssertionAdapterTest extends MockeryTestCase
+class AssertionAdapterTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * @test
      * @group AssertionAdapter
      */
-    public function presence_of_attribute_can_be_confirmed_based_on_mace_urn_attribute_definition()
+    public function presence_of_attribute_can_be_confirmed_based_on_mace_urn_attribute_definition(): void
     {
 
         $maceAttributeUrn   = 'urn:mace:some:attribute';
@@ -62,7 +64,7 @@ class AssertionAdapterTest extends MockeryTestCase
      * @test
      * @group AssertionAdapter
      */
-    public function presence_of_attribute_can_be_confirmed_based_on_oid_urn_attribute_definition()
+    public function presence_of_attribute_can_be_confirmed_based_on_oid_urn_attribute_definition(): void
     {
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
         $oidAttributeValue = ['oid-attribute-value'];
@@ -91,8 +93,9 @@ class AssertionAdapterTest extends MockeryTestCase
      * @test
      * @group AssertionAdapter
      */
-    public function no_presence_of_attribute_can_be_confirmed_if_no_attribute_definition_found()
+    public function no_presence_of_attribute_can_be_confirmed_if_no_attribute_definition_found(): void
     {
+        $this->expectException(\Surfnet\SamlBundle\Exception\UnknownUrnException::class);
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
         $oidAttributeValue = ['oid-attribute-value'];
         $existingOidAttributeDefinition = new AttributeDefinition(
@@ -108,16 +111,17 @@ class AssertionAdapterTest extends MockeryTestCase
 
         // empty dictionary
         $dictionary = new AttributeDictionary();
+        $adapter      = new AssertionAdapter($assertion, $dictionary);
+        $attributeSet = $adapter->getAttributeSet();
 
-        $this->expectException(UnknownUrnException::class);
-        new AssertionAdapter($assertion, $dictionary);
+        $attributeSet->contains($attributeExpectedNotToBeContained);
     }
 
     /**
      * @test
      * @group AssertionAdapter
      */
-    public function attribute_set_is_empty_if_no_attributes_found()
+    public function attribute_set_is_empty_if_no_attributes_found(): void
     {
         $assertion = m::mock('\\SAML2\\Assertion');
         $assertion->shouldReceive('getAttributes')->andReturn([]);
@@ -134,7 +138,7 @@ class AssertionAdapterTest extends MockeryTestCase
      * @test
      * @group AssertionAdapter
      */
-    public function attribute_set_has_content_when_attributes_found()
+    public function attribute_set_has_content_when_attributes_found(): void
     {
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
         $oidAttributeValue = ['oid-attribute-value'];
@@ -160,7 +164,7 @@ class AssertionAdapterTest extends MockeryTestCase
      * @test
      * @group AssertionAdapter
      */
-    public function attribute_set_has_no_duplicate_attribute_definitions_when_same_attributes_found()
+    public function attribute_set_has_no_duplicate_attribute_definitions_when_same_attributes_found(): void
     {
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
         $maceAttributeUrn   = 'urn:mace:some:attribute';

@@ -169,10 +169,13 @@ class AuthnRequest
      */
     public function getNameId()
     {
-        if ($this->request->getNameId()) {
-            return $this->request->getNameId()->getValue();
+        $nameId = $this->request->getNameId();
+
+        if (!$nameId->getValue()) {
+            return;
         }
-        return null;
+
+        return $nameId->getValue();
     }
 
     /**
@@ -180,32 +183,26 @@ class AuthnRequest
      */
     public function getNameIdFormat()
     {
-        if ($this->request->getNameId()) {
-            return $this->request->getNameId()->getFormat();
+        $nameId = $this->request->getNameId();
+
+        if (!$nameId->getFormat()) {
+            return;
         }
-        return null;
+
+        return $nameId->getFormat();
     }
 
     /**
-     * @param string      $nameIdValue
+     * @param string      $nameId
      * @param string|null $format
      */
-    public function setSubject($nameIdValue, $format = null)
+    public function setSubject(string $nameId, ?string $format = null)
     {
-        if (!is_string($nameIdValue)) {
-            throw InvalidArgumentException::invalidType('string', 'nameId', $nameIdValue);
-        }
+        $nameIdVo = new NameID();
+        $nameIdVo->setValue($nameId);
+        $nameIdVo->setFormat(($format ?: Constants::NAMEID_UNSPECIFIED));
 
-        if (!is_null($format) && !is_string($format)) {
-            throw InvalidArgumentException::invalidType('string', 'format', $format);
-        }
-
-
-        $nameId = new NameID();
-        $nameId->setValue($nameIdValue);
-        $nameId->setFormat($format ?: Constants::NAMEID_UNSPECIFIED);
-
-        $this->request->setNameId($nameId);
+        $this->request->setNameId($nameIdVo);
     }
 
     /**
@@ -224,14 +221,12 @@ class AuthnRequest
         return $this->request->getIsPassive();
     }
 
-    public function isForceAuthn(): bool
+    /**
+     * @return bool
+     */
+    public function isForceAuthn()
     {
         return $this->request->getForceAuthn();
-    }
-
-    public function setForceAuthn(bool $isForceAuthN): void
-    {
-        $this->request->setForceAuthn($isForceAuthN);
     }
 
     /**
@@ -258,9 +253,12 @@ class AuthnRequest
         return $this->request->getDestination();
     }
 
-    public function getServiceProvider(): string
+    /**
+     * @return string
+     */
+    public function getServiceProvider()
     {
-        return $this->request->getIssuer()->getValue();
+        return $this->request->getIssuer();
     }
 
     /**

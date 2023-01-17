@@ -109,9 +109,7 @@ class AuthnRequestFactory
         }
 
         // additional security against XXE Processing vulnerability
-        $previous = libxml_disable_entity_loader(true);
         $document = DOMDocumentFactory::fromString($samlRequest);
-        libxml_disable_entity_loader($previous);
 
         $request = Message::fromXML($document->firstChild);
 

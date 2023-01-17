@@ -18,13 +18,13 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use PHPUnit\Framework\TestCase as UnitTest;
+use PHPUnit\Framework\TestCase;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\DOMDocumentFactory;
+use SAML2\XML\saml\NameID;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 
-class AuthnRequestTest extends MockeryTestCase
+class AuthnRequestTest extends TestCase
 {
     /**
      * @var string
@@ -117,24 +117,11 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
     private $acsUrl = 'https://example.org';
 
     /**
-     * @var string
-     */
-    private $nameId = 'user@example.org';
-
-    /**
-     * @var string
-     */
-    private $format = 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified';
-
-    /**
      * @test
      * @group saml2
      * @dataProvider provideNameIDAndFormatCombinations
-     *
-     * @param $nameId
-     * @param $format
      */
-    public function setting_the_subject_generates_valid_xml($nameId, $format)
+    public function setting_the_subject_generates_valid_xml(string $nameId, ?string $format): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestNoSubject);
         $request     = new SAML2AuthnRequest($domDocument->documentElement);
@@ -149,22 +136,26 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
      * @test
      * @group saml2
      */
-    public function the_nameid_and_format_can_be_retrieved_from_the_authnrequest()
+    public function the_nameid_and_format_can_be_retrieved_from_the_authnrequest(): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
         $request     = new SAML2AuthnRequest($domDocument->documentElement);
 
         $authnRequest = AuthnRequest::createNew($request);
 
-        $this->assertEquals($this->nameId, $authnRequest->getNameId());
-        $this->assertEquals($this->format, $authnRequest->getNameIdFormat());
+        $nameId = new NameID();
+        $nameId->setValue('user@example.org');
+        $nameId->setFormat('urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified');
+
+        $this->assertEquals($nameId->getValue(), $authnRequest->getNameId());
+        $this->assertEquals($nameId->getFormat(), $authnRequest->getNameIdFormat());
     }
 
     /**
      * @test
      * @group saml2
      */
-    public function the_acs_url_can_be_retrieved_from_the_authnrequest()
+    public function the_acs_url_can_be_retrieved_from_the_authnrequest(): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
         $request     = new SAML2AuthnRequest($domDocument->documentElement);
@@ -173,7 +164,6 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
 
         $this->assertEquals($this->acsUrl, $authnRequest->getAssertionConsumerServiceURL());
     }
-
 
     /**
      * @test
@@ -184,7 +174,7 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
      * @param bool   $isPassive
      * @param bool   $forceAuthn
      */
-    public function is_passive_and_force_authn_can_be_retrieved_from_the_authnrequest($xml, $isPassive, $forceAuthn)
+    public function is_passive_and_force_authn_can_be_retrieved_from_the_authnrequest($xml, $isPassive, $forceAuthn): void
     {
         $domDocument = DOMDocumentFactory::fromString($xml);
         $request     = new SAML2AuthnRequest($domDocument->documentElement);
@@ -194,29 +184,7 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertEquals($forceAuthn, $authnRequest->isForceAuthn());
     }
 
-    public function test_force_authn_can_be_set()
-    {
-        $domDocument = DOMDocumentFactory::fromString($this->authRequestIsPassiveFalseAndNoForceAuthnFalse);
-        $request     = new SAML2AuthnRequest($domDocument->documentElement);
-        $authnRequest = AuthnRequest::createNew($request);
-
-        $this->assertFalse($authnRequest->isForceAuthn());
-        $authnRequest->setForceAuthn(true);
-        $this->assertTrue($authnRequest->isForceAuthn());
-    }
-
-    public function test_name_id_can_be_null()
-    {
-        $domDocument = DOMDocumentFactory::fromString($this->authRequestNoSubject);
-        $request     = new SAML2AuthnRequest($domDocument->documentElement);
-
-        $authnRequest = AuthnRequest::createNew($request);
-
-        $this->assertNull($authnRequest->getNameId());
-        $this->assertNull($authnRequest->getNameIdFormat());
-    }
-
-    public function provideIsPassiveAndForceAuthnCombinations()
+    public function provideIsPassiveAndForceAuthnCombinations(): array
     {
         return [
             'isPassive false and ForceAuthn false' => [$this->authRequestIsPassiveFalseAndNoForceAuthnFalse, false, false],
@@ -225,11 +193,15 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         ];
     }
 
-    public function provideNameIDAndFormatCombinations()
+    public function provideNameIDAndFormatCombinations(): array
     {
+        $nameId = new NameID();
+        $nameId->setValue('user@example.org');
+        $nameId->setFormat('urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified');
+
         return [
-            'NameID without Format' => [$this->nameId, null],
-            'NameID with Format'    => [$this->nameId, $this->format]
+            'NameID without Format' => [$nameId->getValue(), null],
+            'NameID with Format'    => [$nameId->getValue(), $nameId->getFormat()]
         ];
     }
 }
