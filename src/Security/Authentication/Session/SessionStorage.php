@@ -84,7 +84,7 @@ class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthentica
         $this->session->set(self::AUTH_SESSION_KEY . 'current_uri', $uri);
     }
 
-    public function getCurrentRequestUri()
+    public function getCurrentRequestUri(): string
     {
         $uri = $this->session->get(self::AUTH_SESSION_KEY . 'current_uri');
         $this->session->remove(self::AUTH_SESSION_KEY . 'current_uri');
@@ -92,23 +92,23 @@ class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthentica
         return $uri;
     }
 
-    public function getRequestId()
+    public function getRequestId(): string
     {
         return $this->session->get(self::SAML_SESSION_KEY . 'request_id');
     }
 
-    public function setRequestId($requestId)
+    public function setRequestId(string $requestId): void
     {
         $this->session->set(self::SAML_SESSION_KEY . 'request_id', $requestId);
     }
 
-    public function hasRequestId()
+    public function hasRequestId(): bool
     {
         $value =  $this->session->has(self::SAML_SESSION_KEY . 'request_id');
         return $value;
     }
 
-    public function clearRequestId()
+    public function clearRequestId(): void
     {
         $this->session->remove(self::SAML_SESSION_KEY . 'request_id');
     }
