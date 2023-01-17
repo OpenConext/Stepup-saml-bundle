@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2016 SURFnet B.V.
@@ -26,7 +26,7 @@ use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
 
 class ConfigurableAttributeSetFactoryTest extends TestCase
 {
-    const DUMMY_ATTRIBUTE_SET_CLASS = '\Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock\DummyAttributeSet';
+    private const DUMMY_ATTRIBUTE_SET_CLASS = '\Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock\DummyAttributeSet';
     
     /**
      * @test

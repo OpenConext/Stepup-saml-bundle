@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2016 SURFnet B.V.
@@ -31,10 +31,7 @@ use Surfnet\SamlBundle\Signing\SignatureVerifier;
 
 class AuthnRequestSigningTest extends TestCase
 {
-    /**
-     * @var string
-     */
-    private $authRequestNoSubject = <<<AUTHNREQUEST_NO_SUBJECT
+    private string $authRequestNoSubject = <<<AUTHNREQUEST_NO_SUBJECT
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -47,10 +44,7 @@ class AuthnRequestSigningTest extends TestCase
 </samlp:AuthnRequest>
 AUTHNREQUEST_NO_SUBJECT;
 
-    /**
-     * @var string|null
-     */
-    private $publicKey = null;
+    private ?string $publicKey = null;
 
     /**
      * @test
@@ -290,7 +284,7 @@ AUTHNREQUEST_NO_SUBJECT;
             $encodedRequest,
             null,
             $signature,
-            $privateKey->type
+            (string) $privateKey->type
         );
     }
 

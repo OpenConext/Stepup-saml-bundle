@@ -56,7 +56,6 @@ services:
     surfnet_saml.http.redirect_binding:
         class: Surfnet\SamlBundle\Http\RedirectBinding
         arguments:
-            - '@logger'
             - '@surfnet_saml.signing.signature_verifier'
             - '@?surfnet_saml.entity.entity_repository'
 
@@ -67,7 +66,6 @@ services:
         class: Surfnet\SamlBundle\Http\PostBinding
         arguments:
             - '@surfnet_saml.saml2.response_processor'
-            - '@logger'
             - '@surfnet_saml.signing.signature_verifier'
             - '@?surfnet_saml.entity.entity_repository'
 

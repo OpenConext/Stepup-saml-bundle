@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2021 SURF B.V.
@@ -36,13 +36,11 @@ class MetadataFactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
     /** @var MetadataFactory */
-    public $factory;
+    public MetadataFactory $factory;
 
-    public $twig;
+    public Environment $twig;
 
-    public $router;
-
-    public $signingService;
+    public m\Mock|RouterInterface $router;
 
     public function setUp(): void
     {

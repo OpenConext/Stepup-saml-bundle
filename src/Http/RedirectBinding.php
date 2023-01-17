@@ -20,6 +20,7 @@ namespace Surfnet\SamlBundle\Http;
 
 use Psr\Log\LoggerInterface;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
+use SAML2\Certificate\KeyLoader;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
@@ -40,36 +41,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class RedirectBinding implements HttpBinding
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private SignatureVerifier $signatureVerifier;
 
-    /**
-     * @var \SAML2\Certificate\KeyLoader
-     */
-    private $signatureVerifier;
-
-    /**
-     * @var \Surfnet\SamlBundle\Entity\ServiceProviderRepository
-     */
-    private $entityRepository;
+    private ServiceProviderRepository $entityRepository;
 
     public function __construct(
-        LoggerInterface $logger,
         SignatureVerifier $signatureVerifier,
         ServiceProviderRepository $repository = null
     ) {
-        $this->logger = $logger;
         $this->signatureVerifier = $signatureVerifier;
         $this->entityRepository = $repository;
     }
 
-    /**
-     * @param Request $request
-     * @return AuthnRequest
-     */
-    public function processUnsignedRequest(Request $request)
+    public function processUnsignedRequest(Request $request): AuthnRequest
     {
         if (!$this->entityRepository) {
             throw new LogicException(
@@ -104,11 +88,7 @@ class RedirectBinding implements HttpBinding
         return $authnRequest;
     }
 
-    /**
-     * @param Request $request
-     * @return AuthnRequest
-     */
-    public function processSignedRequest(Request $request)
+    public function processSignedRequest(Request $request): AuthnRequest
     {
         if (!$this->entityRepository) {
             throw new LogicException(
@@ -149,11 +129,7 @@ class RedirectBinding implements HttpBinding
         return $authnRequest;
     }
 
-    /**
-     * @param Request $request
-     * @return ReceivedAuthnRequest
-     */
-    public function receiveUnsignedAuthnRequestFrom(Request $request)
+    public function receiveUnsignedAuthnRequestFrom(Request $request): AuthnRequest
     {
         if (!$this->entityRepository) {
             throw new LogicException(
@@ -197,12 +173,9 @@ class RedirectBinding implements HttpBinding
     }
 
     /**
-     * @param Request $request
-     * @return ReceivedAuthnRequest
-     *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function receiveSignedAuthnRequestFrom(Request $request)
+    public function receiveSignedAuthnRequestFrom(Request $request): AuthnRequest
     {
         if (!$this->entityRepository) {
             throw new LogicException(
@@ -265,25 +238,19 @@ class RedirectBinding implements HttpBinding
     }
 
     /**
-     * @param Request $request
-     * @return AuthnRequest
      * @throws \Exception
      *
      * @deprecated Use receiveSignedAuthnRequestFrom or receiveUnsignedAuthnRequestFrom
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function processRequest(Request $request)
+    public function processRequest(Request $request): AuthnRequest
     {
         return $this->processSignedRequest($request);
     }
 
     /**
      * @deprecated Please use the `createResponseFor` method instead
-     * @param AuthnRequest $request
-     * @return RedirectResponse
      */
-    public function createRedirectResponseFor(AuthnRequest $request)
+    public function createRedirectResponseFor(AuthnRequest $request): RedirectResponse
     {
         return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
     }
@@ -321,7 +288,7 @@ class RedirectBinding implements HttpBinding
      * @param Request $request
      * @return string
      */
-    private function getFullRequestUri(Request $request)
+    private function getFullRequestUri(Request $request): string
     {
         return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
     }
@@ -330,7 +297,7 @@ class RedirectBinding implements HttpBinding
      * @param AuthnRequest $request
      * @return RedirectResponse
      */
-    public function createResponseFor(AuthnRequest $request)
+    public function createResponseFor(AuthnRequest $request): RedirectResponse
     {
         return $this->createRedirectResponseFor($request);
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2014 SURFnet bv
@@ -48,7 +48,7 @@ final class SamlAuthenticationLoggerTest extends TestCase
      */
     public function it_errors_when_no_authentication(): void
     {
-        $this->expectError(Error::class);
+        $this->expectError();
         $logger = new SamlAuthenticationLogger(m::mock('Psr\Log\LoggerInterface'));
         $logger->emergency('message2');
     }

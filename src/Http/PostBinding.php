@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2014 SURFnet bv
@@ -19,7 +19,6 @@
 namespace Surfnet\SamlBundle\Http;
 
 use LogicException;
-use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SAML2\Assertion;
 use SAML2\Certificate\KeyLoader;
@@ -39,6 +38,7 @@ use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -47,43 +47,23 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class PostBinding implements HttpBinding
 {
-    /**
-     * @var Processor
-     */
-    private $responseProcessor;
+    private Processor $responseProcessor;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private KeyLoader $signatureVerifier;
 
-    /**
-     * @var KeyLoader
-     */
-    private $signatureVerifier;
-
-    /**
-     * @var \Surfnet\SamlBundle\Entity\ServiceProviderRepository
-     */
-    private $entityRepository;
+    private ?ServiceProviderRepository $entityRepository;
 
     public function __construct(
         Processor $responseProcessor,
-        LoggerInterface $logger,
         SignatureVerifier $signatureVerifier,
         ServiceProviderRepository $repository = null
     ) {
         $this->responseProcessor = $responseProcessor;
-        $this->logger = $logger;
         $this->signatureVerifier = $signatureVerifier;
         $this->entityRepository = $repository;
     }
 
     /**
-     * @param Request $request
-     * @param IdentityProvider $identityProvider
-     * @param ServiceProvider $serviceProvider
-     * @return Assertion
      * @throws AuthnFailedSamlResponseException
      * @throws NoAuthnContextSamlResponseException
      * @throws PreconditionNotMetException
@@ -92,7 +72,7 @@ class PostBinding implements HttpBinding
         Request $request,
         IdentityProvider $identityProvider,
         ServiceProvider $serviceProvider
-    ) {
+    ): Assertion {
         $response = $request->request->get('SAMLResponse');
         if (!$response) {
             throw new BadRequestHttpException('Response must include a SAMLResponse, none found');
@@ -128,7 +108,7 @@ class PostBinding implements HttpBinding
         return $assertions->getOnlyElement();
     }
 
-    public function receiveSignedAuthnRequestFrom(Request $request)
+    public function receiveSignedAuthnRequestFrom(Request $request): AuthnRequest
     {
         if (!$this->entityRepository) {
             throw new LogicException(
@@ -176,16 +156,12 @@ class PostBinding implements HttpBinding
         return $authnRequest;
     }
 
-    /**
-     * @param Request $request
-     * @return string
-     */
-    private function getFullRequestUri(Request $request)
+    private function getFullRequestUri(Request $request): string
     {
         return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
     }
 
-    public function createResponseFor(AuthnRequest $request)
+    public function createResponseFor(AuthnRequest $request): RedirectResponse
     {
         throw new RuntimeException(
             'Not implemented: caller should implement the response for POST binding'

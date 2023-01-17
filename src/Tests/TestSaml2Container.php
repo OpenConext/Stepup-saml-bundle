@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2014 SURFnet bv
@@ -18,24 +18,19 @@
 
 namespace Surfnet\SamlBundle\Tests;
 
+use BadMethodCallException;
 use SAML2\Compat\AbstractContainer;
 use Psr\Log\LoggerInterface;
 
 class TestSaml2Container extends AbstractContainer
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }
 
-    /**
-     * @return LoggerInterface
-     */
     public function getLogger(): LoggerInterface
     {
         return $this->logger;
@@ -46,7 +41,7 @@ class TestSaml2Container extends AbstractContainer
      */
     public function generateId() : string
     {
-        return 1;
+        return '1';
     }
 
     public function debugMessage($message, string $type) : void
@@ -56,20 +51,24 @@ class TestSaml2Container extends AbstractContainer
 
     public function redirect(string $url, array $data = []) : void
     {
-        throw new \BadMethodCallException(sprintf(
-            "[TEST] %s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
-            __CLASS__,
-            __METHOD__
-        ));
+        throw new BadMethodCallException(
+            sprintf(
+                "[TEST] %s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
+                __CLASS__,
+                __METHOD__
+            )
+        );
     }
 
     public function postRedirect(string $url, array $data = []) : void
     {
-        throw new \BadMethodCallException(sprintf(
-            "[TEST] %s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
-            __CLASS__,
-            __METHOD__
-        ));
+        throw new BadMethodCallException(
+            sprintf(
+                "[TEST] %s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
+                __CLASS__,
+                __METHOD__
+            )
+        );
     }
 
     public function getTempDir(): string

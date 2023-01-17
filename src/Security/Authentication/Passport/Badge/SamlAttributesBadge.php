@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\Security\Authentication\Passport\Badge;
 
-use SAML2\XML\saml\NameID;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\BadgeInterface;
 
 class SamlAttributesBadge implements BadgeInterface
@@ -26,17 +25,6 @@ class SamlAttributesBadge implements BadgeInterface
     private array $attributes;
     public function __construct(array $attributes)
     {
-        foreach ($attributes as $key => $attributeParts) {
-            foreach ($attributeParts as $index => $attribute) {
-                // NameID can not be serialized, resulting in a 500 error during authentication
-                if ($attribute instanceof NameID) {
-                    $attributes[$key][$index] = [
-                        'Value' => $attribute->getValue(),
-                        'Format' => $attribute->getFormat()
-                    ];
-                }
-            }
-        }
         $this->attributes = $attributes;
     }
 

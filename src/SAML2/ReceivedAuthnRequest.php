@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2016 SURFnet B.V.
@@ -32,10 +32,7 @@ final class ReceivedAuthnRequest
 {
     use ExtensionsMapperTrait;
 
-    /**
-     * @var SAML2AuthnRequest
-     */
-    private $request;
+    private SAML2AuthnRequest $request;
 
     private function __construct(SAML2AuthnRequest $request)
     {
@@ -43,11 +40,7 @@ final class ReceivedAuthnRequest
         $this->loadExtensionsFromSaml2AuthNRequest();
     }
 
-    /**
-     * @param string $decodedSamlRequest
-     * @return ReceivedAuthnRequest
-     */
-    public static function from($decodedSamlRequest)
+    public static function from(string $decodedSamlRequest): ReceivedAuthnRequest
     {
         if (!is_string($decodedSamlRequest) || empty($decodedSamlRequest)) {
             throw new InvalidArgumentException(sprintf(
@@ -64,17 +57,14 @@ final class ReceivedAuthnRequest
         if (!$authnRequest instanceof SAML2AuthnRequest) {
             throw new RuntimeException(sprintf(
                 'The received request is not an AuthnRequest, "%s" received instead',
-                substr(get_class($authnRequest), strrpos($authnRequest, '_') + 1)
+                get_class($authnRequest)
             ));
         }
 
         return new self($authnRequest);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getAuthenticationContextClassRef()
+    public function getAuthenticationContextClassRef(): ?string
     {
         $authnContext = $this->request->getRequestedAuthnContext();
 
@@ -85,19 +75,13 @@ final class ReceivedAuthnRequest
         return reset($authnContext['AuthnContextClassRef']) ?: null;
     }
 
-    /**
-     * @param string $authnClassRef
-     */
-    public function setAuthenticationContextClassRef($authnClassRef)
+    public function setAuthenticationContextClassRef($authnClassRef): void
     {
         $authnContext = ['AuthnContextClassRef' => [$authnClassRef]];
         $this->request->setRequestedAuthnContext($authnContext);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getNameId()
+    public function getNameId(): ?string
     {
         $nameId = $this->request->getNameId();
         if (!$nameId) {
@@ -107,10 +91,7 @@ final class ReceivedAuthnRequest
         return $nameId->getValue();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getNameIdFormat()
+    public function getNameIdFormat(): ?string
     {
         $nameId = $this->request->getNameId();
         if (!$nameId) {
@@ -120,107 +101,68 @@ final class ReceivedAuthnRequest
         return $nameId->getFormat();
     }
 
-    /**
-     * @param string      $nameId
-     * @param string|null $format
-     */
-    public function setSubject($nameId, $format = null)
+    public function setSubject(string $nameId, ?string $format = null): void
     {
-        if (!is_string($nameId)) {
-            throw InvalidArgumentException::invalidType('string', 'nameId', $nameId);
-        }
-
-        if (!is_null($format) && !is_string($format)) {
-            throw InvalidArgumentException::invalidType('string', 'format', $format);
-        }
-
-        $nameId = new NameID();
-        $nameId->setValue($nameId);
-        $nameId->setFormat(($format ?: Constants::NAMEID_UNSPECIFIED));
+        $nameIdVo = new NameID;
+        $nameIdVo->setValue($nameId);
+        $nameIdVo->setFormat(($format ?: Constants::NAMEID_UNSPECIFIED));
 
         $this->request->setNameId($nameId);
     }
 
-    /**
-     * @return string
-     */
-    public function getRequestId()
+    public function getRequestId(): string
     {
         return $this->request->getId();
     }
 
-    /**
-     * @return bool
-     */
-    public function isPassive()
+    public function isPassive(): bool
     {
         return $this->request->getIsPassive();
     }
 
-    /**
-     * @return bool
-     */
-    public function isForceAuthn()
+    public function isForceAuthn(): bool
     {
         return $this->request->getForceAuthn();
     }
 
-    /**
-     * @return string
-     */
-    public function getDestination()
+    public function getDestination(): ?string
     {
         return $this->request->getDestination();
     }
 
-    /**
-     * @return string
-     */
-    public function getServiceProvider()
+    public function getServiceProvider(): ?string
     {
-        return $this->request->getIssuer();
+        if (!$this->request->getIssuer()) {
+            return null;
+        }
+        return $this->request->getIssuer()->getValue();
     }
 
-    /**
-     * @return string
-     */
-    public function getUnsignedXML()
+    public function getUnsignedXML(): string
     {
         return $this->request->toUnsignedXML()->ownerDocument->saveXML();
     }
 
-    /**
-     * @return string
-     */
-    public function getAssertionConsumerServiceURL()
+    public function getAssertionConsumerServiceURL(): string
     {
         return $this->request->getAssertionConsumerServiceURL();
     }
 
-    /**
-     * @param array $requesterIds
-     * @param int   $proxyCount
-     */
-    public function setScoping(array $requesterIds, $proxyCount = 10)
+    public function setScoping(array $requesterIds, int $proxyCount = 10): void
     {
         $this->request->setRequesterID($requesterIds);
         $this->request->setProxyCount($proxyCount);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getScopingRequesterIds()
+    public function getScopingRequesterIds(): array
     {
         return $this->request->getRequesterID();
     }
 
     /**
-     * @param XMLSecurityKey $key
-     * @return bool
      * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
      */
-    public function verify(XMLSecurityKey $key)
+    public function verify(XMLSecurityKey $key): bool
     {
         return $this->request->validate($key);
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2023 SURFnet B.V.
@@ -28,15 +28,6 @@ use Symfony\Component\Security\Http\HttpUtils;
 
 class FailureHandler extends DefaultAuthenticationFailureHandler
 {
-    public function __construct(
-        HttpKernelInterface $httpKernel,
-        HttpUtils $httpUtils,
-        array $options = [],
-        LoggerInterface $logger = null,
-    ) {
-        parent::__construct($httpKernel, $httpUtils, $options, $logger);
-    }
-
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         $message = sprintf(
