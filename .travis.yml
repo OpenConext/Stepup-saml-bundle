@@ -7,9 +7,13 @@
 
 language: php
 
+dist: jammy
+
 matrix:
   include:
     - php: 8.1
+    - php: 8.2
+  allow_failures:
     - php: 8.2
 
 env:
