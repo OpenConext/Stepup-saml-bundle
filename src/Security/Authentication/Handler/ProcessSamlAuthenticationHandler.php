@@ -32,9 +32,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class ProcessSamlAuthenticationHandler implements AuthenticationHandler
 {
     public function __construct(
-        private readonly SamlInteractionProvider $samlInteractionProvider,
-        private readonly SamlAuthenticationStateHandler $authenticationStateHandler,
-        private readonly SamlAuthenticationLogger $authenticationLogger,
+        private SamlInteractionProvider $samlInteractionProvider,
+        private SamlAuthenticationStateHandler $authenticationStateHandler,
+        private SamlAuthenticationLogger $authenticationLogger,
     ) {
     }
 

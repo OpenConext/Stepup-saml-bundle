@@ -36,12 +36,12 @@ class SamlInteractionProviderTest extends TestCase
 {
     use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    private readonly ServiceProvider $serviceProvider;
-    private readonly IdentityProvider $identityProvider;
-    private readonly RedirectBinding $redirectBinding;
-    private readonly PostBinding $postBinding;
-    private readonly SamlAuthenticationStateHandler $samlAuthenticationStateHandler;
-    private readonly SamlInteractionProvider $samlInteractionProvider;
+    private ServiceProvider $serviceProvider;
+    private IdentityProvider $identityProvider;
+    private RedirectBinding $redirectBinding;
+    private PostBinding $postBinding;
+    private SamlAuthenticationStateHandler $samlAuthenticationStateHandler;
+    private SamlInteractionProvider $samlInteractionProvider;
     public function setUp(): void
     {
         $this->serviceProvider = Mockery::mock(ServiceProvider::class);
