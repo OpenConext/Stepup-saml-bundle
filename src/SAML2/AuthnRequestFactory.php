@@ -136,11 +136,11 @@ class AuthnRequestFactory
         IdentityProvider $identityProvider,
         $forceAuthn = false
     ) {
+        $issuer = new Issuer();
+        $issuer->setValue($serviceProvider->getEntityId());
         $request = new SAML2AuthnRequest();
         $request->setAssertionConsumerServiceURL($serviceProvider->getAssertionConsumerUrl());
         $request->setDestination($identityProvider->getSsoUrl());
-        $issuer = new Issuer();
-        $issuer->setValue($serviceProvider->getEntityId());
         $request->setIssuer($issuer);
         $request->setProtocolBinding(Constants::BINDING_HTTP_POST);
         $request->setForceAuthn($forceAuthn);

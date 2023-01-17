@@ -20,23 +20,14 @@ namespace Surfnet\SamlBundle\Security\Authentication;
 
 interface SamlAuthenticationStateHandler
 {
-    /**
-     * @return string
-     */
-    public function getRequestId();
+    public function getRequestId(): string;
 
-    /**
-     * @param string $requestId
-     */
-    public function setRequestId($requestId);
+    public function setRequestId(string $requestId): void;
 
-    /**
-     * @return bool
-     */
-    public function hasRequestId();
+    public function hasRequestId(): bool;
 
     /**
      * Removes the requestId from the session
      */
-    public function clearRequestId();
+    public function clearRequestId(): void;
 }
