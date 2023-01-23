@@ -21,7 +21,6 @@ namespace Surfnet\SamlBundle\Http;
 use LogicException;
 use RuntimeException;
 use SAML2\Assertion;
-use SAML2\Certificate\KeyLoader;
 use SAML2\Configuration\Destination;
 use SAML2\Constants;
 use SAML2\DOMDocumentFactory;
@@ -49,7 +48,7 @@ class PostBinding implements HttpBinding
 {
     private Processor $responseProcessor;
 
-    private KeyLoader $signatureVerifier;
+    private SignatureVerifier $signatureVerifier;
 
     private ?ServiceProviderRepository $entityRepository;
 
