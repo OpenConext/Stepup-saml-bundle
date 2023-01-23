@@ -39,7 +39,7 @@ class BridgeContainer extends AbstractContainer
     }
 
     /**
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
     public function getLogger(): LoggerInterface
     {
@@ -54,7 +54,7 @@ class BridgeContainer extends AbstractContainer
         return '_' . bin2hex(openssl_random_pseudo_bytes(30));
     }
 
-    public function debugMessage($message, string $type): void
+    public function debugMessage($message, $type): void
     {
         if ($message instanceof \DOMElement) {
             $message = $message->ownerDocument->saveXML($message);
@@ -63,44 +63,39 @@ class BridgeContainer extends AbstractContainer
         $this->logger->debug($message, ['type' => $type]);
     }
 
-    public function redirect(string $url, array $data = []): void
+    public function redirect($url, $data = array()): void
     {
         throw new BadMethodCallException(sprintf(
-            "%s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
+            "%s:%s may not be called in the Surfnet\\SamlBundle",
             __CLASS__,
             __METHOD__
         ));
     }
 
-    public function postRedirect(string $url, array $data = []): void
+    public function postRedirect($url, $data = array()): void
     {
         throw new BadMethodCallException(sprintf(
-            "%s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
+            "%s:%s may not be called in the Surfnet\\SamlBundle",
             __CLASS__,
             __METHOD__
         ));
     }
 
-    /**
-     * @return string
-     */
-    public function getTempDir() : string
+    public function getTempDir(): string
     {
-        return sys_get_temp_dir();
+        throw new BadMethodCallException(sprintf(
+            "%s:%s may not be called in the Surfnet\\SamlBundle",
+            __CLASS__,
+            __METHOD__
+        ));
     }
 
-    /**
-     * @param string $filename
-     * @param string $data
-     * @param int|null $mode
-     * @return void
-     */
-    public function writeFile(string $filename, string $data, int $mode = null) : void
+    public function writeFile(string $filename, string $data, int $mode = null): void
     {
-        if ($mode === null) {
-            $mode = 0600;
-        }
-        file_put_contents($filename, $data);
-        chmod($filename, $mode);
+        throw new BadMethodCallException(sprintf(
+            "%s:%s may not be called in the Surfnet\\SamlBundle",
+            __CLASS__,
+            __METHOD__
+        ));
     }
 }
