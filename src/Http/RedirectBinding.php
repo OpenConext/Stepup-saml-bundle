@@ -43,7 +43,7 @@ class RedirectBinding implements HttpBinding
 {
     private SignatureVerifier $signatureVerifier;
 
-    private ServiceProviderRepository $entityRepository;
+    private ?ServiceProviderRepository $entityRepository;
 
     public function __construct(
         SignatureVerifier $signatureVerifier,
