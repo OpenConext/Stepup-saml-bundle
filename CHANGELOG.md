@@ -1,5 +1,11 @@
-# 5.0.0 (next release)
-Still in drafting process
+# 5.0.2
+Allow use of Symfony 5 packages
+
+# 5.0.1
+Confrom to new SAML2 value object signature changes
+
+# 5.0.0
+Update PHP requirements to require either PHP 7.2 or PHP >= 8.0
 
 **Features**
 * Allow setting ForceAuthn on AuthnRequest #117
