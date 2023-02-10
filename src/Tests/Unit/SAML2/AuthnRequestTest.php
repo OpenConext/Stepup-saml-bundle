@@ -164,6 +164,21 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
      * @test
      * @group saml2
      */
+    public function retreiving_nameid_and_format_from_authnrequest_without_subject_returns_null()
+    {
+        $domDocument = DOMDocumentFactory::fromString($this->authRequestNoSubject);
+        $request     = new SAML2AuthnRequest($domDocument->documentElement);
+
+        $authnRequest = AuthnRequest::createNew($request);
+
+        $this->assertEquals(null, $authnRequest->getNameId());
+        $this->assertEquals(null, $authnRequest->getNameIdFormat());
+    }
+
+    /**
+     * @test
+     * @group saml2
+     */
     public function the_acs_url_can_be_retrieved_from_the_authnrequest()
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
