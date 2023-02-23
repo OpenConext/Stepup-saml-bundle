@@ -11,10 +11,10 @@
         "ext-openssl": "*",
         "robrichards/xmlseclibs": "^3.1.1",
         "simplesamlphp/saml2": "^4.6",
-        "symfony/dependency-injection": "5.4.*",
-        "symfony/framework-bundle": "5.4.*",
-        "symfony/security-bundle": "5.4.*",
-        "symfony/templating": "5.4.*",
+        "symfony/dependency-injection": "5.4.*|^6",
+        "symfony/framework-bundle": "5.4.*|^6",
+        "symfony/security-bundle": "5.4.*|^6",
+        "symfony/templating": "5.4.*|^6",
         "twig/twig": "^2|^3"
     },
     "require-dev": {
@@ -27,7 +27,7 @@
         "sebastian/exporter": "^4.0.5",
         "sebastian/phpcpd": "^6.0",
         "squizlabs/php_codesniffer": "^3.7.1",
-        "symfony/phpunit-bridge": "5.4.*"
+        "symfony/phpunit-bridge": "5.4.*|^6"
     },
     "config": {
         "sort-packages": true
