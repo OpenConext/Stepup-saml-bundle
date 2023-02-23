@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2014 SURFnet bv
@@ -22,23 +22,14 @@ use SAML2\Assertion;
 
 class InResponseTo
 {
-    /**
-     * @param Assertion $assertion
-     * @param string    $inResponseTo
-     * @return bool
-     */
-    public static function assertEquals(Assertion $assertion, $inResponseTo)
+    public static function assertEquals(Assertion $assertion, mixed $inResponseTo): bool
     {
         $assertionInResponseTo = static::getInResponseTo($assertion);
 
         return $assertionInResponseTo === $inResponseTo;
     }
 
-    /**
-     * @param Assertion $assertion
-     * @return null|string
-     */
-    private static function getInResponseTo(Assertion $assertion)
+    private static function getInResponseTo(Assertion $assertion): ?string
     {
         $subjectConfirmationArray = $assertion->getSubjectConfirmation();
 
@@ -46,12 +37,7 @@ class InResponseTo
             return null;
         }
 
-        /** @var \SAML2\XML\saml\SubjectConfirmation $subjectConfirmation */
         $subjectConfirmation = $subjectConfirmationArray[0];
-        if (!$subjectConfirmation->SubjectConfirmationData) {
-            return null;
-        }
-
-        return $subjectConfirmation->SubjectConfirmationData->InResponseTo;
+        return $subjectConfirmation->getSubjectConfirmationData()?->getInResponseTo();
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2014 SURFnet bv
@@ -25,6 +25,7 @@ use SAML2\Configuration\PrivateKey;
 use SAML2\Constants;
 use SAML2\DOMDocumentFactory;
 use SAML2\Message;
+use SAML2\XML\saml\Issuer;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Exception\RuntimeException;
@@ -36,12 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuthnRequestFactory
 {
-    /**
-     * @deprecated use ReceivedAuthnRequest::from()
-     * @param Request $httpRequest
-     * @return AuthnRequest
-     */
-    public static function createUnsignedFromHttpRequest(Request $httpRequest)
+    public static function createUnsignedFromHttpRequest(Request $httpRequest): AuthnRequest
     {
         return AuthnRequest::createUnsigned(
             self::createAuthnRequestFromHttpRequest($httpRequest),
@@ -52,10 +48,8 @@ class AuthnRequestFactory
 
     /**
      * @deprecated use ReceivedAuthnRequest::from()
-     * @param Request $httpRequest
-     * @return AuthnRequest
      */
-    public static function createSignedFromHttpRequest(Request $httpRequest)
+    public static function createSignedFromHttpRequest(Request $httpRequest): AuthnRequest
     {
         return AuthnRequest::createSigned(
             self::createAuthnRequestFromHttpRequest($httpRequest),
@@ -68,22 +62,18 @@ class AuthnRequestFactory
 
     /**
      * @deprecated use createSignedFromHttpRequest or createUnsignedFromHttpRequest
-     * @param Request $httpRequest
-     * @return AuthnRequest
      */
-    public static function createFromHttpRequest(Request $httpRequest)
+    public static function createFromHttpRequest(Request $httpRequest): AuthnRequest
     {
         return static::createSignedFromHttpRequest($httpRequest);
     }
 
     /**
-     * @param Request $httpRequest
-     * @return SAML2AuthnRequest
      * @throws \Exception
      */
     private static function createAuthnRequestFromHttpRequest(
         Request $httpRequest
-    ) {
+    ): SAML2AuthnRequest {
         // the GET parameter is already urldecoded by Symfony, so we should not do it again.
         $samlRequest = base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST), true);
         if ($samlRequest === false) {
@@ -108,37 +98,31 @@ class AuthnRequestFactory
         }
 
         // additional security against XXE Processing vulnerability
-        $previous = libxml_disable_entity_loader(true);
         $document = DOMDocumentFactory::fromString($samlRequest);
-        libxml_disable_entity_loader($previous);
 
         $request = Message::fromXML($document->firstChild);
 
         if (!$request instanceof SAML2AuthnRequest) {
             throw new RuntimeException(sprintf(
                 'The received request is not an AuthnRequest, "%s" received instead',
-                substr(get_class($request), strrpos($request, '_') + 1)
+                get_class($request)
             ));
         }
 
         return $request;
     }
 
-    /**
-     * @param ServiceProvider  $serviceProvider
-     * @param IdentityProvider $identityProvider
-     * @param bool $forceAuthn
-     * @return AuthnRequest
-     */
     public static function createNewRequest(
         ServiceProvider $serviceProvider,
         IdentityProvider $identityProvider,
-        $forceAuthn = false
-    ) {
+        bool $forceAuthn = false
+    ): AuthnRequest {
+        $issuer = new Issuer();
+        $issuer->setValue($serviceProvider->getEntityId());
         $request = new SAML2AuthnRequest();
         $request->setAssertionConsumerServiceURL($serviceProvider->getAssertionConsumerUrl());
         $request->setDestination($identityProvider->getSsoUrl());
-        $request->setIssuer($serviceProvider->getEntityId());
+        $request->setIssuer($issuer);
         $request->setProtocolBinding(Constants::BINDING_HTTP_POST);
         $request->setForceAuthn($forceAuthn);
         $request->setSignatureKey(self::loadPrivateKey(
@@ -148,11 +132,7 @@ class AuthnRequestFactory
         return AuthnRequest::createNew($request);
     }
 
-    /**
-     * @param PrivateKey $key
-     * @return PrivateKey|XMLSecurityKey
-     */
-    private static function loadPrivateKey(PrivateKey $key)
+    private static function loadPrivateKey(PrivateKey $key): XMLSecurityKey
     {
         $keyLoader = new PrivateKeyLoader();
         $privateKey = $keyLoader->loadPrivateKey($key);

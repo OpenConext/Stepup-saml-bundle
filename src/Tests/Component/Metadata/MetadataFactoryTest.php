@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2021 SURF B.V.
@@ -20,7 +20,8 @@ namespace Surfnet\SamlBundle\Tests\Component\Metadata;
 
 use Jasny\PHPUnit\Constraint\XSDValidation;
 use Mockery as m;
-use PHPUnit_Framework_TestCase as TestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\TestCase;
 use SAML2\Certificate\KeyLoader;
 use SAML2\Certificate\PrivateKeyLoader;
 use Surfnet\SamlBundle\Metadata\MetadataConfiguration;
@@ -30,20 +31,18 @@ use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\Environment;
-use function file_get_contents;
 
 class MetadataFactoryTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
     /** @var MetadataFactory */
-    public $factory;
+    public MetadataFactory $factory;
 
-    public $twig;
+    public Environment $twig;
 
-    public $router;
+    public m\Mock|RouterInterface $router;
 
-    public $signingService;
-
-    public function setUp()
+    public function setUp(): void
     {
         // Load the XML template from filesystem as the FilesystemLoader does not honour the bundle prefix
         $loader = new ArrayLoader(
@@ -56,7 +55,7 @@ class MetadataFactoryTest extends TestCase
         $this->router->shouldReceive('generate')->andReturn('https://foobar.example.com');
     }
 
-    public function test_valid_metadata_xml()
+    public function test_valid_metadata_xml(): void
     {
         $expectedResult = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -69,7 +68,7 @@ XML;
         self::assertEquals($expectedResult, $metadata->__toString());
     }
 
-    public function test_builds_sp_metadata()
+    public function test_builds_sp_metadata(): void
     {
         $expectedResult = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -89,7 +88,7 @@ XML;
         self::assertEquals($expectedResult, $metadata->__toString());
     }
 
-    public function test_builds_idp_metadata()
+    public function test_builds_idp_metadata(): void
     {
         $expectedResult = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -119,7 +118,7 @@ XML;
         self::assertThat($metadata->document, $constraint);
     }
 
-    public function test_builds_idp_metadata_signed()
+    public function test_builds_idp_metadata_signed(): void
     {
         $metadataConfiguration = new MetadataConfiguration();
         $metadataConfiguration->isIdP = true;
@@ -138,7 +137,7 @@ XML;
         self::assertThat($metadata->document, $constraint);
     }
 
-    private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null)
+    private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null): void
     {
         if (!$signingService) {
             $signingService = m::mock(SigningService::class);

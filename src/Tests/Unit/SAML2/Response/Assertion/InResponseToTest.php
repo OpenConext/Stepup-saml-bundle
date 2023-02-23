@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2014 SURFnet bv
@@ -18,23 +18,21 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
-use PHPUnit_Framework_TestCase as UnitTest;
+use PHPUnit\Framework\TestCase;
 use SAML2\Assertion;
 use SAML2\XML\saml\SubjectConfirmation;
 use SAML2\XML\saml\SubjectConfirmationData;
 use Surfnet\SamlBundle\SAML2\Response\Assertion\InResponseTo;
 
-class InResponseToTest extends UnitTest
+class InResponseToTest extends TestCase
 {
     /**
-     * @param Assertion $assertion
-     *
      * @test
      * @group saml2-response
      * @group saml2
      * @dataProvider provideAssertionsWithoutInResponseTo
      */
-    public function assertions_without_in_response_to_are_tested_as_if_in_response_to_is_null(Assertion $assertion)
+    public function assertions_without_in_response_to_are_tested_as_if_in_response_to_is_null(Assertion $assertion): void
     {
         $this->assertTrue(InResponseTo::assertEquals($assertion, null));
         $this->assertFalse(InResponseTo::assertEquals($assertion, 'some not-null-value'));
@@ -45,23 +43,20 @@ class InResponseToTest extends UnitTest
      * @group saml2-response
      * @group saml2
      */
-    public function in_reponse_to_equality_is_strictly_checked()
+    public function in_reponse_to_equality_is_strictly_checked(): void
     {
         $assertion                   = new Assertion();
         $subjectConfirmationWithData = new SubjectConfirmation();
         $subjectConfirmationData     = new SubjectConfirmationData();
-        $subjectConfirmationData->InResponseTo = '1';
-        $subjectConfirmationWithData->SubjectConfirmationData = $subjectConfirmationData;
+        $subjectConfirmationData->setInResponseTo('1');
+        $subjectConfirmationWithData->setSubjectConfirmationData($subjectConfirmationData);
         $assertion->setSubjectConfirmation([$subjectConfirmationWithData]);
 
         $this->assertTrue(InResponseTo::assertEquals($assertion, '1'));
         $this->assertFalse(InResponseTo::assertEquals($assertion, 1));
     }
 
-    /**
-     * @return array
-     */
-    public function provideAssertionsWithoutInResponseTo()
+    public function provideAssertionsWithoutInResponseTo(): array
     {
         $assertionWithoutSubjectConfirmation = new Assertion();
 
@@ -71,7 +66,7 @@ class InResponseToTest extends UnitTest
 
         $assertionWithEmptyInResponseTo = new Assertion();
         $subjectConfirmationWithData = new SubjectConfirmation();
-        $subjectConfirmationWithData->SubjectConfirmationData = new SubjectConfirmationData();
+        $subjectConfirmationWithData->setSubjectConfirmationData(new SubjectConfirmationData());
         $assertionWithEmptyInResponseTo->setSubjectConfirmation([$subjectConfirmationWithData]);
 
         return [

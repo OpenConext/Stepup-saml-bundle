@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2021 SURF B.V.
@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Extensions;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\DOMDocumentFactory;
@@ -30,7 +30,7 @@ use function file_get_contents;
 class AuthnRequestExtensionsTest extends TestCase
 {
 
-    public function test_extensions_are_retrievable()
+    public function test_extensions_are_retrievable(): void
     {
         $authnRequest = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignWithPhpsHttpBuildQuery']
@@ -51,7 +51,7 @@ class AuthnRequestExtensionsTest extends TestCase
         );
     }
 
-    public function test_setting_of_extensions()
+    public function test_setting_of_extensions(): void
     {
         $authnRequest = $this->createSignedAuthnRequest(
             [$this, 'encodeDataToSignWithPhpsHttpBuildQuery'],
@@ -98,7 +98,7 @@ class AuthnRequestExtensionsTest extends TestCase
      * @param array $params
      * @return string
      */
-    private function encodeDataToSignWithPhpsHttpBuildQuery(array $params)
+    private function encodeDataToSignWithPhpsHttpBuildQuery(array $params): string
     {
         return http_build_query($params);
     }
@@ -114,7 +114,7 @@ class AuthnRequestExtensionsTest extends TestCase
         callable $prepareDataToSign,
         $customSignature = null,
         $source = '/with_extensions.xml'
-    ) {
+    ): AuthnRequest {
         $keyData    = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
         $privateKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
         $privateKey->loadKey($keyData);

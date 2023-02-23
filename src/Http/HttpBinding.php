@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2017 SURFnet bv
@@ -20,15 +20,9 @@ namespace Surfnet\SamlBundle\Http;
 
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Interface HttpBinding
- *
- *
- *
- * @package Surfnet\SamlBundle\Http
- */
 interface HttpBinding
 {
     /**
@@ -36,7 +30,7 @@ interface HttpBinding
      *
      * @return ReceivedAuthnRequest
      */
-    public function receiveSignedAuthnRequestFrom(Request $request);
+    public function receiveSignedAuthnRequestFrom(Request $request): AuthnRequest;
 
-    public function createResponseFor(AuthnRequest $request);
+    public function createResponseFor(AuthnRequest $request): RedirectResponse;
 }

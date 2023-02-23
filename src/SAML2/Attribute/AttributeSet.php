@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2015 SURFnet B.V.
@@ -23,15 +23,16 @@ use SAML2\Assertion;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\Filter\AttributeFilter;
+use Traversable;
 
 class AttributeSet implements AttributeSetFactory, AttributeSetInterface
 {
     /**
      * @var Attribute[]
      */
-    private $attributes = [];
+    private array $attributes = [];
 
-    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary)
+    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary): AttributeSet
     {
         $attributeSet = new AttributeSet();
 
@@ -52,7 +53,7 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
         return $attributeSet;
     }
 
-    public static function create(array $attributes)
+    public static function create(array $attributes): AttributeSet
     {
         $attributeSet = new AttributeSet();
 
@@ -67,12 +68,12 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
     {
     }
 
-    public function apply(AttributeFilter $attributeFilter)
+    public function apply(AttributeFilter $attributeFilter): AttributeSet
     {
         return self::create(array_filter($this->attributes, [$attributeFilter, 'allows']));
     }
 
-    public function getAttributeByDefinition(AttributeDefinition $attributeDefinition)
+    public function getAttributeByDefinition(AttributeDefinition $attributeDefinition): Attribute
     {
         foreach ($this->attributes as $attribute) {
             if ($attributeDefinition->equals($attribute->getAttributeDefinition())) {
@@ -86,7 +87,7 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
         ));
     }
 
-    public function containsAttributeDefinedBy(AttributeDefinition $attributeDefinition)
+    public function containsAttributeDefinedBy(AttributeDefinition $attributeDefinition): bool
     {
         foreach ($this->attributes as $attribute) {
             if ($attributeDefinition->equals($attribute->getAttributeDefinition())) {
@@ -97,7 +98,7 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
         return false;
     }
 
-    public function contains(Attribute $otherAttribute)
+    public function contains(Attribute $otherAttribute): bool
     {
         foreach ($this->attributes as $attribute) {
             if ($attribute->equals($otherAttribute)) {
@@ -108,22 +109,20 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
         return false;
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->attributes);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->attributes);
     }
 
     /**
-     * @param Attribute $attribute
-     *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod) PHPMD does not see that this is being called in our static method
      */
-    protected function initializeWith(Attribute $attribute)
+    protected function initializeWith(Attribute $attribute): void
     {
         if ($this->contains($attribute)) {
             return;

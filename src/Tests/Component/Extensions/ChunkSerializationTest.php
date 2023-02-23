@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2021 SURF B.V.
@@ -18,13 +18,13 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Extensions;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Surfnet\SamlBundle\SAML2\Extensions\GsspUserAttributesChunk;
 
 class ChunkSerializationTest extends TestCase
 {
 
-    public function test_gsspchunk_is_serializable()
+    public function test_gsspchunk_is_serializable(): void
     {
         $chunk = new GsspUserAttributesChunk();
         $chunk->addAttribute(
