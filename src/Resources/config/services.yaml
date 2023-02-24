@@ -186,4 +186,4 @@ services:
 
     Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage:
         arguments:
-            - '@session'
+            - '@request_stack'

@@ -22,7 +22,7 @@ use Surfnet\SamlBundle\Security\Authentication\AuthenticatedSessionStateHandler;
 use Surfnet\SamlBundle\Security\Authentication\SamlAuthenticationStateHandler;
 use Surfnet\SamlBundle\Security\Exception\LogicException;
 use Surfnet\SamlBundle\Value\DateTime;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthenticationStateHandler
 {
@@ -32,7 +32,7 @@ class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthentica
     private const AUTH_SESSION_KEY = '__auth/';
     private const SAML_SESSION_KEY = '__saml/';
 
-    public function __construct(private SessionInterface $session)
+    public function __construct(private RequestStack $requestStack)
     {
     }
 
@@ -42,13 +42,13 @@ class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthentica
             throw new LogicException('Cannot log authentication moment as an authentication moment is already logged');
         }
 
-        $this->session->set(self::AUTH_SESSION_KEY . 'authenticated_at', DateTime::now()->format(DateTime::FORMAT));
+        $this->requestStack->getSession()->set(self::AUTH_SESSION_KEY . 'authenticated_at', DateTime::now()->format(DateTime::FORMAT));
         $this->updateLastInteractionMoment();
     }
 
     public function isAuthenticationMomentLogged(): bool
     {
-        return $this->session->get(self::AUTH_SESSION_KEY . 'authenticated_at', null) !== null;
+        return $this->requestStack->getSession()->get(self::AUTH_SESSION_KEY . 'authenticated_at', null) !== null;
     }
 
     public function getAuthenticationMoment(): DateTime
@@ -57,17 +57,17 @@ class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthentica
             throw new LogicException('Cannot get last authentication moment as no authentication has been set');
         }
 
-        return DateTime::fromString($this->session->get(self::AUTH_SESSION_KEY . 'authenticated_at'));
+        return DateTime::fromString($this->requestStack->getSession()->get(self::AUTH_SESSION_KEY . 'authenticated_at'));
     }
 
     public function updateLastInteractionMoment(): void
     {
-        $this->session->set(self::AUTH_SESSION_KEY . 'last_interaction', DateTime::now()->format(DateTime::FORMAT));
+        $this->requestStack->getSession()->set(self::AUTH_SESSION_KEY . 'last_interaction', DateTime::now()->format(DateTime::FORMAT));
     }
 
     public function hasSeenInteraction(): bool
     {
-        return $this->session->get(self::AUTH_SESSION_KEY . 'last_interaction', null) !== null;
+        return $this->requestStack->getSession()->get(self::AUTH_SESSION_KEY . 'last_interaction', null) !== null;
     }
 
     public function getLastInteractionMoment(): DateTime
@@ -76,50 +76,50 @@ class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthentica
             throw new LogicException('Cannot get last interaction moment as we have not seen any interaction');
         }
 
-        return DateTime::fromString($this->session->get(self::AUTH_SESSION_KEY . 'last_interaction'));
+        return DateTime::fromString($this->requestStack->getSession()->get(self::AUTH_SESSION_KEY . 'last_interaction'));
     }
 
     public function setCurrentRequestUri($uri): void
     {
-        $this->session->set(self::AUTH_SESSION_KEY . 'current_uri', $uri);
+        $this->requestStack->getSession()->set(self::AUTH_SESSION_KEY . 'current_uri', $uri);
     }
 
     public function getCurrentRequestUri(): string
     {
-        $uri = $this->session->get(self::AUTH_SESSION_KEY . 'current_uri');
-        $this->session->remove(self::AUTH_SESSION_KEY . 'current_uri');
+        $uri = $this->requestStack->getSession()->get(self::AUTH_SESSION_KEY . 'current_uri');
+        $this->requestStack->getSession()->remove(self::AUTH_SESSION_KEY . 'current_uri');
 
         return $uri;
     }
 
     public function getRequestId(): string
     {
-        return $this->session->get(self::SAML_SESSION_KEY . 'request_id');
+        return $this->requestStack->getSession()->get(self::SAML_SESSION_KEY . 'request_id');
     }
 
     public function setRequestId(string $requestId): void
     {
-        $this->session->set(self::SAML_SESSION_KEY . 'request_id', $requestId);
+        $this->requestStack->getSession()->set(self::SAML_SESSION_KEY . 'request_id', $requestId);
     }
 
     public function hasRequestId(): bool
     {
-        $value =  $this->session->has(self::SAML_SESSION_KEY . 'request_id');
+        $value =  $this->requestStack->getSession()->has(self::SAML_SESSION_KEY . 'request_id');
         return $value;
     }
 
     public function clearRequestId(): void
     {
-        $this->session->remove(self::SAML_SESSION_KEY . 'request_id');
+        $this->requestStack->getSession()->remove(self::SAML_SESSION_KEY . 'request_id');
     }
 
     public function invalidate(): void
     {
-        $this->session->invalidate();
+        $this->requestStack->getSession()->invalidate();
     }
 
     public function migrate(): void
     {
-        $this->session->migrate();
+        $this->requestStack->getSession()->migrate();
     }
 }
