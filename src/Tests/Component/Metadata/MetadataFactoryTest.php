@@ -67,7 +67,9 @@ class MetadataFactoryTest extends MockeryTestCase
 </md:EntityDescriptor>
 
 XML;
-        $this->buildFactory(m::mock(MetadataConfiguration::class));
+        $metadataConfiguration = new MetadataConfiguration();
+        $metadataConfiguration->entityIdRoute = 'https://foobar.example.com';
+        $this->buildFactory($metadataConfiguration);
         $metadata = $this->factory->generate();
         self::assertEquals($expectedResult, $metadata->__toString());
     }
