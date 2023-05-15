@@ -1,3 +1,16 @@
+# 4.4.3
+**Bugfix**
+* Add missing oid for eduPersonAssurance attribute
+
+# 4.4.2
+**Feature**
+* Add support for OASIS subject-id and pairwise-id attributes
+
+# 4.4.1
+**Bugfix**
+* Support both `getMainRequest` and `getMasterRequest` when using the Symfony request stack.
+  As drafted by @epidoux in: Fix getMainRequest incompatible with symfony 4.4 #107 (thank you @epidoux)
+
 # 4.4.0
 **Feature**
 * Include SP certificate in generated metadata when present #104
