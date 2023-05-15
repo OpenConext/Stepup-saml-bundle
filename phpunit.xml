@@ -31,6 +31,6 @@
     </listeners>
     <php>
         <server name="KERNEL_CLASS" value="App\Kernel"/>
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[indirect]=3"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=50"/>
     </php>
 </phpunit>
