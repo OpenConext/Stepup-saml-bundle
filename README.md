@@ -4,9 +4,9 @@
        [![Build Status](https://travis-ci.org/SURFnet/Stepup-bundle.svg)](https://travis-ci.org/SURFnet/Stepup-bundle) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SURFnet/Stepup-bundle/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/SURFnet/Stepup-bundle/?branch=develop) [![SensioLabs Insight](https://insight.sensiolabs.com/projects/5b8b8d8b-e917-4954-818b-782d9e181c75/mini.png)](https://insight.sensiolabs.com/projects/5b8b8d8b-e917-4954-818b-782d9e181c75)
 -->
 
-A bundle that adds SAML capabilities to your application using [simplesamlphp/saml2][1]
+A PHP Symfony bundle that adds SAML capabilities to your application using [simplesamlphp/saml2][1]
 
-Developed as part of the [SURFnet Stepup Gateway][2]
+Developed as part of the [OpenConext-Stepup Gateway][2] and related OpenConext-Stepup applications that use SAML 2.0
 
 ## Installation
 
