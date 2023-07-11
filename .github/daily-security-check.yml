@@ -1,0 +1,91 @@
+---
+name: Daily security check
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      # PHP checks
+      - name: Check for php composer project
+        id: check_composer
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "composer.lock"
+      - name: Run php local security checker
+        if: steps.check_composer.outputs.files_exists == 'true'
+        uses: symfonycorp/security-checker-action@v4
+
+      # node-yarn checks
+      - name: Check for node-yarn project
+        id: check_node_yarn
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "yarn.lock"
+      - name: Setup node
+        if: steps.check_node_yarn.outputs.files_exists == 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Yarn Audit
+        if: steps.check_node_yarn.outputs.files_exists == 'true'
+        run: yarn audit --level high --groups dependencies optionalDependencies
+
+      # node-npm checks
+      - name: Check for node-npm project
+        id: check_node_npm
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "package.lock"
+      - name: Setup node
+        if: steps.check_node_npm.outputs.files_exists == 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: npm audit
+        if: steps.check_node_npm.outputs.files_exists == 'true'
+        run: npm audit --audit-level=high
+
+      # python checks
+      - name: Check for python project
+        id: check_python
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "requirements.txt"
+      - name: Safety checks Python dependencies
+        if: steps.check_python.outputs.files_exists == 'true'
+        uses: pyupio/safety@2.3.5
+
+      # java checks
+      - name: Check for java maven project
+        id: check_maven
+        uses: andstor/file-existence-action@v2
+        with:
+          files: "pom.xml"
+      - name: Setup java if needed
+        if: steps.check_maven.outputs.files_exists == 'true'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Check java
+        if: steps.check_maven.outputs.files_exists == 'true'
+        run: mvn org.owasp:dependency-check-maven:check
+
+      # Send results
+      - name: Send to Slack if something failed
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: surfconext-nightly-check
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: 'Dependency check failed :crying_cat_face:'
+          SLACK_TITLE: Dependency check wants attention
+          SLACK_USERNAME: NightlySecurityCheck
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
