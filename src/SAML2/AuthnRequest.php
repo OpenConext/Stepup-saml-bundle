@@ -169,7 +169,10 @@ class AuthnRequest
      */
     public function getNameId()
     {
-        return $this->request->getNameId()->getValue();
+        if ($this->request->getNameId()) {
+            return $this->request->getNameId()->getValue();
+        }
+        return null;
     }
 
     /**
@@ -177,7 +180,10 @@ class AuthnRequest
      */
     public function getNameIdFormat()
     {
-        return $this->request->getNameId()->getFormat();
+        if ($this->request->getNameId()) {
+            return $this->request->getNameId()->getFormat();
+        }
+        return null;
     }
 
     /**
