@@ -1,3 +1,8 @@
+# 5.0.3
+- Repair some SAML2 library issues
+- Project cleanup
+- Added nightly security checker Github Action
+
 # 5.0.2
 Allow use of Symfony 5 packages
 
