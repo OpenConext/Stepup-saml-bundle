@@ -205,6 +205,17 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertTrue($authnRequest->isForceAuthn());
     }
 
+    public function test_name_id_can_be_null()
+    {
+        $domDocument = DOMDocumentFactory::fromString($this->authRequestNoSubject);
+        $request     = new SAML2AuthnRequest($domDocument->documentElement);
+
+        $authnRequest = AuthnRequest::createNew($request);
+
+        $this->assertNull($authnRequest->getNameId());
+        $this->assertNull($authnRequest->getNameIdFormat());
+    }
+
     public function provideIsPassiveAndForceAuthnCombinations()
     {
         return [
