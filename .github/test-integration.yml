@@ -1,0 +1,26 @@
+name: test-integration
+on: [ pull_request, push ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: [ '7.2', '8.2' ]
+    timeout-minutes: 30
+    name: PHP ${{ matrix.php-versions }} Test on Ubuntu latest
+    steps:
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: composer install
+      - name: Run CI tests
+        run: composer check
+        env:
+          SYMFONY_ENV: test
+      - name: Output log files on failure
+        if: failure()
+        run: tail -2000 /var/log/syslog
