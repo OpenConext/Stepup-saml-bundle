@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd $(dirname $0)/../../
+
+# https://github.com/sebastianbergmann/phpcpd
+./vendor/bin/phpcpd \
+    ./src $1
