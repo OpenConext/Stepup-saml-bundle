@@ -21,6 +21,7 @@
         "ext-zlib": "*",
         "mbhsoft/phpunit-xsdvalidation": "^3.0",
         "mockery/mockery": "^1.5",
+        "overtrue/phplint": "*",
         "phpmd/phpmd": "^2.6",
         "phpunit/phpunit": "^9.5",
         "psr/log": "~1.0",
@@ -28,6 +29,23 @@
         "sebastian/phpcpd": "^6.0",
         "squizlabs/php_codesniffer": "^3.7.1",
         "symfony/phpunit-bridge": "5.4.*|^6"
+    },
+    "scripts": {
+        "check": [
+            "@composer-validate",
+            "@phplint",
+            "@phpcpd",
+            "@phpcs",
+            "@phpmd",
+            "@test"
+        ],
+        "composer-validate": "./ci/qa/validate",
+        "phplint": "./ci/qa/phplint",
+        "phpcs": "./ci/qa/phpcs",
+        "phpcpd": "./ci/qa/phpcpd",
+        "phpmd": "./ci/qa/phpmd",
+        "test": "./ci/qa/phpunit",
+        "phpcbf": "./ci/qa/phpcbf"
     },
     "config": {
         "sort-packages": true

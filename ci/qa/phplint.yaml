@@ -1,0 +1,7 @@
+path: [./src, ./tests]
+jobs: 10
+cache: /var/qa/phplint.cache
+extensions:
+    - php
+exclude:
+    - vendor
