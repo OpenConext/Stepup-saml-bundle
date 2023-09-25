@@ -1,12 +1,12 @@
 {
     "name": "surfnet/stepup-saml-bundle",
     "type": "symfony-bundle",
-    "description": "A Symfony 4|5 bundle that integrates the simplesamlphp\\saml2 library with Symfony.",
+    "description": "A Symfony 5|6 bundle that integrates the simplesamlphp\\saml2 library with Symfony.",
     "keywords": ["surfnet", "StepUp", "simplesamlphp", "SAML", "SAML2"],
     "license": "Apache-2.0",
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-dom": "*",
         "ext-openssl": "*",
         "robrichards/xmlseclibs": "^3.1.1",
