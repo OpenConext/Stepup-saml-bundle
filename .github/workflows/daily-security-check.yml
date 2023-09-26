@@ -71,9 +71,19 @@ jobs:
           files: "pom.xml"
       - name: Setup java if needed
         if: steps.check_maven.outputs.files_exists == 'true'
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 11
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Set up maven cache if needed
+        if: steps.check_maven.outputs.files_exists == 'true'
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Check java
         if: steps.check_maven.outputs.files_exists == 'true'
         run: mvn org.owasp:dependency-check-maven:check
@@ -85,6 +95,7 @@ jobs:
         env:
           SLACK_CHANNEL: surfconext-nightly-check
           SLACK_COLOR: ${{ job.status }}
+          SLACK_ICON: https://static.surfconext.nl/logos/idp/surfnet.png
           SLACK_MESSAGE: 'Dependency check failed :crying_cat_face:'
           SLACK_TITLE: Dependency check wants attention
           SLACK_USERNAME: NightlySecurityCheck
