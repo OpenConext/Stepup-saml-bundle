@@ -1,3 +1,8 @@
+# 6.0.0
+- Add SF 6 support
+- Require PHP 8.1
+- Moved away from Travis, and use GitHub Actions instead.
+
 # 5.0.3
 - Repair some SAML2 library issues
 - Project cleanup
