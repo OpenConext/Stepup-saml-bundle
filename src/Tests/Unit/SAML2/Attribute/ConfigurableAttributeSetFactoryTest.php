@@ -20,6 +20,8 @@ namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
 use PHPUnit\Framework\TestCase;
 use SAML2\Assertion;
+use SAML2\Compat\ContainerSingleton;
+use SAML2\Compat\MockContainer;
 use stdClass;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
@@ -27,7 +29,12 @@ use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
 class ConfigurableAttributeSetFactoryTest extends TestCase
 {
     private const DUMMY_ATTRIBUTE_SET_CLASS = '\Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock\DummyAttributeSet';
-    
+
+    protected function setUp(): void
+    {
+        ContainerSingleton::setContainer(new MockContainer());
+    }
+
     /**
      * @test
      * @group AssertionAdapter

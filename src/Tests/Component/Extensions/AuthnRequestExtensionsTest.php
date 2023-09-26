@@ -21,6 +21,8 @@ namespace Surfnet\SamlBundle\Tests\Component\Extensions;
 use PHPUnit\Framework\TestCase;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
+use SAML2\Compat\ContainerSingleton;
+use SAML2\Compat\MockContainer;
 use SAML2\DOMDocumentFactory;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\Extensions\Extensions;
@@ -29,6 +31,10 @@ use function file_get_contents;
 
 class AuthnRequestExtensionsTest extends TestCase
 {
+    public function setUp(): void
+    {
+        ContainerSingleton::setContainer(new MockContainer());
+    }
 
     public function test_extensions_are_retrievable(): void
     {

@@ -109,7 +109,7 @@ class SamlAuthenticatorTest extends TestCase
 
         $this->idp->shouldReceive('getSsoUrl')->andReturn('idp-sso');
 
-        $this->samlAuthenticationStateHandler->shouldReceive('setRequestId')->with('1');
+        $this->samlAuthenticationStateHandler->shouldReceive('setRequestId')->with('123');
 
         $this->redirectBinding->shouldReceive('createResponseFor')->andReturn(Mockery::mock(RedirectResponse::class));
 

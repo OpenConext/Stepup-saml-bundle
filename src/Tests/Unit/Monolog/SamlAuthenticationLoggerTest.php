@@ -48,7 +48,7 @@ final class SamlAuthenticationLoggerTest extends TestCase
      */
     public function it_errors_when_no_authentication(): void
     {
-        $this->expectError();
+        self::expectException(Error::class);
         $logger = new SamlAuthenticationLogger(m::mock('Psr\Log\LoggerInterface'));
         $logger->emergency('message2');
     }
