@@ -44,7 +44,7 @@ class GsspUserAttributesChunk extends Chunk
     public function getAttributeValue(string $attributeName): ?string
     {
         $xpath = sprintf(
-            'saml:Attribute[@Name="%s"]/saml:AttributeValue',
+            'saml_assertion:Attribute[@Name="%s"]/saml_assertion:AttributeValue',
             $attributeName
         );
         $result = Utils::xpQuery($this->getValue(), $xpath);
