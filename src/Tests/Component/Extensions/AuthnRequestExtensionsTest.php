@@ -18,11 +18,17 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Extensions;
 
+use DOMDocument;
+use DOMNode;
+use DOMXPath;
 use PHPUnit\Framework\TestCase;
+use RobRichards\XMLSecLibs\XMLSecEnc;
+use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Compat\ContainerSingleton;
 use SAML2\Compat\MockContainer;
+use SAML2\Constants;
 use SAML2\DOMDocumentFactory;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\Extensions\Extensions;
@@ -151,4 +157,29 @@ class AuthnRequestExtensionsTest extends TestCase
             $privateKey->type
         );
     }
+
+    public static function xpQuery(DOMNode $node, string $query) : array
+    {
+        if ($node instanceof DOMDocument) {
+            $doc = $node;
+        } else {
+            $doc = $node->ownerDocument;
+        }
+
+        $xpCache = new DOMXPath($doc);
+        $xpCache->registerNamespace('saml_protocol', Constants::NS_SAMLP);
+        $xpCache->registerNamespace('saml', Constants::NS_SAML);
+        $xpCache->registerNamespace('saml_metadata', Constants::NS_MD);
+        $xpCache->registerNamespace('ds', XMLSecurityDSig::XMLDSIGNS);
+        $xpCache->registerNamespace('xenc', XMLSecEnc::XMLENCNS);
+
+        $results = $xpCache->query($query, $node);
+        $ret = [];
+        for ($i = 0; $i < $results->length; $i++) {
+            $ret[$i] = $results->item($i);
+        }
+
+        return $ret;
+    }
+
 }
