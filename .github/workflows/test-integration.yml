@@ -1,13 +1,13 @@
 name: test-integration
-on: [ pull_request, push ]
+on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: [ '7.2', '8.2' ]
+        php-versions: [ '8.2', '8.3' ]
     timeout-minutes: 30
-    name: PHP ${{ matrix.php-versions }} Test on Ubuntu latest
+    name: PHP ${{ matrix.php-versions }} on Ubuntu latest
     steps:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
