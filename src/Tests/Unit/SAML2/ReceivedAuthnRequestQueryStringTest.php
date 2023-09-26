@@ -18,11 +18,13 @@
 
 namespace Tests\Unit\SAML2;
 
+use ErrorException;
 use PHPUnit\Framework\TestCase;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\DOMDocumentFactory;
 use stdClass;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
+use TypeError;
 
 class ReceivedAuthnRequestQueryStringTest extends TestCase
 {
@@ -63,7 +65,7 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_request_query_string_cannot_be_parsed_from_non_strings($nonOrEmptyString): void
     {
-        $this->expectError();
+        self::expectException(TypeError::class);
         ReceivedAuthnRequestQueryString::parse($nonOrEmptyString);
     }
 

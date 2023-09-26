@@ -47,7 +47,7 @@ class MetadataFactoryTest extends TestCase
         // Load the XML template from filesystem as the FilesystemLoader does not honour the bundle prefix
         $loader = new ArrayLoader(
             [
-                '@SurfnetSaml/Metadata/metadata.xml.twig' => file_get_contents('src/Resources/views/Metadata/metadata.xml.twig')
+                '@SurfnetSaml/Metadata/metadata.xml.twig' => file_get_contents(__DIR__ . '/../../../Resources/views/Metadata/metadata.xml.twig')
             ]
         );
         $this->twig = new Environment($loader);

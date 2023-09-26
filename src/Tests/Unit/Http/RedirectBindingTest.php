@@ -21,6 +21,8 @@ namespace Surfnet\SamlBundle\Tests\Http;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use SAML2\Compat\ContainerSingleton;
+use SAML2\Compat\MockContainer;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
@@ -54,6 +56,7 @@ MESSAGE;
             m::mock('Surfnet\SamlBundle\Signing\SignatureVerifier'),
             $this->entityRepository
         );
+        ContainerSingleton::setContainer(new MockContainer());
     }
 
     /**
