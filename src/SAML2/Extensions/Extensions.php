@@ -35,7 +35,7 @@ class Extensions
         return $this->chunks;
     }
 
-    public function getGsspUserAttributesChunk(): ?GsspUserAttributesChunk
+    public function getGsspUserAttributesChunk(): ?Chunk
     {
         return $this->chunks['UserAttributes'] ?? null;
     }

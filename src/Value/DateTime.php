@@ -102,18 +102,7 @@ class DateTime implements Stringable
 
     public function format(string $format): string
     {
-        $formatted = $this->dateTime->format($format);
-
-        if ($formatted === false) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Given format "%s" is not a valid format for DateTime',
-                    $format
-                )
-            );
-        }
-
-        return $formatted;
+        return $this->dateTime->format($format);
     }
 
     /**

@@ -28,10 +28,6 @@ class HostedEntities
 
     private ?IdentityProvider $identityProvider = null;
 
-    /**
-     * @param array $serviceProviderConfiguration
-     * @param array $identityProviderConfiguration
-     */
     public function __construct(
         private readonly RouterInterface $router,
         private readonly RequestStack $requestStack,
@@ -104,12 +100,7 @@ class HostedEntities
         $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];
 
         $context = $this->router->getContext();
-        
-        if (method_exists($this->requestStack, 'getMainRequest')) {
-            $context->fromRequest($this->requestStack->getMainRequest());
-        } else {
-            $context->fromRequest($this->requestStack->getMasterRequest());
-        }
+        $context->fromRequest($this->requestStack->getMainRequest());
         $url = $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
 
         $context->fromRequest($this->requestStack->getCurrentRequest());
