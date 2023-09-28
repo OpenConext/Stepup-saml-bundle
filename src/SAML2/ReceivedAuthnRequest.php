@@ -23,6 +23,7 @@ use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Constants;
 use SAML2\DOMDocumentFactory;
 use SAML2\Message;
+use SAML2\XML\saml\Issuer;
 use SAML2\XML\saml\NameID;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
@@ -42,11 +43,10 @@ final class ReceivedAuthnRequest
 
     public static function from(string $decodedSamlRequest): ReceivedAuthnRequest
     {
-        if (!is_string($decodedSamlRequest) || $decodedSamlRequest === '') {
-            throw new InvalidArgumentException(sprintf(
-                'Could not create ReceivedAuthnRequest: expected a non-empty string, received %s',
-                is_object($decodedSamlRequest) ? $decodedSamlRequest::class : ($decodedSamlRequest)
-            ));
+        if ($decodedSamlRequest === '') {
+            throw new InvalidArgumentException(
+                'Could not create ReceivedAuthnRequest: expected a non-empty string, received an empty string'
+            );
         }
 
         // additional security against XXE Processing vulnerability
@@ -84,7 +84,7 @@ final class ReceivedAuthnRequest
     public function getNameId(): ?string
     {
         $nameId = $this->request->getNameId();
-        if (!$nameId instanceof \SAML2\XML\saml\NameID) {
+        if (!$nameId instanceof NameID) {
             return null;
         }
 
@@ -94,7 +94,7 @@ final class ReceivedAuthnRequest
     public function getNameIdFormat(): ?string
     {
         $nameId = $this->request->getNameId();
-        if (!$nameId instanceof \SAML2\XML\saml\NameID) {
+        if (!$nameId instanceof NameID) {
             return null;
         }
 
@@ -132,7 +132,7 @@ final class ReceivedAuthnRequest
 
     public function getServiceProvider(): ?string
     {
-        if (!$this->request->getIssuer() instanceof \SAML2\XML\saml\Issuer) {
+        if (!$this->request->getIssuer() instanceof Issuer) {
             return null;
         }
         return $this->request->getIssuer()->getValue();

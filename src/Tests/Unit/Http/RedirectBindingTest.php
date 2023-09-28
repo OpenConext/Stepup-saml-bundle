@@ -26,22 +26,28 @@ use SAML2\Compat\MockContainer;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
+use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
 use Surfnet\SamlBundle\Http\Exception\UnsignedRequestException;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\Http\RedirectBinding as SamlBundleRedirectBinding;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
+use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use function base64_encode;
+use function gzcompress;
+use function gzdeflate;
+use function urlencode;
 
 class RedirectBindingTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private const ENCODED_MESSAGE = 'fZFfa8IwFMXfBb9DyXvaJtZ1BqsURRC2Mabbw95ivc5Am3TJrXPffmmLY3%2FA15Pzuyf33On8XJXBCaxTRmeEhTEJQBdmr%2FRbRp63K3pL5rPhYOpkVdYib%2FCon%2BC9AYfDQRB4WDvRvWWksVoY6ZQTWlbgBBZik9%2FfCR7GorYGTWFK8pu6DknnwKL%2FWEetlxmR8sBHbHJDWZqOKGdsRJM0kfQAjCUJ43KX8s78ctnIz%2Blp5xpYa4dSo1fjOKGM03i8jSeCMzGevHa2%2FBK5MNo1FdgN2JMqPLmHc0b6WTmiVbsGoTf5qv66Zq2t60x0wXZ2RKydiCJXh3CWVV1CWJgqanfl0%2Bin8xutxYOvZL18NKUqPlvZR5el%2BVhYkAgZQdsA6fWVsZXE63W2itrTQ2cVaKV2CjSSqL1v9P%2FAXv4C';
+    private const ENCODED_MESSAGE = 'fZFBb8IwDIXv%2FIoq97RNKKuIaFEFmlRpm6Zt2mG3UMyI1CRd4jL49wtlldgOXO3P7%2FnZi%2BVRt9EBnFfWFITFKVmWk4WXuu1E1ePevMBXDx6jwBkvhkZBemeElV55YaQGL7ARr9Xjg%2BBxKjpn0Ta2JdE6zCkjcZDeI3ZeJIk%2BUQ%2FuoBqggTyoLbgYjlJ3LZArk9se0geNsy6J6nVBpNzxKZvfUZbnU8oZm9IszyTdAWNZxrjc5JxE72PKoBDmvO%2BhNh6lwVBK04wyTtPZWzoXnInZ%2FINE1Wizssb3GtzrZfPabOFYkKBSITq16REuhDKf%2F5FyOKYY7Fw5XsF3Y%2Bi4sTo5B%2BOL5Jr8%2FcFTyF6vn22rmlN0b52WePs054ra0t2ACnTSeAUGw6pta79XDiRCQdD1QJLyYvn30%2BXkBw%3D%3D';
     private const RAW_MESSAGE = <<<MESSAGE
 <?xml version="1.0"?>
-<samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="aaf23196-1773-2113-474a-fe114412ab72" Version="2.0" IssueInstant="2004-12-05T09:21:59Z" AssertionConsumerServiceIndex="0" AttributeConsumingServiceIndex="0"><saml:Issuer>https://sp.example.com/SAML2</saml:Issuer><samlp:NameIDPolicy Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient" AllowCreate="true"/></samlp:AuthnRequest>
+<samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" Destination="%s" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="aaf23196-1773-2113-474a-fe114412ab72" Version="2.0" IssueInstant="2004-12-05T09:21:59Z" AssertionConsumerServiceIndex="0" AttributeConsumingServiceIndex="0"><saml:Issuer>https://sp.example.com/SAML2</saml:Issuer><samlp:NameIDPolicy Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient" AllowCreate="true"/></samlp:AuthnRequest>
 
 MESSAGE;
 
@@ -51,9 +57,9 @@ MESSAGE;
 
     public function setUp(): void
     {
-        $this->entityRepository = m::mock(\Surfnet\SamlBundle\Entity\ServiceProviderRepository::class);
+        $this->entityRepository = m::mock(ServiceProviderRepository::class);
         $this->redirectBinding = new RedirectBinding(
-            m::mock(\Surfnet\SamlBundle\Signing\SignatureVerifier::class),
+            m::mock(SignatureVerifier::class),
             $this->entityRepository
         );
         ContainerSingleton::setContainer(new MockContainer());
@@ -66,7 +72,7 @@ MESSAGE;
     public function an_exception_is_thrown_when_the_request_get_parameter_is_not_set(): void
     {
         $this->expectException(BadRequestHttpException::class);
-        $request = m::mock(\Symfony\Component\HttpFoundation\Request::class)
+        $request = m::mock(Request::class)
             ->shouldReceive('get')
                 ->with(AuthnRequest::PARAMETER_REQUEST)
                 ->andReturnNull()
@@ -86,7 +92,7 @@ MESSAGE;
             'The request includes a signature, but does not include the signature algorithm (SigAlg) parameter'
         );
 
-        $request = m::mock(\Symfony\Component\HttpFoundation\Request::class);
+        $request = m::mock(Request::class);
         $request->shouldReceive('get')
             ->with(AuthnRequest::PARAMETER_REQUEST)
             ->andReturn('foo');
@@ -114,8 +120,8 @@ MESSAGE;
         $this->expectExceptionMessage(sprintf('expected a GET method, got %s', $nonGetMethod));
 
 
-        $dummySignatureVerifier = m::mock('\\' . \Surfnet\SamlBundle\Signing\SignatureVerifier::class);
-        $dummyEntityRepository  = m::mock('\\' . \Surfnet\SamlBundle\Entity\ServiceProviderRepository::class);
+        $dummySignatureVerifier = m::mock(SignatureVerifier::class);
+        $dummyEntityRepository  = m::mock(ServiceProviderRepository::class);
         $redirectBinding = new RedirectBinding($dummySignatureVerifier, $dummyEntityRepository);
 
         $request = new Request();
@@ -133,8 +139,8 @@ MESSAGE;
         $this->expectException(UnsignedRequestException::class);
         $this->expectExceptionMessage('The SAMLRequest is expected to be signed but it was not');
 
-        $dummySignatureVerifier = m::mock('\\' . \Surfnet\SamlBundle\Signing\SignatureVerifier::class);
-        $dummyEntityRepository  = m::mock('\\' . \Surfnet\SamlBundle\Entity\ServiceProviderRepository::class);
+        $dummySignatureVerifier = m::mock(SignatureVerifier::class);
+        $dummyEntityRepository  = m::mock(ServiceProviderRepository::class);
 
         $requestUri = 'https://my-service-provider.example?'
             . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE;
@@ -150,11 +156,11 @@ MESSAGE;
      */
     public function a_signed_authn_request_cannot_be_received_if_the_service_provider_in_the_authn_request_is_unknown(): void
     {
-        $this->expectException('\\' . \Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException::class);
+        $this->expectException(UnknownServiceProviderException::class);
         $this->expectExceptionMessage('AuthnRequest received from ServiceProvider with an unknown EntityId');
 
-        $dummySignatureVerifier = m::mock('\\' . \Surfnet\SamlBundle\Signing\SignatureVerifier::class);
-        $mockEntityRepository   = m::mock('\\' . \Surfnet\SamlBundle\Entity\ServiceProviderRepository::class);
+        $dummySignatureVerifier = m::mock(SignatureVerifier::class);
+        $mockEntityRepository   = m::mock(ServiceProviderRepository::class);
 
         $requestUri = 'https://my-service-provider.example?'
             . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
@@ -185,8 +191,8 @@ MESSAGE;
         $this->expectException(SignatureValidationFailedException::class);
         $this->expectExceptionMessage('Validation of the signature in the AuthnRequest failed');
 
-        $mockSignatureVerifier = m::mock('\\' . \Surfnet\SamlBundle\Signing\SignatureVerifier::class);
-        $mockEntityRepository  = m::mock('\\' . \Surfnet\SamlBundle\Entity\ServiceProviderRepository::class);
+        $mockSignatureVerifier = m::mock(SignatureVerifier::class);
+        $mockEntityRepository  = m::mock(ServiceProviderRepository::class);
 
         $requestUri = 'https://my-service-provider.example?'
             . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
@@ -225,11 +231,11 @@ MESSAGE;
      */
     public function a_unsigned_authn_request_cannot_be_received_from_a_request_that_is_not_a_get_request(string $nonGetMethod): void
     {
-        $this->expectException('\\' . \Symfony\Component\HttpKernel\Exception\BadRequestHttpException::class);
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\BadRequestHttpException::class);
         $this->expectExceptionMessage(sprintf('expected a GET method, got %s', $nonGetMethod));
 
-        $dummySignatureVerifier = m::mock('\\' . \Surfnet\SamlBundle\Signing\SignatureVerifier::class);
-        $dummyEntityRepository  = m::mock('\\' . \Surfnet\SamlBundle\Entity\ServiceProviderRepository::class);
+        $dummySignatureVerifier = m::mock(SignatureVerifier::class);
+        $dummyEntityRepository  = m::mock(ServiceProviderRepository::class);
         $redirectBinding = new RedirectBinding($dummySignatureVerifier, $dummyEntityRepository);
 
         $request = new Request();
@@ -244,14 +250,16 @@ MESSAGE;
      */
     public function a_unsigned_authn_request_cannot_be_received_if_the_service_provider_in_the_authn_request_is_unknown(): void
     {
-        $this->expectException('\\' . \Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException::class);
+        $this->expectException(UnknownServiceProviderException::class);
         $this->expectExceptionMessage('AuthnRequest received from ServiceProvider with an unknown EntityId');
 
-        $dummySignatureVerifier = m::mock('\\' . \Surfnet\SamlBundle\Signing\SignatureVerifier::class);
-        $dummyEntityRepository  = m::mock('\\' . \Surfnet\SamlBundle\Entity\ServiceProviderRepository::class);
+        $dummySignatureVerifier = m::mock(SignatureVerifier::class);
+        $dummyEntityRepository  = m::mock(ServiceProviderRepository::class);
+
+        $encodedMessage = urlencode(base64_encode(gzdeflate(sprintf(self::RAW_MESSAGE, 'https://my-service-provider.example'))));
 
         $requestUri = 'https://my-service-provider.example?'
-            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . self::ENCODED_MESSAGE
+            . ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . $encodedMessage
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
         ;

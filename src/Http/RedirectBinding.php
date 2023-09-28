@@ -67,7 +67,7 @@ class RedirectBinding implements HttpBinding
         $authnRequest = AuthnRequestFactory::createUnsignedFromHttpRequest($request);
 
         $currentUri = $this->getFullRequestUri($request);
-        if (!$authnRequest->getDestination() === $currentUri) {
+        if ($authnRequest->getDestination() !== $currentUri) {
             throw new BadRequestHttpException(sprintf(
                 'Actual Destination "%s" does no match the AuthnRequest Destination "%s"',
                 $currentUri,
@@ -106,7 +106,7 @@ class RedirectBinding implements HttpBinding
         $authnRequest = AuthnRequestFactory::createSignedFromHttpRequest($request);
 
         $currentUri = $this->getFullRequestUri($request);
-        if (!$authnRequest->getDestination() === $currentUri) {
+        if ($authnRequest->getDestination() !== $currentUri) {
             throw new BadRequestHttpException(sprintf(
                 'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
@@ -123,35 +123,14 @@ class RedirectBinding implements HttpBinding
         return $authnRequest;
     }
 
-    public function receiveUnsignedAuthnRequestFrom(Request $request): AuthnRequest
+    public function receiveUnsignedAuthnRequestFrom(Request $request): ReceivedAuthnRequest
     {
-        if (!$this->entityRepository instanceof ServiceProviderRepository) {
-            throw new LogicException(
-                'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
-            );
-        }
-
-        if (!$request->isMethod(Request::METHOD_GET)) {
-            throw new BadRequestHttpException(sprintf(
-                'Could not receive AuthnRequest from HTTP Request: expected a GET method, got %s',
-                $request->getMethod()
-            ));
-        }
-
-        $requestUri = $request->getRequestUri();
-        if (!str_contains($requestUri, '?')) {
-            throw new BadRequestHttpException(
-                'Could not receive AuthnRequest from HTTP Request: expected query parameters, none found'
-            );
-        }
-
-        [, $rawQueryString] = explode('?', $requestUri);
-        $query = ReceivedAuthnRequestQueryString::parse($rawQueryString);
+        $query = $this->getAuthnRequestQueryString($request);
 
         $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
 
         $currentUri = $this->getFullRequestUri($request);
-        if (!$authnRequest->getDestination() === $currentUri) {
+        if ($authnRequest->getDestination() !== $currentUri) {
             throw new BadRequestHttpException(sprintf(
                 'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
@@ -171,28 +150,7 @@ class RedirectBinding implements HttpBinding
      */
     public function receiveSignedAuthnRequestFrom(Request $request): ReceivedAuthnRequest
     {
-        if (!$this->entityRepository instanceof ServiceProviderRepository) {
-            throw new LogicException(
-                'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
-            );
-        }
-
-        if (!$request->isMethod(Request::METHOD_GET)) {
-            throw new BadRequestHttpException(sprintf(
-                'Could not receive AuthnRequest from HTTP Request: expected a GET method, got %s',
-                $request->getMethod()
-            ));
-        }
-
-        $requestUri = $request->getRequestUri();
-        if (!str_contains($requestUri, '?')) {
-            throw new BadRequestHttpException(
-                'Could not receive AuthnRequest from HTTP Request: expected query parameters, none found'
-            );
-        }
-
-        [, $rawQueryString] = explode('?', $requestUri);
-        $query = ReceivedAuthnRequestQueryString::parse($rawQueryString);
+        $query = $this->getAuthnRequestQueryString($request);
 
         if (!$query->isSigned()) {
             throw new UnsignedRequestException('The SAMLRequest is expected to be signed but it was not');
@@ -207,7 +165,7 @@ class RedirectBinding implements HttpBinding
         $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
 
         $currentUri = $this->getFullRequestUri($request);
-        if (!$authnRequest->getDestination() === $currentUri) {
+        if ($authnRequest->getDestination() !== $currentUri) {
             throw new BadRequestHttpException(sprintf(
                 'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
@@ -293,5 +251,35 @@ class RedirectBinding implements HttpBinding
     public function createResponseFor(AuthnRequest $request): RedirectResponse
     {
         return $this->createRedirectResponseFor($request);
+    }
+
+    /**
+     * @param Request $request
+     * @return ReceivedAuthnRequestQueryString
+     */
+    public function getAuthnRequestQueryString(Request $request): ReceivedAuthnRequestQueryString
+    {
+        if (!$this->entityRepository instanceof ServiceProviderRepository) {
+            throw new LogicException(
+                'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
+            );
+        }
+
+        if (!$request->isMethod(Request::METHOD_GET)) {
+            throw new BadRequestHttpException(sprintf(
+                'Could not receive AuthnRequest from HTTP Request: expected a GET method, got %s',
+                $request->getMethod()
+            ));
+        }
+
+        $requestUri = $request->getRequestUri();
+        if (!str_contains($requestUri, '?')) {
+            throw new BadRequestHttpException(
+                'Could not receive AuthnRequest from HTTP Request: expected query parameters, none found'
+            );
+        }
+
+        [, $rawQueryString] = explode('?', $requestUri);
+        return ReceivedAuthnRequestQueryString::parse($rawQueryString);
     }
 }

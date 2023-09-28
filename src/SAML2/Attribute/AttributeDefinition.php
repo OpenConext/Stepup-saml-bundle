@@ -40,14 +40,6 @@ class AttributeDefinition
 
     public function __construct(string $name, ?string $urnMace = null, ?string $urnOid = null)
     {
-        if (!is_null($urnMace) && !is_string($urnMace)) {
-            throw InvalidArgumentException::invalidType('null or string', 'urnMace', $urnMace);
-        }
-
-        if (!is_null($urnOid) && !is_string($urnOid)) {
-            throw InvalidArgumentException::invalidType('null or string', 'urnOid', $urnOid);
-        }
-
         if (is_null($urnOid) && is_null($urnMace)) {
             throw new LogicException('An AttributeDefinition should have at least either a mace or an oid urn');
         }

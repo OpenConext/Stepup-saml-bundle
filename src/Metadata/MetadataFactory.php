@@ -105,7 +105,7 @@ class MetadataFactory
         return $keyPair;
     }
 
-    private function getCertificateData(string $publicKeyFile): string|array
+    private function getCertificateData(string $publicKeyFile): string
     {
         $certificate = File::getFileContents($publicKeyFile);
 

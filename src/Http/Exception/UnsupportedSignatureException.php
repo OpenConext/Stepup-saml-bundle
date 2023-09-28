@@ -26,12 +26,12 @@ class UnsupportedSignatureException extends BadRequestHttpException implements E
     /**
      * @param string $signatureAlgorithm
      */
-    public function __construct(private $signatureAlgorithm)
+    public function __construct(private readonly string $signatureAlgorithm)
     {
         parent::__construct(
             sprintf(
                 'The SAMLRequest has been signed, but the signature format "%s" is not supported',
-                $signatureAlgorithm
+                $this->signatureAlgorithm
             )
         );
     }
