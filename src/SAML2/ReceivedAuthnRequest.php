@@ -32,7 +32,7 @@ final class ReceivedAuthnRequest
 {
     use ExtensionsMapperTrait;
 
-    private SAML2AuthnRequest $request;
+    private readonly SAML2AuthnRequest $request;
 
     private function __construct(SAML2AuthnRequest $request)
     {
@@ -42,10 +42,10 @@ final class ReceivedAuthnRequest
 
     public static function from(string $decodedSamlRequest): ReceivedAuthnRequest
     {
-        if (!is_string($decodedSamlRequest) || empty($decodedSamlRequest)) {
+        if (!is_string($decodedSamlRequest) || $decodedSamlRequest === '') {
             throw new InvalidArgumentException(sprintf(
                 'Could not create ReceivedAuthnRequest: expected a non-empty string, received %s',
-                is_object($decodedSamlRequest) ? get_class($decodedSamlRequest) : ($decodedSamlRequest)
+                is_object($decodedSamlRequest) ? $decodedSamlRequest::class : ($decodedSamlRequest)
             ));
         }
 
@@ -57,7 +57,7 @@ final class ReceivedAuthnRequest
         if (!$authnRequest instanceof SAML2AuthnRequest) {
             throw new RuntimeException(sprintf(
                 'The received request is not an AuthnRequest, "%s" received instead',
-                get_class($authnRequest)
+                $authnRequest::class
             ));
         }
 
@@ -84,7 +84,7 @@ final class ReceivedAuthnRequest
     public function getNameId(): ?string
     {
         $nameId = $this->request->getNameId();
-        if (!$nameId) {
+        if (!$nameId instanceof \SAML2\XML\saml\NameID) {
             return null;
         }
 
@@ -94,7 +94,7 @@ final class ReceivedAuthnRequest
     public function getNameIdFormat(): ?string
     {
         $nameId = $this->request->getNameId();
-        if (!$nameId) {
+        if (!$nameId instanceof \SAML2\XML\saml\NameID) {
             return null;
         }
 
@@ -132,7 +132,7 @@ final class ReceivedAuthnRequest
 
     public function getServiceProvider(): ?string
     {
-        if (!$this->request->getIssuer()) {
+        if (!$this->request->getIssuer() instanceof \SAML2\XML\saml\Issuer) {
             return null;
         }
         return $this->request->getIssuer()->getValue();

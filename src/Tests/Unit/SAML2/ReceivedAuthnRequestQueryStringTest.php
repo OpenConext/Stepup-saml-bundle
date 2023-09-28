@@ -18,13 +18,13 @@
 
 namespace Tests\Unit\SAML2;
 
-use ErrorException;
 use PHPUnit\Framework\TestCase;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\DOMDocumentFactory;
 use stdClass;
+use Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException;
+use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
-use TypeError;
 
 class ReceivedAuthnRequestQueryStringTest extends TestCase
 {
@@ -48,24 +48,11 @@ AUTHNREQUEST_NO_SUBJECT;
      * @dataProvider emptyStringProvider
      * @param $nonOrEmptyString
      */
-    public function a_received_authn_request_query_string_cannot_be_parsed_from_empty_strings($nonOrEmptyString): void
+    public function a_received_authn_request_query_string_cannot_be_parsed_from_empty_strings(string $nonOrEmptyString): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
+        $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
         $this->expectExceptionMessage('expected a non-empty string');
 
-        ReceivedAuthnRequestQueryString::parse($nonOrEmptyString);
-    }
-
-    /**
-     * @test
-     * @group AuthnRequest
-     *
-     * @dataProvider nonStringProvider
-     * @param $nonOrEmptyString
-     */
-    public function a_received_authn_request_query_string_cannot_be_parsed_from_non_strings($nonOrEmptyString): void
-    {
-        self::expectException(TypeError::class);
         ReceivedAuthnRequestQueryString::parse($nonOrEmptyString);
     }
 
@@ -75,7 +62,7 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_request_query_string_must_contain_valid_key_value_pairs(): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
+        $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
         $this->expectExceptionMessage('does not contain a valid key-value pair');
 
         ReceivedAuthnRequestQueryString::parse('a-key-without-a-value');
@@ -87,7 +74,7 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_request_query_string_must_contain_a_base64_encoded_saml_request(): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidRequestException');
+        $this->expectException('\\' . InvalidRequestException::class);
         $this->expectExceptionMessage('did not receive a valid base64 string');
 
         $notEncodedRequest = 'non-encoded-string';
@@ -106,9 +93,10 @@ AUTHNREQUEST_NO_SUBJECT;
      * @param $queryStringWithDoubleParameter
      */
     public function a_received_authn_request_query_string_cannot_contain_a_saml_parameter_twice(
-        string $doubleParameterName, string $queryStringWithDoubleParameter
+        string $doubleParameterName,
+        string $queryStringWithDoubleParameter
     ): void {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
+        $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
         $this->expectExceptionMessage(sprintf('parameter "%s" already present', $doubleParameterName));
 
         ReceivedAuthnRequestQueryString::parse($queryStringWithDoubleParameter);
@@ -120,10 +108,10 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_request_query_string_must_contain_a_saml_request(): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
+        $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
         $this->expectExceptionMessage(sprintf('parameter "%s" not found', ReceivedAuthnRequestQueryString::PARAMETER_REQUEST));
 
-        $queryStringWithoutSamlRequest = 
+        $queryStringWithoutSamlRequest =
             '?' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';
 
@@ -136,7 +124,7 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_request_query_string_cannot_contain_a_signature_algorithm_without_a_signature(): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
+        $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
         $this->expectExceptionMessage('contains a signature algorithm but not a signature');
 
         $queryStringWithSignatureAlgorithmWithoutSignature =
@@ -152,7 +140,7 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_request_query_string_cannot_contain_a_signature_without_a_signature_algorithm(): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
+        $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
         $this->expectExceptionMessage('contains a signature but not a signature algorithm');
 
         $queryStringWithSignatureWithoutSignatureAlgorithm =
@@ -168,7 +156,7 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_received_authn_request_query_string_cannot_contain_a_signature_that_is_not_properly_base64_encoded(): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidReceivedAuthnRequestQueryStringException');
+        $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
         $this->expectExceptionMessage('signature is not base64 encoded correctly');
 
         $queryStringWithSignatureWithoutSignatureAlgorithm =
@@ -277,7 +265,7 @@ AUTHNREQUEST_NO_SUBJECT;
      */
     public function a_saml_request_cannot_be_decoded_from_a_received_authn_request_query_string_if_it_was_not_properly_gzipped(): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Http\Exception\InvalidRequestException');
+        $this->expectException('\\' . InvalidRequestException::class);
         $this->expectExceptionMessage('Failed inflating SAML Request');
 
         $notGzippedRequest = urlencode(base64_encode('this-is-not-gzipped'));
@@ -320,7 +308,8 @@ AUTHNREQUEST_NO_SUBJECT;
         $this->assertEquals(
             $signatureAlgorithm,
             $queryString->getSignatureAlgorithm(),
-            'Could not get the correct SigAlg from the query string');
+            'Could not get the correct SigAlg from the query string'
+        );
         $this->assertEquals(
             $signature,
             $queryString->getSignature(),

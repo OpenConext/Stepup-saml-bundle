@@ -45,7 +45,7 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(self::DUMMY_ATTRIBUTE_SET_CLASS);
         $attributeSet = ConfigurableAttributeSetFactory::createFrom(new Assertion, new AttributeDictionary);
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(
-            '\Surfnet\SamlBundle\SAML2\Attribute\AttributeSet'
+            '\\' . \Surfnet\SamlBundle\SAML2\Attribute\AttributeSet::class
         );
 
         $this->assertInstanceOf(self::DUMMY_ATTRIBUTE_SET_CLASS, $attributeSet);
@@ -61,7 +61,7 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(self::DUMMY_ATTRIBUTE_SET_CLASS);
         $attributeSet = ConfigurableAttributeSetFactory::create([]);
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(
-            '\Surfnet\SamlBundle\SAML2\Attribute\AttributeSet'
+            '\\' . \Surfnet\SamlBundle\SAML2\Attribute\AttributeSet::class
         );
 
         $this->assertInstanceOf(self::DUMMY_ATTRIBUTE_SET_CLASS, $attributeSet);
@@ -74,9 +74,9 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
      *
      * @dataProvider nonOrEmptyStringProvider()
      */
-    public function the_attribute_set_to_use_can_only_be_represented_as_a_non_empty_string($nonOrEmptyString): void
+    public function the_attribute_set_to_use_can_only_be_represented_as_a_non_empty_string(int|float|bool|array|\stdClass|string $nonOrEmptyString): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Exception\InvalidArgumentException');
+        $this->expectException('\\' . \Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('non-empty string');
 
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate($nonOrEmptyString);
@@ -89,7 +89,7 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
      */
     public function the_attribute_set_to_use_has_to_implement_attribute_set_factory(): void
     {
-        $this->expectException('\Surfnet\SamlBundle\Exception\InvalidArgumentException');
+        $this->expectException('\\' . \Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('implement');
 
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate('Non\Existent\Class');

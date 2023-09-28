@@ -2,4 +2,4 @@
 
 cd $(dirname $0)/../../
 
-./vendor/bin/phpmd src text ci/qa/phpmd.xml --exclude *src/Tests/*
+./vendor/bin/phpmd src text ci/qa/phpmd.xml

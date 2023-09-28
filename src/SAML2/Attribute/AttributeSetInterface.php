@@ -28,23 +28,23 @@ interface AttributeSetInterface extends IteratorAggregate, Countable
      * @param AttributeFilter $attributeFilter
      * @return AttributeSetInterface
      */
-    public function apply(AttributeFilter $attributeFilter);
+    public function apply(AttributeFilter $attributeFilter): AttributeSetInterface;
 
     /**
      * @param AttributeDefinition $attributeDefinition
      * @return Attribute
      */
-    public function getAttributeByDefinition(AttributeDefinition $attributeDefinition);
+    public function getAttributeByDefinition(AttributeDefinition $attributeDefinition): Attribute;
 
     /**
      * @param AttributeDefinition $attributeDefinition
      * @return bool
      */
-    public function containsAttributeDefinedBy(AttributeDefinition $attributeDefinition);
+    public function containsAttributeDefinedBy(AttributeDefinition $attributeDefinition): bool;
 
     /**
      * @param Attribute $otherAttribute
      * @return bool
      */
-    public function contains(Attribute $otherAttribute);
+    public function contains(Attribute $otherAttribute): bool;
 }

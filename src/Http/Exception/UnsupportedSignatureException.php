@@ -24,14 +24,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class UnsupportedSignatureException extends BadRequestHttpException implements Exception
 {
     /**
-     * @var string
+     * @param string $signatureAlgorithm
      */
-    private $signatureAlgorithm;
-
-    public function __construct($signatureAlgorithm)
+    public function __construct(private $signatureAlgorithm)
     {
-        $this->signatureAlgorithm = $signatureAlgorithm;
-
         parent::__construct(
             sprintf(
                 'The SAMLRequest has been signed, but the signature format "%s" is not supported',

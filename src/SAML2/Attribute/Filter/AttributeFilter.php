@@ -23,7 +23,6 @@ use Surfnet\SamlBundle\SAML2\Attribute\Attribute;
 interface AttributeFilter
 {
     /**
-     * @param Attribute $attribute
      * @return bool
      */
     public function allows(Attribute $attribute);

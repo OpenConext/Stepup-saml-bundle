@@ -79,5 +79,4 @@ class ReceivedAuthnRequestPostTest extends TestCase
         ];
         ReceivedAuthnRequestPost::parse($parameters);
     }
-
 }

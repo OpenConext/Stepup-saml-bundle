@@ -31,21 +31,18 @@ trait ExtensionsMapperTrait
             $rawExtensions = $this->request->getExtensions();
             /** @var SAML2Chunk $rawChunk */
             foreach ($rawExtensions as $rawChunk) {
-                switch ($rawChunk->getLocalName()) {
-                    case 'UserAttributes':
-                        $this->extensions->addChunk(
-                            new GsspUserAttributesChunk($rawChunk->getXML())
-                        );
-                        break;
-                    default:
-                        $this->extensions->addChunk(
-                            new Chunk(
-                                $rawChunk->getLocalName(),
-                                $rawChunk->getNamespaceURI(),
-                                $rawChunk->getXML()
-                            )
-                        );
-                }
+                match ($rawChunk->getLocalName()) {
+                    'UserAttributes' => $this->extensions->addChunk(
+                        new GsspUserAttributesChunk($rawChunk->getXML())
+                    ),
+                    default => $this->extensions->addChunk(
+                        new Chunk(
+                            $rawChunk->getLocalName(),
+                            $rawChunk->getNamespaceURI(),
+                            $rawChunk->getXML()
+                        )
+                    ),
+                };
             }
         }
     }

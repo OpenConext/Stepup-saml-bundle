@@ -53,13 +53,13 @@ class AuthnRequestExtensionsTest extends TestCase
         self::assertInstanceOf(GsspUserAttributesChunk::class, $chunk);
 
         self::assertEquals(
-          'user@example.com',
-          $chunk->getAttributeValue('urn:mace:dir:attribute-def:mail')
+            'user@example.com',
+            $chunk->getAttributeValue('urn:mace:dir:attribute-def:mail')
         );
 
         self::assertEquals(
-          'foobar',
-          $chunk->getAttributeValue('urn:mace:dir:attribute-def:surname')
+            'foobar',
+            $chunk->getAttributeValue('urn:mace:dir:attribute-def:surname')
         );
     }
 
@@ -74,14 +74,14 @@ class AuthnRequestExtensionsTest extends TestCase
         $createdExt = new Extensions();
         $chunk = new GsspUserAttributesChunk();
         $chunk->addAttribute(
-          'urn:mace:dir:attribute-def:mail',
-          'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
-          'test@test.nl'
+            'urn:mace:dir:attribute-def:mail',
+            'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+            'test@test.nl'
         );
         $chunk->addAttribute(
-          'urn:mace:dir:attribute-def:surname',
-          'urn:oasis:names:tc:SAML:2.0:attrname-format:string',
-          'Doe 1'
+            'urn:mace:dir:attribute-def:surname',
+            'urn:oasis:names:tc:SAML:2.0:attrname-format:string',
+            'Doe 1'
         );
         $createdExt->addChunk($chunk);
         $authnRequest->setExtensions($createdExt);
@@ -91,23 +91,22 @@ class AuthnRequestExtensionsTest extends TestCase
         self::assertInstanceOf(GsspUserAttributesChunk::class, $retrievedChunk);
 
         self::assertStringEqualsFile(
-          __DIR__ . '/written_extensions.xml',
-          $authnRequest->getUnsignedXML()
+            __DIR__ . '/written_extensions.xml',
+            $authnRequest->getUnsignedXML()
         );
 
         self::assertEquals(
-          'test@test.nl',
-          $retrievedChunk->getAttributeValue('urn:mace:dir:attribute-def:mail')
+            'test@test.nl',
+            $retrievedChunk->getAttributeValue('urn:mace:dir:attribute-def:mail')
         );
 
         self::assertEquals(
-          'Doe 1',
-          $retrievedChunk->getAttributeValue('urn:mace:dir:attribute-def:surname')
+            'Doe 1',
+            $retrievedChunk->getAttributeValue('urn:mace:dir:attribute-def:surname')
         );
     }
 
     /**
-     * @param array $params
      * @return string
      */
     private function encodeDataToSignWithPhpsHttpBuildQuery(array $params): string
@@ -118,14 +117,13 @@ class AuthnRequestExtensionsTest extends TestCase
     /**
      * @param callable $prepareDataToSign Expects an associative array of data to sign and returns a string to sign
      * @param null|string $customSignature Signature to be used instead of signature to sign data to sign with
-     * @param string $source
      * @return AuthnRequest
      * @throws \Exception
      */
     private function createSignedAuthnRequest(
-        callable $prepareDataToSign,
+        array $prepareDataToSign,
         $customSignature = null,
-        $source = '/with_extensions.xml'
+        string $source = '/with_extensions.xml'
     ): AuthnRequest {
         $keyData    = file_get_contents(__DIR__.'/../../../Resources/keys/development_privatekey.pem');
         $privateKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'private']);
@@ -141,11 +139,7 @@ class AuthnRequestExtensionsTest extends TestCase
         $queryParams[AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM] = $privateKey->type;
 
         $toSign = $prepareDataToSign($queryParams);
-        if ($customSignature === null) {
-            $signature = base64_encode($privateKey->signData($toSign));
-        } else {
-            $signature = base64_encode($customSignature);
-        }
+        $signature = $customSignature === null ? base64_encode((string) $privateKey->signData($toSign)) : base64_encode($customSignature);
 
         $saml2AuthnRequest = SAML2AuthnRequest::fromXML($unsignedAuthnRequest->toUnsignedXML());
 
@@ -160,11 +154,7 @@ class AuthnRequestExtensionsTest extends TestCase
 
     public static function xpQuery(DOMNode $node, string $query) : array
     {
-        if ($node instanceof DOMDocument) {
-            $doc = $node;
-        } else {
-            $doc = $node->ownerDocument;
-        }
+        $doc = $node instanceof DOMDocument ? $node : $node->ownerDocument;
 
         $xpCache = new DOMXPath($doc);
         $xpCache->registerNamespace('saml_protocol', Constants::NS_SAMLP);
@@ -181,5 +171,4 @@ class AuthnRequestExtensionsTest extends TestCase
 
         return $ret;
     }
-
 }

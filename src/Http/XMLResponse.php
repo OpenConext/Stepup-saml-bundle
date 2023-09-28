@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class XMLResponse extends Response
 {
-    public function __construct($content = '', $status = 200, $headers = array())
+    public function __construct(?string $content = '', int $status = 200, array $headers = [])
     {
         parent::__construct($content, $status, $headers);
 

@@ -29,59 +29,23 @@ use Twig\Environment;
 
 class MetadataFactory
 {
-    /**
-     * @var Environment
-     */
-    private $templateEngine;
-
-    /**
-     * @var \Symfony\Component\Routing\RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var PrivateKeyLoader
-     */
-    private $signingService;
-
-    /**
-     * @var MetadataConfiguration
-     */
-    private $metadataConfiguration;
-
-    /**
-     * @var Metadata
-     */
-    private $metadata;
+    private Metadata $metadata;
 
     public function __construct(
-        Environment $templateEngine,
-        RouterInterface $router,
-        SigningService $signingService,
-        MetadataConfiguration $metadataConfiguration
+        private readonly Environment $templateEngine,
+        private readonly RouterInterface $router,
+        private readonly SigningService $signingService,
+        private readonly MetadataConfiguration $metadataConfiguration
     ) {
-        $this->templateEngine = $templateEngine;
-        $this->router = $router;
-        $this->signingService = $signingService;
-        $this->metadataConfiguration = $metadataConfiguration;
+        $this->metadata = $this->buildMetadata();
     }
 
-    /**
-     * @return Metadata
-     */
-    public function getMetadata()
+    public function getMetadata(): Metadata
     {
-        if (!$this->metadata) {
-            $this->metadata = $this->buildMetadata();
-        }
-
         return $this->metadata;
     }
 
-    /**
-     * @return Metadata
-     */
-    public function generate()
+    public function generate(): Metadata
     {
         $metadata = $this->getMetadata();
         $keyPair = $this->buildKeyPairFrom($this->metadataConfiguration);
@@ -97,10 +61,7 @@ class MetadataFactory
         return $metadata;
     }
 
-    /**
-     * @return Metadata
-     */
-    private function buildMetadata()
+    private function buildMetadata(): Metadata
     {
         $metadataConfiguration = $this->metadataConfiguration;
         $metadata = new Metadata();
@@ -111,7 +72,10 @@ class MetadataFactory
             $metadata->hasSpMetadata = true;
             $metadata->assertionConsumerUrl = $this->getUrl($metadataConfiguration->assertionConsumerRoute);
 
-            if ($metadataConfiguration->spCertificate) {
+            if ($metadataConfiguration->spCertificate &&
+                $metadataConfiguration->spCertificate !== '' &&
+                $metadataConfiguration->spCertificate !== '0'
+            ) {
                 $metadata->spCertificate = $this->getCertificateData($metadataConfiguration->spCertificate);
             }
         }
@@ -120,7 +84,7 @@ class MetadataFactory
             $metadata->hasIdPMetadata = true;
             $metadata->ssoUrl = $this->getUrl($metadataConfiguration->ssoRoute);
 
-            if ($metadataConfiguration->idpCertificate) {
+            if ($metadataConfiguration->idpCertificate !== '' && $metadataConfiguration->idpCertificate !== '0') {
                 $certificate = $this->getCertificateData($metadataConfiguration->idpCertificate);
             } else {
                 $certificate = $this->getCertificateData($metadataConfiguration->publicKey);
@@ -132,11 +96,7 @@ class MetadataFactory
         return $metadata;
     }
 
-    /**
-     * @param MetadataConfiguration $metadataConfiguration
-     * @return KeyPair
-     */
-    private function buildKeyPairFrom(MetadataConfiguration $metadataConfiguration)
+    private function buildKeyPairFrom(MetadataConfiguration $metadataConfiguration): KeyPair
     {
         $keyPair = new KeyPair();
         $keyPair->privateKeyFile = $metadataConfiguration->privateKey;
@@ -145,27 +105,17 @@ class MetadataFactory
         return $keyPair;
     }
 
-    /**
-     * @param $publicKeyFile
-     * @return string
-     */
-    private function getCertificateData($publicKeyFile)
+    private function getCertificateData(string $publicKeyFile): string|array
     {
         $certificate = File::getFileContents($publicKeyFile);
 
         $matches = [];
         preg_match(Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
 
-        $certificateData = str_replace(array(' ', "\n"), '', $matches[1]);
-
-        return $certificateData;
+        return str_replace([' ', "\n"], '', $matches[1]);
     }
 
-    /**
-     * @param string $routeDefinition
-     * @return string
-     */
-    private function getUrl($routeDefinition)
+    private function getUrl(null|string|array $routeDefinition): string
     {
         $route      = is_array($routeDefinition) ? $routeDefinition['route'] : $routeDefinition;
         $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];

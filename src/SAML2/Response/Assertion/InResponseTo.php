@@ -33,7 +33,7 @@ class InResponseTo
     {
         $subjectConfirmationArray = $assertion->getSubjectConfirmation();
 
-        if (empty($subjectConfirmationArray)) {
+        if ($subjectConfirmationArray === []) {
             return null;
         }
 

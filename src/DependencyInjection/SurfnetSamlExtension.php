@@ -32,7 +32,7 @@ use Symfony\Component\DependencyInjection\Loader;
 
 class SurfnetSamlExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
@@ -47,11 +47,8 @@ class SurfnetSamlExtension extends Extension
 
     /**
      * Creates and register MetadataConfiguration object based on the configuration given.
-     *
-     * @param array $configuration
-     * @param ContainerBuilder $container
      */
-    private function parseHostedConfiguration(array $configuration, ContainerBuilder $container)
+    private function parseHostedConfiguration(array $configuration, ContainerBuilder $container): void
     {
         $entityId = ['entity_id_route' => $configuration['metadata']['entity_id_route']];
         $serviceProvider  = array_merge($configuration['service_provider'], $entityId);
@@ -66,22 +63,14 @@ class SurfnetSamlExtension extends Extension
         $this->parseMetadataConfiguration($configuration, $container);
     }
 
-    /**
-     * @param array            $serviceProvider
-     * @param ContainerBuilder $container
-     */
-    private function parseHostedSpConfiguration(array $serviceProvider, ContainerBuilder $container)
+    private function parseHostedSpConfiguration(array $serviceProvider, ContainerBuilder $container): void
     {
         $container
             ->getDefinition('surfnet_saml.configuration.hosted_entities')
             ->replaceArgument(2, $serviceProvider);
     }
 
-    /**
-     * @param array            $identityProvider
-     * @param ContainerBuilder $container
-     */
-    private function parseHostedIdpConfiguration(array $identityProvider, ContainerBuilder $container)
+    private function parseHostedIdpConfiguration(array $identityProvider, ContainerBuilder $container): void
     {
         $container
             ->getDefinition('surfnet_saml.configuration.hosted_entities')
@@ -103,11 +92,7 @@ class SurfnetSamlExtension extends Extension
         );
     }
 
-    /**
-     * @param array            $configuration
-     * @param ContainerBuilder $container
-     */
-    private function parseMetadataConfiguration(array $configuration, ContainerBuilder $container)
+    private function parseMetadataConfiguration(array $configuration, ContainerBuilder $container): void
     {
         $metadata = $container->getDefinition('surfnet_saml.configuration.metadata');
 
@@ -121,14 +106,12 @@ class SurfnetSamlExtension extends Extension
 
         if ($configuration['service_provider']['enabled']) {
             $spConfiguration = $configuration['service_provider'];
-            $metadataConfiguration = array_merge(
-                $metadataConfiguration,
-                [
-                    'isSp' => true,
-                    'assertionConsumerRoute' => $spConfiguration['assertion_consumer_route'],
-                    'spCertificate' => $configuration['service_provider']['public_key'],
-                ]
-            );
+            $metadataConfiguration = [
+                ...$metadataConfiguration,
+                'isSp' => true,
+                'assertionConsumerRoute' => $spConfiguration['assertion_consumer_route'],
+                'spCertificate' => $configuration['service_provider']['public_key']
+            ];
         }
 
         if ($configuration['identity_provider']['enabled']) {
@@ -145,11 +128,7 @@ class SurfnetSamlExtension extends Extension
         $metadata->setProperties($metadataConfiguration);
     }
 
-    /**
-     * @param array            $remoteConfiguration
-     * @param ContainerBuilder $container
-     */
-    private function parseRemoteConfiguration(array $remoteConfiguration, ContainerBuilder $container)
+    private function parseRemoteConfiguration(array $remoteConfiguration, ContainerBuilder $container): void
     {
         $this->parseRemoteServiceProviderConfigurations($remoteConfiguration['service_providers'], $container);
 
@@ -167,15 +146,12 @@ class SurfnetSamlExtension extends Extension
     }
 
     /**
-     * @param array $identityProviders
      * @param $container
      * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
      */
-    private function parseRemoteIdentityProviderConfigurations(array $identityProviders, ContainerBuilder $container)
+    private function parseRemoteIdentityProviderConfigurations(array $identityProviders, ContainerBuilder $container): void
     {
-        $definitions = array_map(function ($config) {
-            return $this->parseRemoteIdentityProviderConfiguration($config);
-        }, $identityProviders);
+        $definitions = array_map(fn($config) => $this->parseRemoteIdentityProviderConfiguration($config), $identityProviders);
 
         $definition = new Definition(StaticIdentityProviderRepository::class, [
           $definitions
@@ -185,11 +161,9 @@ class SurfnetSamlExtension extends Extension
     }
 
     /**
-     * @param array $identityProvider
-     *
      * @return Definition
      */
-    private function parseRemoteIdentityProviderConfiguration(array $identityProvider)
+    private function parseRemoteIdentityProviderConfiguration(array $identityProvider): \Symfony\Component\DependencyInjection\Definition
     {
         $definition = new Definition(IdentityProvider::class);
         $configuration = [
@@ -209,15 +183,12 @@ class SurfnetSamlExtension extends Extension
     }
 
     /**
-     * @param array $serviceProviders
      * @param $container
      * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
      */
-    private function parseRemoteServiceProviderConfigurations(array $serviceProviders, ContainerBuilder $container)
+    private function parseRemoteServiceProviderConfigurations(array $serviceProviders, ContainerBuilder $container): void
     {
-        $definitions = array_map(function ($config) {
-            return $this->parseRemoteServiceProviderConfiguration($config);
-        }, $serviceProviders);
+        $definitions = array_map(fn($config) => $this->parseRemoteServiceProviderConfiguration($config), $serviceProviders);
 
         $definition = new Definition(StaticServiceProviderRepository::class, [
             $definitions
@@ -227,14 +198,13 @@ class SurfnetSamlExtension extends Extension
     }
 
     /**
-     * @param array $serviceProvider
      *
      * @return Definition
      * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
      */
     private function parseRemoteServiceProviderConfiguration(
-        $serviceProvider
-    ) {
+        array $serviceProvider
+    ): \Symfony\Component\DependencyInjection\Definition {
         $configuration = $this->parseCertificateData('surfnet_saml.remote.service_provider[]', $serviceProvider);
         $configuration['entityId'] = $serviceProvider['entity_id'];
         $configuration['assertionConsumerUrl'] = $serviceProvider['assertion_consumer_service_url'];
@@ -255,7 +225,7 @@ class SurfnetSamlExtension extends Extension
      * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
      *   the certificate data
      */
-    private function parseCertificateData($path, array $provider)
+    private function parseCertificateData(string $path, array $provider): array
     {
         $configuration = [];
         if (isset($provider['certificate_file']) && !isset($provider['certificate'])) {

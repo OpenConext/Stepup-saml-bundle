@@ -41,21 +41,15 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class RedirectBinding implements HttpBinding
 {
-    private SignatureVerifier $signatureVerifier;
-
-    private ?ServiceProviderRepository $entityRepository;
-
     public function __construct(
-        SignatureVerifier $signatureVerifier,
-        ServiceProviderRepository $repository = null
+        private readonly SignatureVerifier $signatureVerifier,
+        private readonly ?ServiceProviderRepository $entityRepository = null
     ) {
-        $this->signatureVerifier = $signatureVerifier;
-        $this->entityRepository = $repository;
     }
 
     public function processUnsignedRequest(Request $request): AuthnRequest
     {
-        if (!$this->entityRepository) {
+        if (!$this->entityRepository instanceof ServiceProviderRepository) {
             throw new LogicException(
                 'RedirectBinding::processRequest requires a ServiceProviderRepository to be configured'
             );
@@ -90,7 +84,7 @@ class RedirectBinding implements HttpBinding
 
     public function processSignedRequest(Request $request): AuthnRequest
     {
-        if (!$this->entityRepository) {
+        if (!$this->entityRepository instanceof ServiceProviderRepository) {
             throw new LogicException(
                 'RedirectBinding::processRequest requires a ServiceProviderRepository to be configured'
             );
@@ -131,7 +125,7 @@ class RedirectBinding implements HttpBinding
 
     public function receiveUnsignedAuthnRequestFrom(Request $request): AuthnRequest
     {
-        if (!$this->entityRepository) {
+        if (!$this->entityRepository instanceof ServiceProviderRepository) {
             throw new LogicException(
                 'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
             );
@@ -145,13 +139,13 @@ class RedirectBinding implements HttpBinding
         }
 
         $requestUri = $request->getRequestUri();
-        if (strpos($requestUri, '?') === false) {
+        if (!str_contains($requestUri, '?')) {
             throw new BadRequestHttpException(
                 'Could not receive AuthnRequest from HTTP Request: expected query parameters, none found'
             );
         }
 
-        list(, $rawQueryString) = explode('?', $requestUri);
+        [, $rawQueryString] = explode('?', $requestUri);
         $query = ReceivedAuthnRequestQueryString::parse($rawQueryString);
 
         $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
@@ -175,9 +169,9 @@ class RedirectBinding implements HttpBinding
     /**
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function receiveSignedAuthnRequestFrom(Request $request): AuthnRequest
+    public function receiveSignedAuthnRequestFrom(Request $request): ReceivedAuthnRequest
     {
-        if (!$this->entityRepository) {
+        if (!$this->entityRepository instanceof ServiceProviderRepository) {
             throw new LogicException(
                 'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
             );
@@ -191,13 +185,13 @@ class RedirectBinding implements HttpBinding
         }
 
         $requestUri = $request->getRequestUri();
-        if (strpos($requestUri, '?') === false) {
+        if (!str_contains($requestUri, '?')) {
             throw new BadRequestHttpException(
                 'Could not receive AuthnRequest from HTTP Request: expected query parameters, none found'
             );
         }
 
-        list(, $rawQueryString) = explode('?', $requestUri);
+        [, $rawQueryString] = explode('?', $requestUri);
         $query = ReceivedAuthnRequestQueryString::parse($rawQueryString);
 
         if (!$query->isSigned()) {
@@ -258,7 +252,7 @@ class RedirectBinding implements HttpBinding
     /**
      * @param $authnRequest
      */
-    private function verifySignature(AuthnRequest $authnRequest)
+    private function verifySignature(AuthnRequest $authnRequest): void
     {
         if (!$authnRequest->isSigned()) {
             throw new UnsignedRequestException('The SAMLRequest is expected to be signed but it was not');
@@ -285,7 +279,6 @@ class RedirectBinding implements HttpBinding
     }
 
     /**
-     * @param Request $request
      * @return string
      */
     private function getFullRequestUri(Request $request): string

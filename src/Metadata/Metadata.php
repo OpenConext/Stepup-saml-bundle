@@ -19,10 +19,13 @@
 namespace Surfnet\SamlBundle\Metadata;
 
 use DOMDocument;
+use DOMElement;
+use DOMNode;
 use LogicException;
+use Stringable;
 use Surfnet\SamlBundle\Signing\Signable;
 
-class Metadata implements Signable
+class Metadata implements Signable, Stringable
 {
     /**
      * @var string
@@ -62,9 +65,9 @@ class Metadata implements Signable
     /**
      * @var DOMDocument
      */
-    public $document;
+    public DOMDocument $document;
 
-    public function getRootDomElement()
+    public function getRootDomElement(): DOMElement
     {
         if (!$this->document) {
             throw new LogicException('Cannot get the rootElement of Metadata before the document has been generated');
@@ -73,7 +76,7 @@ class Metadata implements Signable
         return $this->document->documentElement;
     }
 
-    public function getAppendBeforeNode()
+    public function getAppendBeforeNode(): ?DOMNode
     {
         if (!$this->document) {
             throw new LogicException(
@@ -84,8 +87,8 @@ class Metadata implements Signable
         return $this->document->documentElement->childNodes->item(0);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->document->saveXML();
+        return (string) $this->document->saveXML();
     }
 }

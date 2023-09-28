@@ -29,7 +29,7 @@ class SamlAttributeRegistrationCompilerPass implements CompilerPassInterface
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable) - $tagData is simply not used
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('surfnet_saml.saml.attribute_dictionary')) {
             return;
@@ -38,7 +38,7 @@ class SamlAttributeRegistrationCompilerPass implements CompilerPassInterface
         $collection = $container->getDefinition('surfnet_saml.saml.attribute_dictionary');
         $attributes = $container->findTaggedServiceIds('saml.attribute');
 
-        foreach ($attributes as $id => $tagData) {
+        foreach (array_keys($attributes) as $id) {
             $collection->addMethodCall('addAttributeDefinition', [new Reference($id)]);
         }
     }

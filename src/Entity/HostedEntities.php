@@ -24,58 +24,26 @@ use Symfony\Component\Routing\RouterInterface;
 
 class HostedEntities
 {
-    /**
-     * @var ServiceProvider
-     */
-    private $serviceProvider;
+    private ?ServiceProvider $serviceProvider = null;
+
+    private ?IdentityProvider $identityProvider = null;
 
     /**
-     * @var array
-     */
-    private $serviceProviderConfiguration;
-
-    /**
-     * @var IdentityProvider
-     */
-    private $identityProvider;
-
-    /**
-     * @var array
-     */
-    private $identityProviderConfiguration;
-
-    /**
-     * @var \Symfony\Component\Routing\RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @param RouterInterface $router
-     * @param RequestStack    $requestStack
-     * @param array           $serviceProviderConfiguration
-     * @param array           $identityProviderConfiguration
+     * @param array $serviceProviderConfiguration
+     * @param array $identityProviderConfiguration
      */
     public function __construct(
-        RouterInterface $router,
-        RequestStack $requestStack,
-        array $serviceProviderConfiguration = null,
-        array $identityProviderConfiguration = null
+        private readonly RouterInterface $router,
+        private readonly RequestStack $requestStack,
+        private ?array $serviceProviderConfiguration = null,
+        private ?array $identityProviderConfiguration = null
     ) {
-        $this->router                        = $router;
-        $this->requestStack                  = $requestStack;
-        $this->serviceProviderConfiguration  = $serviceProviderConfiguration;
-        $this->identityProviderConfiguration = $identityProviderConfiguration;
     }
 
     /**
      * @return null|ServiceProvider
      */
-    public function getServiceProvider()
+    public function getServiceProvider(): ?ServiceProvider
     {
         if (!empty($this->serviceProvider)) {
             return $this->serviceProvider;
@@ -96,7 +64,7 @@ class HostedEntities
     /**
      * @return null|IdentityProvider
      */
-    public function getIdentityProvider()
+    public function getIdentityProvider(): ?IdentityProvider
     {
         if (!empty($this->identityProvider)) {
             return $this->identityProvider;
@@ -114,11 +82,7 @@ class HostedEntities
         return $this->identityProvider = new IdentityProvider($configuration);
     }
 
-    /**
-     * @param array $entityConfiguration
-     * @return array
-     */
-    private function createStandardEntityConfiguration($entityConfiguration)
+    private function createStandardEntityConfiguration(array $entityConfiguration): array
     {
         $privateKey = new PrivateKey($entityConfiguration['private_key'], PrivateKey::NAME_DEFAULT);
 
@@ -133,9 +97,8 @@ class HostedEntities
 
     /**
      * @param string|array $routeDefinition
-     * @return string
      */
-    private function generateUrl($routeDefinition)
+    private function generateUrl(mixed $routeDefinition): string
     {
         $route      = is_array($routeDefinition) ? $routeDefinition['route'] : $routeDefinition;
         $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];

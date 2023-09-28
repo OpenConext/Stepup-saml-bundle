@@ -38,17 +38,14 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
         self::PARAMETER_RELAY_STATE,
     ];
 
-    private string $samlRequest;
-
     private ?string $signature = null;
 
     private ?string $signatureAlgorithm = null;
 
     private ?string $relayState = null;
 
-    private function __construct($samlRequest)
+    private function __construct(private readonly string $samlRequest)
     {
-        $this->samlRequest = $samlRequest;
     }
 
     /**
@@ -71,14 +68,14 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
 
         $parameters = [];
         foreach ($queryParameters as $queryParameter) {
-            if (!(strpos($queryParameter, '=') > 0)) {
+            if (strpos($queryParameter, '=') <= 0) {
                 throw new InvalidReceivedAuthnRequestQueryStringException(sprintf(
                     'Could not parse "%s": it does not contain a valid key-value pair',
                     $queryParameter
                 ));
             }
 
-            list($key, $value) = explode('=', $queryParameter, 2);
+            [$key, $value] = explode('=', $queryParameter, 2);
 
             if (!in_array($key, self::$samlParameters)) {
                 continue;
@@ -162,9 +159,7 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
             $query .= '&' . self::PARAMETER_RELAY_STATE . '=' . $this->relayState;
         }
 
-        $query .= '&' . self::PARAMETER_SIGNATURE_ALGORITHM . '=' . $this->signatureAlgorithm;
-
-        return $query;
+        return $query . ('&' . self::PARAMETER_SIGNATURE_ALGORITHM . '=' . $this->signatureAlgorithm);
     }
 
     public function getDecodedSamlRequest(): string
@@ -173,7 +168,7 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
 
         // Catch any errors gzinflate triggers
         $errorNo = $errorMessage = null;
-        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage) {
+        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage): void {
             $errorNo      = $number;
             $errorMessage = $message;
         });
@@ -205,7 +200,7 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
         return $this->signature;
     }
 
-    public function isSigned()
+    public function isSigned(): bool
     {
         return $this->signature !== null && $this->signatureAlgorithm !== null;
     }
@@ -233,9 +228,6 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
     public function verify(XMLSecurityKey $key): bool
     {
         $isVerified = $key->verifySignature($this->getSignedRequestPayload(), $this->getDecodedSignature());
-        if ($isVerified !== 1) {
-            return false;
-        }
-        return true;
+        return $isVerified === 1;
     }
 }

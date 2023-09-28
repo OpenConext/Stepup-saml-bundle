@@ -51,7 +51,7 @@ class GsspUserAttributesChunk extends Chunk
         return count($result) ? $result[0]->textContent : null;
     }
 
-    public function addAttribute(string $name, string $format, string $value)
+    public function addAttribute(string $name, string $format, string $value): void
     {
         $doc = new DOMDocument("1.0", "UTF-8");
         $attrib = $doc->createElementNS('urn:oasis:names:tc:SAML:2.0:assertion', 'saml:Attribute');

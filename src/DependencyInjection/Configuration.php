@@ -44,10 +44,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addHostedSection(ArrayNodeDefinition $node)
+    private function addHostedSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -132,7 +129,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addRemoteSection(ArrayNodeDefinition $rootNode)
+    private function addRemoteSection(ArrayNodeDefinition $rootNode): void
     {
         $remoteNode = $rootNode
             ->children()
@@ -145,7 +142,7 @@ class Configuration implements ConfigurationInterface
         $this->addRemoteIdentityProviderSection($remoteNode);
     }
 
-    private function addRemoteIdentityProviderSection(ArrayNodeDefinition $remoteNode)
+    private function addRemoteIdentityProviderSection(ArrayNodeDefinition $remoteNode): void
     {
         $arrayNode = $remoteNode
             ->children()
@@ -161,7 +158,7 @@ class Configuration implements ConfigurationInterface
     }
 
 
-    private function addRemoteIdentityProviderConfiguration(NodeBuilder $arrayNode)
+    private function addRemoteIdentityProviderConfiguration(NodeBuilder $arrayNode): void
     {
         $arrayNode
           ->scalarNode('entity_id')
@@ -184,7 +181,7 @@ class Configuration implements ConfigurationInterface
           ->end();
     }
 
-    private function addRemoteIdentityProvidersSection(ArrayNodeDefinition $remoteNode)
+    private function addRemoteIdentityProvidersSection(ArrayNodeDefinition $remoteNode): void
     {
         $arrayNode = $remoteNode
             ->children()
@@ -201,7 +198,7 @@ class Configuration implements ConfigurationInterface
           ->end();
     }
 
-    private function addRemoteServiceProvidersSection(ArrayNodeDefinition $remoteNode)
+    private function addRemoteServiceProvidersSection(ArrayNodeDefinition $remoteNode): void
     {
         $remoteNode
             ->children()

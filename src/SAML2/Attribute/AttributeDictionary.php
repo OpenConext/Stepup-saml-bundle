@@ -29,36 +29,30 @@ class AttributeDictionary
     /**
      * @var AttributeDefinition[]
      */
-    private $attributeDefinitionsByName = [];
+    private array $attributeDefinitionsByName = [];
 
     /**
      * @var AttributeDefinition[]
      */
-    private $attributeDefinitionsByUrn = [];
-
-    /**
-     * Ignore unknown attributes coming from the IDP
-     *
-     * @var bool
-     */
-    private $ignoreUnknownAttributes = false;
+    private array $attributeDefinitionsByUrn = [];
 
     /**
      * AttributeDictionary constructor.
      *
      * @param bool $ignoreUnknownAttributes
      */
-    public function __construct($ignoreUnknownAttributes = false)
-    {
-        $this->ignoreUnknownAttributes = $ignoreUnknownAttributes;
+    public function __construct(
+        /**
+         * Ignore unknown attributes coming from the IDP
+         */
+        private $ignoreUnknownAttributes = false
+    ) {
     }
 
     /**
      * Whether to ignore unknown SAML attributes.
-     *
-     * @return bool
      */
-    public function ignoreUnknownAttributes()
+    public function ignoreUnknownAttributes(): bool
     {
         return $this->ignoreUnknownAttributes;
     }
@@ -69,7 +63,7 @@ class AttributeDictionary
      * We store the definitions indexed both by name and by urn to ensure speedy lookups due to the amount of
      * definitions and the amount of usages of the lookups
      */
-    public function addAttributeDefinition(AttributeDefinition $attributeDefinition)
+    public function addAttributeDefinition(AttributeDefinition $attributeDefinition): void
     {
         if (isset($this->attributeDefinitionsByName[$attributeDefinition->getName()])) {
             throw new LogicException(sprintf(
@@ -80,38 +74,26 @@ class AttributeDictionary
 
         $this->attributeDefinitionsByName[$attributeDefinition->getName()] = $attributeDefinition;
 
-        if ($attributeDefinition->hasUrnMace()) {
+        if ($attributeDefinition->hasUrnMace() !== '' && $attributeDefinition->hasUrnMace() !== '0') {
             $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnMace()] = $attributeDefinition;
         }
 
-        if ($attributeDefinition->hasUrnOid()) {
+        if ($attributeDefinition->hasUrnOid() !== '' && $attributeDefinition->hasUrnOid() !== '0') {
             $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnOid()] = $attributeDefinition;
         }
     }
 
-    /**
-     * @param Assertion $assertion
-     * @return AssertionAdapter
-     */
-    public function translate(Assertion $assertion)
+    public function translate(Assertion $assertion): AssertionAdapter
     {
         return new AssertionAdapter($assertion, $this);
     }
 
-    /**
-     * @param string $attributeName
-     * @return bool
-     */
-    public function hasAttributeDefinition($attributeName)
+    public function hasAttributeDefinition(string $attributeName): bool
     {
         return isset($this->attributeDefinitionsByName[$attributeName]);
     }
 
-    /**
-     * @param string $attributeName
-     * @return AttributeDefinition
-     */
-    public function getAttributeDefinition($attributeName)
+    public function getAttributeDefinition(string $attributeName): AttributeDefinition
     {
         if (!$this->hasAttributeDefinition($attributeName)) {
             throw new LogicException(sprintf(
@@ -123,13 +105,9 @@ class AttributeDictionary
         return $this->attributeDefinitionsByName[$attributeName];
     }
 
-    /**
-     * @param string $urn
-     * @return AttributeDefinition|null
-     */
-    public function findAttributeDefinitionByUrn($urn)
+    public function findAttributeDefinitionByUrn(string $urn): ?AttributeDefinition
     {
-        if (!is_string($urn) || empty($urn)) {
+        if (!is_string($urn) || $urn === '') {
             throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
         }
 
@@ -140,16 +118,8 @@ class AttributeDictionary
         return null;
     }
 
-    /**
-     * @param string $urn
-     * @return AttributeDefinition
-     */
-    public function getAttributeDefinitionByUrn($urn)
+    public function getAttributeDefinitionByUrn(string $urn): AttributeDefinition
     {
-        if (!is_string($urn) || empty($urn)) {
-            throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
-        }
-
         if (array_key_exists($urn, $this->attributeDefinitionsByUrn)) {
             return $this->attributeDefinitionsByUrn[$urn];
         }

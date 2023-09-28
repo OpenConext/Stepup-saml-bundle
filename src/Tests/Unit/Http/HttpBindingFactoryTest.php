@@ -37,11 +37,11 @@ class HttpBindingFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        $redirectBinding = Mockery::mock('\Surfnet\SamlBundle\Http\RedirectBinding');
-        $postBinding = Mockery::mock('\Surfnet\SamlBundle\Http\PostBinding');
+        $redirectBinding = Mockery::mock('\\' . \Surfnet\SamlBundle\Http\RedirectBinding::class);
+        $postBinding = Mockery::mock('\\' . \Surfnet\SamlBundle\Http\PostBinding::class);
         $this->factory = new HttpBindingFactory($redirectBinding, $postBinding);
-        $this->request = Mockery::mock('\Symfony\Component\HttpFoundation\Request');
-        $this->bag = Mockery::mock('\Symfony\Component\HttpFoundation\ParameterBag');
+        $this->request = Mockery::mock('\\' . \Symfony\Component\HttpFoundation\Request::class);
+        $this->bag = Mockery::mock('\\' . \Symfony\Component\HttpFoundation\ParameterBag::class);
         $this->request->request = $this->bag;
         $this->request->query = $this->bag;
     }
@@ -63,7 +63,7 @@ class HttpBindingFactoryTest extends TestCase
 
         $binding = $this->factory->build($this->request);
 
-        $this->assertInstanceOf('\Surfnet\SamlBundle\Http\RedirectBinding', $binding);
+        $this->assertInstanceOf('\\' . \Surfnet\SamlBundle\Http\RedirectBinding::class, $binding);
     }
 
     /**
@@ -83,7 +83,7 @@ class HttpBindingFactoryTest extends TestCase
 
         $binding = $this->factory->build($this->request);
 
-        $this->assertInstanceOf('\Surfnet\SamlBundle\Http\PostBinding', $binding);
+        $this->assertInstanceOf('\\' . \Surfnet\SamlBundle\Http\PostBinding::class, $binding);
     }
 
     /**

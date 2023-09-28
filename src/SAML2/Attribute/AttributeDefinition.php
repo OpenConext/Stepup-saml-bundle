@@ -26,29 +26,20 @@ class AttributeDefinition
     /**
      * @var string the name of the saml attribute
      */
-    private $name;
+    private readonly string $name;
 
     /**
      * @var string the urn:mace identifier of this attribute
      */
-    private $urnMace;
+    private ?string $urnMace = null;
 
     /**
      * @var string the urn:oid identifier of this attribute
      */
-    private $urnOid;
+    private ?string $urnOid = null;
 
-    /**
-     * @param string $name
-     * @param string $urnMace
-     * @param string $urnOid
-     */
-    public function __construct($name, $urnMace = null, $urnOid = null)
+    public function __construct(string $name, ?string $urnMace = null, ?string $urnOid = null)
     {
-        if (!is_string($name)) {
-            throw InvalidArgumentException::invalidType('string', 'name', $name);
-        }
-
         if (!is_null($urnMace) && !is_string($urnMace)) {
             throw InvalidArgumentException::invalidType('null or string', 'urnMace', $urnMace);
         }
@@ -66,51 +57,32 @@ class AttributeDefinition
         $this->urnOid       = $urnOid;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function hasUrnMace()
+    public function hasUrnMace(): bool
     {
         return $this->urnMace !== null;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrnMace()
+    public function getUrnMace(): ?string
     {
         return $this->urnMace;
     }
 
-    /**
-     * @return string
-     */
-    public function hasUrnOid()
+    public function hasUrnOid(): bool
     {
         return $this->urnOid !== null;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrnOid()
+    public function getUrnOid(): ?string
     {
         return $this->urnOid;
     }
 
-    /**
-     * @param AttributeDefinition $other
-     * @return bool
-     */
-    public function equals(AttributeDefinition $other)
+    public function equals(AttributeDefinition $other): bool
     {
         return $this->name === $other->name
             && $this->urnOid === $other->urnOid

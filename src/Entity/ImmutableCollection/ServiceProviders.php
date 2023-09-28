@@ -27,7 +27,7 @@ use Surfnet\SamlBundle\Entity\ServiceProvider;
  */
 final class ServiceProviders
 {
-    private $serviceProviders;
+    private readonly array $serviceProviders;
 
     /**
      *
@@ -38,16 +38,14 @@ final class ServiceProviders
         $this->serviceProviders = array_values($serviceProviders);
     }
 
-    public function hasByEntityId($entityId)
+    public function hasByEntityId($entityId): bool
     {
         return $this->findByEntityId($entityId) !== null;
     }
 
     public function findByEntityId($entityId)
     {
-        return $this->find(function (ServiceProvider $provider) use ($entityId) {
-            return $provider->getEntityId() === $entityId;
-        });
+        return $this->find(fn(ServiceProvider $provider): bool => $provider->getEntityId() === $entityId);
     }
 
     private function find(callable $callback)

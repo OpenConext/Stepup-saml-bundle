@@ -139,11 +139,10 @@ XML;
 
     private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null): void
     {
-        if (!$signingService) {
+        if (!$signingService instanceof SigningService) {
             $signingService = m::mock(SigningService::class);
             $signingService->shouldReceive('sign')->once()->andReturn(m::mock(Signable::class));
         }
         $this->factory = new MetadataFactory($this->twig, $this->router, $signingService, $metadata);
     }
-
 }

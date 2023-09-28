@@ -46,20 +46,11 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class PostBinding implements HttpBinding
 {
-    private Processor $responseProcessor;
-
-    private SignatureVerifier $signatureVerifier;
-
-    private ?ServiceProviderRepository $entityRepository;
-
     public function __construct(
-        Processor $responseProcessor,
-        SignatureVerifier $signatureVerifier,
-        ServiceProviderRepository $repository = null
+        private readonly Processor $responseProcessor,
+        private readonly SignatureVerifier $signatureVerifier,
+        private readonly ?ServiceProviderRepository $entityRepository = null
     ) {
-        $this->responseProcessor = $responseProcessor;
-        $this->signatureVerifier = $signatureVerifier;
-        $this->entityRepository = $repository;
     }
 
     /**
@@ -92,12 +83,12 @@ class PostBinding implements HttpBinding
             $message = $e->getMessage();
 
             $noAuthnContext = substr(Constants::STATUS_NO_AUTHN_CONTEXT, strlen(Constants::STATUS_PREFIX));
-            if (false !== strpos($message, $noAuthnContext)) {
+            if (str_contains($message, $noAuthnContext)) {
                 throw new NoAuthnContextSamlResponseException($message, 0, $e);
             }
 
             $authnFailed = substr(Constants::STATUS_AUTHN_FAILED, strlen(Constants::STATUS_PREFIX));
-            if (false !== strpos($message, $authnFailed)) {
+            if (str_contains($message, $authnFailed)) {
                 throw new AuthnFailedSamlResponseException($message, 0, $e);
             }
 
@@ -107,9 +98,9 @@ class PostBinding implements HttpBinding
         return $assertions->getOnlyElement();
     }
 
-    public function receiveSignedAuthnRequestFrom(Request $request): AuthnRequest
+    public function receiveSignedAuthnRequestFrom(Request $request): ReceivedAuthnRequest
     {
-        if (!$this->entityRepository) {
+        if (!$this->entityRepository instanceof ServiceProviderRepository) {
             throw new LogicException(
                 'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
             );
