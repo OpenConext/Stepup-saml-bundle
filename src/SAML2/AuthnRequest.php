@@ -27,18 +27,18 @@ class AuthnRequest
 {
     use ExtensionsMapperTrait;
 
-    const PARAMETER_RELAY_STATE = 'RelayState';
-    const PARAMETER_REQUEST = 'SAMLRequest';
-    const PARAMETER_SIGNATURE = 'Signature';
-    const PARAMETER_SIGNATURE_ALGORITHM = 'SigAlg';
+    final public const PARAMETER_RELAY_STATE = 'RelayState';
+    final public const PARAMETER_REQUEST = 'SAMLRequest';
+    final public const PARAMETER_SIGNATURE = 'Signature';
+    final public const PARAMETER_SIGNATURE_ALGORITHM = 'SigAlg';
 
-    private ?string $rawRequest;
+    private ?string $rawRequest = null;
 
-    private SAML2AuthnRequest $request;
+    private readonly SAML2AuthnRequest $request;
 
-    private ?string $signature;
+    private ?string $signature = null;
 
-    private ?string $signatureAlgorithm;
+    private ?string $signatureAlgorithm = null;
 
     private function __construct(SAML2AuthnRequest $request)
     {
@@ -56,7 +56,7 @@ class AuthnRequest
     ): self {
         $authnRequest = new self($request);
         $authnRequest->rawRequest = $rawRequest;
-        if ($relayState) {
+        if ($relayState !== '' && $relayState !== '0') {
             $authnRequest->request->setRelayState($relayState);
         }
 
@@ -129,7 +129,7 @@ class AuthnRequest
     {
         $nameId = $this->request->getNameId();
 
-        if (!$nameId->getValue()) {
+        if ($nameId->getValue() === '' || $nameId->getValue() === '0') {
             return null;
         }
 
@@ -173,7 +173,7 @@ class AuthnRequest
 
     public function isSigned(): bool
     {
-        return !empty($this->signature);
+        return $this->signature !== null && $this->signature !== '';
     }
 
     public function getAssertionConsumerServiceURL(): ?string
@@ -252,8 +252,6 @@ class AuthnRequest
         $toSign = http_build_query($queryParams);
         $signature = $securityKey->signData($toSign);
 
-        $signedQuery = $toSign . '&Signature=' . urlencode(base64_encode($signature));
-
-        return $signedQuery;
+        return $toSign . '&Signature=' . urlencode(base64_encode((string) $signature));
     }
 }

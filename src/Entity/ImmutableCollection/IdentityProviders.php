@@ -27,7 +27,7 @@ use Surfnet\SamlBundle\Entity\IdentityProvider;
  */
 final class IdentityProviders
 {
-    private $identityProviders;
+    private readonly array $identityProviders;
 
     /**
      *
@@ -38,16 +38,14 @@ final class IdentityProviders
         $this->identityProviders = array_values($identityProviders);
     }
 
-    public function hasByEntityId($entityId)
+    public function hasByEntityId($entityId): bool
     {
         return $this->findByEntityId($entityId) !== null;
     }
 
     public function findByEntityId($entityId)
     {
-        return $this->find(function (IdentityProvider $provider) use ($entityId) {
-            return $provider->getEntityId() === $entityId;
-        });
+        return $this->find(fn(IdentityProvider $provider): bool => $provider->getEntityId() === $entityId);
     }
 
     private function find(callable $callback)

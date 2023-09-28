@@ -23,24 +23,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class HttpBindingFactory
 {
-    /**
-     * @var RedirectBinding
-     */
-    private $redirectBinding;
-
-    /**
-     * @var PostBinding
-     */
-    private $postBinding;
-
-    public function __construct(RedirectBinding $redirectBinding, PostBinding $postBinding)
-    {
-        $this->redirectBinding = $redirectBinding;
-        $this->postBinding = $postBinding;
+    public function __construct(
+        private readonly RedirectBinding $redirectBinding,
+        private readonly PostBinding $postBinding
+    ) {
     }
 
     /**
-     * @param Request $request
      * @return HttpBinding
      * @throws InvalidArgumentException
      */
@@ -53,19 +42,16 @@ class HttpBindingFactory
                 } else {
                     throw new InvalidArgumentException('POST-binding is supported for SAMLRequest.');
                 }
-                break;
             case Request::METHOD_GET:
                 if ($request->query->has('SAMLRequest') || $request->query->has('SAMLResponse')) {
                     return $this->redirectBinding;
                 } else {
                     throw new InvalidArgumentException('Redirect binding is supported for SAMLRequest and Response.');
                 }
-                break;
             default:
                 throw new InvalidArgumentException(
                     sprintf('Request type of "%s" is not supported.', $request->getMethod())
                 );
-                break;
         }
     }
 }

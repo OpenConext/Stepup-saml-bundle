@@ -75,14 +75,14 @@ class AuthnRequestFactory
         Request $httpRequest
     ): SAML2AuthnRequest {
         // the GET parameter is already urldecoded by Symfony, so we should not do it again.
-        $samlRequest = base64_decode($httpRequest->get(AuthnRequest::PARAMETER_REQUEST), true);
+        $samlRequest = base64_decode((string) $httpRequest->get(AuthnRequest::PARAMETER_REQUEST), true);
         if ($samlRequest === false) {
             throw new InvalidRequestException('Failed decoding the request, did not receive a valid base64 string');
         }
 
         // Catch any errors gzinflate triggers
         $errorNo = $errorMessage = null;
-        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage) {
+        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage): void {
             $errorNo      = $number;
             $errorMessage = $message;
         });
@@ -105,7 +105,7 @@ class AuthnRequestFactory
         if (!$request instanceof SAML2AuthnRequest) {
             throw new RuntimeException(sprintf(
                 'The received request is not an AuthnRequest, "%s" received instead',
-                get_class($request)
+                $request::class
             ));
         }
 

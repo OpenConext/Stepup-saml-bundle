@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SurfnetSamlBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -34,7 +34,7 @@ class SurfnetSamlBundle extends Bundle
         $container->addCompilerPass(new SamlAttributeRegistrationCompilerPass());
     }
 
-    public function boot()
+    public function boot(): void
     {
         $bridgeContainer = $this->container->get('surfnet_saml.saml2.bridge_container');
         ContainerSingleton::setContainer($bridgeContainer);

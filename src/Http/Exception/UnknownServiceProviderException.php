@@ -24,14 +24,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class UnknownServiceProviderException extends BadRequestHttpException implements Exception
 {
     /**
-     * @var string
+     * @param string $entityId
      */
-    private $entityId;
-
-    public function __construct($entityId)
+    public function __construct(private $entityId)
     {
-        $this->entityId = $entityId;
-
         parent::__construct(sprintf(
             'AuthnRequest received from ServiceProvider with an unknown EntityId: "%s"',
             $entityId

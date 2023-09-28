@@ -23,9 +23,9 @@ class Extensions
     /**
      * @var Chunk[]
      */
-    private $chunks = [];
+    private array $chunks = [];
 
-    public function addChunk(Chunk $chunk)
+    public function addChunk(Chunk $chunk): void
     {
         $this->chunks[$chunk->getName()] = $chunk;
     }

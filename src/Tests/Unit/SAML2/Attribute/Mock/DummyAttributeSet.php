@@ -19,18 +19,53 @@
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock;
 
 use SAML2\Assertion;
+use Surfnet\SamlBundle\SAML2\Attribute\Attribute;
+use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeSetFactory;
+use Surfnet\SamlBundle\SAML2\Attribute\AttributeSetInterface;
+use Surfnet\SamlBundle\SAML2\Attribute\Filter\AttributeFilter;
+use Traversable;
 
-final class DummyAttributeSet implements AttributeSetFactory
+final class DummyAttributeSet implements AttributeSetFactory, AttributeSetInterface
 {
-    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary)
+    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary): AttributeSetInterface
     {
         return new self;
     }
 
-    public static function create(array $attributes)
+    public static function create(array $attributes): AttributeSetInterface
     {
         return new self;
+    }
+
+    public function apply(AttributeFilter $attributeFilter): AttributeSetInterface
+    {
+        // TODO: Implement apply() method.
+    }
+
+    public function getAttributeByDefinition(AttributeDefinition $attributeDefinition): Attribute
+    {
+        // TODO: Implement getAttributeByDefinition() method.
+    }
+
+    public function containsAttributeDefinedBy(AttributeDefinition $attributeDefinition): bool
+    {
+        // TODO: Implement containsAttributeDefinedBy() method.
+    }
+
+    public function contains(Attribute $otherAttribute): bool
+    {
+        // TODO: Implement contains() method.
+    }
+
+    public function getIterator(): Traversable
+    {
+        // TODO: Implement getIterator() method.
+    }
+
+    public function count(): int
+    {
+        // TODO: Implement count() method.
     }
 }

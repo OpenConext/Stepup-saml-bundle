@@ -26,7 +26,7 @@ interface Signable
     /**
      * @return DOMElement
      */
-    public function getRootDomElement();
+    public function getRootDomElement(): DOMElement;
 
     /**
      * Get the DomNode before which the signature should be injected. Return null if you want to append the signature
@@ -34,5 +34,5 @@ interface Signable
      *
      * @return null|DomNode
      */
-    public function getAppendBeforeNode();
+    public function getAppendBeforeNode(): ?DOMNode;
 }

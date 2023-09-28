@@ -23,14 +23,14 @@ use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 final class ConfigurableAttributeSetFactory implements AttributeSetFactory
 {
-    private static $attributeSetClassName = 'Surfnet\SamlBundle\SAML2\Attribute\AttributeSet';
+    private static string $attributeSetClassName = AttributeSet::class;
 
     /**
      * @param string $attributeSetClassName
      */
-    public static function configureWhichAttributeSetToCreate($attributeSetClassName)
+    public static function configureWhichAttributeSetToCreate($attributeSetClassName): void
     {
-        if (!is_string($attributeSetClassName) || empty($attributeSetClassName)) {
+        if (!is_string($attributeSetClassName) || $attributeSetClassName === '') {
             throw InvalidArgumentException::invalidType('non-empty string', 'attributeSetClassName', $attributeSetClassName);
         }
 
@@ -38,21 +38,23 @@ final class ConfigurableAttributeSetFactory implements AttributeSetFactory
             throw new InvalidArgumentException(sprintf(
                 'Cannot use class "%s": it must implement "%s"',
                 $attributeSetClassName,
-                '\Surfnet\SamlBundle\SAML2\Attribute\AttributeSetFactory'
+                '\\' . \Surfnet\SamlBundle\SAML2\Attribute\AttributeSetFactory::class
             ));
         }
 
         self::$attributeSetClassName = $attributeSetClassName;
     }
 
-    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary)
-    {
+    public static function createFrom(
+        Assertion $assertion,
+        AttributeDictionary $attributeDictionary
+    ): AttributeSetInterface {
         $class = self::$attributeSetClassName;
 
         return $class::createFrom($assertion, $attributeDictionary);
     }
 
-    public static function create(array $attributes)
+    public static function create(array $attributes): AttributeSetInterface
     {
         $class = self::$attributeSetClassName;
 

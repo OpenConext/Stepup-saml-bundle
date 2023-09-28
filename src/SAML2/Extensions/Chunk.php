@@ -23,35 +23,18 @@ use DOMElement;
 
 class Chunk
 {
-    private $name;
-
-    private $namespace;
-
-    private $value;
-
-    /**
-     * @param string $name
-     * @param string $namespace
-     * @param DOMElement $value
-     */
-    public function __construct(string $name, string $namespace, DOMElement $value)
-    {
-        $this->name = $name;
-        $this->namespace = $namespace;
-        $this->value = $value;
+    public function __construct(
+        private readonly string $name,
+        private readonly string $namespace,
+        private DOMElement $value
+    ) {
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getNamespace(): string
     {
         return $this->namespace;

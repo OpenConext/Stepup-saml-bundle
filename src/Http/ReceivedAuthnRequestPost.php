@@ -24,39 +24,32 @@ use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
 
 final class ReceivedAuthnRequestPost implements SignatureVerifiable
 {
-    const PARAMETER_REQUEST = 'SAMLRequest';
-    const PARAMETER_RELAY_STATE = 'RelayState';
-
-    /**
-     * @var string
-     */
-    private $samlRequest;
+    public const PARAMETER_REQUEST = 'SAMLRequest';
+    public const PARAMETER_RELAY_STATE = 'RelayState';
 
     /**
      * @var string|null
      */
     private $relayState;
 
-    /**
-     * @var ReceivedAuthnRequest
-     */
-    private $receivedRequest;
+    private ?ReceivedAuthnRequest $receivedRequest = null;
 
-    private function __construct($samlRequest)
+    /**
+     * @param string $samlRequest
+     */
+    private function __construct(private $samlRequest)
     {
-        $this->samlRequest = $samlRequest;
     }
 
     /**
-     * @param array $parameters
      * @return ReceivedAuthnRequestPost
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity) Extensive validation
      * @SuppressWarnings(PHPMD.NPathComplexity) Extensive validation
      */
-    public static function parse(array $parameters)
+    public static function parse(array $parameters): self
     {
-        if (base64_decode($parameters[self::PARAMETER_REQUEST], true) === false) {
+        if (base64_decode((string) $parameters[self::PARAMETER_REQUEST], true) === false) {
             throw new InvalidRequestException('Failed decoding SAML request, did not receive a valid base64 string');
         }
 
@@ -78,7 +71,7 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
     /**
      * @return bool
      */
-    public function hasRelayState()
+    public function hasRelayState(): bool
     {
         return $this->relayState !== null;
     }
@@ -86,10 +79,9 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
     /**
      * @return string
      */
-    public function getDecodedSamlRequest()
+    public function getDecodedSamlRequest(): string|bool
     {
-        $samlRequest = base64_decode($this->samlRequest);
-        return $samlRequest;
+        return base64_decode($this->samlRequest);
     }
 
     /**
@@ -113,7 +105,7 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
      * @return bool
      * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
      */
-    public function verify(XMLSecurityKey $key)
+    public function verify(XMLSecurityKey $key): bool
     {
         return $this->receivedRequest->verify($key);
     }

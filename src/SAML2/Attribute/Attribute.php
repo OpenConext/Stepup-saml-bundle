@@ -21,46 +21,25 @@ namespace Surfnet\SamlBundle\SAML2\Attribute;
 class Attribute
 {
     /**
-     * @var AttributeDefinition
-     */
-    private $attributeDefinition;
-
-    /**
-     * @var string[]
-     */
-    private $value;
-
-    /**
-     * @param AttributeDefinition $attributeDefinition
      * @param string[] $value
      */
-    public function __construct(AttributeDefinition $attributeDefinition, array $value)
-    {
-        $this->attributeDefinition = $attributeDefinition;
-        $this->value               = $value;
+    public function __construct(
+        private readonly AttributeDefinition $attributeDefinition,
+        private readonly array $value
+    ) {
     }
 
-    /**
-     * @return AttributeDefinition
-     */
-    public function getAttributeDefinition()
+    public function getAttributeDefinition(): AttributeDefinition
     {
         return $this->attributeDefinition;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getValue()
+    public function getValue(): array
     {
         return $this->value;
     }
 
-    /**
-     * @param Attribute $other
-     * @return bool
-     */
-    public function equals(Attribute $other)
+    public function equals(Attribute $other): bool
     {
         return $this->attributeDefinition->equals($other->attributeDefinition) && $this->value === $other->value;
     }

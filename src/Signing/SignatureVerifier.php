@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Signing;
 
+use Exception;
 use Psr\Log\LoggerInterface;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Certificate\Key;
@@ -30,36 +31,20 @@ use Surfnet\SamlBundle\SAML2\AuthnRequest;
 
 class SignatureVerifier
 {
-    /**
-     * @var KeyLoader
-     */
-    private $keyLoader;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @param KeyLoader       $keyLoader
-     * @param LoggerInterface $logger
-     */
-    public function __construct(KeyLoader $keyLoader, LoggerInterface $logger)
-    {
-        $this->keyLoader = $keyLoader;
-        $this->logger = $logger;
+    public function __construct(
+        private readonly KeyLoader $keyLoader,
+        private readonly LoggerInterface $logger
+    ) {
     }
 
-    public function verifyIsSignedBy(SignatureVerifiable $request, ServiceProvider $serviceProvider)
+    public function verifyIsSignedBy(SignatureVerifiable $request, ServiceProvider $serviceProvider): bool
     {
         $this->logger->debug(sprintf('Extracting public keys for ServiceProvider "%s"', $serviceProvider->getEntityId()));
 
         $keys = $this->keyLoader->extractPublicKeys($serviceProvider);
 
         $this->logger->debug(sprintf('Found "%d" keys, filtering the keys to get X509 keys', $keys->count()));
-        $x509Keys = $keys->filter(function (Key $key) {
-            return $key instanceof X509;
-        });
+        $x509Keys = $keys->filter(fn(Key $key): bool => $key instanceof X509);
 
         $this->logger->debug(sprintf(
             'Found "%d" X509 keys, attempting to use each for signature verification',
@@ -77,24 +62,15 @@ class SignatureVerifier
         return false;
     }
 
-    /**
-     * @param ReceivedAuthnRequestQueryString $request
-     * @return bool
-     */
-    public function verifySignatureAlgorithmSupported(ReceivedAuthnRequestQueryString $request)
+    public function verifySignatureAlgorithmSupported(ReceivedAuthnRequestQueryString $request): bool
     {
         return $request->getSignatureAlgorithm() === XMLSecurityKey::RSA_SHA256;
     }
 
-    /**
-     * @param SignatureVerifiable $request
-     * @param X509 $publicKey
-     * @return bool
-     */
-    public function isRequestSignedWith(SignatureVerifiable $request, X509 $publicKey)
+    public function isRequestSignedWith(SignatureVerifiable $request, X509 $publicKey): bool
     {
         $this->logger->debug(sprintf('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate()));
-        $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
+        $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'public']);
         $key->loadKey($publicKey->getCertificate());
 
         if ($request->verify($key)) {
@@ -107,21 +83,14 @@ class SignatureVerifier
         return false;
     }
 
-    /**
-     * @param AuthnRequest    $request
-     * @param ServiceProvider $serviceProvider
-     * @return bool
-     */
-    public function hasValidSignature(AuthnRequest $request, ServiceProvider $serviceProvider)
+    public function hasValidSignature(AuthnRequest $request, ServiceProvider $serviceProvider): bool
     {
         $this->logger->debug(sprintf('Extracting public keys for ServiceProvider "%s"', $serviceProvider->getEntityId()));
 
         $keys = $this->keyLoader->extractPublicKeys($serviceProvider);
 
         $this->logger->debug(sprintf('Found "%d" keys, filtering the keys to get X509 keys', $keys->count()));
-        $x509Keys = $keys->filter(function (Key $key) {
-            return $key instanceof X509;
-        });
+        $x509Keys = $keys->filter(fn(Key $key): bool => $key instanceof X509);
 
         $this->logger->debug(sprintf(
             'Found "%d" X509 keys, attempting to use each for signature verification',
@@ -140,15 +109,12 @@ class SignatureVerifier
     }
 
     /**
-     * @param AuthnRequest           $request
-     * @param X509 $publicKey
-     * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
-    public function isSignedWith(AuthnRequest $request, X509 $publicKey)
+    public function isSignedWith(AuthnRequest $request, X509 $publicKey): bool
     {
         $this->logger->debug(sprintf('Attempting to verify signature with certificate "%s"', $publicKey->getCertificate()));
-        $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type' => 'public'));
+        $key = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, ['type' => 'public']);
         $key->loadKey($publicKey->getCertificate());
 
         $isVerified = $key->verifySignature($request->getSignedRequestQuery(), $request->getSignature());

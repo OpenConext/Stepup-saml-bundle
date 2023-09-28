@@ -20,24 +20,25 @@ namespace Surfnet\SamlBundle\Value;
 
 use DateInterval;
 use DateTime as CoreDateTime;
+use Stringable;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) due to comparison methods
  */
-class DateTime
+class DateTime implements Stringable
 {
     /**
      * This string can also be used with `DateTime::createFromString()`.
      */
-    public const FORMAT = DATE_ATOM;
+    final public const FORMAT = DATE_ATOM;
 
     /**
      * Allows for mocking of time.
      */
-    private static ?self $now;
+    private static ?self $now = null;
 
-    private CoreDateTime $dateTime;
+    private readonly CoreDateTime $dateTime;
 
     public static function now(): self
     {

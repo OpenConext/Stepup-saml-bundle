@@ -32,7 +32,7 @@ class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthentica
     private const AUTH_SESSION_KEY = '__auth/';
     private const SAML_SESSION_KEY = '__saml/';
 
-    public function __construct(private RequestStack $requestStack)
+    public function __construct(private readonly RequestStack $requestStack)
     {
     }
 
@@ -104,8 +104,7 @@ class SessionStorage implements AuthenticatedSessionStateHandler, SamlAuthentica
 
     public function hasRequestId(): bool
     {
-        $value =  $this->requestStack->getSession()->has(self::SAML_SESSION_KEY . 'request_id');
-        return $value;
+        return $this->requestStack->getSession()->has(self::SAML_SESSION_KEY . 'request_id');
     }
 
     public function clearRequestId(): void

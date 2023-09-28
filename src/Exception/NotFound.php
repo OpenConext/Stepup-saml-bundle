@@ -19,8 +19,7 @@ namespace Surfnet\SamlBundle\Exception;
 
 final class NotFound extends RuntimeException
 {
-
-    public static function identityProvider($entityId)
+    public static function identityProvider($entityId): self
     {
         return new self(sprintf('Identity provider "%s" not found', $entityId));
     }

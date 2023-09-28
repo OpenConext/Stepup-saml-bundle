@@ -29,13 +29,10 @@ use Surfnet\SamlBundle\Exception\RuntimeException;
  */
 final class SamlAuthenticationLogger implements LoggerInterface
 {
-    private LoggerInterface $logger;
+    private ?string $sari = null;
 
-    private ?string $sari;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**

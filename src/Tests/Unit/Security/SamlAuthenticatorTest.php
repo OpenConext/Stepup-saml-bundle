@@ -121,7 +121,7 @@ class SamlAuthenticatorTest extends TestCase
     /**
      * @dataProvider provideSupportsParameters
      */
-    public function test_supports($expectedResult, $post, $server, $routeName): void
+    public function test_supports(bool $expectedResult, array $post, array $server, string $routeName): void
     {
         $request = new Request([], $post, [], [], [], $server);
         $this->router->shouldReceive('generate')->with('route-name')->andReturn($routeName);
