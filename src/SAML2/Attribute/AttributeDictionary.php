@@ -74,11 +74,11 @@ class AttributeDictionary
 
         $this->attributeDefinitionsByName[$attributeDefinition->getName()] = $attributeDefinition;
 
-        if ($attributeDefinition->hasUrnMace() !== '' && $attributeDefinition->hasUrnMace() !== '0') {
+        if ($attributeDefinition->hasUrnMace()) {
             $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnMace()] = $attributeDefinition;
         }
 
-        if ($attributeDefinition->hasUrnOid() !== '' && $attributeDefinition->hasUrnOid() !== '0') {
+        if ($attributeDefinition->hasUrnOid()) {
             $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnOid()] = $attributeDefinition;
         }
     }

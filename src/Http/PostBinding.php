@@ -122,7 +122,7 @@ class PostBinding implements HttpBinding
         $authnRequest = ReceivedAuthnRequest::from($receivedRequest->getDecodedSamlRequest());
 
         $currentUri = $this->getFullRequestUri($request);
-        if (!$authnRequest->getDestination() === $currentUri) {
+        if ($authnRequest->getDestination() !== $currentUri) {
             throw new BadRequestHttpException(sprintf(
                 'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
