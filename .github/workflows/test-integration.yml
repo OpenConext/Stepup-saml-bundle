@@ -3,11 +3,16 @@ on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.3' ]
+        php-versions: ['8.1', '8.2']
+        experimental: [false]
+        include:
+          - php-versions: '8.3'
+            experimental: true
     timeout-minutes: 30
-    name: PHP ${{ matrix.php-versions }} on Ubuntu latest
+    name: PHP ${{ matrix.php-versions }} on Ubuntu latest. Experimental == ${{ matrix.experimental }}
     steps:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -17,10 +22,11 @@ jobs:
         uses: actions/checkout@master
       - name: Install dependencies
         run: composer install
-      - name: Run CI tests
+        continue-on-error: ${{ matrix.experimental }}
+      - id: checks
+        name: Run CI tests
         run: composer check
-        env:
-          SYMFONY_ENV: test
+        continue-on-error: ${{ matrix.experimental }}
       - name: Output log files on failure
         if: failure()
         run: tail -2000 /var/log/syslog
