@@ -121,8 +121,23 @@ class PostBinding implements HttpBinding
 
         $authnRequest = ReceivedAuthnRequest::from($receivedRequest->getDecodedSamlRequest());
 
+        /**
+         * 3.4.5.2 Security Considerations
+         * The presence of the user agent intermediary means that the requester and responder cannot rely on the
+         * transport layer for end-end authentication, integrity and confidentiality. URL-encoded messages MAY be
+         * signed to provide origin authentication and integrity if the encoding method specifies a means for signing.
+         *
+         * If the message is signed, the Destination XML attribute in the root SAML element of the protocol
+         * message MUST contain the URL to which the sender has instructed the user agent to deliver the
+         * message. The recipient MUST then verify that the value matches the location at which the message has been received.
+         */
+        $destination = $authnRequest->getDestination();
         $currentUri = $this->getFullRequestUri($request);
-        if ($authnRequest->getDestination() !== $currentUri) {
+        if (!$destination) {
+            throw new BadRequestHttpException('A signed AuthnRequest must have the Destination attribute');
+        }
+
+        if (!str_starts_with($currentUri, $destination)) {
             throw new BadRequestHttpException(sprintf(
                 'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
@@ -148,6 +163,11 @@ class PostBinding implements HttpBinding
 
     private function getFullRequestUri(Request $request): string
     {
+        // Work with the raw request uri
+        if ($request->server->has('REQUEST_URI')) {
+            return $request->server->get('REQUEST_URI');
+        }
+        // Otherwise compose the parts based on the parts of the URI
         return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
     }
 
