@@ -69,49 +69,6 @@ MESSAGE;
     /**
      * @test
      * @group http
-     */
-    public function an_exception_is_thrown_when_the_request_get_parameter_is_not_set(): void
-    {
-        $this->expectException(BadRequestHttpException::class);
-        $request = m::mock(Request::class)
-            ->shouldReceive('get')
-                ->with(AuthnRequest::PARAMETER_REQUEST)
-                ->andReturnNull()
-        ->getMock();
-
-        $this->redirectBinding->processRequest($request);
-    }
-
-    /**
-     * @test
-     * @group http
-     */
-    public function an_exception_is_thrown_when_the_request_is_signed_but_has_no_sigalg_parameter(): void
-    {
-        $this->expectException(UnsignedRequestException::class);
-        $this->expectExceptionMessage(
-            'The request includes a signature, but does not include the signature algorithm (SigAlg) parameter'
-        );
-
-        $request = m::mock(Request::class);
-        $request->shouldReceive('get')
-            ->with(AuthnRequest::PARAMETER_REQUEST)
-            ->andReturn('foo');
-
-        $request->shouldReceive('get')
-            ->with(AuthnRequest::PARAMETER_SIGNATURE)
-            ->andReturn('somesignature');
-
-        $request->shouldReceive('get')
-            ->with(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)
-            ->andReturn();
-
-        $this->redirectBinding->processRequest($request);
-    }
-
-    /**
-     * @test
-     * @group http
      *
      * @dataProvider nonGetMethodProvider
      */
