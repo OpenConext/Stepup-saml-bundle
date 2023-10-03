@@ -18,9 +18,6 @@
 
 namespace Surfnet\SamlBundle\Http;
 
-use Psr\Log\LoggerInterface;
-use RobRichards\XMLSecLibs\XMLSecurityKey;
-use SAML2\Certificate\KeyLoader;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Exception\LogicException;
 use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
@@ -28,13 +25,11 @@ use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
 use Surfnet\SamlBundle\Http\Exception\UnsignedRequestException;
 use Surfnet\SamlBundle\Http\Exception\UnsupportedSignatureException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
-use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use function str_starts_with;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) - not much we can do about it
@@ -46,82 +41,6 @@ class RedirectBinding implements HttpBinding
         private readonly SignatureVerifier $signatureVerifier,
         private readonly ?ServiceProviderRepository $entityRepository = null
     ) {
-    }
-
-    public function processUnsignedRequest(Request $request): AuthnRequest
-    {
-        if (!$this->entityRepository instanceof ServiceProviderRepository) {
-            throw new LogicException(
-                'RedirectBinding::processRequest requires a ServiceProviderRepository to be configured'
-            );
-        }
-
-        $rawSamlRequest = $request->get(AuthnRequest::PARAMETER_REQUEST);
-
-        if (!$rawSamlRequest) {
-            throw new BadRequestHttpException(sprintf(
-                'Required GET parameter "%s" is missing',
-                AuthnRequest::PARAMETER_REQUEST
-            ));
-        }
-
-        $authnRequest = AuthnRequestFactory::createUnsignedFromHttpRequest($request);
-
-        $currentUri = $this->getFullRequestUri($request);
-        if ($authnRequest->getDestination() !== $currentUri) {
-            throw new BadRequestHttpException(sprintf(
-                'Actual Destination "%s" does no match the AuthnRequest Destination "%s"',
-                $currentUri,
-                $authnRequest->getDestination()
-            ));
-        }
-
-        if (!$this->entityRepository->hasServiceProvider($authnRequest->getServiceProvider())) {
-            throw new UnknownServiceProviderException($authnRequest->getServiceProvider());
-        }
-
-        return $authnRequest;
-    }
-
-    public function processSignedRequest(Request $request): AuthnRequest
-    {
-        if (!$this->entityRepository instanceof ServiceProviderRepository) {
-            throw new LogicException(
-                'RedirectBinding::processRequest requires a ServiceProviderRepository to be configured'
-            );
-        }
-
-        $rawSamlRequest = $request->get(AuthnRequest::PARAMETER_REQUEST);
-
-        if (!$rawSamlRequest) {
-            throw new BadRequestHttpException(sprintf(
-                'Required GET parameter "%s" is missing',
-                AuthnRequest::PARAMETER_REQUEST
-            ));
-        }
-
-        if ($request->get(AuthnRequest::PARAMETER_SIGNATURE) && !$request->get(AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM)) {
-            throw new UnsignedRequestException('The request includes a signature, but does not include the signature algorithm (SigAlg) parameter');
-        }
-
-        $authnRequest = AuthnRequestFactory::createSignedFromHttpRequest($request);
-
-        $currentUri = $this->getFullRequestUri($request);
-        if ($authnRequest->getDestination() !== $currentUri) {
-            throw new BadRequestHttpException(sprintf(
-                'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
-                $currentUri,
-                $authnRequest->getDestination()
-            ));
-        }
-
-        if (!$this->entityRepository->hasServiceProvider($authnRequest->getServiceProvider())) {
-            throw new UnknownServiceProviderException($authnRequest->getServiceProvider());
-        }
-
-        $this->verifySignature($authnRequest);
-
-        return $authnRequest;
     }
 
     public function receiveUnsignedAuthnRequestFrom(Request $request): ReceivedAuthnRequest
@@ -211,58 +130,16 @@ class RedirectBinding implements HttpBinding
     }
 
     /**
-     * @throws \Exception
-     *
-     * @deprecated Use receiveSignedAuthnRequestFrom or receiveUnsignedAuthnRequestFrom
-     */
-    public function processRequest(Request $request): AuthnRequest
-    {
-        return $this->processSignedRequest($request);
-    }
-
-    /**
-     * @deprecated Please use the `createResponseFor` method instead
-     */
-    public function createRedirectResponseFor(AuthnRequest $request): RedirectResponse
-    {
-        return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
-    }
-
-    /**
-     * @param $authnRequest
-     */
-    private function verifySignature(AuthnRequest $authnRequest): void
-    {
-        if (!$authnRequest->isSigned()) {
-            throw new UnsignedRequestException('The SAMLRequest is expected to be signed but it was not');
-        }
-
-        if ($authnRequest->getSignatureAlgorithm() !== XMLSecurityKey::RSA_SHA256) {
-            throw new UnsupportedSignatureException(
-                $authnRequest->getSignatureAlgorithm()
-            );
-        }
-
-        $serviceProvider = $this->entityRepository->getServiceProvider(
-            $authnRequest->getServiceProvider()
-        );
-        if (!$this->signatureVerifier->hasValidSignature(
-            $authnRequest,
-            $serviceProvider
-        )
-        ) {
-            throw new SignatureValidationFailedException(
-                'Validation of the signature in the AuthnRequest failed'
-            );
-        }
-    }
-
-    /**
      * @return string
      */
     private function getFullRequestUri(Request $request): string
     {
-        return $request->getRequestUri();
+        // Work with the raw request uri
+        if ($request->server->has('REQUEST_URI')) {
+            return $request->server->get('REQUEST_URI');
+        }
+        // Otherwise compose the parts based on the parts of the URI
+        return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
     }
 
     /**
@@ -271,7 +148,7 @@ class RedirectBinding implements HttpBinding
      */
     public function createResponseFor(AuthnRequest $request): RedirectResponse
     {
-        return $this->createRedirectResponseFor($request);
+        return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
     }
 
     /**
