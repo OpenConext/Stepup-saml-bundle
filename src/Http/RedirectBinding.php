@@ -34,6 +34,7 @@ use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use function str_starts_with;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects) - not much we can do about it
@@ -129,8 +130,13 @@ class RedirectBinding implements HttpBinding
 
         $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
 
+        /**
+         * Defence in depth, unsigned requests do not require the Destination attribute to be set
+         * However, if it is set, we do check if the uri of the request matches the destination.
+         */
+        $destination = $authnRequest->getDestination();
         $currentUri = $this->getFullRequestUri($request);
-        if ($authnRequest->getDestination() !== $currentUri) {
+        if (!is_null($destination) && (!str_starts_with($currentUri, $destination))) {
             throw new BadRequestHttpException(sprintf(
                 'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
@@ -164,10 +170,25 @@ class RedirectBinding implements HttpBinding
 
         $authnRequest = ReceivedAuthnRequest::from($query->getDecodedSamlRequest());
 
+        /**
+         * 3.4.5.2 Security Considerations
+         * The presence of the user agent intermediary means that the requester and responder cannot rely on the
+         * transport layer for end-end authentication, integrity and confidentiality. URL-encoded messages MAY be
+         * signed to provide origin authentication and integrity if the encoding method specifies a means for signing.
+         *
+         * If the message is signed, the Destination XML attribute in the root SAML element of the protocol
+         * message MUST contain the URL to which the sender has instructed the user agent to deliver the
+         * message. The recipient MUST then verify that the value matches the location at which the message has been received.
+         */
+        $destination = $authnRequest->getDestination();
         $currentUri = $this->getFullRequestUri($request);
-        if ($authnRequest->getDestination() !== $currentUri) {
+        if (!$destination) {
+            throw new BadRequestHttpException('A signed AuthnRequest must have the Destination attribute');
+        }
+
+        if (!str_starts_with($currentUri, $destination)) {
             throw new BadRequestHttpException(sprintf(
-                'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
+                'Actual Destination "%s" does not start with the AuthnRequest Destination "%s"',
                 $currentUri,
                 $authnRequest->getDestination()
             ));
@@ -241,7 +262,7 @@ class RedirectBinding implements HttpBinding
      */
     private function getFullRequestUri(Request $request): string
     {
-        return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
+        return $request->getRequestUri();
     }
 
     /**
