@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
+use DOMElement;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Constants;
@@ -28,6 +29,7 @@ use SAML2\XML\saml\NameID;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\SAML2\Extensions\ExtensionsMapperTrait;
+use function sprintf;
 
 final class ReceivedAuthnRequest
 {
@@ -51,6 +53,10 @@ final class ReceivedAuthnRequest
 
         // additional security against XXE Processing vulnerability
         $document = DOMDocumentFactory::fromString($decodedSamlRequest);
+
+        if (!$document->firstChild) {
+            throw new RuntimeException('The SAML message can not be read from the document');
+        }
 
         $authnRequest = Message::fromXML($document->firstChild);
 
@@ -107,7 +113,7 @@ final class ReceivedAuthnRequest
         $nameIdVo->setValue($nameId);
         $nameIdVo->setFormat(($format ?: Constants::NAMEID_UNSPECIFIED));
 
-        $this->request->setNameId($nameId);
+        $this->request->setNameId($nameIdVo);
     }
 
     public function getRequestId(): string
