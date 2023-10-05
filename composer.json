@@ -48,6 +48,7 @@
         "phpcpd": "./ci/qa/phpcpd",
         "phpmd": "./ci/qa/phpmd",
         "phpstan": "./ci/qa/phpstan",
+        "phpstan-baseline": "./ci/qa/phpstan-update-baseline",
         "test": "./ci/qa/phpunit",
         "phpcbf": "./ci/qa/phpcbf"
     },
