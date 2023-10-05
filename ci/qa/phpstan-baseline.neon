@@ -14,3 +14,13 @@ parameters:
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
 			count: 3
 			path: ../../src/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Parameter \\#1 \\$xml of static method SAML2\\\\Message\\:\\:fromXML\\(\\) expects DOMElement, DOMNode\\|null given\\.$#"
+			count: 1
+			path: ../../src/SAML2/AuthnRequestFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$xml of static method SAML2\\\\Message\\:\\:fromXML\\(\\) expects DOMElement, DOMNode given\\.$#"
+			count: 1
+			path: ../../src/SAML2/ReceivedAuthnRequest.php

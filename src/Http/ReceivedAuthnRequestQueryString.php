@@ -168,9 +168,10 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
 
         // Catch any errors gzinflate triggers
         $errorNo = $errorMessage = null;
-        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage): void {
+        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage): bool {
             $errorNo      = $number;
             $errorMessage = $message;
+            return true;
         });
         $samlRequest = gzinflate($samlRequest);
         restore_error_handler();

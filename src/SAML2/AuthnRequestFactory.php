@@ -82,9 +82,10 @@ class AuthnRequestFactory
 
         // Catch any errors gzinflate triggers
         $errorNo = $errorMessage = null;
-        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage): void {
-            $errorNo      = $number;
+        set_error_handler(function ($number, $message) use (&$errorNo, &$errorMessage): bool {
+            $errorNo = $number;
             $errorMessage = $message;
+            return true;
         });
         $samlRequest = gzinflate($samlRequest);
         restore_error_handler();
