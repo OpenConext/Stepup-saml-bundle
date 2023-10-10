@@ -134,12 +134,12 @@ class RedirectBinding implements HttpBinding
      */
     private function getFullRequestUri(Request $request): string
     {
-        // Work with the raw request uri
-        if ($request->server->has('REQUEST_URI')) {
-            return $request->server->get('REQUEST_URI');
+        // Symfony removes the scheme and host from the URI, try to reconstruct it
+        if ($request->server->has('HTTP_HOST')) {
+            return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
         }
-        // Otherwise compose the parts based on the parts of the URI
-        return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
+        // Otherwise return the full REQUEST_URI
+        return $request->server->get('REQUEST_URI');
     }
 
     /**
