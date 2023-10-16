@@ -23,22 +23,27 @@ use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Entity\StaticIdentityProviderRepository;
 use Surfnet\SamlBundle\Entity\StaticServiceProviderRepository;
 use Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException;
+use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use function array_key_exists;
+use function array_pop;
+use function array_shift;
 
 class SurfnetSamlExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
-
+        $config = array_pop($configs);
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+        if () {
+
+        }
         $loader->load('saml_attributes.yaml');
 
         $this->parseHostedConfiguration($config['hosted'], $container);
@@ -54,10 +59,11 @@ class SurfnetSamlExtension extends Extension
         $serviceProvider  = array_merge($configuration['service_provider'], $entityId);
         $identityProvider = array_merge($configuration['identity_provider'], $entityId);
 
-        $container
-            ->getDefinition('surfnet_saml.saml.attribute_dictionary')
-            ->replaceArgument(0, $configuration['attribute_dictionary']['ignore_unknown_attributes']);
-
+        if (array_key_exists('attribute_dictionary', $configuration)) {
+            $container
+                ->getDefinition('surfnet_saml.saml.attribute_dictionary')
+                ->replaceArgument(0, $configuration['attribute_dictionary']['ignore_unknown_attributes']);
+        }
         $this->parseHostedSpConfiguration($serviceProvider, $container);
         $this->parseHostedIdpConfiguration($identityProvider, $container);
         $this->parseMetadataConfiguration($configuration, $container);
@@ -132,9 +138,10 @@ class SurfnetSamlExtension extends Extension
     {
         $this->parseRemoteServiceProviderConfigurations($remoteConfiguration['service_providers'], $container);
 
-        // Parse a configuration where multiple remote IDPs are configured (identity_providers:)
-        $this->parseRemoteIdentityProviderConfigurations($remoteConfiguration['identity_providers'], $container);
-
+        if (array_key_exists('identity_provider', $remoteConfiguration)) {
+            // Parse a configuration where multiple remote IDPs are configured (identity_providers:)
+            $this->parseRemoteIdentityProviderConfigurations($remoteConfiguration['identity_providers'], $container);
+        }
         // Parse a single remote IDP configuration (identity_provider:)
         if (!empty($remoteConfiguration['identity_provider']['enabled'])) {
             $definition = $this->parseRemoteIdentityProviderConfiguration($remoteConfiguration['identity_provider']);
