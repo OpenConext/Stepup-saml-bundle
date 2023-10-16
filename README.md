@@ -36,6 +36,7 @@ framework:
 
 ```yaml
 surfnet_saml:
+    enable_authentication: false
     hosted:
         attribute_dictionary:
             ignore_unknown_attributes: false

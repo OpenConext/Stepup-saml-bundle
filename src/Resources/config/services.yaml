@@ -1,7 +1,7 @@
 services:
     # Remove the public: true default once DI is implemented throughout the StepUp applications. See Pivotal #138225085
     _defaults:
-        public: true
+        public: false
 
     surfnet_saml.saml.attribute_dictionary:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary
@@ -140,50 +140,3 @@ services:
         arguments:
             - '@logger'
 
-    Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger:
-        alias: surfnet_saml.logger
-
-    Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler:
-        arguments:
-            - '@Surfnet\SamlBundle\Security\Authentication\SamlInteractionProvider'
-            - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
-            - '@surfnet_saml.logger'
-
-    Surfnet\SamlBundle\Security\Authentication\SamlInteractionProvider:
-        arguments:
-            - '@surfnet_saml.hosted.service_provider'
-            - '@surfnet_saml.remote.idp'
-            - '@surfnet_saml.http.redirect_binding'
-            - '@surfnet_saml.http.post_binding'
-            - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
-
-    Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler:
-        arguments:
-            - '@security.http_utils'
-            - []
-            - '@logger'
-
-    Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler:
-        arguments:
-            - '@kernel'
-            - '@security.http_utils'
-            - [ ]
-            - '@logger'
-
-    Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator:
-        arguments:
-            - '@surfnet_saml.remote.idp'
-            - '@surfnet_saml.hosted.service_provider'
-            - '@surfnet_saml.http.redirect_binding'
-            - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
-            - '@Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler'
-            - '@Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler'
-            - '@Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler'
-            - '@surfnet_saml.saml_provider'
-            - '@router'
-            - '@logger'
-            - '%env(acs_location_route_name)%'
-
-    Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage:
-        arguments:
-            - '@request_stack'
