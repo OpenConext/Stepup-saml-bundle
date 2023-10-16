@@ -30,6 +30,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    public function __construct(NodeDefinition $rootNode)
+    {
+        $this->addHostedSection($rootNode);
+        $this->addRemoteSection($rootNode);
+    }
+
     /**
      * {@inheritdoc}
      */
