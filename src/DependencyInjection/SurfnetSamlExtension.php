@@ -23,16 +23,12 @@ use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Entity\StaticIdentityProviderRepository;
 use Surfnet\SamlBundle\Entity\StaticServiceProviderRepository;
 use Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException;
-use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
-use function array_key_exists;
-use function array_pop;
-use function array_shift;
 
 class SurfnetSamlExtension extends Extension
 {
@@ -56,9 +52,15 @@ class SurfnetSamlExtension extends Extension
     private function parseHostedConfiguration(array $configuration, ContainerBuilder $container): void
     {
         $entityId = ['entity_id_route' => $configuration['metadata']['entity_id_route']];
-        $serviceProvider  = array_merge($configuration['service_provider'], $entityId);
-        $identityProvider = array_merge($configuration['identity_provider'], $entityId);
+        $serviceProvider = [];
+        if (array_key_exists('service_provider', $configuration)) {
+            $serviceProvider  = array_merge($configuration['service_provider'], $entityId);
+        }
 
+        $identityProvider = [];
+        if (array_key_exists('identity_provider', $configuration)) {
+            $identityProvider = array_merge($configuration['identity_provider'], $entityId);
+        }
         if (array_key_exists('attribute_dictionary', $configuration)) {
             $container
                 ->getDefinition('surfnet_saml.saml.attribute_dictionary')
@@ -110,7 +112,7 @@ class SurfnetSamlExtension extends Extension
             'isIdP'         => false
         ];
 
-        if ($configuration['service_provider']['enabled']) {
+        if (array_key_exists('service_provider', $configuration) && $configuration['service_provider']['enabled']) {
             $spConfiguration = $configuration['service_provider'];
             $metadataConfiguration = [
                 ...$metadataConfiguration,
@@ -154,14 +156,14 @@ class SurfnetSamlExtension extends Extension
 
     /**
      * @param $container
-     * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
+     * @throws SamlInvalidConfigurationException
      */
     private function parseRemoteIdentityProviderConfigurations(array $identityProviders, ContainerBuilder $container): void
     {
         $definitions = array_map(fn($config) => $this->parseRemoteIdentityProviderConfiguration($config), $identityProviders);
 
         $definition = new Definition(StaticIdentityProviderRepository::class, [
-          $definitions
+            $definitions
         ]);
         $definition->setPublic(true);
         $container->setDefinition('surfnet_saml.remote.identity_providers', $definition);
@@ -191,7 +193,7 @@ class SurfnetSamlExtension extends Extension
 
     /**
      * @param $container
-     * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
+     * @throws SamlInvalidConfigurationException
      */
     private function parseRemoteServiceProviderConfigurations(array $serviceProviders, ContainerBuilder $container): void
     {
@@ -207,7 +209,7 @@ class SurfnetSamlExtension extends Extension
     /**
      *
      * @return Definition
-     * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
+     * @throws SamlInvalidConfigurationException
      */
     private function parseRemoteServiceProviderConfiguration(
         array $serviceProvider
@@ -229,7 +231,7 @@ class SurfnetSamlExtension extends Extension
      *   The provider configuration.
      *
      * @return array
-     * @throws \Surfnet\SamlBundle\Exception\SamlInvalidConfigurationException
+     * @throws SamlInvalidConfigurationException
      *   the certificate data
      */
     private function parseCertificateData(string $path, array $provider): array
