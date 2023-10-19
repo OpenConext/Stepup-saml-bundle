@@ -15,22 +15,12 @@ Developed as part of the [OpenConext-Stepup Gateway][2] and related OpenConext-S
   composer require surfnet/stepup-saml-bundle
   ```
 
-How to install with SF4.3+
+How to install with SF6
  
 1. Require the bundle in the composer.json (version 4.1.9 or higher)
 2. Enable the bundle in `config/bundles.php` add to the return statement: `Surfnet\SamlBundle\SurfnetSamlBundle::class => ['all' => true],`
 3. Specify the bundle configuration in `config/packages/surfnet_saml.yaml`, consult the configuration section below for available options.
- 
-And, on top of that you should explicitly configure the Twig templating engine:
-
-In `config/packages/framework.yaml` add:
-
-```yaml
-framework:
-    templating:
-        engines:
-            - twig
-```      
+4. Configure the templates to the Twig Bundle by adding `'%kernel.project_dir%/vendor/surfnet/stepup-saml-bundle/templates': 'SurfnetSaml'` to your twig.yaml config file(s) 
 
 ## Configuration
 
