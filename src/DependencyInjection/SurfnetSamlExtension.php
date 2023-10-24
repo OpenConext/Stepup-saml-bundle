@@ -84,7 +84,7 @@ class SurfnetSamlExtension extends Extension
             ->getDefinition('surfnet_saml.configuration.hosted_entities')
             ->replaceArgument(3, $identityProvider);
 
-        if (!$identityProvider['enabled']) {
+        if (empty($identityProvider) || !$identityProvider['enabled']) {
             return;
         }
 
@@ -122,7 +122,7 @@ class SurfnetSamlExtension extends Extension
             ];
         }
 
-        if ($configuration['identity_provider']['enabled']) {
+        if (array_key_exists('identity_provider', $configuration) && $configuration['identity_provider']['enabled']) {
             $metadataConfiguration = array_merge(
                 $metadataConfiguration,
                 [
@@ -138,9 +138,11 @@ class SurfnetSamlExtension extends Extension
 
     private function parseRemoteConfiguration(array $remoteConfiguration, ContainerBuilder $container): void
     {
-        $this->parseRemoteServiceProviderConfigurations($remoteConfiguration['service_providers'], $container);
+        if (array_key_exists('service_providers', $remoteConfiguration)) {
+            $this->parseRemoteServiceProviderConfigurations($remoteConfiguration['service_providers'], $container);
+        }
 
-        if (array_key_exists('identity_provider', $remoteConfiguration)) {
+        if (array_key_exists('identity_providers', $remoteConfiguration)) {
             // Parse a configuration where multiple remote IDPs are configured (identity_providers:)
             $this->parseRemoteIdentityProviderConfigurations($remoteConfiguration['identity_providers'], $container);
         }
