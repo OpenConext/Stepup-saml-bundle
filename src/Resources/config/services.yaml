@@ -2,6 +2,8 @@ services:
     # Remove the public: true default once DI is implemented throughout the StepUp applications. See Pivotal #138225085
     _defaults:
         public: false
+        autowire: true
+        autoconfigure: true
 
     surfnet_saml.saml.attribute_dictionary:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary
@@ -43,6 +45,9 @@ services:
 
     Surfnet\SamlBundle\Entity\IdentityProvider:
         alias: surfnet_saml.hosted.identity_provider
+
+    Surfnet\SamlBundle\EventSubscriber\BridgeContainerBootListener:
+        tags: ['kernel.event_listener']
 
     surfnet_saml.http.binding_factory:
         class: Surfnet\SamlBundle\Http\HttpBindingFactory
@@ -103,8 +108,6 @@ services:
 
     surfnet_saml.saml2.bridge_container:
         class: Surfnet\SamlBundle\SAML2\BridgeContainer
-        arguments:
-            - '@logger'
 
     Surfnet\SamlBundle\SAML2\BridgeContainer:
         alias: surfnet_saml.saml2.bridge_container
@@ -128,8 +131,6 @@ services:
     surfnet_saml.saml2.response_processor:
         public: false
         class: SAML2\Response\Processor
-        arguments:
-            - '@logger'
 
     SAML2\Response\Processor:
         public: false
@@ -137,6 +138,4 @@ services:
 
     surfnet_saml.logger:
         class: Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger
-        arguments:
-            - '@logger'
 
