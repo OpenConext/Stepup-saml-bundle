@@ -34,16 +34,22 @@ class SurfnetSamlExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = array_pop($configs);
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
-        if (array_key_exists('enable_authentication', $config) && $config['enable_authentication'] === true) {
+        $mergedConfig = [];
+        // Read the configs (in reverse order to align to the override mechanism) and parse them
+        foreach (array_reverse($configs) as $config) {
+            $mergedConfig = array_merge($mergedConfig, $config);
+        }
+        if (array_key_exists('enable_authentication', $mergedConfig) && $mergedConfig['enable_authentication'] === true) {
             $loader->load('services_authentication.yaml');
         }
         $loader->load('saml_attributes.yaml');
 
-        $this->parseHostedConfiguration($config['hosted'], $container);
-        $this->parseRemoteConfiguration($config['remote'], $container);
+        $this->parseHostedConfiguration($mergedConfig['hosted'], $container);
+        if (array_key_exists('remote', $mergedConfig)) {
+            $this->parseRemoteConfiguration($mergedConfig['remote'], $container);
+        }
     }
 
     /**
