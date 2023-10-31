@@ -21,6 +21,7 @@ namespace Surfnet\SamlBundle\Entity;
 use SAML2\Configuration\PrivateKey;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use function array_key_exists;
 
 class HostedEntities
 {
@@ -45,7 +46,7 @@ class HostedEntities
             return $this->serviceProvider;
         }
 
-        if (!$this->serviceProviderConfiguration['enabled']) {
+        if (!array_key_exists('enabled', $this->serviceProviderConfiguration)) {
             return null;
         }
 
