@@ -34,7 +34,7 @@ class SurfnetSamlExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $config = array_pop($configs);
+        $config = array_shift($configs);
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
         if (array_key_exists('enable_authentication', $config) && $config['enable_authentication'] === true) {
