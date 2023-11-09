@@ -20,10 +20,12 @@ namespace Surfnet\SamlBundle\Security\Authentication;
 
 use Psr\Log\LoggerInterface;
 use SAML2\Assertion;
+use SAML2\Compat\ContainerSingleton;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
+use Surfnet\SamlBundle\SAML2\BridgeContainer;
 use Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler;
 use Surfnet\SamlBundle\Security\Authentication\Passport\Badge\SamlAttributesBadge;
 use Surfnet\SamlBundle\Security\Authentication\Provider\SamlProviderInterface;
@@ -62,12 +64,25 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
         private readonly SamlProviderInterface $samlProvider,
         private readonly RouterInterface $router,
         private readonly LoggerInterface $logger,
-        private readonly string $acsRouteName
+        private readonly string $acsRouteName,
+        private readonly BridgeContainer $bridgeContainer //Todo paul: Dit moet niet zo werken. zie comment hieronder
     ) {
     }
 
+    /**
+     * Todo Paul: in services_authentication.yaml::Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator
+     * heb ik nu een harde route ingesteld. Dat moet nog gefixt worden naar de configurabele optie.
+     * voorheen stond hier: -
+     *
+     * '%env(acs_location_route_name)%'
+     * en nu:
+     * 'selfservice_serviceprovider_consume_assertion'
+     */
+
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
+        ContainerSingleton::setContainer($this->bridgeContainer); // Todo paul: Wederom de event listener (BridgeContainerBootListener) die de juiste container zet had dit al moeten doen..
+
         $authnRequest = AuthnRequestFactory::createNewRequest(
             $this->serviceProvider,
             $this->identityProvider

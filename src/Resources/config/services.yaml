@@ -1,5 +1,4 @@
 services:
-    # Remove the public: true default once DI is implemented throughout the StepUp applications. See Pivotal #138225085
     _defaults:
         public: false
         autowire: true
