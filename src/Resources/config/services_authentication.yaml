@@ -1,13 +1,28 @@
 services:
     _defaults:
         public: false
+        autowire: true
+        autoconfigure: true
+
+    Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger:
+        alias: surfnet_saml.logger
+
+    Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler:
+        arguments:
+            - '@security.http_utils'
+            - []
+            - '@logger'
+
+    Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler:
+        arguments:
+            - '@kernel'
+            - '@security.http_utils'
+            - [ ]
+            - '@logger'
 
     Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage:
         arguments:
             - '@request_stack'
-
-    Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger:
-        alias: surfnet_saml.logger
 
     Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler:
         arguments:
@@ -23,29 +38,10 @@ services:
             - '@surfnet_saml.http.post_binding'
             - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
 
-    Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler:
-        arguments:
-            - '@security.http_utils'
-            - []
-            - '@logger'
-
-    Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler:
-        arguments:
-            - '@kernel'
-            - '@security.http_utils'
-            - [ ]
-            - '@logger'
-
     Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator:
         arguments:
-            - '@surfnet_saml.remote.idp'
-            - '@surfnet_saml.hosted.service_provider'
-            - '@surfnet_saml.http.redirect_binding'
-            - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
-            - '@Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler'
-            - '@Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler'
-            - '@Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler'
-            - '@surfnet_saml.saml_provider'
-            - '@router'
-            - '@logger'
-            - '%env(acs_location_route_name)%'
+            $acsRouteName: '%acs_location_route_name%'
+            $failureHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler'
+            $samlAuthenticationStateHandler: '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
+            $samlProvider: '@surfnet_saml.saml_provider'
+            $successHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler'
