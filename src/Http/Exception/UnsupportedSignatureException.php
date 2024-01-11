@@ -23,9 +23,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UnsupportedSignatureException extends BadRequestHttpException implements Exception
 {
-    /**
-     * @param string $signatureAlgorithm
-     */
     public function __construct(private readonly string $signatureAlgorithm)
     {
         parent::__construct(

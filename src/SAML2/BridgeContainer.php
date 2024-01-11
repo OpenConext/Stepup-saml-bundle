@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\SAML2;
 
 use BadMethodCallException;
+use DOMElement;
 use Psr\Log\LoggerInterface;
 use SAML2\Compat\AbstractContainer;
 
@@ -50,7 +51,7 @@ class BridgeContainer extends AbstractContainer
 
     public function debugMessage($message, $type): void
     {
-        if ($message instanceof \DOMElement) {
+        if ($message instanceof DOMElement) {
             $message = $message->ownerDocument->saveXML($message);
         }
 
@@ -59,37 +60,32 @@ class BridgeContainer extends AbstractContainer
 
     public function redirect($url, $data = []): void
     {
-        throw new BadMethodCallException(sprintf(
-            "%s:%s may not be called in the Surfnet\\SamlBundle",
-            self::class,
-            __METHOD__
-        ));
+        $this->notSupported(__METHOD__);
     }
 
     public function postRedirect($url, $data = []): void
     {
-        throw new BadMethodCallException(sprintf(
-            "%s:%s may not be called in the Surfnet\\SamlBundle",
-            self::class,
-            __METHOD__
-        ));
+        $this->notSupported(__METHOD__);
     }
 
+    /** @throws BadMethodCallException */
     public function getTempDir(): string
     {
-        throw new BadMethodCallException(sprintf(
-            "%s:%s may not be called in the Surfnet\\SamlBundle",
-            self::class,
-            __METHOD__
-        ));
+        $this->notSupported(__METHOD__);
+        return '';
     }
 
     public function writeFile(string $filename, string $data, int $mode = null): void
     {
+        $this->notSupported(__METHOD__);
+    }
+
+    public function notSupported(string $method): void
+    {
         throw new BadMethodCallException(sprintf(
             "%s:%s may not be called in the Surfnet\\SamlBundle",
             self::class,
-            __METHOD__
+            $method
         ));
     }
 }

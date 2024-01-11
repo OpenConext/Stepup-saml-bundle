@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Http;
 
+use Exception;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
@@ -27,26 +28,14 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
     public const PARAMETER_REQUEST = 'SAMLRequest';
     public const PARAMETER_RELAY_STATE = 'RelayState';
 
-    /**
-     * @var string|null
-     */
-    private $relayState;
+    private ?string $relayState;
 
     private ?ReceivedAuthnRequest $receivedRequest = null;
 
-    /**
-     * @param string $samlRequest
-     */
-    private function __construct(private $samlRequest)
+    private function __construct(private readonly string $samlRequest)
     {
     }
 
-    /**
-     * @return ReceivedAuthnRequestPost
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity) Extensive validation
-     * @SuppressWarnings(PHPMD.NPathComplexity) Extensive validation
-     */
     public static function parse(array $parameters): self
     {
         if (base64_decode((string) $parameters[self::PARAMETER_REQUEST], true) === false) {
@@ -68,42 +57,28 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
         return $parsed;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRelayState(): bool
     {
         return $this->relayState !== null;
     }
 
-    /**
-     * @return string
-     */
     public function getDecodedSamlRequest(): string|bool
     {
         return base64_decode($this->samlRequest);
     }
 
-    /**
-     * @return string
-     */
-    public function getSamlRequest()
+    public function getSamlRequest(): string
     {
         return $this->samlRequest;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getRelayState()
+    public function getRelayState(): ?string
     {
         return $this->relayState;
     }
 
     /**
-     * @param XMLSecurityKey $key
-     * @return bool
-     * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
+     * @throws Exception when signature is invalid (@see SAML2\Utils::validateSignature)
      */
     public function verify(XMLSecurityKey $key): bool
     {

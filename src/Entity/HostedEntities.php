@@ -37,16 +37,15 @@ class HostedEntities
     ) {
     }
 
-    /**
-     * @return null|ServiceProvider
-     */
     public function getServiceProvider(): ?ServiceProvider
     {
         if (!empty($this->serviceProvider)) {
             return $this->serviceProvider;
         }
 
-        if (!array_key_exists('enabled', $this->serviceProviderConfiguration)) {
+        if (is_null($this->serviceProviderConfiguration) ||
+            !array_key_exists('enabled', $this->serviceProviderConfiguration)
+        ) {
             return null;
         }
 
@@ -58,9 +57,6 @@ class HostedEntities
         return $this->serviceProvider = new ServiceProvider($configuration);
     }
 
-    /**
-     * @return null|IdentityProvider
-     */
     public function getIdentityProvider(): ?IdentityProvider
     {
         if (!empty($this->identityProvider)) {
@@ -95,7 +91,7 @@ class HostedEntities
     /**
      * @param string|array $routeDefinition
      */
-    private function generateUrl(mixed $routeDefinition): string
+    private function generateUrl(string|array $routeDefinition): string
     {
         $route      = is_array($routeDefinition) ? $routeDefinition['route'] : $routeDefinition;
         $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];

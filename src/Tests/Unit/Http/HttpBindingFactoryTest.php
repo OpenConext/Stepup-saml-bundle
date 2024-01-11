@@ -21,7 +21,10 @@ namespace Surfnet\SamlBundle\Tests\Http;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Http\HttpBindingFactory;
+use Surfnet\SamlBundle\Http\PostBinding;
+use Surfnet\SamlBundle\Http\RedirectBinding;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,11 +40,11 @@ class HttpBindingFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        $redirectBinding = Mockery::mock('\\' . \Surfnet\SamlBundle\Http\RedirectBinding::class);
-        $postBinding = Mockery::mock('\\' . \Surfnet\SamlBundle\Http\PostBinding::class);
+        $redirectBinding = Mockery::mock(RedirectBinding::class);
+        $postBinding = Mockery::mock(PostBinding::class);
         $this->factory = new HttpBindingFactory($redirectBinding, $postBinding);
-        $this->request = Mockery::mock('\\' . \Symfony\Component\HttpFoundation\Request::class);
-        $this->bag = Mockery::mock('\\' . \Symfony\Component\HttpFoundation\ParameterBag::class);
+        $this->request = Mockery::mock(Request::class);
+        $this->bag = Mockery::mock(ParameterBag::class);
         $this->request->request = $this->bag;
         $this->request->query = $this->bag;
     }
@@ -63,7 +66,7 @@ class HttpBindingFactoryTest extends TestCase
 
         $binding = $this->factory->build($this->request);
 
-        $this->assertInstanceOf('\\' . \Surfnet\SamlBundle\Http\RedirectBinding::class, $binding);
+        $this->assertInstanceOf(RedirectBinding::class, $binding);
     }
 
     /**
@@ -83,7 +86,7 @@ class HttpBindingFactoryTest extends TestCase
 
         $binding = $this->factory->build($this->request);
 
-        $this->assertInstanceOf('\\' . \Surfnet\SamlBundle\Http\PostBinding::class, $binding);
+        $this->assertInstanceOf(PostBinding::class, $binding);
     }
 
     /**
@@ -93,7 +96,7 @@ class HttpBindingFactoryTest extends TestCase
     public function a_put_binding_can_not_be_built(): void
     {
         $this->expectExceptionMessage("Request type of \"PUT\" is not supported.");
-        $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->request
             ->shouldReceive('getMethod')
             ->andReturn(Request::METHOD_PUT);
@@ -108,7 +111,7 @@ class HttpBindingFactoryTest extends TestCase
     public function an_invalid_post_authn_request_is_rejected(): void
     {
         $this->expectExceptionMessage("POST-binding is supported for SAMLRequest.");
-        $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->request
             ->shouldReceive('getMethod')
             ->andReturn(Request::METHOD_POST);
@@ -128,7 +131,7 @@ class HttpBindingFactoryTest extends TestCase
     public function an_invalid_get_authn_request_is_rejected(): void
     {
         $this->expectExceptionMessage("Redirect binding is supported for SAMLRequest and Response.");
-        $this->expectException(\Surfnet\SamlBundle\Exception\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->request
             ->shouldReceive('getMethod')
             ->andReturn(Request::METHOD_GET);
