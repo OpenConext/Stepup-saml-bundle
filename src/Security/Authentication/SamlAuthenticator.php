@@ -66,26 +66,11 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
         private readonly RouterInterface $router,
         private readonly LoggerInterface $logger,
         private readonly string $acsRouteName,
-        private readonly BridgeContainer $bridgeContainer //Todo paul: Dit moet niet zo werken. zie comment hieronder
     ) {
     }
 
-    /**
-     * Todo Paul: in services_authentication.yaml::Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator
-     * heb ik nu een harde route ingesteld. Dat moet nog gefixt worden naar de configurabele optie.
-     * voorheen stond hier: -
-     *
-     * '%env(acs_location_route_name)%'
-     * en nu:
-     * 'selfservice_serviceprovider_consume_assertion'
-     */
-
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
-        // Todo paul: Wederom de event listener (BridgeContainerBootListener) die de juiste container zet had
-        // dit al moeten doen..
-        ContainerSingleton::setContainer($this->bridgeContainer);
-
         $authnRequest = AuthnRequestFactory::createNewRequest(
             $this->serviceProvider,
             $this->identityProvider

@@ -31,6 +31,7 @@ use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\Environment;
+use function dirname;
 
 class MetadataFactoryTest extends TestCase
 {
@@ -47,7 +48,7 @@ class MetadataFactoryTest extends TestCase
         // Load the XML template from filesystem as the FilesystemLoader does not honour the bundle prefix
         $loader = new ArrayLoader(
             [
-                '@SurfnetSaml/Metadata/metadata.xml.twig' => file_get_contents(__DIR__ . '/../../../Resources/views/Metadata/metadata.xml.twig')
+                '@SurfnetSaml/Metadata/metadata.xml.twig' => file_get_contents(dirname(__DIR__, 4) . '/templates/Metadata/metadata.xml.twig')
             ]
         );
         $this->twig = new Environment($loader);
