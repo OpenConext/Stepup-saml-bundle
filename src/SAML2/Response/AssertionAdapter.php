@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\SAML2\Response;
 
 use SAML2\Assertion;
+use SAML2\XML\saml\NameID;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeSetInterface;
 use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
@@ -27,21 +28,17 @@ class AssertionAdapter
 {
     private readonly AttributeSetInterface $attributeSet;
 
-    private readonly AttributeDictionary $attributeDictionary;
-
-    public function __construct(private readonly Assertion $assertion, AttributeDictionary $attributeDictionary)
-    {
+    public function __construct(
+        private readonly Assertion $assertion,
+        private readonly AttributeDictionary $attributeDictionary
+    ) {
         $this->attributeSet = ConfigurableAttributeSetFactory::createFrom($assertion, $attributeDictionary);
-        $this->attributeDictionary = $attributeDictionary;
     }
 
-    /**
-     * @return string
-     */
     public function getNameID(): ?string
     {
         $data = $this->assertion->getNameId();
-        if ($data instanceof \SAML2\XML\saml\NameID) {
+        if ($data instanceof NameID) {
             return $data->getValue();
         }
 
@@ -66,9 +63,6 @@ class AssertionAdapter
         return $attribute->getValue();
     }
 
-    /**
-     * @return AttributeSetInterface
-     */
     public function getAttributeSet(): AttributeSetInterface
     {
         return $this->attributeSet;

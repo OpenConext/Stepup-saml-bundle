@@ -163,7 +163,6 @@ class SurfnetSamlExtension extends Extension
     }
 
     /**
-     * @param $container
      * @throws SamlInvalidConfigurationException
      */
     private function parseRemoteIdentityProviderConfigurations(array $identityProviders, ContainerBuilder $container): void
@@ -177,10 +176,7 @@ class SurfnetSamlExtension extends Extension
         $container->setDefinition('surfnet_saml.remote.identity_providers', $definition);
     }
 
-    /**
-     * @return Definition
-     */
-    private function parseRemoteIdentityProviderConfiguration(array $identityProvider): \Symfony\Component\DependencyInjection\Definition
+    private function parseRemoteIdentityProviderConfiguration(array $identityProvider): Definition
     {
         $definition = new Definition(IdentityProvider::class);
         $configuration = [
@@ -200,7 +196,6 @@ class SurfnetSamlExtension extends Extension
     }
 
     /**
-     * @param $container
      * @throws SamlInvalidConfigurationException
      */
     private function parseRemoteServiceProviderConfigurations(array $serviceProviders, ContainerBuilder $container): void
@@ -215,13 +210,10 @@ class SurfnetSamlExtension extends Extension
     }
 
     /**
-     *
-     * @return Definition
      * @throws SamlInvalidConfigurationException
      */
-    private function parseRemoteServiceProviderConfiguration(
-        array $serviceProvider
-    ): \Symfony\Component\DependencyInjection\Definition {
+    private function parseRemoteServiceProviderConfiguration(array $serviceProvider): Definition
+    {
         $configuration = $this->parseCertificateData('surfnet_saml.remote.service_provider[]', $serviceProvider);
         $configuration['entityId'] = $serviceProvider['entity_id'];
         $configuration['assertionConsumerUrl'] = $serviceProvider['assertion_consumer_service_url'];

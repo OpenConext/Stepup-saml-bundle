@@ -21,6 +21,7 @@ namespace Surfnet\SamlBundle\Tests\Component\Extensions;
 use DOMDocument;
 use DOMNode;
 use DOMXPath;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use RobRichards\XMLSecLibs\XMLSecEnc;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;
@@ -106,9 +107,6 @@ class AuthnRequestExtensionsTest extends TestCase
         );
     }
 
-    /**
-     * @return string
-     */
     private function encodeDataToSignWithPhpsHttpBuildQuery(array $params): string
     {
         return http_build_query($params);
@@ -117,8 +115,7 @@ class AuthnRequestExtensionsTest extends TestCase
     /**
      * @param callable $prepareDataToSign Expects an associative array of data to sign and returns a string to sign
      * @param null|string $customSignature Signature to be used instead of signature to sign data to sign with
-     * @return AuthnRequest
-     * @throws \Exception
+     * @throws Exception
      */
     private function createSignedAuthnRequest(
         array $prepareDataToSign,

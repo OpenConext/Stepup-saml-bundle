@@ -28,12 +28,16 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * When a request is triggered, set the ContainerSingleton to
- * be the BridgeContainer
+ * be the BridgeContainer. We use the BridgeContainer to add some
+ * convenience methods to the container like getting a specific
+ * logger, or to create a traceable request id (sari).
+ *
+ * This is added in an event subscriber to ensure the container
+ * is updated in time before other services start using it.
  */
 class BridgeContainerBootListener implements EventSubscriberInterface
 {
-    public function __construct(
-        private readonly BridgeContainer $bridgeContainer)
+    public function __construct(private readonly BridgeContainer $bridgeContainer)
     {
     }
 

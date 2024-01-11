@@ -26,8 +26,6 @@ class SamlAttributeRegistrationCompilerPass implements CompilerPassInterface
 {
     /**
      * @param ContainerBuilder $container
-     *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable) - $tagData is simply not used
      */
     public function process(ContainerBuilder $container): void
     {

@@ -24,6 +24,7 @@ use PHPUnit\Framework\TestCase;
 use SAML2\Configuration\PrivateKey;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
+use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +40,7 @@ class AuthnRequestFactoryTest extends TestCase
     public function an_exception_is_thrown_when_a_request_is_not_properly_base64_encoded(): void
     {
         $this->expectExceptionMessage("Failed decoding the request, did not receive a valid base64 string");
-        $this->expectException(\Surfnet\SamlBundle\Http\Exception\InvalidRequestException::class);
+        $this->expectException(InvalidRequestException::class);
         $invalidCharacter = '$';
         $queryParams      = [AuthnRequest::PARAMETER_REQUEST => $invalidCharacter];
         $serverParams     = [
@@ -57,7 +58,7 @@ class AuthnRequestFactoryTest extends TestCase
     public function an_exception_is_thrown_when_a_request_cannot_be_inflated(): void
     {
         $this->expectExceptionMessage("Failed inflating the request;");
-        $this->expectException(\Surfnet\SamlBundle\Http\Exception\InvalidRequestException::class);
+        $this->expectException(InvalidRequestException::class);
         $nonDeflated  = base64_encode('nope, not deflated');
         $queryParams  = [AuthnRequest::PARAMETER_REQUEST => $nonDeflated];
         $serverParams = [

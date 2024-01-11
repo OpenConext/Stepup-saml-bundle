@@ -337,7 +337,7 @@ AUTHNREQUEST_NO_SUBJECT;
 
     public function queryStringWithRepeatedSamlParametersProvider(): array
     {
-        $queryString = $queryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
+        $queryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state'
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE . '=' . urlencode(base64_encode('signature'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE_ALGORITHM . '=signature-algorithm';

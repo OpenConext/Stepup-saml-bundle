@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\Metadata;
 
-use SAML2\Certificate\PrivateKeyLoader;
 use SAML2\DOMDocumentFactory;
 use SAML2\Utilities\Certificate;
 use SAML2\Utilities\File;

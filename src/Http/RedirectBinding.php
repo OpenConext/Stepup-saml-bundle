@@ -129,9 +129,6 @@ class RedirectBinding implements HttpBinding
         return $authnRequest;
     }
 
-    /**
-     * @return string
-     */
     private function getFullRequestUri(Request $request): string
     {
         // Symfony removes the scheme and host from the URI, try to reconstruct it
@@ -142,19 +139,11 @@ class RedirectBinding implements HttpBinding
         return $request->server->get('REQUEST_URI');
     }
 
-    /**
-     * @param AuthnRequest $request
-     * @return RedirectResponse
-     */
     public function createResponseFor(AuthnRequest $request): RedirectResponse
     {
         return new RedirectResponse($request->getDestination() . '?' . $request->buildRequestQuery());
     }
 
-    /**
-     * @param Request $request
-     * @return ReceivedAuthnRequestQueryString
-     */
     public function getAuthnRequestQueryString(Request $request): ReceivedAuthnRequestQueryString
     {
         if (!$this->entityRepository instanceof ServiceProviderRepository) {

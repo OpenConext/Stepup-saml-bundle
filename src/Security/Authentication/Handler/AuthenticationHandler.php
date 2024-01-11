@@ -20,7 +20,6 @@ namespace Surfnet\SamlBundle\Security\Authentication\Handler;
 
 use SAML2\Assertion;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 interface AuthenticationHandler
 {

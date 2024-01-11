@@ -31,7 +31,6 @@ use Surfnet\SamlBundle\Http\Exception\UnsignedRequestException;
 use Surfnet\SamlBundle\Http\ReceivedAuthnRequestQueryString;
 use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\Http\RedirectBinding as SamlBundleRedirectBinding;
-use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

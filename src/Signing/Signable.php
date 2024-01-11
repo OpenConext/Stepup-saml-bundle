@@ -18,8 +18,8 @@
 
 namespace Surfnet\SamlBundle\Signing;
 
-use \DOMElement;
-use \DOMNode;
+use DOMElement;
+use DOMNode;
 
 interface Signable
 {

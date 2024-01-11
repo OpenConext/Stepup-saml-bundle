@@ -19,7 +19,6 @@ services:
         alias: surfnet_saml.configuration.metadata
 
     surfnet_saml.configuration.hosted_entities:
-        public: false
         class: Surfnet\SamlBundle\Entity\HostedEntities
         arguments:
             - '@router'
@@ -29,7 +28,6 @@ services:
 
     Surfnet\SamlBundle\Entity\HostedEntities:
         alias: surfnet_saml.configuration.hosted_entities
-        public: false
 
     surfnet_saml.hosted.service_provider:
         class:   Surfnet\SamlBundle\Entity\ServiceProvider
@@ -112,27 +110,21 @@ services:
         alias: surfnet_saml.saml2.bridge_container
 
     surfnet_saml.saml2.keyloader:
-        public: false
         class: SAML2\Certificate\KeyLoader
 
     SAML2\Certificate\KeyLoader:
-        public: false
         alias: surfnet_saml.saml2.keyloader
 
     surfnet_saml.saml2.privatekeyloader:
-        public: false
         class: SAML2\Certificate\PrivateKeyLoader
 
     SAML2\Certificate\PrivateKeyLoader:
-        public: false
         alias: surfnet_saml.saml2.privatekeyloader
 
     surfnet_saml.saml2.response_processor:
-        public: false
         class: SAML2\Response\Processor
 
     SAML2\Response\Processor:
-        public: false
         alias: surfnet_saml.saml2.response_processor
 
     surfnet_saml.logger:
