@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\Tests;
 
-use Error;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;

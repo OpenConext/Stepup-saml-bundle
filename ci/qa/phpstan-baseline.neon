@@ -17,7 +17,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
-			count: 5
+			count: 6
 			path: ../../src/DependencyInjection/Configuration.php
 
 		-
@@ -107,7 +107,7 @@ parameters:
 
 		-
 			message: "#^Offset 'enabled' does not exist on array\\|null\\.$#"
-			count: 2
+			count: 1
 			path: ../../src/Entity/HostedEntities.php
 
 		-
@@ -209,11 +209,6 @@ parameters:
 			message: "#^Method Surfnet\\\\SamlBundle\\\\Exception\\\\UnknownUrnException\\:\\:__construct\\(\\) has parameter \\$urn with no type specified\\.$#"
 			count: 1
 			path: ../../src/Exception/UnknownUrnException.php
-
-		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Http\\\\Exception\\\\UnknownServiceProviderException\\:\\:getEntityId\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../../src/Http/Exception/UnknownServiceProviderException.php
 
 		-
 			message: "#^Method Surfnet\\\\SamlBundle\\\\Http\\\\PostBinding\\:\\:getFullRequestUri\\(\\) should return string but returns mixed\\.$#"
@@ -659,13 +654,3 @@ parameters:
 			message: "#^Parameter \\#2 \\$signature of method RobRichards\\\\XMLSecLibs\\\\XMLSecurityKey\\:\\:verifySignature\\(\\) expects string, string\\|null given\\.$#"
 			count: 1
 			path: ../../src/Signing/SignatureVerifier.php
-
-		-
-			message: "#^Cannot call method get\\(\\) on Symfony\\\\Component\\\\DependencyInjection\\\\ContainerInterface\\|null\\.$#"
-			count: 1
-			path: ../../src/SurfnetSamlBundle.php
-
-		-
-			message: "#^Parameter \\#1 \\$container of static method SAML2\\\\Compat\\\\ContainerSingleton\\:\\:setContainer\\(\\) expects SAML2\\\\Compat\\\\AbstractContainer, object given\\.$#"
-			count: 1
-			path: ../../src/SurfnetSamlBundle.php

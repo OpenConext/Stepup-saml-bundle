@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
+use Exception;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Certificate\PrivateKeyLoader;
@@ -69,7 +70,7 @@ class AuthnRequestFactory
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private static function createAuthnRequestFromHttpRequest(
         Request $httpRequest

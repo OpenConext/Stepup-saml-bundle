@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\SAML2\Attribute;
 
-use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\LogicException;
 
 class AttributeDefinition

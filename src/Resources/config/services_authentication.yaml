@@ -1,48 +1,48 @@
 services:
-    _defaults:
-        public: false
-        autowire: true
-        autoconfigure: true
+  _defaults:
+    public: false
+    autowire: true
+    autoconfigure: true
 
-    Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger:
-        alias: surfnet_saml.logger
+  Surfnet\SamlBundle\Monolog\SamlAuthenticationLogger:
+    alias: surfnet_saml.logger
 
-    Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler:
-        arguments:
-            - '@security.http_utils'
-            - []
-            - '@logger'
+  Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler:
+    arguments:
+      - '@security.http_utils'
+      - []
+      - '@logger'
 
-    Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler:
-        arguments:
-            - '@kernel'
-            - '@security.http_utils'
-            - [ ]
-            - '@logger'
+  Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler:
+    arguments:
+      - '@kernel'
+      - '@security.http_utils'
+      - [ ]
+      - '@logger'
 
-    Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage:
-        arguments:
-            - '@request_stack'
+  Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage:
+    arguments:
+      - '@request_stack'
 
-    Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler:
-        arguments:
-            - '@Surfnet\SamlBundle\Security\Authentication\SamlInteractionProvider'
-            - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
-            - '@surfnet_saml.logger'
+  Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler:
+    arguments:
+      - '@Surfnet\SamlBundle\Security\Authentication\SamlInteractionProvider'
+      - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
+      - '@surfnet_saml.logger'
 
-    Surfnet\SamlBundle\Security\Authentication\SamlInteractionProvider:
-        arguments:
-            - '@surfnet_saml.hosted.service_provider'
-            - '@surfnet_saml.remote.idp'
-            - '@surfnet_saml.http.redirect_binding'
-            - '@surfnet_saml.http.post_binding'
-            - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
+  Surfnet\SamlBundle\Security\Authentication\SamlInteractionProvider:
+    arguments:
+      - '@surfnet_saml.hosted.service_provider'
+      - '@surfnet_saml.remote.idp'
+      - '@surfnet_saml.http.redirect_binding'
+      - '@surfnet_saml.http.post_binding'
+      - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
 
-    Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator:
-      arguments:
-        $acsRouteName: '%acs_location_route_name%'
-        $failureHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler'
-        $samlAuthenticationStateHandler: '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
-        $samlProvider: '@surfnet_saml.saml_provider'
-        $successHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler'
+  Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator:
+    arguments:
+      $acsRouteName: '%acs_location_route_name%'
+      $failureHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler'
+      $samlAuthenticationStateHandler: '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
+      $samlProvider: '@surfnet_saml.saml_provider'
+      $successHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler'
 

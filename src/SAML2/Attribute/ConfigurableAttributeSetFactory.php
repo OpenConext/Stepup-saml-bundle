@@ -38,7 +38,7 @@ final class ConfigurableAttributeSetFactory implements AttributeSetFactory
             throw new InvalidArgumentException(sprintf(
                 'Cannot use class "%s": it must implement "%s"',
                 $attributeSetClassName,
-                '\\' . \Surfnet\SamlBundle\SAML2\Attribute\AttributeSetFactory::class
+                AttributeSetFactory::class
             ));
         }
 

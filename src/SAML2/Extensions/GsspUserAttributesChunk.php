@@ -18,12 +18,13 @@
 namespace Surfnet\SamlBundle\SAML2\Extensions;
 
 use DOMDocument;
+use DOMElement;
+use DOMNode;
 use SAML2\Utils;
 
 class GsspUserAttributesChunk extends Chunk
 {
-
-    public function __construct(\DOMElement $value = null)
+    public function __construct(DOMElement $value = null)
     {
         $doc = new DOMDocument("1.0", "UTF-8");
         $root = $doc->createElementNS('urn:mace:surf.nl:stepup:gssp-extensions', 'gssp:UserAttributes');
@@ -31,8 +32,8 @@ class GsspUserAttributesChunk extends Chunk
         $root->setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xs', 'http://www.w3.org/2001/XMLSchema');
 
         if ($value && $value->hasChildNodes()) {
-            /** @var \DOMNode $child */
             foreach ($value->childNodes as $child) {
+                assert($child instanceof DOMNode);
                 $root->appendChild($doc->importNode($child->cloneNode(true), true));
             }
         }

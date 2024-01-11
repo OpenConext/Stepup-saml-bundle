@@ -36,6 +36,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\LogicException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
@@ -81,7 +82,9 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
 
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
-        ContainerSingleton::setContainer($this->bridgeContainer); // Todo paul: Wederom de event listener (BridgeContainerBootListener) die de juiste container zet had dit al moeten doen..
+        // Todo paul: Wederom de event listener (BridgeContainerBootListener) die de juiste container zet had
+        // dit al moeten doen..
+        ContainerSingleton::setContainer($this->bridgeContainer);
 
         $authnRequest = AuthnRequestFactory::createNewRequest(
             $this->serviceProvider,
@@ -130,7 +133,7 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
 
         $userBadge = new UserBadge(
             $nameId,
-            function ($identifier) use ($assertion): \Symfony\Component\Security\Core\User\UserInterface {
+            function ($identifier) use ($assertion): UserInterface {
                 $this->logger->notice(sprintf('User Badge is loading a User with identifier %s', $identifier));
                 return $this->samlProvider->getUser($assertion);
             }

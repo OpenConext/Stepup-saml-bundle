@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
-use DOMElement;
+use Exception;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Constants;
@@ -166,7 +166,7 @@ final class ReceivedAuthnRequest
     }
 
     /**
-     * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
+     * @throws Exception when signature is invalid (@see SAML2\Utils::validateSignature)
      */
     public function verify(XMLSecurityKey $key): bool
     {
