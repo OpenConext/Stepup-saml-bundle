@@ -48,5 +48,5 @@ services:
             - '@surfnet_saml.saml_provider'
             - '@router'
             - '@logger'
-            - 'selfservice_serviceprovider_consume_assertion'
+            - '%acs_location_route_name%'
             - '@surfnet_saml.saml2.bridge_container'
