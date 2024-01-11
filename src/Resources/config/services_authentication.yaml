@@ -39,9 +39,10 @@ services:
             - '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
 
     Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator:
-        arguments:
-            $acsRouteName: '%acs_location_route_name%'
-            $failureHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler'
-            $samlAuthenticationStateHandler: '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
-            $samlProvider: '@surfnet_saml.saml_provider'
-            $successHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler'
+      arguments:
+        $acsRouteName: '%acs_location_route_name%'
+        $failureHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler'
+        $samlAuthenticationStateHandler: '@Surfnet\SamlBundle\Security\Authentication\Session\SessionStorage'
+        $samlProvider: '@surfnet_saml.saml_provider'
+        $successHandler: '@Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler'
+
