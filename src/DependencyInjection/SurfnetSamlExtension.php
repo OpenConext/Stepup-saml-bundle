@@ -29,6 +29,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use function array_key_exists;
 
 class SurfnetSamlExtension extends Extension
 {
@@ -152,6 +153,7 @@ class SurfnetSamlExtension extends Extension
             // Parse a configuration where multiple remote IDPs are configured (identity_providers:)
             $this->parseRemoteIdentityProviderConfigurations($remoteConfiguration['identity_providers'], $container);
         }
+
         // Parse a single remote IDP configuration (identity_provider:)
         if (!empty($remoteConfiguration['identity_provider']['enabled'])) {
             $definition = $this->parseRemoteIdentityProviderConfiguration($remoteConfiguration['identity_provider']);
