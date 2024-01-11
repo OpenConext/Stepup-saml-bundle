@@ -12,11 +12,11 @@
             <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
                             NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
                             Name="urn:mace:dir:attribute-def:mail">
-                <saml:AttributeValue xsi:type="xs:string">test@test.nl</saml:AttributeValue>
+                <saml:AttributeValue xsi:type="xs:string">user@example.com</saml:AttributeValue>
             </saml:Attribute>
             <saml:Attribute NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:string"
                             Name="urn:mace:dir:attribute-def:surname">
-                <saml:AttributeValue xsi:type="xs:string">Doe 1</saml:AttributeValue>
+                <saml:AttributeValue xsi:type="xs:string">foobar</saml:AttributeValue>
             </saml:Attribute>
         </gssp:UserAttributes>
     </samlp:Extensions>
