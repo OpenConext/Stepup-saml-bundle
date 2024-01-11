@@ -63,7 +63,7 @@ class HostedEntities
             return $this->identityProvider;
         }
 
-        if (!$this->identityProviderConfiguration['enabled']) {
+        if (!array_key_exists('enabled', $this->identityProviderConfiguration)) {
             return null;
         }
 
