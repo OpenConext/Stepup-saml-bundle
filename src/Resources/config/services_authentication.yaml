@@ -1,3 +1,10 @@
+parameters:
+  # By default, we reject no SAML responses, but you are able to do this
+  # by configuring a certain relay state value that drops support for the
+  # SamlAuthenticator::supports method call. Usefull when you want to
+  # a SAML response on a custom ACS location.
+  rejected_relay_states: []
+
 services:
   _defaults:
     public: false
@@ -51,3 +58,4 @@ services:
       - '@router'
       - '@logger'
       - '%acs_location_route_name%'
+      - '%rejected_relay_states%'
