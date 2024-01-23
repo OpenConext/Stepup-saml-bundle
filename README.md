@@ -97,6 +97,14 @@ the Symfony Security component.
 
 Details about how to install this into your SP, see the [EXAMPLES.md](EXAMPLES.md).
 
+#### Overriding the ACS processor
+Your application will start to try and handle all SAML Responses that are posted to your apps ACS location.
+In most situations that's exactly what you want. However if you want to handle the response yourself. You can!
+
+1. Ensure you add a RelayState statement to the AuthnRequest
+2. Configure that RelayState value in the `rejected_relay_states` parameter (in your app). This value defaults to `[]`. So be sure to pass an array of string values
+3. Thats it.
+
 ### Metadata Publishing
 
 ```php
