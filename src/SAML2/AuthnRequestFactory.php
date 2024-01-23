@@ -117,7 +117,8 @@ class AuthnRequestFactory
     public static function createNewRequest(
         ServiceProvider $serviceProvider,
         IdentityProvider $identityProvider,
-        bool $forceAuthn = false
+        bool $forceAuthn = false,
+        string $relayState = ''
     ): AuthnRequest {
         $issuer = new Issuer();
         $issuer->setValue($serviceProvider->getEntityId());
@@ -130,7 +131,9 @@ class AuthnRequestFactory
         $request->setSignatureKey(self::loadPrivateKey(
             $serviceProvider->getPrivateKey(PrivateKey::NAME_DEFAULT)
         ));
-
+        if (!empty($relayState)) {
+            $request->setRelayState($relayState);
+        }
         return AuthnRequest::createNew($request);
     }
 
