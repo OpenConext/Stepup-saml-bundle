@@ -26,6 +26,7 @@ use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
 use Surfnet\SamlBundle\SAML2\BridgeContainer;
+use Surfnet\SamlBundle\Security\Authentication\Handler\AuthenticationHandler;
 use Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler;
 use Surfnet\SamlBundle\Security\Authentication\Passport\Badge\SamlAttributesBadge;
 use Surfnet\SamlBundle\Security\Authentication\Provider\SamlProviderInterface;
@@ -59,7 +60,7 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
         private readonly ServiceProvider $serviceProvider,
         private readonly RedirectBinding $redirectBinding,
         private readonly SamlAuthenticationStateHandler $samlAuthenticationStateHandler,
-        private readonly ProcessSamlAuthenticationHandler $processSamlAuthenticationHandler,
+        private readonly AuthenticationHandler $processSamlAuthenticationHandler,
         private readonly AuthenticationSuccessHandlerInterface $successHandler,
         private readonly AuthenticationFailureHandlerInterface $failureHandler,
         private readonly SamlProviderInterface $samlProvider,
