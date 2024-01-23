@@ -63,9 +63,9 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
         private readonly AuthenticationSuccessHandlerInterface $successHandler,
         private readonly AuthenticationFailureHandlerInterface $failureHandler,
         private readonly SamlProviderInterface $samlProvider,
-        private readonly RouterInterface $router,
+        protected readonly RouterInterface $router,
         private readonly LoggerInterface $logger,
-        private readonly string $acsRouteName,
+        protected readonly string $acsRouteName,
     ) {
     }
 
