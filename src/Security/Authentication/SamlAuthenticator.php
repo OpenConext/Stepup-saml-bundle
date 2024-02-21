@@ -84,7 +84,20 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
 
     public function supports(Request $request): ?bool
     {
+        $this->logger->info('Determine if SamlBundle::SamlAuthenticator supports the request');
         $acsUri = $this->router->generate($this->acsRouteName);
+
+        $excludeByRelayState = $request->request->has('RelayState') &&
+            in_array($request->request->get('RelayState'), $this->rejectWhenRelayStates);
+        if ($excludeByRelayState) {
+            $this->logger->info(
+                sprintf(
+                    'Rejecting support based on RelayState. %s is rejected as configured in rejected_relay_states',
+                    $request->request->get('RelayState')
+                )
+            );
+            return false;
+        }
         return $request->getMethod() === 'POST' &&
             $request->getRequestUri() === $acsUri &&
             $request->request->has('SAMLResponse');
