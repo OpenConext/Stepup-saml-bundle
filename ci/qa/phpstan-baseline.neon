@@ -106,13 +106,13 @@ parameters:
 			path: ../../src/Entity/HostedEntities.php
 
 		-
-			message: "#^Offset 'enabled' does not exist on array\\|null\\.$#"
-			count: 1
+			message: "#^Parameter \\#1 \\$request of method Symfony\\\\Component\\\\Routing\\\\RequestContext\\:\\:fromRequest\\(\\) expects Symfony\\\\Component\\\\HttpFoundation\\\\Request, Symfony\\\\Component\\\\HttpFoundation\\\\Request\\|null given\\.$#"
+			count: 2
 			path: ../../src/Entity/HostedEntities.php
 
 		-
-			message: "#^Parameter \\#1 \\$request of method Symfony\\\\Component\\\\Routing\\\\RequestContext\\:\\:fromRequest\\(\\) expects Symfony\\\\Component\\\\HttpFoundation\\\\Request, Symfony\\\\Component\\\\HttpFoundation\\\\Request\\|null given\\.$#"
-			count: 2
+			message: "#^Parameter \\#2 \\$array of function array_key_exists expects array, array\\|null given\\.$#"
+			count: 1
 			path: ../../src/Entity/HostedEntities.php
 
 		-
