@@ -31,6 +31,7 @@ use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Loader\ArrayLoader;
 use Twig\Environment;
+use function dirname;
 
 class MetadataFactoryTest extends TestCase
 {
@@ -47,7 +48,7 @@ class MetadataFactoryTest extends TestCase
         // Load the XML template from filesystem as the FilesystemLoader does not honour the bundle prefix
         $loader = new ArrayLoader(
             [
-                '@SurfnetSaml/Metadata/metadata.xml.twig' => file_get_contents('src/Resources/views/Metadata/metadata.xml.twig')
+                '@SurfnetSaml/Metadata/metadata.xml.twig' => file_get_contents(dirname(__DIR__, 4) . '/templates/Metadata/metadata.xml.twig')
             ]
         );
         $this->twig = new Environment($loader);
@@ -139,11 +140,10 @@ XML;
 
     private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null): void
     {
-        if (!$signingService) {
+        if (!$signingService instanceof SigningService) {
             $signingService = m::mock(SigningService::class);
             $signingService->shouldReceive('sign')->once()->andReturn(m::mock(Signable::class));
         }
         $this->factory = new MetadataFactory($this->twig, $this->router, $signingService, $metadata);
     }
-
 }

@@ -21,67 +21,31 @@ namespace Surfnet\SamlBundle\Entity;
 use SAML2\Configuration\PrivateKey;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use function array_key_exists;
 
 class HostedEntities
 {
-    /**
-     * @var ServiceProvider
-     */
-    private $serviceProvider;
+    private ?ServiceProvider $serviceProvider = null;
 
-    /**
-     * @var array
-     */
-    private $serviceProviderConfiguration;
+    private ?IdentityProvider $identityProvider = null;
 
-    /**
-     * @var IdentityProvider
-     */
-    private $identityProvider;
-
-    /**
-     * @var array
-     */
-    private $identityProviderConfiguration;
-
-    /**
-     * @var \Symfony\Component\Routing\RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @param RouterInterface $router
-     * @param RequestStack    $requestStack
-     * @param array           $serviceProviderConfiguration
-     * @param array           $identityProviderConfiguration
-     */
     public function __construct(
-        RouterInterface $router,
-        RequestStack $requestStack,
-        array $serviceProviderConfiguration = null,
-        array $identityProviderConfiguration = null
+        private readonly RouterInterface $router,
+        private readonly RequestStack $requestStack,
+        private ?array $serviceProviderConfiguration = null,
+        private ?array $identityProviderConfiguration = null
     ) {
-        $this->router                        = $router;
-        $this->requestStack                  = $requestStack;
-        $this->serviceProviderConfiguration  = $serviceProviderConfiguration;
-        $this->identityProviderConfiguration = $identityProviderConfiguration;
     }
 
-    /**
-     * @return null|ServiceProvider
-     */
-    public function getServiceProvider()
+    public function getServiceProvider(): ?ServiceProvider
     {
         if (!empty($this->serviceProvider)) {
             return $this->serviceProvider;
         }
 
-        if (!$this->serviceProviderConfiguration['enabled']) {
+        if (is_null($this->serviceProviderConfiguration) ||
+            !array_key_exists('enabled', $this->serviceProviderConfiguration)
+        ) {
             return null;
         }
 
@@ -93,16 +57,13 @@ class HostedEntities
         return $this->serviceProvider = new ServiceProvider($configuration);
     }
 
-    /**
-     * @return null|IdentityProvider
-     */
-    public function getIdentityProvider()
+    public function getIdentityProvider(): ?IdentityProvider
     {
         if (!empty($this->identityProvider)) {
             return $this->identityProvider;
         }
 
-        if (!$this->identityProviderConfiguration['enabled']) {
+        if (!array_key_exists('enabled', $this->identityProviderConfiguration)) {
             return null;
         }
 
@@ -114,11 +75,7 @@ class HostedEntities
         return $this->identityProvider = new IdentityProvider($configuration);
     }
 
-    /**
-     * @param array $entityConfiguration
-     * @return array
-     */
-    private function createStandardEntityConfiguration($entityConfiguration)
+    private function createStandardEntityConfiguration(array $entityConfiguration): array
     {
         $privateKey = new PrivateKey($entityConfiguration['private_key'], PrivateKey::NAME_DEFAULT);
 
@@ -133,20 +90,14 @@ class HostedEntities
 
     /**
      * @param string|array $routeDefinition
-     * @return string
      */
-    private function generateUrl($routeDefinition)
+    private function generateUrl(string|array $routeDefinition): string
     {
         $route      = is_array($routeDefinition) ? $routeDefinition['route'] : $routeDefinition;
         $parameters = is_array($routeDefinition) ? $routeDefinition['parameters'] : [];
 
         $context = $this->router->getContext();
-        
-        if (method_exists($this->requestStack, 'getMainRequest')) {
-            $context->fromRequest($this->requestStack->getMainRequest());
-        } else {
-            $context->fromRequest($this->requestStack->getMasterRequest());
-        }
+        $context->fromRequest($this->requestStack->getMainRequest());
         $url = $this->router->generate($route, $parameters, RouterInterface::ABSOLUTE_URL);
 
         $context->fromRequest($this->requestStack->getCurrentRequest());

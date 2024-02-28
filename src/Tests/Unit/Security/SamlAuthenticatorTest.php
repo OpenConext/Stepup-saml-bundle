@@ -91,7 +91,8 @@ class SamlAuthenticatorTest extends TestCase
             $this->samlProvider,
             $this->router,
             $this->logger,
-            $this->acsRouteName
+            $this->acsRouteName,
+            ['rejection', 'hurts', 'real', 'bad']
         );
     }
 
@@ -109,7 +110,7 @@ class SamlAuthenticatorTest extends TestCase
 
         $this->idp->shouldReceive('getSsoUrl')->andReturn('idp-sso');
 
-        $this->samlAuthenticationStateHandler->shouldReceive('setRequestId')->with('1');
+        $this->samlAuthenticationStateHandler->shouldReceive('setRequestId')->with('123');
 
         $this->redirectBinding->shouldReceive('createResponseFor')->andReturn(Mockery::mock(RedirectResponse::class));
 
@@ -121,11 +122,33 @@ class SamlAuthenticatorTest extends TestCase
     /**
      * @dataProvider provideSupportsParameters
      */
-    public function test_supports($expectedResult, $post, $server, $routeName): void
+    public function test_supports(bool $expectedResult, array $post, array $server, string $routeName): void
     {
         $request = new Request([], $post, [], [], [], $server);
+        $this->logger->shouldReceive('info')->with('Determine if StepupSamlBundle::SamlAuthenticator supports the request');
         $this->router->shouldReceive('generate')->with('route-name')->andReturn($routeName);
         $this->assertEquals($expectedResult, $this->authenticator->supports($request));
+    }
+
+    /**
+     * @dataProvider provideSupportsRelayStateParameters
+     */
+    public function test_supports_also_rejects(bool $expectation, array $post): void
+    {
+        $request = new Request(
+            [],
+            $post,
+            [],
+            [],
+            [],
+            ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'POST']
+        );
+        $this->logger->shouldReceive('info')->with('Determine if StepupSamlBundle::SamlAuthenticator supports the request');
+        if ($expectation === false) {
+            $this->logger->shouldReceive('info')->with('Rejecting support based on RelayState. "rejection" is rejected as configured in rejected_relay_states');
+        }
+        $this->router->shouldReceive('generate')->with('route-name')->andReturn('/route-name');
+        $this->assertEquals($expectation, $this->authenticator->supports($request));
     }
 
     public function provideSupportsParameters(): Generator
@@ -136,6 +159,16 @@ class SamlAuthenticatorTest extends TestCase
         yield [false, ['SAMLResponse' => 'foobar'], ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'OPTIONS'], '/route-name'];
         yield [false, ['SAMLResponse' => 'foobar'], ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'POST'], '/route'];
     }
+
+    public function provideSupportsRelayStateParameters(): Generator
+    {
+        yield [false, ['SAMLResponse' => 'rejection', 'RelayState' => 'rejection']];
+        yield [false, ['SAMLResponse' => 'hurts', 'RelayState' => 'rejection']];
+        yield [false, ['SAMLResponse' => 'real', 'RelayState' => 'rejection']];
+        yield [false, ['SAMLResponse' => 'bad', 'RelayState' => 'rejection']];
+        yield [true, ['SAMLResponse' => 'foobar', 'RelayState' => 'and now for something completely different']];
+    }
+
 
     public function test_authenticate(): void
     {

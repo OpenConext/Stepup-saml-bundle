@@ -151,12 +151,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
      * @test
      * @group saml2
      * @dataProvider provideIsPassiveAndForceAuthnCombinations
-     *
-     * @param string $xml
-     * @param bool   $isPassive
-     * @param bool   $forceAuthn
      */
-    public function is_passive_and_force_authn_can_be_retrieved_from_the_authnrequest($xml, $isPassive, $forceAuthn): void
+    public function is_passive_and_force_authn_can_be_retrieved_from_the_authnrequest(string $xml, bool $isPassive, bool $forceAuthn): void
     {
         $domDocument = DOMDocumentFactory::fromString($xml);
         $request     = new SAML2AuthnRequest($domDocument->documentElement);

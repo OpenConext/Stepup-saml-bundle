@@ -24,7 +24,7 @@ class InResponseTo
 {
     public static function assertEquals(Assertion $assertion, mixed $inResponseTo): bool
     {
-        $assertionInResponseTo = static::getInResponseTo($assertion);
+        $assertionInResponseTo = self::getInResponseTo($assertion);
 
         return $assertionInResponseTo === $inResponseTo;
     }
@@ -33,7 +33,7 @@ class InResponseTo
     {
         $subjectConfirmationArray = $assertion->getSubjectConfirmation();
 
-        if (empty($subjectConfirmationArray)) {
+        if ($subjectConfirmationArray === []) {
             return null;
         }
 

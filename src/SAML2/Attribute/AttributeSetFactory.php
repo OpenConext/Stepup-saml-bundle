@@ -23,19 +23,15 @@ use SAML2\Assertion;
 interface AttributeSetFactory
 {
     /**
-     * @param Assertion $assertion
-     * @param AttributeDictionary $attributeDictionary
-     * @return AttributeSet
-     *
      * @deprecated Will be replaced with different creation implementation
      */
-    public static function createFrom(Assertion $assertion, AttributeDictionary $attributeDictionary);
+    public static function createFrom(
+        Assertion $assertion,
+        AttributeDictionary $attributeDictionary
+    ): AttributeSetInterface;
 
     /**
-     * @param Attribute[] $attributes
-     * @return AttributeSet
-     *
      * @deprecated Will be replaced with different creation implementation
      */
-    public static function create(array $attributes);
+    public static function create(array $attributes): AttributeSetInterface;
 }

@@ -18,45 +18,27 @@
 
 namespace Surfnet\SamlBundle\Http;
 
+use Exception;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
 
 final class ReceivedAuthnRequestPost implements SignatureVerifiable
 {
-    const PARAMETER_REQUEST = 'SAMLRequest';
-    const PARAMETER_RELAY_STATE = 'RelayState';
+    public const PARAMETER_REQUEST = 'SAMLRequest';
+    public const PARAMETER_RELAY_STATE = 'RelayState';
 
-    /**
-     * @var string
-     */
-    private $samlRequest;
+    private ?string $relayState;
 
-    /**
-     * @var string|null
-     */
-    private $relayState;
+    private ?ReceivedAuthnRequest $receivedRequest = null;
 
-    /**
-     * @var ReceivedAuthnRequest
-     */
-    private $receivedRequest;
-
-    private function __construct($samlRequest)
+    private function __construct(private readonly string $samlRequest)
     {
-        $this->samlRequest = $samlRequest;
     }
 
-    /**
-     * @param array $parameters
-     * @return ReceivedAuthnRequestPost
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity) Extensive validation
-     * @SuppressWarnings(PHPMD.NPathComplexity) Extensive validation
-     */
-    public static function parse(array $parameters)
+    public static function parse(array $parameters): self
     {
-        if (base64_decode($parameters[self::PARAMETER_REQUEST], true) === false) {
+        if (base64_decode((string) $parameters[self::PARAMETER_REQUEST], true) === false) {
             throw new InvalidRequestException('Failed decoding SAML request, did not receive a valid base64 string');
         }
 
@@ -75,45 +57,30 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
         return $parsed;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasRelayState()
+    public function hasRelayState(): bool
     {
         return $this->relayState !== null;
     }
 
-    /**
-     * @return string
-     */
-    public function getDecodedSamlRequest()
+    public function getDecodedSamlRequest(): string|bool
     {
-        $samlRequest = base64_decode($this->samlRequest);
-        return $samlRequest;
+        return base64_decode($this->samlRequest);
     }
 
-    /**
-     * @return string
-     */
-    public function getSamlRequest()
+    public function getSamlRequest(): string
     {
         return $this->samlRequest;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getRelayState()
+    public function getRelayState(): ?string
     {
         return $this->relayState;
     }
 
     /**
-     * @param XMLSecurityKey $key
-     * @return bool
-     * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
+     * @throws Exception when signature is invalid (@see SAML2\Utils::validateSignature)
      */
-    public function verify(XMLSecurityKey $key)
+    public function verify(XMLSecurityKey $key): bool
     {
         return $this->receivedRequest->verify($key);
     }

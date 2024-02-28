@@ -15,27 +15,18 @@ Developed as part of the [OpenConext-Stepup Gateway][2] and related OpenConext-S
   composer require surfnet/stepup-saml-bundle
   ```
 
-How to install with SF4.3+
+How to install with SF6
  
 1. Require the bundle in the composer.json (version 4.1.9 or higher)
 2. Enable the bundle in `config/bundles.php` add to the return statement: `Surfnet\SamlBundle\SurfnetSamlBundle::class => ['all' => true],`
 3. Specify the bundle configuration in `config/packages/surfnet_saml.yaml`, consult the configuration section below for available options.
- 
-And, on top of that you should explicitly configure the Twig templating engine:
-
-In `config/packages/framework.yaml` add:
-
-```yaml
-framework:
-    templating:
-        engines:
-            - twig
-```      
+4. Configure the templates to the Twig Bundle by adding `'%kernel.project_dir%/vendor/surfnet/stepup-saml-bundle/templates': 'SurfnetSaml'` to your twig.yaml config file(s) 
 
 ## Configuration
 
 ```yaml
 surfnet_saml:
+    enable_authentication: false
     hosted:
         attribute_dictionary:
             ignore_unknown_attributes: false
@@ -105,6 +96,14 @@ As of version 5 of this bundle, we started supporting SAML authentications via t
 the Symfony Security component. 
 
 Details about how to install this into your SP, see the [EXAMPLES.md](EXAMPLES.md).
+
+#### Overriding the ACS processor
+Your application will start to try and handle all SAML Responses that are posted to your apps ACS location.
+In most situations that's exactly what you want. However if you want to handle the response yourself. You can!
+
+1. Ensure you add a RelayState statement to the AuthnRequest
+2. Configure that RelayState value in the `rejected_relay_states` parameter (in your app). This value defaults to `[]`. So be sure to pass an array of string values
+3. Thats it.
 
 ### Metadata Publishing
 

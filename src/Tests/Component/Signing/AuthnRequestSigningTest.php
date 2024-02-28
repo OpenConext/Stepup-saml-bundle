@@ -54,7 +54,7 @@ AUTHNREQUEST_NO_SUBJECT;
     public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_rfc1738_encoding(): void
     {
         $authnRequestWithDefaultEncoding = $this->createSignedAuthnRequest(
-            [$this, 'encodeDataToSignWithPhpsHttpBuildQuery']
+            $this->encodeDataToSignWithPhpsHttpBuildQuery(...)
         );
 
         $certificate = X509::createFromCertificateData($this->getPublicKey());
@@ -80,7 +80,7 @@ AUTHNREQUEST_NO_SUBJECT;
     public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_something_other_than_rfc1738_encoding(): void
     {
         $authnRequestWithCustomEncoding  = $this->createSignedAuthnRequest(
-            [$this, 'encodeDataToSignWithCustomHttpQueryEncoding']
+            $this->encodeDataToSignWithCustomHttpQueryEncoding(...)
         );
 
         $certificate       = X509::createFromCertificateData($this->getPublicKey());
@@ -91,7 +91,8 @@ AUTHNREQUEST_NO_SUBJECT;
             $certificate
         );
 
-        $this->assertFalse($signatureWithCustomEncodingIsVerified,
+        $this->assertFalse(
+            $signatureWithCustomEncodingIsVerified,
             'The signature of a (deprecated) AuthnRequest signed using data-to-sign encoded'.
             ' using a custom encoding should not be verifiable, but it is'
         );
@@ -105,7 +106,7 @@ AUTHNREQUEST_NO_SUBJECT;
     public function deprecated_authn_request_signatures_are_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent(): void
     {
         $authnRequestWithModifiedDataToSign = $this->createSignedAuthnRequest(
-            [$this, 'encodeDataToSignWithPhpsHttpBuildQuery'],
+            $this->encodeDataToSignWithPhpsHttpBuildQuery(...),
             'this-is-a-custom-signature'
         );
 
@@ -130,7 +131,7 @@ AUTHNREQUEST_NO_SUBJECT;
     public function deprecated_authn_request_signatures_are_not_verified_if_the_parameter_order_of_the_sent_query_is_not_correct(): void
     {
         $authnRequestWithModifiedDataToSign = $this->createSignedAuthnRequest(
-            [$this, 'encodeDataToSignUsingIncorrectParameterOrder']
+            $this->encodeDataToSignUsingIncorrectParameterOrder(...)
         );
 
         $certificate = X509::createFromCertificateData($this->getPublicKey());
@@ -166,7 +167,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $dataToSignWithDefaultEncoding = $this->encodeDataToSignWithPhpsHttpBuildQuery($queryParameters);
         $queryParametersWithDefaultEncoding = $queryParameters;
         $queryParametersWithDefaultEncoding[ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE] = base64_encode(
-            $privateKey->signData($dataToSignWithDefaultEncoding)
+            (string) $privateKey->signData($dataToSignWithDefaultEncoding)
         );
         $rawQueryWithDefaultEncoding = $this->encodeDataToSignWithPhpsHttpBuildQuery($queryParametersWithDefaultEncoding);
         $queryStringWithDefaultEncoding = ReceivedAuthnRequestQueryString::parse($rawQueryWithDefaultEncoding);
@@ -174,7 +175,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $dataToSignWithCustomEncoding = $this->encodeDataToSignWithCustomHttpQueryEncoding($queryParameters);
         $queryParametersWithCustomEncoding = $queryParameters;
         $queryParametersWithCustomEncoding[ReceivedAuthnRequestQueryString::PARAMETER_SIGNATURE] = base64_encode(
-            $privateKey->signData($dataToSignWithCustomEncoding)
+            (string) $privateKey->signData($dataToSignWithCustomEncoding)
         );
         $rawQueryWithCustomEncoding = $this->encodeDataToSignWithCustomHttpQueryEncoding(
             $queryParametersWithCustomEncoding
@@ -225,7 +226,8 @@ AUTHNREQUEST_NO_SUBJECT;
 
         $isQuerySigned = $signatureVerifier->isRequestSignedWith($queryStringWithDefaultEncoding, $certificate);
 
-        $this->assertFalse($isQuerySigned,
+        $this->assertFalse(
+            $isQuerySigned,
             'The signature of a received AuthnRequest query string'
             . ' that does not correspond with the data-to-sign'
             . ' in the http query should not be verifiable but it is'
@@ -271,11 +273,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $queryParams[AuthnRequest::PARAMETER_SIGNATURE_ALGORITHM] = $privateKey->type;
 
         $toSign = $prepareDataToSign($queryParams);
-        if ($customSignature === null) {
-            $signature = base64_encode($privateKey->signData($toSign));
-        } else {
-            $signature = base64_encode($customSignature);
-        }
+        $signature = $customSignature === null ? base64_encode((string) $privateKey->signData($toSign)) : base64_encode($customSignature);
 
         $saml2AuthnRequest = SAML2AuthnRequest::fromXML($unsignedAuthnRequest->toUnsignedXML());
 
@@ -303,8 +301,7 @@ AUTHNREQUEST_NO_SUBJECT;
         $domDocument          = DOMDocumentFactory::fromString($this->authRequestNoSubject);
         $unsignedAuthnRequest = SAML2AuthnRequest::fromXML($domDocument->firstChild);
         $requestAsXml         = $unsignedAuthnRequest->toUnsignedXML()->ownerDocument->saveXML();
-        $encodedRequest       = base64_encode(gzdeflate($requestAsXml));
 
-        return $encodedRequest;
+        return base64_encode(gzdeflate($requestAsXml));
     }
 }

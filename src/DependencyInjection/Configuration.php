@@ -18,8 +18,8 @@
 
 namespace Surfnet\SamlBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -38,16 +38,19 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('surfnet_saml');
         $rootNode = $treeBuilder->getRootNode();
 
+        $rootNode
+            ->children()
+                ->booleanNode('enable_authentication')
+                ->defaultFalse()
+            ->end();
+
         $this->addHostedSection($rootNode);
         $this->addRemoteSection($rootNode);
 
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addHostedSection(ArrayNodeDefinition $node)
+    private function addHostedSection(NodeDefinition $node): void
     {
         $node
             ->children()
@@ -132,7 +135,7 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addRemoteSection(ArrayNodeDefinition $rootNode)
+    private function addRemoteSection(NodeDefinition $rootNode): void
     {
         $remoteNode = $rootNode
             ->children()
@@ -145,7 +148,7 @@ class Configuration implements ConfigurationInterface
         $this->addRemoteIdentityProviderSection($remoteNode);
     }
 
-    private function addRemoteIdentityProviderSection(ArrayNodeDefinition $remoteNode)
+    private function addRemoteIdentityProviderSection(NodeDefinition $remoteNode): void
     {
         $arrayNode = $remoteNode
             ->children()
@@ -154,14 +157,10 @@ class Configuration implements ConfigurationInterface
                 ->children();
 
         $this->addRemoteIdentityProviderConfiguration($arrayNode);
-
-        $arrayNode
-                ->end()
-            ->end();
     }
 
 
-    private function addRemoteIdentityProviderConfiguration(NodeBuilder $arrayNode)
+    private function addRemoteIdentityProviderConfiguration(NodeBuilder $arrayNode): void
     {
         $arrayNode
           ->scalarNode('entity_id')
@@ -184,7 +183,7 @@ class Configuration implements ConfigurationInterface
           ->end();
     }
 
-    private function addRemoteIdentityProvidersSection(ArrayNodeDefinition $remoteNode)
+    private function addRemoteIdentityProvidersSection(NodeDefinition $remoteNode): void
     {
         $arrayNode = $remoteNode
             ->children()
@@ -201,31 +200,31 @@ class Configuration implements ConfigurationInterface
           ->end();
     }
 
-    private function addRemoteServiceProvidersSection(ArrayNodeDefinition $remoteNode)
+    private function addRemoteServiceProvidersSection(NodeDefinition $remoteNode): void
     {
         $remoteNode
             ->children()
                 ->arrayNode('service_providers')
                     ->prototype('array')
-                            ->children()
-                                ->scalarNode('entity_id')
-                                    ->isRequired()
-                                    ->info('The EntityID of the remote service provider')
-                                ->end()
-                                ->scalarNode('certificate')
-                                    ->info(
-                                        'The contents of the certificate used to sign and verify the AuthnResponse with'
-                                    )
-                                ->end()
-                                ->scalarNode('certificate_file')
-                                    ->info(
-                                        'A file containing the certificate used to sign and verify the AuthnResponse with'
-                                    )
-                                ->end()
-                                ->scalarNode('assertion_consumer_service_url')
-                                    ->isRequired()
-                                ->end()
+                        ->children()
+                            ->scalarNode('entity_id')
+                                ->isRequired()
+                                ->info('The EntityID of the remote service provider')
                             ->end()
+                            ->scalarNode('certificate')
+                                ->info(
+                                    'The contents of the certificate used to sign and verify the AuthnResponse with'
+                                )
+                            ->end()
+                            ->scalarNode('certificate_file')
+                                ->info(
+                                    'A file containing the certificate used to sign and verify the AuthnResponse with'
+                                )
+                            ->end()
+                            ->scalarNode('assertion_consumer_service_url')
+                                ->isRequired()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();

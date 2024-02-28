@@ -46,20 +46,11 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class PostBinding implements HttpBinding
 {
-    private Processor $responseProcessor;
-
-    private SignatureVerifier $signatureVerifier;
-
-    private ?ServiceProviderRepository $entityRepository;
-
     public function __construct(
-        Processor $responseProcessor,
-        SignatureVerifier $signatureVerifier,
-        ServiceProviderRepository $repository = null
+        private readonly Processor $responseProcessor,
+        private readonly SignatureVerifier $signatureVerifier,
+        private readonly ?ServiceProviderRepository $entityRepository = null
     ) {
-        $this->responseProcessor = $responseProcessor;
-        $this->signatureVerifier = $signatureVerifier;
-        $this->entityRepository = $repository;
     }
 
     /**
@@ -92,12 +83,12 @@ class PostBinding implements HttpBinding
             $message = $e->getMessage();
 
             $noAuthnContext = substr(Constants::STATUS_NO_AUTHN_CONTEXT, strlen(Constants::STATUS_PREFIX));
-            if (false !== strpos($message, $noAuthnContext)) {
+            if (str_contains($message, $noAuthnContext)) {
                 throw new NoAuthnContextSamlResponseException($message, 0, $e);
             }
 
             $authnFailed = substr(Constants::STATUS_AUTHN_FAILED, strlen(Constants::STATUS_PREFIX));
-            if (false !== strpos($message, $authnFailed)) {
+            if (str_contains($message, $authnFailed)) {
                 throw new AuthnFailedSamlResponseException($message, 0, $e);
             }
 
@@ -107,9 +98,9 @@ class PostBinding implements HttpBinding
         return $assertions->getOnlyElement();
     }
 
-    public function receiveSignedAuthnRequestFrom(Request $request): AuthnRequest
+    public function receiveSignedAuthnRequestFrom(Request $request): ReceivedAuthnRequest
     {
-        if (!$this->entityRepository) {
+        if (!$this->entityRepository instanceof ServiceProviderRepository) {
             throw new LogicException(
                 'Could not receive AuthnRequest from HTTP Request: a ServiceProviderRepository must be configured'
             );
@@ -130,8 +121,23 @@ class PostBinding implements HttpBinding
 
         $authnRequest = ReceivedAuthnRequest::from($receivedRequest->getDecodedSamlRequest());
 
+        /**
+         * 3.4.5.2 Security Considerations
+         * The presence of the user agent intermediary means that the requester and responder cannot rely on the
+         * transport layer for end-end authentication, integrity and confidentiality. URL-encoded messages MAY be
+         * signed to provide origin authentication and integrity if the encoding method specifies a means for signing.
+         *
+         * If the message is signed, the Destination XML attribute in the root SAML element of the protocol
+         * message MUST contain the URL to which the sender has instructed the user agent to deliver the
+         * message. The recipient MUST then verify that the value matches the location at which the message has been received.
+         */
+        $destination = $authnRequest->getDestination();
         $currentUri = $this->getFullRequestUri($request);
-        if (!$authnRequest->getDestination() === $currentUri) {
+        if (!$destination) {
+            throw new BadRequestHttpException('A signed AuthnRequest must have the Destination attribute');
+        }
+
+        if (!str_starts_with($currentUri, $destination)) {
             throw new BadRequestHttpException(sprintf(
                 'Actual Destination "%s" does not match the AuthnRequest Destination "%s"',
                 $currentUri,
@@ -157,7 +163,12 @@ class PostBinding implements HttpBinding
 
     private function getFullRequestUri(Request $request): string
     {
-        return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
+        // Symfony removes the scheme and host from the URI, try to reconstruct it
+        if ($request->server->has('HTTP_HOST')) {
+            return $request->getSchemeAndHttpHost() . $request->getBasePath() . $request->getRequestUri();
+        }
+        // Otherwise return the full REQUEST_URI
+        return $request->server->get('REQUEST_URI');
     }
 
     public function createResponseFor(AuthnRequest $request): RedirectResponse

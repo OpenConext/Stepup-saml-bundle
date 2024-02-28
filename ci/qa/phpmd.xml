@@ -25,18 +25,12 @@
 
     <rule ref="rulesets/controversial.xml" />
 
-    <rule ref="rulesets/design.xml">
-        <!--
-            Disabling this rule in the pre-commit-run, PDepend and phpmd cannot successfully determine
-            the coupling between objects for just the changeset. This needs to be fixed up stream. Till
-            then, this rule is disabled for the pre-commit run.
-        -->
-        <exclude name="CouplingBetweenObjects" />
-    </rule>
+    <rule ref="rulesets/design.xml" />
 
     <rule ref="rulesets/naming.xml">
         <exclude name="ShortVariable" />
         <exclude name="LongVariable" />
+        <exclude name="LongClassName" />
     </rule>
-
+    <exclude-pattern>*/Tests/*</exclude-pattern>
 </ruleset>

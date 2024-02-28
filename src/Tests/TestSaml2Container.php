@@ -24,11 +24,8 @@ use Psr\Log\LoggerInterface;
 
 class TestSaml2Container extends AbstractContainer
 {
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     public function getLogger(): LoggerInterface
@@ -54,7 +51,7 @@ class TestSaml2Container extends AbstractContainer
         throw new BadMethodCallException(
             sprintf(
                 "[TEST] %s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
-                __CLASS__,
+                self::class,
                 __METHOD__
             )
         );
@@ -65,7 +62,7 @@ class TestSaml2Container extends AbstractContainer
         throw new BadMethodCallException(
             sprintf(
                 "[TEST] %s:%s may not be called in the Surfnet\\SamlBundle as it doesn't work with Symfony2",
-                __CLASS__,
+                self::class,
                 __METHOD__
             )
         );

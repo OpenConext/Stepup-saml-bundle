@@ -16,9 +16,13 @@
  * limitations under the License.
  */
 
+use Psr\Log\NullLogger;
+use Surfnet\SamlBundle\Tests\TestSaml2Container;
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$container = new \Surfnet\SamlBundle\Tests\TestSaml2Container(
-    new \Psr\Log\NullLogger()
+$container = new TestSaml2Container(
+    new NullLogger()
 );
+
 SAML2\Compat\ContainerSingleton::setContainer($container);

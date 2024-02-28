@@ -208,12 +208,13 @@ performed using HTTP POST binding.
 
 To get this feature to work you will need to perform the following steps
 
-1. Configure your project as an SP and set up at least one remote IdP. See steps above on some help with setting this up, or consult the README.md
-2. Create a `Security\Authentication\Provider\SamlProvider` And have it implement the `Surfnet\SamlBundle\Security\Authentication\Provider\SamlProviderInterface` and the `UserProviderInterface`
-3. In `config/packages/security.yaml`: setup a `saml_based` firewall and create a `providers` entry. See code example 1 below.
-4. Add the `SamlProvider` service to your services.yaml. See example below in block 2.
-5. Configure the ACS route name of SP in your `.env` file. Example:  `acs_location_route_name='assertion_consumer_service'`. Your Saml Controller ACS location action should use the same route name. 
-6. Optionally create a `Security\Authentication\Handler\FailureHandler`. Here you can define what behavior is required when authentication failed. For example you can do a redirect to a certain page. Or show an error page. Must implement the `AuthenticationFailureHandlerInterface`. See code example 3 for details. A very simple implementation is provided in the bundle. Showing a very simple unstyled authn failed error page.
+1. Enable the `enable_authentication` in the `surfnet_saml` configuration. By default this is disabled.
+2. Configure your project as an SP and set up at least one remote IdP. See steps above on some help with setting this up, or consult the README.md
+3. Create a `Security\Authentication\Provider\SamlProvider` And have it implement the `Surfnet\SamlBundle\Security\Authentication\Provider\SamlProviderInterface` and the `UserProviderInterface`
+4. In `config/packages/security.yaml`: setup a `saml_based` firewall and create a `providers` entry. See code example 1 below.
+5. Add the `SamlProvider` service to your services.yaml. See example below in block 2.
+6. Configure the ACS route name of SP in your `.env` file. Example:  `acs_location_route_name='assertion_consumer_service'`. Your Saml Controller ACS location action should use the same route name. 
+7. Optionally create a `Security\Authentication\Handler\FailureHandler`. Here you can define what behavior is required when authentication failed. For example you can do a redirect to a certain page. Or show an error page. Must implement the `AuthenticationFailureHandlerInterface`. See code example 3 for details. A very simple implementation is provided in the bundle. Showing a very simple unstyled authn failed error page.
  
 ### Code example 1: setting up security.yaml
 

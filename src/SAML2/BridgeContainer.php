@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\SAML2;
 
 use BadMethodCallException;
+use DOMElement;
 use Psr\Log\LoggerInterface;
 use SAML2\Compat\AbstractContainer;
 
@@ -28,14 +29,8 @@ use SAML2\Compat\AbstractContainer;
  */
 class BridgeContainer extends AbstractContainer
 {
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**
@@ -56,46 +51,41 @@ class BridgeContainer extends AbstractContainer
 
     public function debugMessage($message, $type): void
     {
-        if ($message instanceof \DOMElement) {
+        if ($message instanceof DOMElement) {
             $message = $message->ownerDocument->saveXML($message);
         }
 
         $this->logger->debug($message, ['type' => $type]);
     }
 
-    public function redirect($url, $data = array()): void
+    public function redirect($url, $data = []): void
     {
-        throw new BadMethodCallException(sprintf(
-            "%s:%s may not be called in the Surfnet\\SamlBundle",
-            __CLASS__,
-            __METHOD__
-        ));
+        $this->notSupported(__METHOD__);
     }
 
-    public function postRedirect($url, $data = array()): void
+    public function postRedirect($url, $data = []): void
     {
-        throw new BadMethodCallException(sprintf(
-            "%s:%s may not be called in the Surfnet\\SamlBundle",
-            __CLASS__,
-            __METHOD__
-        ));
+        $this->notSupported(__METHOD__);
     }
 
+    /** @throws BadMethodCallException */
     public function getTempDir(): string
     {
-        throw new BadMethodCallException(sprintf(
-            "%s:%s may not be called in the Surfnet\\SamlBundle",
-            __CLASS__,
-            __METHOD__
-        ));
+        $this->notSupported(__METHOD__);
+        return '';
     }
 
     public function writeFile(string $filename, string $data, int $mode = null): void
     {
+        $this->notSupported(__METHOD__);
+    }
+
+    public function notSupported(string $method): void
+    {
         throw new BadMethodCallException(sprintf(
             "%s:%s may not be called in the Surfnet\\SamlBundle",
-            __CLASS__,
-            __METHOD__
+            self::class,
+            $method
         ));
     }
 }

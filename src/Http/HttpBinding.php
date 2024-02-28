@@ -25,12 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface HttpBinding
 {
-    /**
-     * @param Request $request
-     *
-     * @return ReceivedAuthnRequest
-     */
-    public function receiveSignedAuthnRequestFrom(Request $request): AuthnRequest;
+    public function receiveSignedAuthnRequestFrom(Request $request): ReceivedAuthnRequest;
 
     public function createResponseFor(AuthnRequest $request): RedirectResponse;
 }

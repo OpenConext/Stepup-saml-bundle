@@ -20,15 +20,7 @@ namespace Surfnet\SamlBundle\Entity;
 
 interface ServiceProviderRepository
 {
-    /**
-     * @param string $entityId
-     * @return ServiceProvider
-     */
-    public function getServiceProvider($entityId);
+    public function getServiceProvider(string $entityId): ServiceProvider;
 
-    /**
-     * @param string $entityId
-     * @return bool
-     */
-    public function hasServiceProvider($entityId);
+    public function hasServiceProvider(string $entityId): bool;
 }

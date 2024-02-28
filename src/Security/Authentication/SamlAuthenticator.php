@@ -20,10 +20,13 @@ namespace Surfnet\SamlBundle\Security\Authentication;
 
 use Psr\Log\LoggerInterface;
 use SAML2\Assertion;
+use SAML2\Compat\ContainerSingleton;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
+use Surfnet\SamlBundle\SAML2\BridgeContainer;
+use Surfnet\SamlBundle\Security\Authentication\Handler\AuthenticationHandler;
 use Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler;
 use Surfnet\SamlBundle\Security\Authentication\Passport\Badge\SamlAttributesBadge;
 use Surfnet\SamlBundle\Security\Authentication\Provider\SamlProviderInterface;
@@ -34,6 +37,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\LogicException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
@@ -52,17 +56,20 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        private IdentityProvider $identityProvider,
-        private ServiceProvider $serviceProvider,
-        private RedirectBinding $redirectBinding,
-        private SamlAuthenticationStateHandler $samlAuthenticationStateHandler,
-        private ProcessSamlAuthenticationHandler $processSamlAuthenticationHandler,
-        private AuthenticationSuccessHandlerInterface $successHandler,
-        private AuthenticationFailureHandlerInterface $failureHandler,
-        private SamlProviderInterface $samlProvider,
-        private RouterInterface $router,
-        private LoggerInterface $logger,
-        private string $acsRouteName
+        private readonly IdentityProvider $identityProvider,
+        private readonly ServiceProvider $serviceProvider,
+        private readonly RedirectBinding $redirectBinding,
+        private readonly SamlAuthenticationStateHandler $samlAuthenticationStateHandler,
+        private readonly AuthenticationHandler $processSamlAuthenticationHandler,
+        private readonly AuthenticationSuccessHandlerInterface $successHandler,
+        private readonly AuthenticationFailureHandlerInterface $failureHandler,
+        private readonly SamlProviderInterface $samlProvider,
+        private readonly RouterInterface $router,
+        private readonly LoggerInterface $logger,
+        private readonly string $acsRouteName,
+        /** @var array<int, string> $rejectWhenRelayStates */
+        private readonly array $rejectWhenRelayStates = [],
+        private readonly ?string $authenticationContextClassRef = null,
     ) {
     }
 
@@ -73,13 +80,30 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
             $this->identityProvider
         );
 
+        if (null !== $this->authenticationContextClassRef) {
+            $authnRequest->setAuthenticationContextClassRef($this->authenticationContextClassRef);
+        }
+
         $this->samlAuthenticationStateHandler->setRequestId($authnRequest->getRequestId());
         return $this->redirectBinding->createResponseFor($authnRequest);
     }
 
     public function supports(Request $request): ?bool
     {
+        $this->logger->info('Determine if StepupSamlBundle::SamlAuthenticator supports the request');
         $acsUri = $this->router->generate($this->acsRouteName);
+
+        $excludeByRelayState = $request->request->has('RelayState') &&
+            in_array($request->request->get('RelayState'), $this->rejectWhenRelayStates);
+        if ($excludeByRelayState) {
+            $this->logger->info(
+                sprintf(
+                    'Rejecting support based on RelayState. "%s" is rejected as configured in rejected_relay_states',
+                    $request->request->get('RelayState')
+                )
+            );
+            return false;
+        }
         return $request->getMethod() === 'POST' &&
             $request->getRequestUri() === $acsUri &&
             $request->request->has('SAMLResponse');
@@ -115,7 +139,7 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
 
         $userBadge = new UserBadge(
             $nameId,
-            function ($identifier) use ($assertion) {
+            function ($identifier) use ($assertion): UserInterface {
                 $this->logger->notice(sprintf('User Badge is loading a User with identifier %s', $identifier));
                 return $this->samlProvider->getUser($assertion);
             }

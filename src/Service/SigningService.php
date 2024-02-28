@@ -30,33 +30,13 @@ use Surfnet\SamlBundle\Signing\Signable;
 
 class SigningService
 {
-    /**
-     * @var PublicKeyLoader
-     */
-    private $publicKeyLoader;
-
-    /**
-     * @var PrivateKeyLoader
-     */
-    private $privateKeyLoader;
-
-    /**
-     * @param PublicKeyLoader  $publicKeyLoader
-     * @param PrivateKeyLoader $privateKeyLoader
-     */
-    public function __construct(PublicKeyLoader $publicKeyLoader, PrivateKeyLoader $privateKeyLoader)
-    {
-        $this->publicKeyLoader = $publicKeyLoader;
-        $this->privateKeyLoader = $privateKeyLoader;
+    public function __construct(
+        private readonly PublicKeyLoader $publicKeyLoader,
+        private readonly PrivateKeyLoader $privateKeyLoader
+    ) {
     }
 
-    /**
-     * @param Signable $signable
-     * @param KeyPair  $keyPair
-     * @return Signable
-     * @throws \Exception
-     */
-    public function sign(Signable $signable, KeyPair $keyPair)
+    public function sign(Signable $signable, KeyPair $keyPair): Signable
     {
         $publicKey = $this->loadPublicKeyFromFile($keyPair->publicKeyFile);
         $privateKey = $this->loadPrivateKeyFromFile($keyPair->privateKeyFile);
@@ -75,10 +55,9 @@ class SigningService
     }
 
     /**
-     * @param  string $publicKeyFile /full/path/to/the/public/key
-     * @return X509
+     * @param string $publicKeyFile /full/path/to/the/public/key
      */
-    public function loadPublicKeyFromFile($publicKeyFile)
+    public function loadPublicKeyFromFile(string $publicKeyFile): X509
     {
         $this->publicKeyLoader->loadCertificateFile($publicKeyFile);
         $keyCollection = $this->publicKeyLoader->getKeys();
@@ -91,10 +70,10 @@ class SigningService
     }
 
     /**
-     * @param  string $privateKeyFile /full/path/to/the/private/key
+     * @param string $privateKeyFile /full/path/to/the/private/key
      * @return PrivateKey
      */
-    public function loadPrivateKeyFromFile($privateKeyFile)
+    public function loadPrivateKeyFromFile(string $privateKeyFile): PrivateKey
     {
         $privateKey = new PrivateKeyFile($privateKeyFile, 'metadata');
         return $this->privateKeyLoader->loadPrivateKey($privateKey);

@@ -70,7 +70,7 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
 
     public function apply(AttributeFilter $attributeFilter): AttributeSet
     {
-        return self::create(array_filter($this->attributes, [$attributeFilter, 'allows']));
+        return self::create(array_filter($this->attributes, $attributeFilter->allows(...)));
     }
 
     public function getAttributeByDefinition(AttributeDefinition $attributeDefinition): Attribute
@@ -119,9 +119,6 @@ class AttributeSet implements AttributeSetFactory, AttributeSetInterface
         return count($this->attributes);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.UnusedPrivateMethod) PHPMD does not see that this is being called in our static method
-     */
     protected function initializeWith(Attribute $attribute): void
     {
         if ($this->contains($attribute)) {

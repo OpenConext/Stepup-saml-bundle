@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+cd $(dirname $0)/../../
+
+# PHPUnit Bridge should always be used in Symfony applications. (https://symfony.com/doc/current/components/phpunit_bridge.html)
+# This will create a phpunit executable in /bin/ instead of /vendor/bin/
+php ./bin/console cache:clear --env=test
+./vendor/bin/phpunit -c ci/qa/phpunit.xml

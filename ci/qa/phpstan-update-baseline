@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+cd $(dirname $0)/../../
+
+vendor/bin/phpstan analyse --memory-limit=-1 --no-ansi -c ./ci/qa/phpstan.neon --generate-baseline ./ci/qa/phpstan-baseline.neon

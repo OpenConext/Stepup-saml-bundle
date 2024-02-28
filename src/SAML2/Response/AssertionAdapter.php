@@ -19,32 +19,26 @@
 namespace Surfnet\SamlBundle\SAML2\Response;
 
 use SAML2\Assertion;
+use SAML2\XML\saml\NameID;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeSetInterface;
 use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
 
 class AssertionAdapter
 {
-    private Assertion $assertion;
+    private readonly AttributeSetInterface $attributeSet;
 
-    private AttributeSetInterface $attributeSet;
-
-    private AttributeDictionary $attributeDictionary;
-
-    public function __construct(Assertion $assertion, AttributeDictionary $attributeDictionary)
-    {
-        $this->assertion           = $assertion;
-        $this->attributeSet        = ConfigurableAttributeSetFactory::createFrom($assertion, $attributeDictionary);
-        $this->attributeDictionary = $attributeDictionary;
+    public function __construct(
+        private readonly Assertion $assertion,
+        private readonly AttributeDictionary $attributeDictionary
+    ) {
+        $this->attributeSet = ConfigurableAttributeSetFactory::createFrom($assertion, $attributeDictionary);
     }
 
-    /**
-     * @return string
-     */
     public function getNameID(): ?string
     {
         $data = $this->assertion->getNameId();
-        if ($data) {
+        if ($data instanceof NameID) {
             return $data->getValue();
         }
 
@@ -56,7 +50,7 @@ class AssertionAdapter
      * @param mixed  $defaultValue  the value to return should the assertion not contain the attribute
      * @return string[]|mixed string[] if the attribute is found, the given default value otherwise
      */
-    public function getAttributeValue($attributeName, $defaultValue = null): mixed
+    public function getAttributeValue($attributeName, mixed $defaultValue = null): mixed
     {
         $attributeDefinition = $this->attributeDictionary->getAttributeDefinition($attributeName);
 
@@ -69,9 +63,6 @@ class AssertionAdapter
         return $attribute->getValue();
     }
 
-    /**
-     * @return AttributeSetInterface
-     */
     public function getAttributeSet(): AttributeSetInterface
     {
         return $this->attributeSet;

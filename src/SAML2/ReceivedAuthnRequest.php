@@ -18,21 +18,24 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
+use Exception;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Constants;
 use SAML2\DOMDocumentFactory;
 use SAML2\Message;
+use SAML2\XML\saml\Issuer;
 use SAML2\XML\saml\NameID;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\SAML2\Extensions\ExtensionsMapperTrait;
+use function sprintf;
 
 final class ReceivedAuthnRequest
 {
     use ExtensionsMapperTrait;
 
-    private SAML2AuthnRequest $request;
+    private readonly SAML2AuthnRequest $request;
 
     private function __construct(SAML2AuthnRequest $request)
     {
@@ -42,22 +45,25 @@ final class ReceivedAuthnRequest
 
     public static function from(string $decodedSamlRequest): ReceivedAuthnRequest
     {
-        if (!is_string($decodedSamlRequest) || empty($decodedSamlRequest)) {
-            throw new InvalidArgumentException(sprintf(
-                'Could not create ReceivedAuthnRequest: expected a non-empty string, received %s',
-                is_object($decodedSamlRequest) ? get_class($decodedSamlRequest) : ($decodedSamlRequest)
-            ));
+        if ($decodedSamlRequest === '') {
+            throw new InvalidArgumentException(
+                'Could not create ReceivedAuthnRequest: expected a non-empty string, received an empty string'
+            );
         }
 
         // additional security against XXE Processing vulnerability
         $document = DOMDocumentFactory::fromString($decodedSamlRequest);
+
+        if (!$document->firstChild) {
+            throw new RuntimeException('The SAML message can not be read from the document');
+        }
 
         $authnRequest = Message::fromXML($document->firstChild);
 
         if (!$authnRequest instanceof SAML2AuthnRequest) {
             throw new RuntimeException(sprintf(
                 'The received request is not an AuthnRequest, "%s" received instead',
-                get_class($authnRequest)
+                $authnRequest::class
             ));
         }
 
@@ -84,7 +90,7 @@ final class ReceivedAuthnRequest
     public function getNameId(): ?string
     {
         $nameId = $this->request->getNameId();
-        if (!$nameId) {
+        if (!$nameId instanceof NameID) {
             return null;
         }
 
@@ -94,7 +100,7 @@ final class ReceivedAuthnRequest
     public function getNameIdFormat(): ?string
     {
         $nameId = $this->request->getNameId();
-        if (!$nameId) {
+        if (!$nameId instanceof NameID) {
             return null;
         }
 
@@ -107,7 +113,7 @@ final class ReceivedAuthnRequest
         $nameIdVo->setValue($nameId);
         $nameIdVo->setFormat(($format ?: Constants::NAMEID_UNSPECIFIED));
 
-        $this->request->setNameId($nameId);
+        $this->request->setNameId($nameIdVo);
     }
 
     public function getRequestId(): string
@@ -132,7 +138,7 @@ final class ReceivedAuthnRequest
 
     public function getServiceProvider(): ?string
     {
-        if (!$this->request->getIssuer()) {
+        if (!$this->request->getIssuer() instanceof Issuer) {
             return null;
         }
         return $this->request->getIssuer()->getValue();
@@ -160,7 +166,7 @@ final class ReceivedAuthnRequest
     }
 
     /**
-     * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
+     * @throws Exception when signature is invalid (@see SAML2\Utils::validateSignature)
      */
     public function verify(XMLSecurityKey $key): bool
     {

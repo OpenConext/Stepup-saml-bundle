@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+cd $(dirname $0)/../../
+
+./vendor/bin/phpmd src text ci/qa/phpmd.xml

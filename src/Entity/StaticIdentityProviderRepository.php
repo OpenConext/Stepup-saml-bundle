@@ -23,7 +23,7 @@ use Surfnet\SamlBundle\Exception\NotFound;
 
 final class StaticIdentityProviderRepository implements IdentityProviderRepository
 {
-    private $identityProviders;
+    private readonly IdentityProviders $identityProviders;
 
     /**
      *
@@ -35,11 +35,9 @@ final class StaticIdentityProviderRepository implements IdentityProviderReposito
     }
 
     /**
-     * @param string $entityId
-     * @return IdentityProvider
      * @throws NotFound
      */
-    public function getIdentityProvider($entityId)
+    public function getIdentityProvider(string $entityId): IdentityProvider
     {
         $identityProvider = $this->identityProviders->findByEntityId($entityId);
         if ($identityProvider) {
@@ -49,11 +47,7 @@ final class StaticIdentityProviderRepository implements IdentityProviderReposito
         throw NotFound::identityProvider($entityId);
     }
 
-    /**
-     * @param string $entityId
-     * @return bool
-     */
-    public function hasIdentityProvider($entityId)
+    public function hasIdentityProvider(string $entityId): bool
     {
         return $this->identityProviders->hasByEntityId($entityId);
     }

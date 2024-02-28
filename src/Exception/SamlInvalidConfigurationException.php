@@ -22,7 +22,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 class SamlInvalidConfigurationException extends InvalidConfigurationException implements Exception
 {
-    public static function missingCertificate($path)
+    public static function missingCertificate($path): self
     {
         return new self(sprintf('Either %s.certificate_file or %s.certificate must be set.', $path, $path));
     }

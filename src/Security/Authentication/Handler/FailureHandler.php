@@ -18,13 +18,10 @@
 
 namespace Surfnet\SamlBundle\Security\Authentication\Handler;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler;
-use Symfony\Component\Security\Http\HttpUtils;
 
 class FailureHandler extends DefaultAuthenticationFailureHandler
 {

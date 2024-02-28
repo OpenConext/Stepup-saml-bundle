@@ -50,7 +50,7 @@ class SamlInteractionProviderTest extends TestCase
         $this->postBinding = Mockery::mock(PostBinding::class);
     }
 
-    private function createProvider()
+    private function createProvider(): void
     {
         $this->samlInteractionProvider = new SamlInteractionProvider(
             $this->serviceProvider,

@@ -18,25 +18,21 @@
 
 namespace Surfnet\SamlBundle;
 
-use SAML2\Compat\ContainerSingleton;
 use Surfnet\SamlBundle\DependencyInjection\Compiler\SamlAttributeRegistrationCompilerPass;
 use Surfnet\SamlBundle\DependencyInjection\Compiler\SpRepositoryAliasCompilerPass;
+use Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-class SurfnetSamlBundle extends Bundle
+class SurfnetSamlBundle extends AbstractBundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
         $container->addCompilerPass(new SpRepositoryAliasCompilerPass());
         $container->addCompilerPass(new SamlAttributeRegistrationCompilerPass());
-    }
-
-    public function boot()
-    {
-        $bridgeContainer = $this->container->get('surfnet_saml.saml2.bridge_container');
-        ContainerSingleton::setContainer($bridgeContainer);
+        
+        $container->registerExtension(new SurfnetSamlExtension());
     }
 }

@@ -23,9 +23,9 @@ class Extensions
     /**
      * @var Chunk[]
      */
-    private $chunks = [];
+    private array $chunks = [];
 
-    public function addChunk(Chunk $chunk)
+    public function addChunk(Chunk $chunk): void
     {
         $this->chunks[$chunk->getName()] = $chunk;
     }
@@ -37,7 +37,10 @@ class Extensions
 
     public function getGsspUserAttributesChunk(): ?GsspUserAttributesChunk
     {
-        return $this->chunks['UserAttributes'] ?? null;
+        if (!$this->hasGsspUserAttributesChunk()) {
+            return null;
+        }
+        return new GsspUserAttributesChunk($this->chunks['UserAttributes']->getValue());
     }
 
     public function hasGsspUserAttributesChunk(): bool

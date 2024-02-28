@@ -20,12 +20,15 @@ namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
 use PHPUnit\Framework\TestCase;
 use SAML2\Assertion;
+use SAML2\Compat\ContainerSingleton;
+use SAML2\Compat\MockContainer;
 use SAML2\XML\saml\SubjectConfirmation;
 use SAML2\XML\saml\SubjectConfirmationData;
 use Surfnet\SamlBundle\SAML2\Response\Assertion\InResponseTo;
 
 class InResponseToTest extends TestCase
 {
+
     /**
      * @test
      * @group saml2-response
@@ -58,6 +61,7 @@ class InResponseToTest extends TestCase
 
     public function provideAssertionsWithoutInResponseTo(): array
     {
+        ContainerSingleton::setContainer(new MockContainer());
         $assertionWithoutSubjectConfirmation = new Assertion();
 
         $assertionWithoutSubjectConfirmationData = new Assertion();

@@ -20,16 +20,12 @@ namespace Surfnet\SamlBundle\Security\Authentication\Handler;
 
 use SAML2\Assertion;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 interface AuthenticationHandler
 {
     /**
-     * Checks if it can process the event and if so does so. Also determines if there
+     * Checks if it can process the event and if so, does so. Also determines if there
      * is a next handler to be called if it cannot process the event itself.
-     *
-     * @param Request $request
-     * @return Response
      */
     public function process(Request $request): Assertion;
 }
