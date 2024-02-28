@@ -69,6 +69,7 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
         private readonly string $acsRouteName,
         /** @var array<int, string> $rejectWhenRelayStates */
         private readonly array $rejectWhenRelayStates = [],
+        private readonly ?string $authenticationContextClassRef = null,
     ) {
     }
 
@@ -78,6 +79,10 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
             $this->serviceProvider,
             $this->identityProvider
         );
+
+        if (null !== $this->authenticationContextClassRef) {
+            $authnRequest->setAuthenticationContextClassRef($this->authenticationContextClassRef);
+        }
 
         $this->samlAuthenticationStateHandler->setRequestId($authnRequest->getRequestId());
         return $this->redirectBinding->createResponseFor($authnRequest);

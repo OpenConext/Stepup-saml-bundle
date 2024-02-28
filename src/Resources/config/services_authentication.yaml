@@ -59,3 +59,4 @@ services:
       - '@logger'
       - '%acs_location_route_name%'
       - '%rejected_relay_states%'
+      - '%authentication_context_class_ref%'
