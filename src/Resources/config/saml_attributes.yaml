@@ -287,6 +287,15 @@ services:
         tags:
             - { name: 'saml.attribute' }
 
+    saml.attribute.surf-autorisaties:
+        class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
+        arguments:
+            - surf-autorisaties
+            - 'urn:mace:surf.nl:attribute-def:surf-autorisaties'
+            - 'urn:oid:1.3.6.1.4.1.1076.20.100.10.50.10'
+        tags:
+            - { name: 'saml.attribute' }
+
     saml.attribute.eduId:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition
         arguments:
