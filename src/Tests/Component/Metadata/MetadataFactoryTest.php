@@ -82,8 +82,7 @@ XML;
 XML;
         $metadataConfiguration = new MetadataConfiguration();
         $metadataConfiguration->isSp = true;
-        $metadataConfiguration->assertionConsumerRoute = 'https://foobar.example.com/acs';
-        $metadataConfiguration->entityIdRoute = 'https://foobar.example.com';
+        $metadataConfiguration->assertionConsumerRoute = ['route' => 'https://foobar.example.com/acs', 'parameters' => []];
         $this->buildFactory($metadataConfiguration);
         $metadata = $this->factory->generate();
         self::assertEquals($expectedResult, $metadata->__toString());
@@ -110,8 +109,7 @@ XML;
         $metadataConfiguration = new MetadataConfiguration();
         $metadataConfiguration->isIdP = true;
         $metadataConfiguration->idpCertificate = __DIR__ . '/keys/idp-cert.pem';
-        $metadataConfiguration->ssoRoute = 'https://foobar.example.com';
-        $metadataConfiguration->entityIdRoute = 'https://foobar.example.com';
+        $metadataConfiguration->ssoRoute = ['route' => 'https://foobar.example.com', 'parameters' => []];
         $this->buildFactory($metadataConfiguration);
         $metadata = $this->factory->generate();
         $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
@@ -124,8 +122,7 @@ XML;
         $metadataConfiguration = new MetadataConfiguration();
         $metadataConfiguration->isIdP = true;
         $metadataConfiguration->idpCertificate = __DIR__ . '/keys/idp-cert.pem';
-        $metadataConfiguration->ssoRoute = 'https://foobar.example.com';
-        $metadataConfiguration->entityIdRoute = 'https://foobar.example.com';
+        $metadataConfiguration->ssoRoute = ['route' => 'https://foobar.example.com', 'parameters' => []];
         $metadataConfiguration->privateKey = __DIR__ . '/keys/entity.key';
         $metadataConfiguration->publicKey = __DIR__ . '/keys/entity.crt';
 
@@ -140,6 +137,7 @@ XML;
 
     private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null): void
     {
+        $metadata->entityIdRoute = 'https://foobar.example.com';
         if (!$signingService instanceof SigningService) {
             $signingService = m::mock(SigningService::class);
             $signingService->shouldReceive('sign')->once()->andReturn(m::mock(Signable::class));

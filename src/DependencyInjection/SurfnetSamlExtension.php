@@ -112,7 +112,7 @@ class SurfnetSamlExtension extends Extension
         $metadata = $container->getDefinition('surfnet_saml.configuration.metadata');
 
         $metadataConfiguration = [
-            'entityIdRoute' => $configuration['metadata']['entity_id_route'],
+            'entityIdRoute' => z$configuration['metadata']['entity_id_route'],
             'publicKey'     => $configuration['metadata']['public_key'],
             'privateKey'    => $configuration['metadata']['private_key'],
             'isSp'          => false,

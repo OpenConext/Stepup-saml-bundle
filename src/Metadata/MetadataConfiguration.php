@@ -20,48 +20,21 @@ namespace Surfnet\SamlBundle\Metadata;
 
 class MetadataConfiguration
 {
-    /**
-     * @var string
-     */
-    public $entityIdRoute;
+    public mixed $entityIdRoute = '';
 
-    /**
-     * @var bool
-     */
-    public $isSp;
+    public bool $isSp = false;
 
-    /**
-     * @var string
-     */
-    public $assertionConsumerRoute;
+    public mixed $assertionConsumerRoute = '';
 
-    /**
-     * @var bool
-     */
-    public $isIdP;
+    public bool $isIdP = false;
 
-    /**
-     * @var string
-     */
-    public $ssoRoute;
+    public mixed $ssoRoute = '';
 
-    /**
-     * @var string
-     */
-    public $spCertificate;
+    public ?string $spCertificate = null;
 
-    /**
-     * @var string
-     */
-    public $idpCertificate;
+    public ?string $idpCertificate = null;
 
-    /**
-     * @var string
-     */
-    public $publicKey;
+    public ?string $publicKey = null;
 
-    /**
-     * @var string
-     */
-    public $privateKey;
+    public ?string $privateKey = null;
 }
