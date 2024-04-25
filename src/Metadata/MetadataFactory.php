@@ -83,7 +83,10 @@ class MetadataFactory
             $metadata->hasIdPMetadata = true;
             $metadata->ssoUrl = $this->getUrl($metadataConfiguration->ssoRoute);
 
-            if ($metadataConfiguration->idpCertificate !== '' && $metadataConfiguration->idpCertificate !== '0') {
+            if ($metadataConfiguration->idpCertificate &&
+                $metadataConfiguration->idpCertificate !== '' &&
+                $metadataConfiguration->idpCertificate !== '0'
+            ) {
                 $certificate = $this->getCertificateData($metadataConfiguration->idpCertificate);
             } else {
                 $certificate = $this->getCertificateData($metadataConfiguration->publicKey);
