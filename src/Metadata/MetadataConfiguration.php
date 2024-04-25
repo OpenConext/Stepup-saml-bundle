@@ -20,15 +20,15 @@ namespace Surfnet\SamlBundle\Metadata;
 
 class MetadataConfiguration
 {
-    public string $entityIdRoute = '';
+    public string|array $entityIdRoute = '';
 
     public bool $isSp = false;
 
-    public string $assertionConsumerRoute = '';
+    public string|array $assertionConsumerRoute = '';
 
     public bool $isIdP = false;
 
-    public string $ssoRoute = '';
+    public string|array $ssoRoute = '';
 
     public ?string $spCertificate = null;
 
