@@ -45,7 +45,7 @@ class AttributeDictionary
         /**
          * Ignore unknown attributes coming from the IDP
          */
-        private $ignoreUnknownAttributes = false
+        private readonly bool $ignoreUnknownAttributes = false
     ) {
     }
 

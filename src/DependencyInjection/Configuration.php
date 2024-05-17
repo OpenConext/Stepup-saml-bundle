@@ -62,7 +62,7 @@ class Configuration implements ConfigurationInterface
                             ->booleanNode('ignore_unknown_attributes')
                             ->defaultFalse()
                             ->info(
-                                'If the IDP provides atttributes which are not in the dictionary the SAML assertion'
+                                'If the IDP provides attributes which are not in the dictionary the SAML assertion'
                                 . 'will fail with an UnknownUrnException. Unless this value is true.'
                             )
                             ->end()
