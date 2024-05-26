@@ -6,6 +6,8 @@ services:
 
     surfnet_saml.saml.attribute_dictionary:
         class: Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary
+        arguments:
+            - $ignoreUnknownAttributes: false # Replaced in the Surfnet\SamlBundle\DependencyInjection\SurfnetSamlExtension based on configuration (if defined)
 
     Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary:
         alias: surfnet_saml.saml.attribute_dictionary
