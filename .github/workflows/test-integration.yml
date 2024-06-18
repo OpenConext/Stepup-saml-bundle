@@ -6,10 +6,14 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2']
+        php-versions: [ '8.2']
         experimental: [false]
         include:
+          - php-versions: '8.1'
+            experimental: true
           - php-versions: '8.3'
+            experimental: true
+          - php-versions: '8.4'
             experimental: true
     timeout-minutes: 30
     name: PHP ${{ matrix.php-versions }} on Ubuntu latest. Experimental == ${{ matrix.experimental }}

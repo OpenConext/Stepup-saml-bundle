@@ -21,7 +21,7 @@ parameters:
 			path: ../../src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Cannot call method scalarNode\\(\\) on Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\|null\\.$#"
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:scalarNode\\(\\)\\.$#"
 			count: 1
 			path: ../../src/DependencyInjection/Configuration.php
 
@@ -108,11 +108,6 @@ parameters:
 		-
 			message: "#^Parameter \\#1 \\$request of method Symfony\\\\Component\\\\Routing\\\\RequestContext\\:\\:fromRequest\\(\\) expects Symfony\\\\Component\\\\HttpFoundation\\\\Request, Symfony\\\\Component\\\\HttpFoundation\\\\Request\\|null given\\.$#"
 			count: 2
-			path: ../../src/Entity/HostedEntities.php
-
-		-
-			message: "#^Parameter \\#2 \\$array of function array_key_exists expects array, array\\|null given\\.$#"
-			count: 1
 			path: ../../src/Entity/HostedEntities.php
 
 		-
@@ -326,7 +321,37 @@ parameters:
 			path: ../../src/Metadata/Metadata.php
 
 		-
+			message: "#^Property Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataConfiguration\\:\\:\\$assertionConsumerRoute type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Metadata/MetadataConfiguration.php
+
+		-
+			message: "#^Property Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataConfiguration\\:\\:\\$entityIdRoute type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Metadata/MetadataConfiguration.php
+
+		-
+			message: "#^Property Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataConfiguration\\:\\:\\$ssoRoute type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Metadata/MetadataConfiguration.php
+
+		-
 			message: "#^Method Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataFactory\\:\\:getUrl\\(\\) has parameter \\$routeDefinition with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: ../../src/Metadata/MetadataFactory.php
+
+		-
+			message: "#^Parameter \\#1 \\$publicKeyFile of method Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataFactory\\:\\:getCertificateData\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: ../../src/Metadata/MetadataFactory.php
+
+		-
+			message: "#^Property Surfnet\\\\SamlBundle\\\\Signing\\\\KeyPair\\:\\:\\$privateKeyFile \\(string\\) does not accept string\\|null\\.$#"
+			count: 1
+			path: ../../src/Metadata/MetadataFactory.php
+
+		-
+			message: "#^Property Surfnet\\\\SamlBundle\\\\Signing\\\\KeyPair\\:\\:\\$publicKeyFile \\(string\\) does not accept string\\|null\\.$#"
 			count: 1
 			path: ../../src/Metadata/MetadataFactory.php
 
@@ -589,6 +614,11 @@ parameters:
 			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\AuthenticatedSessionStateHandler\\:\\:setCurrentRequestUri\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../../src/Security/Authentication/AuthenticatedSessionStateHandler.php
+
+		-
+			message: "#^Cannot call method notice\\(\\) on Psr\\\\Log\\\\LoggerInterface\\|null\\.$#"
+			count: 1
+			path: ../../src/Security/Authentication/Handler/FailureHandler.php
 
 		-
 			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\Passport\\\\Badge\\\\SamlAttributesBadge\\:\\:__construct\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
