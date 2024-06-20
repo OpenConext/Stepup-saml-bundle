@@ -34,19 +34,11 @@ class HttpBindingFactoryTest extends TestCase
 
     private HttpBindingFactory $factory;
 
-    private Request|Mockery\Mock $request;
-
-    private ParameterBag|Mockery\Mock $bag;
-
     public function setUp(): void
     {
         $redirectBinding = Mockery::mock(RedirectBinding::class);
         $postBinding = Mockery::mock(PostBinding::class);
         $this->factory = new HttpBindingFactory($redirectBinding, $postBinding);
-        $this->request = Mockery::mock(Request::class);
-        $this->bag = Mockery::mock(ParameterBag::class);
-        $this->request->request = $this->bag;
-        $this->request->query = $this->bag;
     }
 
     /**
@@ -55,16 +47,15 @@ class HttpBindingFactoryTest extends TestCase
      */
     public function a_redirect_binding_can_be_built(): void
     {
-        $this->request
-            ->shouldReceive('getMethod')
-            ->andReturn(Request::METHOD_GET);
-
-        $this->request->query
-            ->shouldReceive('has')
-            ->with('SAMLRequest')
-            ->andReturn(true);
-
-        $binding = $this->factory->build($this->request);
+        $request = new Request(
+            ['SAMLRequest' => true], // request parameters
+            [], // query parameters
+            [], // attributes
+            [], // cookies
+            [], // files
+            ['REQUEST_METHOD' => Request::METHOD_GET] // server parameters
+        );
+        $binding = $this->factory->build($request);
 
         $this->assertInstanceOf(RedirectBinding::class, $binding);
     }
@@ -75,16 +66,15 @@ class HttpBindingFactoryTest extends TestCase
      */
     public function a_post_binding_can_be_built(): void
     {
-        $this->request
-            ->shouldReceive('getMethod')
-            ->andReturn(Request::METHOD_POST);
-
-        $this->bag
-            ->shouldReceive('has')
-            ->with('SAMLRequest')
-            ->andReturn(true);
-
-        $binding = $this->factory->build($this->request);
+        $request = new Request(
+            [], // query parameters
+            ['SAMLRequest' => true], // request parameters
+            [], // attributes
+            [], // cookies
+            [], // files
+            ['REQUEST_METHOD' => Request::METHOD_POST] // server parameters
+        );
+        $binding = $this->factory->build($request);
 
         $this->assertInstanceOf(PostBinding::class, $binding);
     }
@@ -97,11 +87,16 @@ class HttpBindingFactoryTest extends TestCase
     {
         $this->expectExceptionMessage("Request type of \"PUT\" is not supported.");
         $this->expectException(InvalidArgumentException::class);
-        $this->request
-            ->shouldReceive('getMethod')
-            ->andReturn(Request::METHOD_PUT);
+        $request = new Request(
+            [], // query parameters
+            ['SAMLRequest' => true], // request parameters
+            [], // attributes
+            [], // cookies
+            [], // files
+            ['REQUEST_METHOD' => Request::METHOD_PUT] // server parameters
+        );
 
-        $this->factory->build($this->request);
+        $this->factory->build($request);
     }
 
     /**
@@ -112,16 +107,16 @@ class HttpBindingFactoryTest extends TestCase
     {
         $this->expectExceptionMessage("POST-binding is supported for SAMLRequest.");
         $this->expectException(InvalidArgumentException::class);
-        $this->request
-            ->shouldReceive('getMethod')
-            ->andReturn(Request::METHOD_POST);
+        $request = new Request(
+            [], // query parameters
+            [], // request parameters
+            [], // attributes
+            [], // cookies
+            [], // files
+            ['REQUEST_METHOD' => Request::METHOD_POST] // server parameters
+        );
 
-        $this->bag
-            ->shouldReceive('has')
-            ->with('SAMLRequest')
-            ->andReturn(false);
-
-        $this->factory->build($this->request);
+        $this->factory->build($request);
     }
 
     /**
@@ -132,19 +127,15 @@ class HttpBindingFactoryTest extends TestCase
     {
         $this->expectExceptionMessage("Redirect binding is supported for SAMLRequest and Response.");
         $this->expectException(InvalidArgumentException::class);
-        $this->request
-            ->shouldReceive('getMethod')
-            ->andReturn(Request::METHOD_GET);
+        $request = new Request(
+            [], // query parameters
+            [], // request parameters
+            [], // attributes
+            [], // cookies
+            [], // files
+            ['REQUEST_METHOD' => Request::METHOD_GET] // server parameters
+        );
 
-        $this->bag
-            ->shouldReceive('has')
-            ->with('SAMLRequest')
-            ->andReturn(false);
-        $this->bag
-            ->shouldReceive('has')
-            ->with('SAMLResponse')
-            ->andReturn(false);
-
-        $this->factory->build($this->request);
+        $this->factory->build($request);
     }
 }
