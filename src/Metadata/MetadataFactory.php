@@ -114,6 +114,10 @@ class MetadataFactory
         $matches = [];
         preg_match(Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
 
+        if (! isset($matches[1])) {
+            throw new \RuntimeException(sprintf('Could not parse PEM certificate in %s', $publicKeyFile));
+        }
+
         return str_replace([' ', "\n"], '', $matches[1]);
     }
 
