@@ -25,6 +25,7 @@ use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
+use Surfnet\SamlBundle\Exception\RuntimeException;
 
 class MetadataFactory
 {
@@ -115,7 +116,7 @@ class MetadataFactory
         preg_match(Certificate::CERTIFICATE_PATTERN, $certificate, $matches);
 
         if (! isset($matches[1])) {
-            throw new \RuntimeException(sprintf('Could not parse PEM certificate in %s', $publicKeyFile));
+            throw new RuntimeException(sprintf('Could not parse PEM certificate in %s', $publicKeyFile));
         }
 
         return str_replace([' ', "\n"], '', $matches[1]);
