@@ -47,10 +47,12 @@ final class SamlAuthenticationLoggerTest extends TestCase
     /**
      * @test
      */
-    public function it_errors_when_no_authentication(): void
+    public function it_does_not_throw_when_no_authentication(): void
     {
-        self::expectException(RuntimeException::class);
-        $logger = new SamlAuthenticationLogger(m::mock(LoggerInterface::class));
+        $innerLogger = m::mock(LoggerInterface::class);
+        $innerLogger->shouldReceive('emergency')->with('message2', [])->once();
+
+        $logger = new SamlAuthenticationLogger($innerLogger);
         $logger->emergency('message2');
     }
 }

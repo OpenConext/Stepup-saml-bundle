@@ -96,11 +96,9 @@ final class SamlAuthenticationLogger implements LoggerInterface
      */
     private function modifyContext(array $context): array
     {
-        if (!$this->sari) {
-            throw new RuntimeException('Authentication logging context is unknown');
+        if ($this->sari) {
+            $context['sari'] = $this->sari;
         }
-
-        $context['sari'] = $this->sari;
 
         return $context;
     }
