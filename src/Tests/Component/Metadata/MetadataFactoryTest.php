@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Copyright 2021 SURF B.V.
+ * Copyright 2025 SURFnet bv
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,9 +59,6 @@ class MetadataFactoryTest extends TestCase
         $this->xsdValidator = new XsdValidator();
     }
 
-    /**
-     * Helper method to assert XML document is valid against XSD schema
-     */
     private function assertXmlIsValidAgainstXsd(DOMDocument $document, string $xsdPath): void
     {
         $errors = $this->xsdValidator->validate($document, $xsdPath);

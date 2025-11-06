@@ -1,3 +1,7 @@
+# 7.0.0
+- Add SF 7 support
+- Upgrade dev & qa tooling
+
 # 6.0.0
 - Add SF 6 support
 - Require PHP 8.1

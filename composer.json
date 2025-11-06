@@ -1,7 +1,7 @@
 {
     "name": "surfnet/stepup-saml-bundle",
     "type": "symfony-bundle",
-    "description": "A Symfony 6 bundle that integrates the simplesamlphp\\saml2 library with Symfony.",
+    "description": "A Symfony 7 bundle that integrates the simplesamlphp\\saml2 library with Symfony.",
     "keywords": ["surfnet", "StepUp", "simplesamlphp", "SAML", "SAML2"],
     "license": "Apache-2.0",
     "minimum-stability": "stable",
@@ -12,15 +12,17 @@
         "psr/log": "^3.0",
         "robrichards/xmlseclibs": "^3.1.1",
         "simplesamlphp/saml2": "^4.6",
-        "symfony/dependency-injection": "^6.3",
-        "symfony/framework-bundle": "^6.3",
-        "symfony/security-bundle": "^6.3",
-        "symfony/templating": "^6.3",
+        "symfony/dependency-injection": "^6.3|^7.0",
+        "symfony/framework-bundle": "^6.3|^7.0",
+        "symfony/security-bundle": "^6.3|^7.0",
+        "symfony/templating": "^6.3|7.0",
         "twig/twig": "^3"
     },
     "require-dev": {
         "ext-libxml": "*",
         "ext-zlib": "*",
+        "irstea/phpcpd-shim": "^6.0",
+        "malukenho/docheader": "^1.1",
         "mockery/mockery": "^1.5",
         "overtrue/phplint": "*",
         "phpmd/phpmd": "^2.6",
@@ -31,16 +33,23 @@
         "sebastian/exporter": "^6.3",
         "slevomat/coding-standard": "^8.24",
         "squizlabs/php_codesniffer": "^4.0",
-        "symfony/phpunit-bridge": "^6.3"
+        "symfony/phpunit-bridge": "^7.3.4"
     },
     "scripts": {
         "check": [
-            "@composer-validate",
-            "@phplint",
-            "@phpcs",
-            "@phpmd",
-            "@phpstan",
-            "@test"
+          "@check-ci",
+          "@rector"
+        ],
+        "check-ci": [
+          "@composer-validate",
+          "@license-headers",
+          "@phplint",
+          "@phpcpd",
+          "@phpcs",
+          "@phpmd",
+          "@test",
+          "@phpstan",
+          "@composer audit"
         ],
         "composer-validate": "./ci/qa/validate",
         "phplint": "./ci/qa/phplint",
@@ -50,6 +59,7 @@
         "phpstan": "./ci/qa/phpstan",
         "phpstan-baseline": "./ci/qa/phpstan-update-baseline",
         "test": "./ci/qa/phpunit",
+        "license-headers": "./ci/qa/docheader",
         "phpcbf": "./ci/qa/phpcbf",
         "rector":  "./ci/qa/rector.sh --dry-run",
         "rector-fix":  "./ci/qa/rector.sh"
@@ -70,7 +80,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "simplesamlphp/composer-xmlprovider-installer": true
         }
     }
 }
