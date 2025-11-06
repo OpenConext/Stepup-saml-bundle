@@ -119,9 +119,7 @@ class SamlAuthenticatorTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
     }
 
-    /**
-     * @dataProvider provideSupportsParameters
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideSupportsParameters')]
     public function test_supports(bool $expectedResult, array $post, array $server, string $routeName): void
     {
         $request = new Request([], $post, [], [], [], $server);
@@ -130,9 +128,7 @@ class SamlAuthenticatorTest extends TestCase
         $this->assertEquals($expectedResult, $this->authenticator->supports($request));
     }
 
-    /**
-     * @dataProvider provideSupportsRelayStateParameters
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideSupportsRelayStateParameters')]
     public function test_supports_also_rejects(bool $expectation, array $post): void
     {
         $request = new Request(
@@ -151,7 +147,7 @@ class SamlAuthenticatorTest extends TestCase
         $this->assertEquals($expectation, $this->authenticator->supports($request));
     }
 
-    public function provideSupportsParameters(): Generator
+    public static function provideSupportsParameters(): Generator
     {
         yield [true, ['SAMLResponse' => 'foobar'], ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'POST'], '/route-name'];
         yield [false, ['SAMLRespons' => 'foobar'], ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'POST'], '/route-name'];
@@ -160,7 +156,7 @@ class SamlAuthenticatorTest extends TestCase
         yield [false, ['SAMLResponse' => 'foobar'], ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'POST'], '/route'];
     }
 
-    public function provideSupportsRelayStateParameters(): Generator
+    public static function provideSupportsRelayStateParameters(): Generator
     {
         yield [false, ['SAMLResponse' => 'rejection', 'RelayState' => 'rejection']];
         yield [false, ['SAMLResponse' => 'hurts', 'RelayState' => 'rejection']];

@@ -18,17 +18,17 @@
         "twig/twig": "^3"
     },
     "require-dev": {
+        "ext-libxml": "*",
         "ext-zlib": "*",
-        "mbhsoft/phpunit-xsdvalidation": "^3.0",
         "mockery/mockery": "^1.5",
         "overtrue/phplint": "*",
         "phpmd/phpmd": "^2.6",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10.0.0",
         "psr/log": "~1.0",
         "rector/rector": "^2.2",
-        "sebastian/exporter": "^4.0.5",
+        "sebastian/exporter": "^5.0.0",
         "squizlabs/php_codesniffer": "^3.7.1",
         "symfony/phpunit-bridge": "^6.3"
     },

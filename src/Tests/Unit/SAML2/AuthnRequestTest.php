@@ -98,11 +98,9 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
 
     private string $acsUrl = 'https://example.org';
 
-    /**
-     * @test
-     * @group saml2
-     * @dataProvider provideNameIDAndFormatCombinations
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideNameIDAndFormatCombinations')]
+    #[\PHPUnit\Framework\Attributes\Group('saml2')]
     public function setting_the_subject_generates_valid_xml(string $nameId, ?string $format): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestNoSubject);
@@ -114,10 +112,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertXmlStringEqualsXmlString($this->authRequestWithSubject, $authnRequest->getUnsignedXML());
     }
 
-    /**
-     * @test
-     * @group saml2
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('saml2')]
     public function the_nameid_and_format_can_be_retrieved_from_the_authnrequest(): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
@@ -133,10 +129,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertEquals($nameId->getFormat(), $authnRequest->getNameIdFormat());
     }
 
-    /**
-     * @test
-     * @group saml2
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('saml2')]
     public function the_acs_url_can_be_retrieved_from_the_authnrequest(): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
@@ -147,11 +141,9 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertEquals($this->acsUrl, $authnRequest->getAssertionConsumerServiceURL());
     }
 
-    /**
-     * @test
-     * @group saml2
-     * @dataProvider provideIsPassiveAndForceAuthnCombinations
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideIsPassiveAndForceAuthnCombinations')]
+    #[\PHPUnit\Framework\Attributes\Group('saml2')]
     public function is_passive_and_force_authn_can_be_retrieved_from_the_authnrequest(string $xml, bool $isPassive, bool $forceAuthn): void
     {
         $domDocument = DOMDocumentFactory::fromString($xml);
@@ -171,7 +163,7 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         ];
     }
 
-    public function provideNameIDAndFormatCombinations(): array
+    public static function provideNameIDAndFormatCombinations(): array
     {
         $nameId = new NameID();
         $nameId->setValue('user@example.org');

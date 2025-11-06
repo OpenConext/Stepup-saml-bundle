@@ -41,10 +41,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->factory = new HttpBindingFactory($redirectBinding, $postBinding);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('http')]
     public function a_redirect_binding_can_be_built(): void
     {
         $request = new Request(
@@ -60,10 +58,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->assertInstanceOf(RedirectBinding::class, $binding);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('http')]
     public function a_post_binding_can_be_built(): void
     {
         $request = new Request(
@@ -79,10 +75,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->assertInstanceOf(PostBinding::class, $binding);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('http')]
     public function a_put_binding_can_not_be_built(): void
     {
         $this->expectExceptionMessage("Request type of \"PUT\" is not supported.");
@@ -99,10 +93,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->factory->build($request);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('http')]
     public function an_invalid_post_authn_request_is_rejected(): void
     {
         $this->expectExceptionMessage("POST-binding is supported for SAMLRequest.");
@@ -119,10 +111,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->factory->build($request);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
+    #[\PHPUnit\Framework\Attributes\Group('http')]
     public function an_invalid_get_authn_request_is_rejected(): void
     {
         $this->expectExceptionMessage("Redirect binding is supported for SAMLRequest and Response.");

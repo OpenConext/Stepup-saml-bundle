@@ -24,9 +24,7 @@ use Surfnet\SamlBundle\Http\ReceivedAuthnRequestPost;
 
 class ReceivedAuthnRequestPostTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_can_decode_a_signed_saml_request(): void
     {
         $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/valid-signed.xml'));
@@ -38,9 +36,7 @@ class ReceivedAuthnRequestPostTest extends TestCase
         $this->assertEquals('/index.php', $authnRequest->getRelayState());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_can_decode_a_signed_saml_request_from_adfs_origin(): void
     {
         $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/valid-signed-adfs.xml'));
@@ -52,9 +48,7 @@ class ReceivedAuthnRequestPostTest extends TestCase
         $this->assertInstanceOf(ReceivedAuthnRequestPost::class, $parsed);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_can_decode_an_usigned_saml_request(): void
     {
         $samlRequest = str_replace(PHP_EOL, '', file_get_contents(__DIR__ . '/Resources/valid-unsigned.xml'));
@@ -66,9 +60,7 @@ class ReceivedAuthnRequestPostTest extends TestCase
         $this->assertEquals('/index.php', $authnRequest->getRelayState());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_rejects_malformed_saml_request(): void
     {
         $this->expectExceptionMessage("Failed decoding SAML request, did not receive a valid base64 string");

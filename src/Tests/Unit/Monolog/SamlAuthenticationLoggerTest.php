@@ -29,9 +29,7 @@ final class SamlAuthenticationLoggerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_a_logger_for_an_authentication(): void
     {
         $requestId = md5('boesboes');
@@ -44,9 +42,7 @@ final class SamlAuthenticationLoggerTest extends TestCase
         $logger->emergency('message2');
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_does_not_throw_when_no_authentication(): void
     {
         $innerLogger = m::mock(LoggerInterface::class);
