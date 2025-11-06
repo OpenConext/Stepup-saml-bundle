@@ -75,7 +75,7 @@ class BridgeContainer extends AbstractContainer
         return '';
     }
 
-    public function writeFile(string $filename, string $data, int $mode = null): void
+    public function writeFile(string $filename, string $data, ?int $mode = null): void
     {
         $this->notSupported(__METHOD__);
     }

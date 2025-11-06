@@ -73,7 +73,7 @@ class SamlAuthenticator extends AbstractAuthenticator implements InteractiveAuth
     ) {
     }
 
-    public function start(Request $request, AuthenticationException $authException = null): Response
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         $authnRequest = AuthnRequestFactory::createNewRequest(
             $this->serviceProvider,

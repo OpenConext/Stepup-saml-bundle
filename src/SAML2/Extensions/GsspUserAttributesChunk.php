@@ -24,7 +24,7 @@ use SAML2\Utils;
 
 class GsspUserAttributesChunk extends Chunk
 {
-    public function __construct(DOMElement $value = null)
+    public function __construct(?DOMElement $value = null)
     {
         $doc = new DOMDocument("1.0", "UTF-8");
         $root = $doc->createElementNS('urn:mace:surf.nl:stepup:gssp-extensions', 'gssp:UserAttributes');
