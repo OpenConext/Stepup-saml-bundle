@@ -71,4 +71,3 @@ class XsdValidator
         return empty($this->validate($document, $xsdPath));
     }
 }
-

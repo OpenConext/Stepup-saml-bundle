@@ -124,4 +124,3 @@ XML;
         self::assertStringContainsString('not found', $errors[0]);
     }
 }
-

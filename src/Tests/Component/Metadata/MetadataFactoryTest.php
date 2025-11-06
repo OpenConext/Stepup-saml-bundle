@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Metadata;
 
+use DOMDocument;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -28,8 +29,8 @@ use Surfnet\SamlBundle\Metadata\MetadataFactory;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Loader\ArrayLoader;
 use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 use function dirname;
 
 class MetadataFactoryTest extends TestCase
@@ -61,7 +62,7 @@ class MetadataFactoryTest extends TestCase
     /**
      * Helper method to assert XML document is valid against XSD schema
      */
-    private function assertXmlIsValidAgainstXsd(\DOMDocument $document, string $xsdPath): void
+    private function assertXmlIsValidAgainstXsd(DOMDocument $document, string $xsdPath): void
     {
         $errors = $this->xsdValidator->validate($document, $xsdPath);
 

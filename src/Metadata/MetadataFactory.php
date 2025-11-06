@@ -21,11 +21,11 @@ namespace Surfnet\SamlBundle\Metadata;
 use SAML2\DOMDocumentFactory;
 use SAML2\Utilities\Certificate;
 use SAML2\Utilities\File;
+use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
-use Surfnet\SamlBundle\Exception\RuntimeException;
 
 class MetadataFactory
 {

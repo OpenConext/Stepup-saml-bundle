@@ -20,6 +20,8 @@ namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SAML2\Configuration\PrivateKey;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
@@ -33,8 +35,8 @@ class AuthnRequestFactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('saml2')]
+    #[Test]
+    #[Group('saml2')]
     public function an_exception_is_thrown_when_a_request_is_not_properly_base64_encoded(): void
     {
         $this->expectExceptionMessage("Failed decoding the request, did not receive a valid base64 string");
@@ -49,8 +51,8 @@ class AuthnRequestFactoryTest extends TestCase
         AuthnRequestFactory::createFromHttpRequest($request);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('saml2')]
+    #[Test]
+    #[Group('saml2')]
     public function an_exception_is_thrown_when_a_request_cannot_be_inflated(): void
     {
         $this->expectExceptionMessage("Failed inflating the request;");
@@ -65,8 +67,8 @@ class AuthnRequestFactoryTest extends TestCase
         AuthnRequestFactory::createFromHttpRequest($request);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('saml2')]
+    #[Test]
+    #[Group('saml2')]
     public function verify_force_authn_works_as_intended(): void
     {
         $sp = m::mock(ServiceProvider::class);

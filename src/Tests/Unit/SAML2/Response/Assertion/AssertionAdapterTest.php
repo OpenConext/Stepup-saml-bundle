@@ -20,6 +20,8 @@ namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SAML2\Assertion;
 use Surfnet\SamlBundle\Exception\UnknownUrnException;
@@ -32,8 +34,8 @@ class AssertionAdapterTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('AssertionAdapter')]
+    #[Test]
+    #[Group('AssertionAdapter')]
     public function presence_of_attribute_can_be_confirmed_based_on_mace_urn_attribute_definition(): void
     {
 
@@ -60,8 +62,8 @@ class AssertionAdapterTest extends TestCase
         $this->assertTrue($attributeIsInSet, 'Expected attribute to be part of AttributeSet, but it is not');
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('AssertionAdapter')]
+    #[Test]
+    #[Group('AssertionAdapter')]
     public function presence_of_attribute_can_be_confirmed_based_on_oid_urn_attribute_definition(): void
     {
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
@@ -87,8 +89,8 @@ class AssertionAdapterTest extends TestCase
         $this->assertTrue($attributeIsInSet, 'Expected attribute to be part of AttributeSet, but it is not');
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('AssertionAdapter')]
+    #[Test]
+    #[Group('AssertionAdapter')]
     public function no_presence_of_attribute_can_be_confirmed_if_no_attribute_definition_found(): void
     {
         $this->expectException(UnknownUrnException::class);
@@ -113,8 +115,8 @@ class AssertionAdapterTest extends TestCase
         $attributeSet->contains($attributeExpectedNotToBeContained);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('AssertionAdapter')]
+    #[Test]
+    #[Group('AssertionAdapter')]
     public function attribute_set_is_empty_if_no_attributes_found(): void
     {
         $assertion = m::mock(Assertion::class);
@@ -128,8 +130,8 @@ class AssertionAdapterTest extends TestCase
         $this->assertCount(0, $attributeSet, 'Expected attribute set to be empty, but it is not');
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('AssertionAdapter')]
+    #[Test]
+    #[Group('AssertionAdapter')]
     public function attribute_set_has_content_when_attributes_found(): void
     {
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';
@@ -152,8 +154,8 @@ class AssertionAdapterTest extends TestCase
         $this->assertCount(1, $attributeSet, 'Expected attribute AttributeSet to have content, but it does not');
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('AssertionAdapter')]
+    #[Test]
+    #[Group('AssertionAdapter')]
     public function attribute_set_has_no_duplicate_attribute_definitions_when_same_attributes_found(): void
     {
         $oidAttributeUrn   = 'urn:oid:0.0.0.0.0.0.0.0.0';

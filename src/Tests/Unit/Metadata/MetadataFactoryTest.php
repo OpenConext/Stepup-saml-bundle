@@ -5,6 +5,7 @@ namespace Surfnet\SamlBundle\Tests\Unit\Metadata;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
+use RuntimeException;
 use Surfnet\SamlBundle\Metadata\MetadataFactory;
 
 class MetadataFactoryTest extends TestCase
@@ -31,7 +32,7 @@ class MetadataFactoryTest extends TestCase
 
         // Test with an invalid certificate
         $invalidPublicKeyFile = __DIR__ . '/invalid_certificate.pem';  // File with invalid certificate
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Could not parse PEM certificate in ' . $invalidPublicKeyFile);
         $reflectionMethod->invoke($metadataFactoryMock, $invalidPublicKeyFile);
     }

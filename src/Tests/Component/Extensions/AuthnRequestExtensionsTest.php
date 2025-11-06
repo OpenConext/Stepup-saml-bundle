@@ -21,7 +21,6 @@ namespace Surfnet\SamlBundle\Tests\Component\Extensions;
 use DOMDocument;
 use DOMNode;
 use DOMXPath;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use RobRichards\XMLSecLibs\XMLSecEnc;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;

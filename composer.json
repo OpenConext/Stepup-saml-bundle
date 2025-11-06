@@ -29,6 +29,7 @@
         "phpunit/phpunit": "^11.0.0",
         "rector/rector": "^2.2",
         "sebastian/exporter": "^6.3",
+        "slevomat/coding-standard": "^8.24",
         "squizlabs/php_codesniffer": "^4.0",
         "symfony/phpunit-bridge": "^6.3"
     },
@@ -68,6 +69,7 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "phpstan/extension-installer": true
         }
     }

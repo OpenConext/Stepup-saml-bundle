@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\Security\Authentication;
 
-use Surfnet\SamlBundle\Security\Exception\LogicException;
 use Surfnet\SamlBundle\Value\DateTime;
 
 interface AuthenticatedSessionStateHandler
@@ -26,7 +25,7 @@ interface AuthenticatedSessionStateHandler
     /**
      * Sets the moment at which the user was authenticated
      *
-     * @throws LogicException when an authentication moment was already logged
+     * @throws \LogicException when an authentication moment was already logged
      */
     public function logAuthenticationMoment(): void;
 
@@ -35,7 +34,7 @@ interface AuthenticatedSessionStateHandler
     /**
      * Gets the moment at which the user was authenticated
      *
-     * @throws LogicException when no authentication moment was logged
+     * @throws \LogicException when no authentication moment was logged
      */
     public function getAuthenticationMoment(): DateTime;
 

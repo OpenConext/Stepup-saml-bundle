@@ -20,6 +20,9 @@ namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SAML2\Compat\ContainerSingleton;
 use SAML2\Compat\MockContainer;
@@ -65,9 +68,9 @@ MESSAGE;
         ContainerSingleton::setContainer(new MockContainer());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\DataProvider('nonGetMethodProvider')]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[DataProvider('nonGetMethodProvider')]
+    #[Group('http')]
     public function a_signed_authn_request_cannot_be_received_from_a_request_that_is_not_a_get_request(string $nonGetMethod): void
     {
         $this->expectException(BadRequestHttpException::class);
@@ -84,8 +87,8 @@ MESSAGE;
         $redirectBinding->receiveSignedAuthnRequestFrom($request);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[Group('http')]
     public function a_signed_authn_request_cannot_be_received_from_a_request_that_has_no_signed_saml_request(): void
     {
         $this->expectException(UnsignedRequestException::class);
@@ -102,8 +105,8 @@ MESSAGE;
         $redirectBinding->receiveSignedAuthnRequestFrom($request);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[Group('http')]
     public function a_signed_authn_request_cannot_be_received_if_the_service_provider_in_the_authn_request_is_unknown(): void
     {
         $this->expectException(UnknownServiceProviderException::class);
@@ -136,8 +139,8 @@ MESSAGE;
     /**
      * Signed AuthNRequests destination MUST match the request URI
      */
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[Group('http')]
     public function a_signed_authn_requests_destination_must_match_request_uri(): void
     {
         $this->expectException(BadRequestHttpException::class);
@@ -165,8 +168,8 @@ MESSAGE;
     /**
      * Signed AuthNRequests destination have a destination
      */
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[Group('http')]
     public function a_signed_authn_requests_must_carry_a_destination(): void
     {
         $this->expectException(BadRequestHttpException::class);
@@ -191,8 +194,8 @@ MESSAGE;
         $redirectBinding->receiveSignedAuthnRequestFrom($request);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[Group('http')]
     public function a_signed_authn_request_cannot_be_received_if_the_signature_is_invalid(): void
     {
         $this->expectException(SignatureValidationFailedException::class);
@@ -230,9 +233,9 @@ MESSAGE;
         $redirectBinding = new RedirectBinding($mockSignatureVerifier, $mockEntityRepository);
         $redirectBinding->receiveSignedAuthnRequestFrom($request);
     }
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\DataProvider('nonGetMethodProvider')]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[DataProvider('nonGetMethodProvider')]
+    #[Group('http')]
     public function a_unsigned_authn_request_cannot_be_received_from_a_request_that_is_not_a_get_request(string $nonGetMethod): void
     {
         $this->expectException(BadRequestHttpException::class);
@@ -248,8 +251,8 @@ MESSAGE;
         $redirectBinding->receiveUnsignedAuthnRequestFrom($request);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[Group('http')]
     public function a_unsigned_authn_request_cannot_be_received_if_the_service_provider_in_the_authn_request_is_unknown(): void
     {
         $this->expectException(UnknownServiceProviderException::class);
@@ -276,8 +279,8 @@ MESSAGE;
         $redirectBinding->receiveUnsignedAuthnRequestFrom($request);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\Group('http')]
+    #[Test]
+    #[Group('http')]
     public function a_unsigned_authn_request_cannot_be_received_if_the_service_provider_in_the_authn_request_is_unknown_with_destination(): void
     {
         $this->expectException(UnknownServiceProviderException::class);

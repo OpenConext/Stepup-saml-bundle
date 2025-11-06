@@ -20,14 +20,11 @@ namespace Surfnet\SamlBundle\Security\Authentication;
 
 use Psr\Log\LoggerInterface;
 use SAML2\Assertion;
-use SAML2\Compat\ContainerSingleton;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\RedirectBinding;
 use Surfnet\SamlBundle\SAML2\AuthnRequestFactory;
-use Surfnet\SamlBundle\SAML2\BridgeContainer;
 use Surfnet\SamlBundle\Security\Authentication\Handler\AuthenticationHandler;
-use Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler;
 use Surfnet\SamlBundle\Security\Authentication\Passport\Badge\SamlAttributesBadge;
 use Surfnet\SamlBundle\Security\Authentication\Provider\SamlProviderInterface;
 use Surfnet\SamlBundle\Security\Authentication\Token\SamlToken;
