@@ -1,686 +1,823 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$id of method Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\:\\:hasDefinition\\(\\) expects string, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+			message: '#^Parameter \#1 \$id of method Symfony\\Component\\DependencyInjection\\ContainerBuilder\:\:hasDefinition\(\) expects string, array\|bool\|float\|int\|string\|UnitEnum\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/DependencyInjection/Compiler/SpRepositoryAliasCompilerPass.php
 
 		-
-			message: "#^Parameter \\#2 \\$id of method Symfony\\\\Component\\\\DependencyInjection\\\\ContainerBuilder\\:\\:setAlias\\(\\) expects string\\|Symfony\\\\Component\\\\DependencyInjection\\\\Alias, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+			message: '#^Parameter \#2 \$id of method Symfony\\Component\\DependencyInjection\\ContainerBuilder\:\:setAlias\(\) expects string\|Symfony\\Component\\DependencyInjection\\Alias, array\|bool\|float\|int\|string\|UnitEnum\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/DependencyInjection/Compiler/SpRepositoryAliasCompilerPass.php
 
 		-
-			message: "#^Parameter \\#2 \\.\\.\\.\\$values of function sprintf expects bool\\|float\\|int\\|string\\|null, array\\|bool\\|float\\|int\\|string\\|UnitEnum\\|null given\\.$#"
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, array\|bool\|float\|int\|string\|UnitEnum\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/DependencyInjection/Compiler/SpRepositoryAliasCompilerPass.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+			message: '#^Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\)\.$#'
+			identifier: method.notFound
 			count: 6
 			path: ../../src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:scalarNode\\(\\)\\.$#"
+			message: '#^Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\:\:scalarNode\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: ../../src/DependencyInjection/Configuration.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseCertificateData\\(\\) has parameter \\$provider with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseCertificateData\(\) has parameter \$provider with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseCertificateData\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseCertificateData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseHostedConfiguration\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseHostedConfiguration\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseHostedIdpConfiguration\\(\\) has parameter \\$identityProvider with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseHostedIdpConfiguration\(\) has parameter \$identityProvider with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseHostedSpConfiguration\\(\\) has parameter \\$serviceProvider with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseHostedSpConfiguration\(\) has parameter \$serviceProvider with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseMetadataConfiguration\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseMetadataConfiguration\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseRemoteConfiguration\\(\\) has parameter \\$remoteConfiguration with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseRemoteConfiguration\(\) has parameter \$remoteConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseRemoteIdentityProviderConfiguration\\(\\) has parameter \\$identityProvider with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseRemoteIdentityProviderConfiguration\(\) has parameter \$identityProvider with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseRemoteIdentityProviderConfigurations\\(\\) has parameter \\$identityProviders with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseRemoteIdentityProviderConfigurations\(\) has parameter \$identityProviders with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseRemoteServiceProviderConfiguration\\(\\) has parameter \\$serviceProvider with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseRemoteServiceProviderConfiguration\(\) has parameter \$serviceProvider with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\DependencyInjection\\\\SurfnetSamlExtension\\:\\:parseRemoteServiceProviderConfigurations\\(\\) has parameter \\$serviceProviders with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseRemoteServiceProviderConfigurations\(\) has parameter \$serviceProviders with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/DependencyInjection/SurfnetSamlExtension.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\HostedEntities\\:\\:__construct\\(\\) has parameter \\$identityProviderConfiguration with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\HostedEntities\:\:__construct\(\) has parameter \$identityProviderConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Entity/HostedEntities.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\HostedEntities\\:\\:__construct\\(\\) has parameter \\$serviceProviderConfiguration with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\HostedEntities\:\:__construct\(\) has parameter \$serviceProviderConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Entity/HostedEntities.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\HostedEntities\\:\\:createStandardEntityConfiguration\\(\\) has parameter \\$entityConfiguration with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\HostedEntities\:\:createStandardEntityConfiguration\(\) has parameter \$entityConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Entity/HostedEntities.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\HostedEntities\\:\\:createStandardEntityConfiguration\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\HostedEntities\:\:createStandardEntityConfiguration\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Entity/HostedEntities.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\HostedEntities\\:\\:generateUrl\\(\\) has parameter \\$routeDefinition with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\HostedEntities\:\:generateUrl\(\) has parameter \$routeDefinition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Entity/HostedEntities.php
 
 		-
-			message: "#^Parameter \\#1 \\$request of method Symfony\\\\Component\\\\Routing\\\\RequestContext\\:\\:fromRequest\\(\\) expects Symfony\\\\Component\\\\HttpFoundation\\\\Request, Symfony\\\\Component\\\\HttpFoundation\\\\Request\\|null given\\.$#"
+			message: '#^Parameter \#1 \$request of method Symfony\\Component\\Routing\\RequestContext\:\:fromRequest\(\) expects Symfony\\Component\\HttpFoundation\\Request, Symfony\\Component\\HttpFoundation\\Request\|null given\.$#'
+			identifier: argument.type
 			count: 2
 			path: ../../src/Entity/HostedEntities.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\IdentityProvider\\:\\:getSsoUrl\\(\\) has no return type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\IdentityProvider\:\:getSsoUrl\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../src/Entity/IdentityProvider.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\IdentityProviders\\:\\:find\\(\\) has no return type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\IdentityProviders\:\:find\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/IdentityProviders.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\IdentityProviders\\:\\:findByEntityId\\(\\) has no return type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\IdentityProviders\:\:findByEntityId\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/IdentityProviders.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\IdentityProviders\\:\\:findByEntityId\\(\\) has parameter \\$entityId with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\IdentityProviders\:\:findByEntityId\(\) has parameter \$entityId with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/IdentityProviders.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\IdentityProviders\\:\\:hasByEntityId\\(\\) has parameter \\$entityId with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\IdentityProviders\:\:hasByEntityId\(\) has parameter \$entityId with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/IdentityProviders.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\IdentityProviders\\:\\:\\$identityProviders type has no value type specified in iterable type array\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\IdentityProviders\:\:\$identityProviders type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/IdentityProviders.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\ServiceProviders\\:\\:find\\(\\) has no return type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\ServiceProviders\:\:find\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/ServiceProviders.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\ServiceProviders\\:\\:findByEntityId\\(\\) has no return type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\ServiceProviders\:\:findByEntityId\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/ServiceProviders.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\ServiceProviders\\:\\:findByEntityId\\(\\) has parameter \\$entityId with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\ServiceProviders\:\:findByEntityId\(\) has parameter \$entityId with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/ServiceProviders.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\ServiceProviders\\:\\:hasByEntityId\\(\\) has parameter \\$entityId with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\ServiceProviders\:\:hasByEntityId\(\) has parameter \$entityId with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/ServiceProviders.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\Entity\\\\ImmutableCollection\\\\ServiceProviders\\:\\:\\$serviceProviders type has no value type specified in iterable type array\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\Entity\\ImmutableCollection\\ServiceProviders\:\:\$serviceProviders type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Entity/ImmutableCollection/ServiceProviders.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\ServiceProvider\\:\\:getAssertionConsumerUrl\\(\\) has no return type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\ServiceProvider\:\:getAssertionConsumerUrl\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../src/Entity/ServiceProvider.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Entity\\\\StaticServiceProviderRepository\\:\\:getServiceProvider\\(\\) has parameter \\$entityId with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Entity\\StaticServiceProviderRepository\:\:getServiceProvider\(\) has parameter \$entityId with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Entity/StaticServiceProviderRepository.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Exception\\\\InvalidArgumentException\\:\\:invalidType\\(\\) has parameter \\$expectedType with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Exception\\InvalidArgumentException\:\:invalidType\(\) has parameter \$expectedType with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Exception/InvalidArgumentException.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Exception\\\\InvalidArgumentException\\:\\:invalidType\\(\\) has parameter \\$parameter with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Exception\\InvalidArgumentException\:\:invalidType\(\) has parameter \$parameter with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Exception/InvalidArgumentException.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Exception\\\\InvalidArgumentException\\:\\:invalidType\\(\\) has parameter \\$value with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Exception\\InvalidArgumentException\:\:invalidType\(\) has parameter \$value with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Exception/InvalidArgumentException.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Exception\\\\NotFound\\:\\:identityProvider\\(\\) has parameter \\$entityId with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Exception\\NotFound\:\:identityProvider\(\) has parameter \$entityId with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Exception/NotFound.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Exception\\\\SamlInvalidConfigurationException\\:\\:missingCertificate\\(\\) has parameter \\$path with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Exception\\SamlInvalidConfigurationException\:\:missingCertificate\(\) has parameter \$path with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Exception/SamlInvalidConfigurationException.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Exception\\\\UnknownUrnException\\:\\:__construct\\(\\) has parameter \\$urn with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Exception\\UnknownUrnException\:\:__construct\(\) has parameter \$urn with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Exception/UnknownUrnException.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Http\\\\PostBinding\\:\\:getFullRequestUri\\(\\) should return string but returns mixed\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Http\\PostBinding\:\:getFullRequestUri\(\) should return string but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/Http/PostBinding.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Http\\\\PostBinding\\:\\:processResponse\\(\\) should return SAML2\\\\Assertion but returns mixed\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Http\\PostBinding\:\:processResponse\(\) should return SAML2\\Assertion but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/Http/PostBinding.php
 
 		-
-			message: "#^Parameter \\#1 \\$decodedSamlRequest of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\ReceivedAuthnRequest\\:\\:from\\(\\) expects string, bool\\|string given\\.$#"
+			message: '#^Parameter \#1 \$entityId of class Surfnet\\SamlBundle\\Http\\Exception\\UnknownServiceProviderException constructor expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Http/PostBinding.php
 
 		-
-			message: "#^Parameter \\#1 \\$entityId of class Surfnet\\\\SamlBundle\\\\Http\\\\Exception\\\\UnknownServiceProviderException constructor expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$entityId of method Surfnet\\SamlBundle\\Entity\\ServiceProviderRepository\:\:getServiceProvider\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Http/PostBinding.php
 
 		-
-			message: "#^Parameter \\#1 \\$entityId of method Surfnet\\\\SamlBundle\\\\Entity\\\\ServiceProviderRepository\\:\\:getServiceProvider\\(\\) expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$entityId of method Surfnet\\SamlBundle\\Entity\\ServiceProviderRepository\:\:hasServiceProvider\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Http/PostBinding.php
 
 		-
-			message: "#^Parameter \\#1 \\$entityId of method Surfnet\\\\SamlBundle\\\\Entity\\\\ServiceProviderRepository\\:\\:hasServiceProvider\\(\\) expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$string of function base64_decode expects string, float\|int\<min, \-1\>\|int\<1, max\>\|string\|true given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Http/PostBinding.php
 
 		-
-			message: "#^Parameter \\#1 \\$string of function base64_decode expects string, float\\|int\\<min, \\-1\\>\\|int\\<1, max\\>\\|string\\|true given\\.$#"
-			count: 1
-			path: ../../src/Http/PostBinding.php
-
-		-
-			message: "#^Cannot call method verify\\(\\) on Surfnet\\\\SamlBundle\\\\SAML2\\\\ReceivedAuthnRequest\\|null\\.$#"
+			message: '#^Cannot call method verify\(\) on Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/Http/ReceivedAuthnRequestPost.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Http\\\\ReceivedAuthnRequestPost\\:\\:parse\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Http\\ReceivedAuthnRequestPost\:\:parse\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Http/ReceivedAuthnRequestPost.php
 
 		-
-			message: "#^Parameter \\#1 \\$decodedSamlRequest of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\ReceivedAuthnRequest\\:\\:from\\(\\) expects string, bool\\|string given\\.$#"
-			count: 1
-			path: ../../src/Http/ReceivedAuthnRequestPost.php
-
-		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Http\\\\ReceivedAuthnRequestQueryString\\:\\:getDecodedSignature\\(\\) should return string but returns string\\|false\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Http\\ReceivedAuthnRequestQueryString\:\:getDecodedSignature\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/Http/ReceivedAuthnRequestQueryString.php
 
 		-
-			message: "#^Parameter \\#1 \\$data of function gzinflate expects string, string\\|false given\\.$#"
+			message: '#^Parameter \#1 \$data of function gzinflate expects string, string\|false given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Http/ReceivedAuthnRequestQueryString.php
 
 		-
-			message: "#^Parameter \\#1 \\$string of function urldecode expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$string of function urldecode expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 2
 			path: ../../src/Http/ReceivedAuthnRequestQueryString.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\Http\\\\ReceivedAuthnRequestQueryString\\:\\:\\$samlParameters type has no value type specified in iterable type array\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\Http\\ReceivedAuthnRequestQueryString\:\:\$samlParameters type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Http/ReceivedAuthnRequestQueryString.php
 
 		-
-			message: "#^Cannot call method getServiceProvider\\(\\) on Surfnet\\\\SamlBundle\\\\Entity\\\\ServiceProviderRepository\\|null\\.$#"
+			message: '#^Cannot call method getServiceProvider\(\) on Surfnet\\SamlBundle\\Entity\\ServiceProviderRepository\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/Http/RedirectBinding.php
 
 		-
-			message: "#^Cannot call method hasServiceProvider\\(\\) on Surfnet\\\\SamlBundle\\\\Entity\\\\ServiceProviderRepository\\|null\\.$#"
+			message: '#^Cannot call method hasServiceProvider\(\) on Surfnet\\SamlBundle\\Entity\\ServiceProviderRepository\|null\.$#'
+			identifier: method.nonObject
 			count: 2
 			path: ../../src/Http/RedirectBinding.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Http\\\\RedirectBinding\\:\\:getFullRequestUri\\(\\) should return string but returns mixed\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Http\\RedirectBinding\:\:getFullRequestUri\(\) should return string but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/Http/RedirectBinding.php
 
 		-
-			message: "#^Parameter \\#1 \\$entityId of class Surfnet\\\\SamlBundle\\\\Http\\\\Exception\\\\UnknownServiceProviderException constructor expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$entityId of class Surfnet\\SamlBundle\\Http\\Exception\\UnknownServiceProviderException constructor expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 2
 			path: ../../src/Http/RedirectBinding.php
 
 		-
-			message: "#^Parameter \\#1 \\$signatureAlgorithm of class Surfnet\\\\SamlBundle\\\\Http\\\\Exception\\\\UnsupportedSignatureException constructor expects string, string\\|null given\\.$#"
-			count: 1
-			path: ../../src/Http/RedirectBinding.php
-
-		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Http\\\\XMLResponse\\:\\:__construct\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Http\\XMLResponse\:\:__construct\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Http/XMLResponse.php
 
 		-
-			message: "#^Cannot access property \\$childNodes on DOMElement\\|null\\.$#"
+			message: '#^Cannot access property \$childNodes on DOMElement\|null\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: ../../src/Metadata/Metadata.php
 
 		-
-			message: "#^Cannot call method saveXML\\(\\) on DOMDocument\\|null\\.$#"
+			message: '#^Cannot call method saveXML\(\) on DOMDocument\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/Metadata/Metadata.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Metadata\\\\Metadata\\:\\:getRootDomElement\\(\\) should return DOMElement but returns DOMElement\\|null\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Metadata\\Metadata\:\:getRootDomElement\(\) should return DOMElement but returns DOMElement\|null\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/Metadata/Metadata.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataConfiguration\\:\\:\\$assertionConsumerRoute type has no value type specified in iterable type array\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\Metadata\\MetadataConfiguration\:\:\$assertionConsumerRoute type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Metadata/MetadataConfiguration.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataConfiguration\\:\\:\\$entityIdRoute type has no value type specified in iterable type array\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\Metadata\\MetadataConfiguration\:\:\$entityIdRoute type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Metadata/MetadataConfiguration.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataConfiguration\\:\\:\\$ssoRoute type has no value type specified in iterable type array\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\Metadata\\MetadataConfiguration\:\:\$ssoRoute type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Metadata/MetadataConfiguration.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataFactory\\:\\:getUrl\\(\\) has parameter \\$routeDefinition with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Metadata\\MetadataFactory\:\:getUrl\(\) has parameter \$routeDefinition with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Metadata/MetadataFactory.php
 
 		-
-			message: "#^Parameter \\#1 \\$publicKeyFile of method Surfnet\\\\SamlBundle\\\\Metadata\\\\MetadataFactory\\:\\:getCertificateData\\(\\) expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$publicKeyFile of method Surfnet\\SamlBundle\\Metadata\\MetadataFactory\:\:getCertificateData\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Metadata/MetadataFactory.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\Signing\\\\KeyPair\\:\\:\\$privateKeyFile \\(string\\) does not accept string\\|null\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\Signing\\KeyPair\:\:\$privateKeyFile \(string\) does not accept string\|null\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: ../../src/Metadata/MetadataFactory.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\Signing\\\\KeyPair\\:\\:\\$publicKeyFile \\(string\\) does not accept string\\|null\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\Signing\\KeyPair\:\:\$publicKeyFile \(string\) does not accept string\|null\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: ../../src/Metadata/MetadataFactory.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Monolog\\\\SamlAuthenticationLogger\\:\\:modifyContext\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Monolog\\SamlAuthenticationLogger\:\:modifyContext\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Monolog/SamlAuthenticationLogger.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Monolog\\\\SamlAuthenticationLogger\\:\\:modifyContext\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Monolog\\SamlAuthenticationLogger\:\:modifyContext\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Monolog/SamlAuthenticationLogger.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\Attribute\\\\Attribute\\:\\:getValue\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\Attribute\\Attribute\:\:getValue\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/Attribute/Attribute.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\Attribute\\\\AttributeSet\\:\\:create\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\Attribute\\AttributeSet\:\:create\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/Attribute/AttributeSet.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\Attribute\\\\AttributeSetFactory\\:\\:create\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\Attribute\\AttributeSetFactory\:\:create\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/Attribute/AttributeSetFactory.php
 
 		-
-			message: "#^Interface Surfnet\\\\SamlBundle\\\\SAML2\\\\Attribute\\\\AttributeSetInterface extends generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
+			message: '#^Interface Surfnet\\SamlBundle\\SAML2\\Attribute\\AttributeSetInterface extends generic interface IteratorAggregate but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
 			count: 1
 			path: ../../src/SAML2/Attribute/AttributeSetInterface.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\Attribute\\\\ConfigurableAttributeSetFactory\\:\\:create\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\Attribute\\ConfigurableAttributeSetFactory\:\:create\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/Attribute/ConfigurableAttributeSetFactory.php
 
 		-
-			message: "#^Cannot access property \\$type on RobRichards\\\\XMLSecLibs\\\\XMLSecurityKey\\|null\\.$#"
+			message: '#^Cannot access property \$type on RobRichards\\XMLSecLibs\\XMLSecurityKey\|null\.$#'
+			identifier: property.nonObject
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Cannot call method getFormat\\(\\) on SAML2\\\\XML\\\\saml\\\\NameID\\|null\\.$#"
+			message: '#^Cannot call method getFormat\(\) on SAML2\\XML\\saml\\NameID\|null\.$#'
+			identifier: method.nonObject
 			count: 2
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Cannot call method getValue\\(\\) on SAML2\\\\XML\\\\saml\\\\Issuer\\|null\\.$#"
+			message: '#^Cannot call method getValue\(\) on SAML2\\XML\\saml\\Issuer\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Cannot call method getValue\\(\\) on SAML2\\\\XML\\\\saml\\\\NameID\\|null\\.$#"
+			message: '#^Cannot call method getValue\(\) on SAML2\\XML\\saml\\NameID\|null\.$#'
+			identifier: method.nonObject
 			count: 3
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Cannot call method saveXML\\(\\) on DOMDocument\\|null\\.$#"
+			message: '#^Cannot call method saveXML\(\) on DOMDocument\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Cannot call method signData\\(\\) on RobRichards\\\\XMLSecLibs\\\\XMLSecurityKey\\|null\\.$#"
+			message: '#^Cannot call method signData\(\) on RobRichards\\XMLSecLibs\\XMLSecurityKey\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Cannot cast mixed to string\\.$#"
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:getDestination\\(\\) should return string but returns string\\|null\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:getAuthenticationContextClassRef\(\) should return string\|null but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:getSignatureAlgorithm\\(\\) should return string but returns string\\|null\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:getDestination\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:getUnsignedXML\\(\\) should return string but returns string\\|false\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:getSignatureAlgorithm\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:setAuthenticationContextClassRef\\(\\) has parameter \\$authnClassRef with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:getUnsignedXML\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:setScoping\\(\\) has parameter \\$requesterIds with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:setAuthenticationContextClassRef\(\) has parameter \$authnClassRef with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:signRequestQuery\\(\\) has parameter \\$queryParams with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:setScoping\(\) has parameter \$requesterIds with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Parameter \\#1 \\$string of function base64_encode expects string, string\\|false given\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:signRequestQuery\(\) has parameter \$queryParams with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Parameter \\#2 \\$namespace of class Surfnet\\\\SamlBundle\\\\SAML2\\\\Extensions\\\\Chunk constructor expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$array of function reset expects array\|object, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:\\$signature \\(string\\|null\\) does not accept string\\|false\\.$#"
+			message: '#^Parameter \#1 \$string of function base64_encode expects string, string\|false given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: "#^Cannot cast mixed to string\\.$#"
+			message: '#^Parameter \#2 \$namespace of class Surfnet\\SamlBundle\\SAML2\\Extensions\\Chunk constructor expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../src/SAML2/AuthnRequest.php
+
+		-
+			message: '#^Property Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:\$signature \(string\|null\) does not accept string\|false\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../../src/SAML2/AuthnRequest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#1 \\$key of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequestFactory\\:\\:loadPrivateKey\\(\\) expects SAML2\\\\Configuration\\\\PrivateKey, mixed given\\.$#"
+			message: '#^Parameter \#1 \$key of static method Surfnet\\SamlBundle\\SAML2\\AuthnRequestFactory\:\:loadPrivateKey\(\) expects SAML2\\Configuration\\PrivateKey, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#1 \\$value of method SAML2\\\\XML\\\\saml\\\\NameIDType\\:\\:setValue\\(\\) expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$value of method SAML2\\XML\\saml\\NameIDType\:\:setValue\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#1 \\$xml of static method SAML2\\\\Message\\:\\:fromXML\\(\\) expects DOMElement, DOMNode\\|null given\\.$#"
+			message: '#^Parameter \#1 \$xml of static method SAML2\\Message\:\:fromXML\(\) expects DOMElement, DOMNode\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#2 \\$rawRequest of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:createSigned\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#2 \$rawRequest of static method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:createSigned\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#2 \\$rawRequest of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:createUnsigned\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#2 \$rawRequest of static method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:createUnsigned\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#3 \\$relayState of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:createSigned\\(\\) expects string\\|null, mixed given\\.$#"
+			message: '#^Parameter \#3 \$relayState of static method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:createSigned\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#3 \\$relayState of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:createUnsigned\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#3 \$relayState of static method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:createUnsigned\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#4 \\$signature of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:createSigned\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#4 \$signature of static method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:createSigned\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Parameter \\#5 \\$signatureAlgorithm of static method Surfnet\\\\SamlBundle\\\\SAML2\\\\AuthnRequest\\:\\:createSigned\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#5 \$signatureAlgorithm of static method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:createSigned\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequestFactory.php
 
 		-
-			message: "#^Cannot call method saveXML\\(\\) on DOMDocument\\|null\\.$#"
+			message: '#^Cannot call method saveXML\(\) on DOMDocument\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/SAML2/BridgeContainer.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\BridgeContainer\\:\\:postRedirect\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\BridgeContainer\:\:postRedirect\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/BridgeContainer.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\BridgeContainer\\:\\:redirect\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\BridgeContainer\:\:redirect\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/BridgeContainer.php
 
 		-
-			message: "#^Parameter \\#1 \\$message of method Psr\\\\Log\\\\LoggerInterface\\:\\:debug\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: ../../src/SAML2/BridgeContainer.php
-
-		-
-			message: "#^Property Surfnet\\\\SamlBundle\\\\SAML2\\\\Extensions\\\\Chunk\\:\\:\\$value \\(DOMElement\\) does not accept DOMElement\\|null\\.$#"
+			message: '#^Property Surfnet\\SamlBundle\\SAML2\\Extensions\\Chunk\:\:\$value \(DOMElement\) does not accept DOMElement\|null\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: ../../src/SAML2/Extensions/Chunk.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\Extensions\\\\Extensions\\:\\:getChunks\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\Extensions\\Extensions\:\:getChunks\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/Extensions/Extensions.php
 
 		-
-			message: "#^Cannot call method saveXML\\(\\) on DOMDocument\\|null\\.$#"
+			message: '#^Cannot call method saveXML\(\) on DOMDocument\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/SAML2/Extensions/GsspUserAttributesChunk.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\Extensions\\\\GsspUserAttributesChunk\\:\\:toXML\\(\\) has no return type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\Extensions\\GsspUserAttributesChunk\:\:toXML\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../src/SAML2/Extensions/GsspUserAttributesChunk.php
 
 		-
-			message: "#^Parameter \\#1 \\$element of method Surfnet\\\\SamlBundle\\\\SAML2\\\\Extensions\\\\Chunk\\:\\:append\\(\\) expects DOMElement, DOMElement\\|null given\\.$#"
+			message: '#^Parameter \#1 \$element of method Surfnet\\SamlBundle\\SAML2\\Extensions\\Chunk\:\:append\(\) expects DOMElement, DOMElement\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/Extensions/GsspUserAttributesChunk.php
 
 		-
-			message: "#^Parameter \\#3 \\$value of method Surfnet\\\\SamlBundle\\\\SAML2\\\\Extensions\\\\Chunk\\:\\:__construct\\(\\) expects DOMElement, DOMElement\\|null given\\.$#"
+			message: '#^Parameter \#3 \$value of method Surfnet\\SamlBundle\\SAML2\\Extensions\\Chunk\:\:__construct\(\) expects DOMElement, DOMElement\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/Extensions/GsspUserAttributesChunk.php
 
 		-
-			message: "#^Cannot call method saveXML\\(\\) on DOMDocument\\|null\\.$#"
+			message: '#^Cannot call method saveXML\(\) on DOMDocument\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\ReceivedAuthnRequest\\:\\:getAssertionConsumerServiceURL\\(\\) should return string but returns string\\|null\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:getAssertionConsumerServiceURL\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\ReceivedAuthnRequest\\:\\:getScopingRequesterIds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:getAuthenticationContextClassRef\(\) should return string\|null but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\ReceivedAuthnRequest\\:\\:getUnsignedXML\\(\\) should return string but returns string\\|false\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:getScopingRequesterIds\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\ReceivedAuthnRequest\\:\\:setAuthenticationContextClassRef\\(\\) has parameter \\$authnClassRef with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:getUnsignedXML\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\SAML2\\\\ReceivedAuthnRequest\\:\\:setScoping\\(\\) has parameter \\$requesterIds with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:setAuthenticationContextClassRef\(\) has parameter \$authnClassRef with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: "#^Parameter \\#1 \\$xml of static method SAML2\\\\Message\\:\\:fromXML\\(\\) expects DOMElement, DOMNode given\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:setScoping\(\) has parameter \$requesterIds with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: "#^Parameter \\#2 \\$namespace of class Surfnet\\\\SamlBundle\\\\SAML2\\\\Extensions\\\\Chunk constructor expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$array of function reset expects array\|object, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\AuthenticatedSessionStateHandler\\:\\:setCurrentRequestUri\\(\\) has no return type specified\\.$#"
+			message: '#^Parameter \#1 \$xml of static method SAML2\\Message\:\:fromXML\(\) expects DOMElement, DOMNode given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../src/SAML2/ReceivedAuthnRequest.php
+
+		-
+			message: '#^Parameter \#2 \$namespace of class Surfnet\\SamlBundle\\SAML2\\Extensions\\Chunk constructor expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../src/SAML2/ReceivedAuthnRequest.php
+
+		-
+			message: '#^Method Surfnet\\SamlBundle\\Security\\Authentication\\AuthenticatedSessionStateHandler\:\:setCurrentRequestUri\(\) has no return type specified\.$#'
+			identifier: missingType.return
 			count: 1
 			path: ../../src/Security/Authentication/AuthenticatedSessionStateHandler.php
 
 		-
-			message: "#^Cannot call method notice\\(\\) on Psr\\\\Log\\\\LoggerInterface\\|null\\.$#"
+			message: '#^Cannot call method notice\(\) on Psr\\Log\\LoggerInterface\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/Security/Authentication/Handler/FailureHandler.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\Passport\\\\Badge\\\\SamlAttributesBadge\\:\\:__construct\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Security\\Authentication\\Passport\\Badge\\SamlAttributesBadge\:\:__construct\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Security/Authentication/Passport/Badge/SamlAttributesBadge.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\Passport\\\\Badge\\\\SamlAttributesBadge\\:\\:getAttributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Security\\Authentication\\Passport\\Badge\\SamlAttributesBadge\:\:getAttributes\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Security/Authentication/Passport/Badge/SamlAttributesBadge.php
 
 		-
-			message: "#^Cannot call method getAttributes\\(\\) on Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\Passport\\\\Badge\\\\SamlAttributesBadge\\|null\\.$#"
+			message: '#^Cannot call method getAttributes\(\) on Surfnet\\SamlBundle\\Security\\Authentication\\Passport\\Badge\\SamlAttributesBadge\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/Security/Authentication/SamlAuthenticator.php
 
 		-
-			message: "#^Cannot call method getUserIdentifier\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null\\.$#"
+			message: '#^Cannot call method getUserIdentifier\(\) on Symfony\\Component\\Security\\Core\\User\\UserInterface\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../../src/Security/Authentication/SamlAuthenticator.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\Session\\\\SessionStorage\\:\\:getCurrentRequestUri\\(\\) should return string but returns mixed\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Security\\Authentication\\Session\\SessionStorage\:\:getCurrentRequestUri\(\) should return string but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/Security/Authentication/Session/SessionStorage.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\Session\\\\SessionStorage\\:\\:getRequestId\\(\\) should return string but returns mixed\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Security\\Authentication\\Session\\SessionStorage\:\:getRequestId\(\) should return string but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/Security/Authentication/Session/SessionStorage.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\Session\\\\SessionStorage\\:\\:setCurrentRequestUri\\(\\) has parameter \\$uri with no type specified\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Security\\Authentication\\Session\\SessionStorage\:\:setCurrentRequestUri\(\) has parameter \$uri with no type specified\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: ../../src/Security/Authentication/Session/SessionStorage.php
 
 		-
-			message: "#^Parameter \\#1 \\$string of static method Surfnet\\\\SamlBundle\\\\Value\\\\DateTime\\:\\:fromString\\(\\) expects string, mixed given\\.$#"
+			message: '#^Parameter \#1 \$string of static method Surfnet\\SamlBundle\\Value\\DateTime\:\:fromString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 2
 			path: ../../src/Security/Authentication/Session/SessionStorage.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Security\\\\Authentication\\\\Token\\\\SamlToken\\:\\:__construct\\(\\) has parameter \\$attributes with no value type specified in iterable type array\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Security\\Authentication\\Token\\SamlToken\:\:__construct\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: ../../src/Security/Authentication/Token/SamlToken.php
 
 		-
-			message: "#^Method Surfnet\\\\SamlBundle\\\\Service\\\\SigningService\\:\\:loadPublicKeyFromFile\\(\\) should return SAML2\\\\Certificate\\\\X509 but returns mixed\\.$#"
+			message: '#^Method Surfnet\\SamlBundle\\Service\\SigningService\:\:loadPublicKeyFromFile\(\) should return SAML2\\Certificate\\X509 but returns mixed\.$#'
+			identifier: return.type
 			count: 1
 			path: ../../src/Service/SigningService.php
 
 		-
-			message: "#^Parameter \\#2 \\$publicKey of method Surfnet\\\\SamlBundle\\\\Signing\\\\SignatureVerifier\\:\\:isRequestSignedWith\\(\\) expects SAML2\\\\Certificate\\\\X509, mixed given\\.$#"
+			message: '#^Parameter \#2 \$publicKey of method Surfnet\\SamlBundle\\Signing\\SignatureVerifier\:\:isRequestSignedWith\(\) expects SAML2\\Certificate\\X509, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Signing/SignatureVerifier.php
 
 		-
-			message: "#^Parameter \\#2 \\$publicKey of method Surfnet\\\\SamlBundle\\\\Signing\\\\SignatureVerifier\\:\\:isSignedWith\\(\\) expects SAML2\\\\Certificate\\\\X509, mixed given\\.$#"
+			message: '#^Parameter \#2 \$publicKey of method Surfnet\\SamlBundle\\Signing\\SignatureVerifier\:\:isSignedWith\(\) expects SAML2\\Certificate\\X509, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Signing/SignatureVerifier.php
 
 		-
-			message: "#^Parameter \\#2 \\$signature of method RobRichards\\\\XMLSecLibs\\\\XMLSecurityKey\\:\\:verifySignature\\(\\) expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#2 \$signature of method RobRichards\\XMLSecLibs\\XMLSecurityKey\:\:verifySignature\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: ../../src/Signing/SignatureVerifier.php

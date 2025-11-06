@@ -20,12 +20,11 @@
 namespace Surfnet\SamlBundle\Monolog;
 
 use Psr\Log\LoggerInterface;
-use Surfnet\SamlBundle\Exception\RuntimeException;
 
 /**
  * Decorates a PSR logger and adds information pertaining to a SAML request procedure to each message's context.
  *
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings("PHPMD.TooManyPublicMethods")
  */
 final class SamlAuthenticationLogger implements LoggerInterface
 {
@@ -46,47 +45,47 @@ final class SamlAuthenticationLogger implements LoggerInterface
         return $logger;
     }
 
-    public function emergency($message, array $context = []): void
+    public function emergency(string|\Stringable $message, array $context = []): void
     {
         $this->logger->emergency($message, $this->modifyContext($context));
     }
 
-    public function alert($message, array $context = []): void
+    public function alert(string|\Stringable $message, array $context = []): void
     {
         $this->logger->alert($message, $this->modifyContext($context));
     }
 
-    public function critical($message, array $context = []): void
+    public function critical(string|\Stringable $message, array $context = []): void
     {
         $this->logger->critical($message, $this->modifyContext($context));
     }
 
-    public function error($message, array $context = []): void
+    public function error(string|\Stringable $message, array $context = []): void
     {
         $this->logger->error($message, $this->modifyContext($context));
     }
 
-    public function warning($message, array $context = []): void
+    public function warning(string|\Stringable $message, array $context = []): void
     {
         $this->logger->warning($message, $this->modifyContext($context));
     }
 
-    public function notice($message, array $context = []): void
+    public function notice(string|\Stringable $message, array $context = []): void
     {
         $this->logger->notice($message, $this->modifyContext($context));
     }
 
-    public function info($message, array $context = []): void
+    public function info(string|\Stringable $message, array $context = []): void
     {
         $this->logger->info($message, $this->modifyContext($context));
     }
 
-    public function debug($message, array $context = []): void
+    public function debug(string|\Stringable $message, array $context = []): void
     {
         $this->logger->debug($message, $this->modifyContext($context));
     }
 
-    public function log($level, $message, array $context = []): void
+    public function log($level, string|\Stringable $message, array $context = []): void
     {
         $this->logger->log($level, $message, $this->modifyContext($context));
     }

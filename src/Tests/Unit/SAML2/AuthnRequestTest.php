@@ -55,7 +55,7 @@ AUTHNREQUEST_WITH_SUBJECT;
 </samlp:AuthnRequest>
 AUTHNREQUEST_NO_SUBJECT;
 
-    private string $authRequestIsPassiveFalseAndNoForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F
+    private static string $authRequestIsPassiveFalseAndNoForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -68,7 +68,7 @@ AUTHNREQUEST_NO_SUBJECT;
 </samlp:AuthnRequest>
 AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F;
 
-    private string $authRequestIsPassiveAndForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F
+    private static string $authRequestIsPassiveAndForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -82,7 +82,7 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F;
 </samlp:AuthnRequest>
 AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F;
 
-    private string $authRequestIsPassiveFalseAndForceAuthn = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN
+    private static string $authRequestIsPassiveFalseAndForceAuthn = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -154,12 +154,12 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertEquals($forceAuthn, $authnRequest->isForceAuthn());
     }
 
-    public function provideIsPassiveAndForceAuthnCombinations(): array
+    public static function provideIsPassiveAndForceAuthnCombinations(): array
     {
         return [
-            'isPassive false and ForceAuthn false' => [$this->authRequestIsPassiveFalseAndNoForceAuthnFalse, false, false],
-            'isPassive and ForceAuthn false' => [$this->authRequestIsPassiveAndForceAuthnFalse, true, false],
-            'isPassive false and ForceAuthn' => [$this->authRequestIsPassiveFalseAndForceAuthn, false, true]
+            'isPassive false and ForceAuthn false' => [self::$authRequestIsPassiveFalseAndNoForceAuthnFalse, false, false],
+            'isPassive and ForceAuthn false' => [self::$authRequestIsPassiveAndForceAuthnFalse, true, false],
+            'isPassive false and ForceAuthn' => [self::$authRequestIsPassiveFalseAndForceAuthn, false, true]
         ];
     }
 

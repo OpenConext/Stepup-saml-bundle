@@ -33,7 +33,6 @@ class GsspUserAttributesChunk extends Chunk
 
         if ($value && $value->hasChildNodes()) {
             foreach ($value->childNodes as $child) {
-                assert($child instanceof DOMNode);
                 $root->appendChild($doc->importNode($child->cloneNode(true), true));
             }
         }

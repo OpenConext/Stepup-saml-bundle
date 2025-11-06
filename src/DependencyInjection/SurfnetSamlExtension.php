@@ -158,9 +158,7 @@ class SurfnetSamlExtension extends Extension
         if (!empty($remoteConfiguration['identity_provider']['enabled'])) {
             $definition = $this->parseRemoteIdentityProviderConfiguration($remoteConfiguration['identity_provider']);
 
-            if ($definition !== null) {
-                $container->setDefinition('surfnet_saml.remote.idp', $definition);
-            }
+            $container->setDefinition('surfnet_saml.remote.idp', $definition);
         }
     }
 
@@ -169,7 +167,7 @@ class SurfnetSamlExtension extends Extension
      */
     private function parseRemoteIdentityProviderConfigurations(array $identityProviders, ContainerBuilder $container): void
     {
-        $definitions = array_map(fn($config) => $this->parseRemoteIdentityProviderConfiguration($config), $identityProviders);
+        $definitions = array_map(fn($config): Definition => $this->parseRemoteIdentityProviderConfiguration($config), $identityProviders);
 
         $definition = new Definition(StaticIdentityProviderRepository::class, [
             $definitions
@@ -202,7 +200,7 @@ class SurfnetSamlExtension extends Extension
      */
     private function parseRemoteServiceProviderConfigurations(array $serviceProviders, ContainerBuilder $container): void
     {
-        $definitions = array_map(fn($config) => $this->parseRemoteServiceProviderConfiguration($config), $serviceProviders);
+        $definitions = array_map(fn($config): Definition => $this->parseRemoteServiceProviderConfiguration($config), $serviceProviders);
 
         $definition = new Definition(StaticServiceProviderRepository::class, [
             $definitions

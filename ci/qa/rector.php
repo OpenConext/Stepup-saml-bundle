@@ -8,9 +8,8 @@ return RectorConfig::configure()
     ->withPaths([
          __DIR__ . '/../../src',
     ])
-    ->withPhpSets()
     ->withAttributesSets(all: true)
     ->withComposerBased(phpunit: true, symfony: true)
-    ->withTypeCoverageLevel(0)
-    ->withDeadCodeLevel(0)
-    ->withCodeQualityLevel(0);
+    ->withTypeCoverageLevel(10)
+    ->withDeadCodeLevel(10)
+    ->withCodeQualityLevel(10);

@@ -21,6 +21,7 @@ namespace Surfnet\SamlBundle\SAML2;
 use BadMethodCallException;
 use DOMElement;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use SAML2\Compat\AbstractContainer;
 
 /**
@@ -53,6 +54,10 @@ class BridgeContainer extends AbstractContainer
     {
         if ($message instanceof DOMElement) {
             $message = $message->ownerDocument->saveXML($message);
+        }
+
+        if (!is_string($message)) {
+            throw new RuntimeException("Debug message error: could not convert message to string.");
         }
 
         $this->logger->debug($message, ['type' => $type]);

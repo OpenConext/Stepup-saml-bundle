@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects) - not much we can do about it
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects") - not much we can do about it
  * @see https://www.pivotaltracker.com/story/show/83028366
  */
 class RedirectBinding implements HttpBinding
@@ -71,7 +71,7 @@ class RedirectBinding implements HttpBinding
     }
 
     /**
-     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings("PHPMD.NPathComplexity")
      */
     public function receiveSignedAuthnRequestFrom(Request $request): ReceivedAuthnRequest
     {

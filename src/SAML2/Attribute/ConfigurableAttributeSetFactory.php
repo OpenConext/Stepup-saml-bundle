@@ -25,10 +25,7 @@ final class ConfigurableAttributeSetFactory implements AttributeSetFactory
 {
     private static string $attributeSetClassName = AttributeSet::class;
 
-    /**
-     * @param string $attributeSetClassName
-     */
-    public static function configureWhichAttributeSetToCreate($attributeSetClassName): void
+    public static function configureWhichAttributeSetToCreate(mixed $attributeSetClassName): void
     {
         if (!is_string($attributeSetClassName) || $attributeSetClassName === '') {
             throw InvalidArgumentException::invalidType('non-empty string', 'attributeSetClassName', $attributeSetClassName);

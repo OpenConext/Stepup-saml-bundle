@@ -34,7 +34,7 @@ use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 class AuthnRequestFactory
 {

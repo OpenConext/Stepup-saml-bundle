@@ -72,10 +72,7 @@ class MetadataFactory
             $metadata->hasSpMetadata = true;
             $metadata->assertionConsumerUrl = $this->getUrl($metadataConfiguration->assertionConsumerRoute);
 
-            if ($metadataConfiguration->spCertificate &&
-                $metadataConfiguration->spCertificate !== '' &&
-                $metadataConfiguration->spCertificate !== '0'
-            ) {
+            if ($metadataConfiguration->spCertificate) {
                 $metadata->spCertificate = $this->getCertificateData($metadataConfiguration->spCertificate);
             }
         }
@@ -84,10 +81,7 @@ class MetadataFactory
             $metadata->hasIdPMetadata = true;
             $metadata->ssoUrl = $this->getUrl($metadataConfiguration->ssoRoute);
 
-            if ($metadataConfiguration->idpCertificate &&
-                $metadataConfiguration->idpCertificate !== '' &&
-                $metadataConfiguration->idpCertificate !== '0'
-            ) {
+            if ($metadataConfiguration->idpCertificate) {
                 $certificate = $this->getCertificateData($metadataConfiguration->idpCertificate);
             } else {
                 $certificate = $this->getCertificateData($metadataConfiguration->publicKey);
