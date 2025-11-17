@@ -22,6 +22,7 @@ use BadMethodCallException;
 use DOMElement;
 use Psr\Log\LoggerInterface;
 use SAML2\Compat\AbstractContainer;
+use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 /**
  * Container that is required so that we can make the SAML2 lib work.
@@ -55,6 +56,10 @@ class BridgeContainer extends AbstractContainer
             $message = $message->ownerDocument->saveXML($message);
         }
 
+        if (!is_string($message)) {
+            throw new InvalidArgumentException("Debug message error: could not convert message to string.");
+        }
+
         $this->logger->debug($message, ['type' => $type]);
     }
 
@@ -75,7 +80,7 @@ class BridgeContainer extends AbstractContainer
         return '';
     }
 
-    public function writeFile(string $filename, string $data, int $mode = null): void
+    public function writeFile(string $filename, string $data, ?int $mode = null): void
     {
         $this->notSupported(__METHOD__);
     }

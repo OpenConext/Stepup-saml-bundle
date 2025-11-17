@@ -18,6 +18,9 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\DOMDocumentFactory;
@@ -55,7 +58,7 @@ AUTHNREQUEST_WITH_SUBJECT;
 </samlp:AuthnRequest>
 AUTHNREQUEST_NO_SUBJECT;
 
-    private string $authRequestIsPassiveFalseAndNoForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F
+    private static string $authRequestIsPassiveFalseAndNoForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -68,7 +71,7 @@ AUTHNREQUEST_NO_SUBJECT;
 </samlp:AuthnRequest>
 AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F;
 
-    private string $authRequestIsPassiveAndForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F
+    private static string $authRequestIsPassiveAndForceAuthnFalse = <<<AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -82,7 +85,7 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTH_F;
 </samlp:AuthnRequest>
 AUTHNREQUEST_IS_PASSIVE_AND_FORCE_AUTHN_F;
 
-    private string $authRequestIsPassiveFalseAndForceAuthn = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN
+    private static string $authRequestIsPassiveFalseAndForceAuthn = <<<AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -98,11 +101,9 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
 
     private string $acsUrl = 'https://example.org';
 
-    /**
-     * @test
-     * @group saml2
-     * @dataProvider provideNameIDAndFormatCombinations
-     */
+    #[Test]
+    #[DataProvider('provideNameIDAndFormatCombinations')]
+    #[Group('saml2')]
     public function setting_the_subject_generates_valid_xml(string $nameId, ?string $format): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestNoSubject);
@@ -114,10 +115,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertXmlStringEqualsXmlString($this->authRequestWithSubject, $authnRequest->getUnsignedXML());
     }
 
-    /**
-     * @test
-     * @group saml2
-     */
+    #[Test]
+    #[Group('saml2')]
     public function the_nameid_and_format_can_be_retrieved_from_the_authnrequest(): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
@@ -133,10 +132,8 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertEquals($nameId->getFormat(), $authnRequest->getNameIdFormat());
     }
 
-    /**
-     * @test
-     * @group saml2
-     */
+    #[Test]
+    #[Group('saml2')]
     public function the_acs_url_can_be_retrieved_from_the_authnrequest(): void
     {
         $domDocument = DOMDocumentFactory::fromString($this->authRequestWithSubject);
@@ -147,11 +144,9 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertEquals($this->acsUrl, $authnRequest->getAssertionConsumerServiceURL());
     }
 
-    /**
-     * @test
-     * @group saml2
-     * @dataProvider provideIsPassiveAndForceAuthnCombinations
-     */
+    #[Test]
+    #[DataProvider('provideIsPassiveAndForceAuthnCombinations')]
+    #[Group('saml2')]
     public function is_passive_and_force_authn_can_be_retrieved_from_the_authnrequest(string $xml, bool $isPassive, bool $forceAuthn): void
     {
         $domDocument = DOMDocumentFactory::fromString($xml);
@@ -162,16 +157,16 @@ AUTHNREQUEST_IS_PASSIVE_F_AND_FORCE_AUTHN;
         $this->assertEquals($forceAuthn, $authnRequest->isForceAuthn());
     }
 
-    public function provideIsPassiveAndForceAuthnCombinations(): array
+    public static function provideIsPassiveAndForceAuthnCombinations(): array
     {
         return [
-            'isPassive false and ForceAuthn false' => [$this->authRequestIsPassiveFalseAndNoForceAuthnFalse, false, false],
-            'isPassive and ForceAuthn false' => [$this->authRequestIsPassiveAndForceAuthnFalse, true, false],
-            'isPassive false and ForceAuthn' => [$this->authRequestIsPassiveFalseAndForceAuthn, false, true]
+            'isPassive false and ForceAuthn false' => [self::$authRequestIsPassiveFalseAndNoForceAuthnFalse, false, false],
+            'isPassive and ForceAuthn false' => [self::$authRequestIsPassiveAndForceAuthnFalse, true, false],
+            'isPassive false and ForceAuthn' => [self::$authRequestIsPassiveFalseAndForceAuthn, false, true]
         ];
     }
 
-    public function provideNameIDAndFormatCombinations(): array
+    public static function provideNameIDAndFormatCombinations(): array
     {
         $nameId = new NameID();
         $nameId->setValue('user@example.org');

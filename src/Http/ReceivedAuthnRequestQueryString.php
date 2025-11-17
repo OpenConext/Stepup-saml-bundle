@@ -49,8 +49,8 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
     }
 
     /**
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity) Extensive validation
-     * @SuppressWarnings(PHPMD.NPathComplexity) Extensive validation
+     * @SuppressWarnings("PHPMD.CyclomaticComplexity") Extensive validation
+     * @SuppressWarnings("PHPMD.NPathComplexity") Extensive validation
      */
     public static function parse(string $query): ReceivedAuthnRequestQueryString
     {
@@ -211,7 +211,7 @@ final class ReceivedAuthnRequestQueryString implements SignatureVerifiable
         return $this->samlRequest;
     }
 
-    public function getSignatureAlgorithm(): ?string
+    public function getSignatureAlgorithm(): string
     {
         return urldecode($this->signatureAlgorithm);
     }

@@ -3,5 +3,4 @@
 cd $(dirname $0)/../../
 
 # https://github.com/sebastianbergmann/phpcpd
-./vendor/bin/phpcpd \
-    ./src $1
+vendor/bin/phpcpd ./src

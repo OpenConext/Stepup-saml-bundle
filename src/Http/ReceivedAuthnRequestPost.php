@@ -28,12 +28,15 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
     public const PARAMETER_REQUEST = 'SAMLRequest';
     public const PARAMETER_RELAY_STATE = 'RelayState';
 
-    private ?string $relayState;
+    private ?string $relayState = null;
 
     private ?ReceivedAuthnRequest $receivedRequest = null;
 
-    private function __construct(private readonly string $samlRequest)
+    private readonly string $samlRequest;
+
+    private function __construct(string $samlRequest)
     {
+        $this->samlRequest = $samlRequest;
     }
 
     public static function parse(array $parameters): self
@@ -62,7 +65,7 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
         return $this->relayState !== null;
     }
 
-    public function getDecodedSamlRequest(): string|bool
+    public function getDecodedSamlRequest(): string
     {
         return base64_decode($this->samlRequest);
     }

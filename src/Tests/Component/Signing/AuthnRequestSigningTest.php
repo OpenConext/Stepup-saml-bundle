@@ -18,6 +18,8 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Signing;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
@@ -46,11 +48,9 @@ AUTHNREQUEST_NO_SUBJECT;
 
     private ?string $publicKey = null;
 
-    /**
-     * @test
-     * @group Signing
-     * @group Deprecated
-     */
+    #[Test]
+    #[Group('Signing')]
+    #[Group('Deprecated')]
     public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_rfc1738_encoding(): void
     {
         $authnRequestWithDefaultEncoding = $this->createSignedAuthnRequest(
@@ -72,11 +72,9 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @test
-     * @group Signing
-     * @group Deprecated
-     */
+    #[Test]
+    #[Group('Signing')]
+    #[Group('Deprecated')]
     public function deprecated_authn_request_signatures_are_verified_if_the_sender_uses_something_other_than_rfc1738_encoding(): void
     {
         $authnRequestWithCustomEncoding  = $this->createSignedAuthnRequest(
@@ -98,11 +96,9 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @test
-     * @group Signing
-     * @group Deprecated
-     */
+    #[Test]
+    #[Group('Signing')]
+    #[Group('Deprecated')]
     public function deprecated_authn_request_signatures_are_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent(): void
     {
         $authnRequestWithModifiedDataToSign = $this->createSignedAuthnRequest(
@@ -123,11 +119,9 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @test
-     * @group Signing
-     * @group Deprecated
-     */
+    #[Test]
+    #[Group('Signing')]
+    #[Group('Deprecated')]
     public function deprecated_authn_request_signatures_are_not_verified_if_the_parameter_order_of_the_sent_query_is_not_correct(): void
     {
         $authnRequestWithModifiedDataToSign = $this->createSignedAuthnRequest(
@@ -147,10 +141,8 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @test
-     * @group Signing
-     */
+    #[Test]
+    #[Group('Signing')]
     public function a_received_authn_requests_signature_is_verified_regardless_of_its_encoding(): void
     {
         $signatureVerifier = new SignatureVerifier(new KeyLoader, new NullLogger);
@@ -203,10 +195,8 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @test
-     * @group Signing
-     */
+    #[Test]
+    #[Group('Signing')]
     public function a_received_authn_requests_signature_is_not_verified_if_the_data_to_sign_does_not_correspond_with_the_signature_sent(): void
     {
         $signatureVerifier = new SignatureVerifier(new KeyLoader, new NullLogger);

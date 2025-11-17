@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\Signing;
 
-use Exception;
 use Psr\Log\LoggerInterface;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\Certificate\Key;
@@ -109,7 +108,7 @@ class SignatureVerifier
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function isSignedWith(AuthnRequest $request, X509 $publicKey): bool
     {

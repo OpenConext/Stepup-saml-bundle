@@ -79,7 +79,7 @@ MESSAGE;
         return new Request([], $post, [], [], [], ['REQUEST_URI' => $requestUri]);
     }
 
-    public function test_process_response_happy_flow()
+    public function test_process_response_happy_flow(): void
     {
         $request = $this->buildRequest();
         $request->setMethod(Request::METHOD_POST);
@@ -97,7 +97,7 @@ MESSAGE;
         self::assertInstanceOf(Assertion::class, $samlResponse);
     }
 
-    public function test_process_response_must_have_saml_response()
+    public function test_process_response_must_have_saml_response(): void
     {
         $requestUri = 'https://stepup.example.com/';
         $post = [
@@ -114,7 +114,7 @@ MESSAGE;
         $this->postBinding->processResponse($request, $idp, $sp);
     }
 
-    public function test_process_response_precondition_not_met()
+    public function test_process_response_precondition_not_met(): void
     {
         $request = $this->buildRequest();
 
@@ -131,7 +131,7 @@ MESSAGE;
         self::expectException(NoAuthnContextSamlResponseException::class);
         $this->postBinding->processResponse($request, $idp, $sp);
     }
-    public function test_process_response_authn_failed()
+    public function test_process_response_authn_failed(): void
     {
         $request = $this->buildRequest();
 
@@ -148,7 +148,7 @@ MESSAGE;
         self::expectException(AuthnFailedSamlResponseException::class);
         $this->postBinding->processResponse($request, $idp, $sp);
     }
-    public function test_process_response_other_precondition_not_met()
+    public function test_process_response_other_precondition_not_met(): void
     {
         $request = $this->buildRequest();
 

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Copyright 2021 SURF B.V.
+ * Copyright 2025 SURFnet bv
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\Tests\Component\Metadata;
 
-use Jasny\PHPUnit\Constraint\XSDValidation;
+use DOMDocument;
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -29,8 +29,8 @@ use Surfnet\SamlBundle\Metadata\MetadataFactory;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\Signable;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Loader\ArrayLoader;
 use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 use function dirname;
 
 class MetadataFactoryTest extends TestCase
@@ -43,6 +43,8 @@ class MetadataFactoryTest extends TestCase
 
     public m\Mock|RouterInterface $router;
 
+    private XsdValidator $xsdValidator;
+
     public function setUp(): void
     {
         // Load the XML template from filesystem as the FilesystemLoader does not honour the bundle prefix
@@ -54,6 +56,21 @@ class MetadataFactoryTest extends TestCase
         $this->twig = new Environment($loader);
         $this->router = m::mock(RouterInterface::class);
         $this->router->shouldReceive('generate')->andReturn('https://foobar.example.com');
+        $this->xsdValidator = new XsdValidator();
+    }
+
+    private function assertXmlIsValidAgainstXsd(DOMDocument $document, string $xsdPath): void
+    {
+        $errors = $this->xsdValidator->validate($document, $xsdPath);
+
+        if (!empty($errors)) {
+            self::fail(
+                "XML document does not validate against XSD schema.\n" .
+                "Validation errors:\n" . implode("\n", $errors)
+            );
+        }
+
+        self::assertTrue(true, "XML document is valid against XSD schema");
     }
 
     public function test_valid_metadata_xml(): void
@@ -112,9 +129,8 @@ XML;
         $metadataConfiguration->ssoRoute = 'https://foobar.example.com';
         $this->buildFactory($metadataConfiguration);
         $metadata = $this->factory->generate();
-        $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
         self::assertEquals($expectedResult, $metadata->__toString());
-        self::assertThat($metadata->document, $constraint);
+        $this->assertXmlIsValidAgainstXsd($metadata->document, __DIR__ . '/xsd/metadata.xsd');
     }
 
     public function test_builds_idp_metadata_signed(): void
@@ -131,8 +147,7 @@ XML;
         $signingService = new SigningService($keyLoader, $privateKeyLoader);
         $this->buildFactory($metadataConfiguration, $signingService);
         $metadata = $this->factory->generate();
-        $constraint = new  XSDValidation(__DIR__ . '/xsd/metadata.xsd');
-        self::assertThat($metadata->document, $constraint);
+        $this->assertXmlIsValidAgainstXsd($metadata->document, __DIR__ . '/xsd/metadata.xsd');
     }
 
     private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null): void

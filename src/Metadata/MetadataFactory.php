@@ -21,11 +21,11 @@ namespace Surfnet\SamlBundle\Metadata;
 use SAML2\DOMDocumentFactory;
 use SAML2\Utilities\Certificate;
 use SAML2\Utilities\File;
+use Surfnet\SamlBundle\Exception\RuntimeException;
 use Surfnet\SamlBundle\Service\SigningService;
 use Surfnet\SamlBundle\Signing\KeyPair;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
-use Surfnet\SamlBundle\Exception\RuntimeException;
 
 class MetadataFactory
 {
@@ -72,10 +72,7 @@ class MetadataFactory
             $metadata->hasSpMetadata = true;
             $metadata->assertionConsumerUrl = $this->getUrl($metadataConfiguration->assertionConsumerRoute);
 
-            if ($metadataConfiguration->spCertificate &&
-                $metadataConfiguration->spCertificate !== '' &&
-                $metadataConfiguration->spCertificate !== '0'
-            ) {
+            if ($metadataConfiguration->spCertificate) {
                 $metadata->spCertificate = $this->getCertificateData($metadataConfiguration->spCertificate);
             }
         }
@@ -84,10 +81,7 @@ class MetadataFactory
             $metadata->hasIdPMetadata = true;
             $metadata->ssoUrl = $this->getUrl($metadataConfiguration->ssoRoute);
 
-            if ($metadataConfiguration->idpCertificate &&
-                $metadataConfiguration->idpCertificate !== '' &&
-                $metadataConfiguration->idpCertificate !== '0'
-            ) {
+            if ($metadataConfiguration->idpCertificate) {
                 $certificate = $this->getCertificateData($metadataConfiguration->idpCertificate);
             } else {
                 $certificate = $this->getCertificateData($metadataConfiguration->publicKey);

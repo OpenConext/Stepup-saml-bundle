@@ -20,12 +20,13 @@ namespace Surfnet\SamlBundle\Tests\Http;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\Http\HttpBindingFactory;
 use Surfnet\SamlBundle\Http\PostBinding;
 use Surfnet\SamlBundle\Http\RedirectBinding;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class HttpBindingFactoryTest extends TestCase
@@ -41,10 +42,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->factory = new HttpBindingFactory($redirectBinding, $postBinding);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[Test]
+    #[Group('http')]
     public function a_redirect_binding_can_be_built(): void
     {
         $request = new Request(
@@ -60,10 +59,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->assertInstanceOf(RedirectBinding::class, $binding);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[Test]
+    #[Group('http')]
     public function a_post_binding_can_be_built(): void
     {
         $request = new Request(
@@ -79,10 +76,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->assertInstanceOf(PostBinding::class, $binding);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[Test]
+    #[Group('http')]
     public function a_put_binding_can_not_be_built(): void
     {
         $this->expectExceptionMessage("Request type of \"PUT\" is not supported.");
@@ -99,10 +94,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->factory->build($request);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[Test]
+    #[Group('http')]
     public function an_invalid_post_authn_request_is_rejected(): void
     {
         $this->expectExceptionMessage("POST-binding is supported for SAMLRequest.");
@@ -119,10 +112,8 @@ class HttpBindingFactoryTest extends TestCase
         $this->factory->build($request);
     }
 
-    /**
-     * @test
-     * @group http
-     */
+    #[Test]
+    #[Group('http')]
     public function an_invalid_get_authn_request_is_rejected(): void
     {
         $this->expectExceptionMessage("Redirect binding is supported for SAMLRequest and Response.");

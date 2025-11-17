@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cd $(dirname $0)/../../
+
+./vendor/bin/docheader --no-ansi --docheader=ci/qa/docheader.template check src/
+

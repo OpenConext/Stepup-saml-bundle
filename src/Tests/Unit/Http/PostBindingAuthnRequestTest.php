@@ -68,7 +68,7 @@ MESSAGE;
         ContainerSingleton::setContainer(new MockContainer());
     }
 
-    public function test_receive_signed_authn_request_happy_flow()
+    public function test_receive_signed_authn_request_happy_flow(): void
     {
         $requestUri = 'https://stepup.example.com/sso?with-some-addition=true';
         $post = [
@@ -100,7 +100,7 @@ MESSAGE;
         self::assertEquals('https://stepup.example.com/sso', $authnRequest->getDestination());
     }
 
-    public function test_receive_signed_authn_request_must_have_sp_repo()
+    public function test_receive_signed_authn_request_must_have_sp_repo(): void
     {
         $requestUri = 'https://stepup.example.com/sso?with-some-addition=true';
         $post = [
@@ -118,7 +118,7 @@ MESSAGE;
         $postBinding->receiveSignedAuthnRequestFrom($request);
     }
 
-    public function test_receive_signed_authn_request_http_request_must_be_post()
+    public function test_receive_signed_authn_request_http_request_must_be_post(): void
     {
         $requestUri = 'https://stepup.example.com/sso?with-some-addition=true';
         $post = [
@@ -132,7 +132,7 @@ MESSAGE;
         $this->postBinding->receiveSignedAuthnRequestFrom($request);
     }
 
-    public function test_receive_signed_authn_request_must_have_destination()
+    public function test_receive_signed_authn_request_must_have_destination(): void
     {
         $requestUri = 'https://stepup.example.com/sso?with-some-addition=true';
         $post = [
@@ -147,7 +147,7 @@ MESSAGE;
         $this->postBinding->receiveSignedAuthnRequestFrom($request);
     }
 
-    public function test_receive_signed_authn_request_request_uri_must_start_with_destination()
+    public function test_receive_signed_authn_request_request_uri_must_start_with_destination(): void
     {
         $requestUri = 'https://stepup.example.com/sso';
         $post = [
@@ -163,7 +163,7 @@ MESSAGE;
         $this->postBinding->receiveSignedAuthnRequestFrom($request);
     }
 
-    public function test_receive_signed_authn_request_unknown_sp()
+    public function test_receive_signed_authn_request_unknown_sp(): void
     {
         $requestUri = 'https://stepup.example.com/sso';
         $post = [
@@ -184,7 +184,7 @@ MESSAGE;
         $this->postBinding->receiveSignedAuthnRequestFrom($request);
     }
 
-    public function test_receive_signed_authn_request_signature_validation_failed()
+    public function test_receive_signed_authn_request_signature_validation_failed(): void
     {
         $requestUri = 'https://stepup.example.com/sso';
         $post = [

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2021 SURF B.V.
+ * Copyright 2025 SURFnet bv
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,11 @@ namespace Surfnet\SamlBundle\SAML2\Extensions;
 
 use DOMDocument;
 use DOMElement;
-use DOMNode;
 use SAML2\Utils;
 
 class GsspUserAttributesChunk extends Chunk
 {
-    public function __construct(DOMElement $value = null)
+    public function __construct(?DOMElement $value = null)
     {
         $doc = new DOMDocument("1.0", "UTF-8");
         $root = $doc->createElementNS('urn:mace:surf.nl:stepup:gssp-extensions', 'gssp:UserAttributes');
@@ -33,7 +32,6 @@ class GsspUserAttributesChunk extends Chunk
 
         if ($value && $value->hasChildNodes()) {
             foreach ($value->childNodes as $child) {
-                assert($child instanceof DOMNode);
                 $root->appendChild($doc->importNode($child->cloneNode(true), true));
             }
         }

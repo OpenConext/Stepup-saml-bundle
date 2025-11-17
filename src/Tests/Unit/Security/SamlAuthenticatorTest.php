@@ -21,20 +21,21 @@ namespace Surfnet\SamlBundle\Tests\Unit\Security;
 use Generator;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SAML2\Assertion;
 use SAML2\Configuration\PrivateKey;
-use Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler;
-use Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler;
-use Surfnet\SamlBundle\Security\Authentication\Passport\Badge\SamlAttributesBadge;
-use Surfnet\SamlBundle\Security\Authentication\SamlAuthenticationStateHandler;
-use Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator;
-use Psr\Log\LoggerInterface;
 use Surfnet\SamlBundle\Entity\IdentityProvider;
 use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Http\RedirectBinding;
+use Surfnet\SamlBundle\Security\Authentication\Handler\FailureHandler;
 use Surfnet\SamlBundle\Security\Authentication\Handler\ProcessSamlAuthenticationHandler;
+use Surfnet\SamlBundle\Security\Authentication\Handler\SuccessHandler;
+use Surfnet\SamlBundle\Security\Authentication\Passport\Badge\SamlAttributesBadge;
 use Surfnet\SamlBundle\Security\Authentication\Provider\SamlProviderInterface;
+use Surfnet\SamlBundle\Security\Authentication\SamlAuthenticationStateHandler;
+use Surfnet\SamlBundle\Security\Authentication\SamlAuthenticator;
 use Surfnet\SamlBundle\Security\Authentication\Token\SamlToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,9 +120,7 @@ class SamlAuthenticatorTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
     }
 
-    /**
-     * @dataProvider provideSupportsParameters
-     */
+    #[DataProvider('provideSupportsParameters')]
     public function test_supports(bool $expectedResult, array $post, array $server, string $routeName): void
     {
         $request = new Request([], $post, [], [], [], $server);
@@ -130,9 +129,7 @@ class SamlAuthenticatorTest extends TestCase
         $this->assertEquals($expectedResult, $this->authenticator->supports($request));
     }
 
-    /**
-     * @dataProvider provideSupportsRelayStateParameters
-     */
+    #[DataProvider('provideSupportsRelayStateParameters')]
     public function test_supports_also_rejects(bool $expectation, array $post): void
     {
         $request = new Request(
@@ -151,7 +148,7 @@ class SamlAuthenticatorTest extends TestCase
         $this->assertEquals($expectation, $this->authenticator->supports($request));
     }
 
-    public function provideSupportsParameters(): Generator
+    public static function provideSupportsParameters(): Generator
     {
         yield [true, ['SAMLResponse' => 'foobar'], ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'POST'], '/route-name'];
         yield [false, ['SAMLRespons' => 'foobar'], ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'POST'], '/route-name'];
@@ -160,7 +157,7 @@ class SamlAuthenticatorTest extends TestCase
         yield [false, ['SAMLResponse' => 'foobar'], ['REQUEST_URI' => '/route-name', 'REQUEST_METHOD' => 'POST'], '/route'];
     }
 
-    public function provideSupportsRelayStateParameters(): Generator
+    public static function provideSupportsRelayStateParameters(): Generator
     {
         yield [false, ['SAMLResponse' => 'rejection', 'RelayState' => 'rejection']];
         yield [false, ['SAMLResponse' => 'hurts', 'RelayState' => 'rejection']];

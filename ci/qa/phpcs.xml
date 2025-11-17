@@ -15,5 +15,18 @@
             <property name="lineLimit" value="120"/>
             <property name="absoluteLineLimit" value="150"/>
         </properties>
+      <exclude-pattern>src/Tests/*</exclude-pattern>
     </rule>
+
+  <rule ref="PSR1.Methods.CamelCapsMethodName">
+    <exclude-pattern>src/Tests/*</exclude-pattern>
+  </rule>
+
+  <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
+  <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+    <properties>
+      <property name="searchAnnotations" type="bool" value="true"/>
+    </properties>
+  </rule>
+  <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
 </ruleset>

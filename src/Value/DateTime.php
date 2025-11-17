@@ -24,7 +24,7 @@ use Stringable;
 use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 
 /**
- * @SuppressWarnings(PHPMD.TooManyPublicMethods) due to comparison methods
+ * @SuppressWarnings("PHPMD.TooManyPublicMethods") due to comparison methods
  */
 class DateTime implements Stringable
 {
@@ -33,16 +33,11 @@ class DateTime implements Stringable
      */
     final public const FORMAT = DATE_ATOM;
 
-    /**
-     * Allows for mocking of time.
-     */
-    private static ?self $now = null;
-
     private readonly CoreDateTime $dateTime;
 
     public static function now(): self
     {
-        return self::$now ?: new self(new CoreDateTime);
+        return new self(new CoreDateTime);
     }
 
     /**

@@ -3,4 +3,4 @@
 cd $(dirname $0)/../../
 
 # https://github.com/squizlabs/PHP_CodeSniffer/wiki/Fixing-Errors-Automatically
-./vendor/bin/phpcbf --standard=ci/qa/phpcs.xml $1
+./vendor/bin/phpcbf --standard=ci/qa/phpcs.xml --extensions=php src $1

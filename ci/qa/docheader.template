@@ -1,7 +1,5 @@
-<?php
-
 /**
- * Copyright 2014 SURFnet bv
+ * Copyright %regexp:\d{4}% SURFnet %regexp:(B.V.|bv)%
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +14,3 @@
  * limitations under the License.
  */
 
-use Psr\Log\NullLogger;
-use SAML2\Compat\ContainerSingleton;
-use Surfnet\SamlBundle\Tests\TestSaml2Container;
-
-require_once __DIR__ . '/../../vendor/autoload.php';
-
-$container = new TestSaml2Container(
-    new NullLogger()
-);
-
-ContainerSingleton::setContainer($container);

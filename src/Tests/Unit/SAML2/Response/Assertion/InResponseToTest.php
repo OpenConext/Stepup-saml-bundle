@@ -18,6 +18,9 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Response\Assertion;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SAML2\Assertion;
 use SAML2\Compat\ContainerSingleton;
@@ -29,23 +32,19 @@ use Surfnet\SamlBundle\SAML2\Response\Assertion\InResponseTo;
 class InResponseToTest extends TestCase
 {
 
-    /**
-     * @test
-     * @group saml2-response
-     * @group saml2
-     * @dataProvider provideAssertionsWithoutInResponseTo
-     */
+    #[Test]
+    #[DataProvider('provideAssertionsWithoutInResponseTo')]
+    #[Group('saml2-response')]
+    #[Group('saml2')]
     public function assertions_without_in_response_to_are_tested_as_if_in_response_to_is_null(Assertion $assertion): void
     {
         $this->assertTrue(InResponseTo::assertEquals($assertion, null));
         $this->assertFalse(InResponseTo::assertEquals($assertion, 'some not-null-value'));
     }
 
-    /**
-     * @test
-     * @group saml2-response
-     * @group saml2
-     */
+    #[Test]
+    #[Group('saml2-response')]
+    #[Group('saml2')]
     public function in_reponse_to_equality_is_strictly_checked(): void
     {
         $assertion                   = new Assertion();
@@ -59,7 +58,7 @@ class InResponseToTest extends TestCase
         $this->assertFalse(InResponseTo::assertEquals($assertion, 1));
     }
 
-    public function provideAssertionsWithoutInResponseTo(): array
+    public static function provideAssertionsWithoutInResponseTo(): array
     {
         ContainerSingleton::setContainer(new MockContainer());
         $assertionWithoutSubjectConfirmation = new Assertion();

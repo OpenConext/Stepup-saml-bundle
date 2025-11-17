@@ -1,6 +1,6 @@
-path: [./src, ./tests]
+path: [./src]
 jobs: 10
-cache: /var/qa/phplint.cache
+cache-dir: var/qa/phplint.cache
 extensions:
     - php
 exclude:

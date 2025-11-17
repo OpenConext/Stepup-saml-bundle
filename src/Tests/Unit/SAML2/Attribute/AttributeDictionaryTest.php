@@ -18,6 +18,8 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Surfnet\SamlBundle\Exception\UnknownUrnException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDefinition;
@@ -25,10 +27,8 @@ use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 
 class AttributeDictionaryTest extends TestCase
 {
-    /**
-     * @test
-     * @group AttributeDictionary
-     */
+    #[Test]
+    #[Group('AttributeDictionary')]
     public function finds_no_definition_when_no_definition_given(): void
     {
         $maceAttributeUrn = 'urn:mace:some:attribute';
@@ -43,10 +43,8 @@ class AttributeDictionaryTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @group AttributeDictionary
-     */
+    #[Test]
+    #[Group('AttributeDictionary')]
     public function finds_no_definition_when_urn_matches_no_mace_urn(): void
     {
         $maceAttributeUrn = 'urn:mace:some:attribute';
@@ -69,10 +67,8 @@ class AttributeDictionaryTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @group AttributeDictionary
-     */
+    #[Test]
+    #[Group('AttributeDictionary')]
     public function finds_no_definition_when_urn_matches_no_oid_urn(): void
     {
         $oidAttributeUrn = 'urn:oid:0.0.0.0.0.0.0.0.0';
@@ -95,10 +91,8 @@ class AttributeDictionaryTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @group AttributeDictionary
-     */
+    #[Test]
+    #[Group('AttributeDictionary')]
     public function finds_definition_when_urn_matches_urn_mace(): void
     {
         $maceAttributeUrn = 'urn:mace:some:attribute';
@@ -120,10 +114,8 @@ class AttributeDictionaryTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @group AttributeDictionary
-     */
+    #[Test]
+    #[Group('AttributeDictionary')]
     public function finds_definition_when_urn_matches_urn_oid(): void
     {
         $oidAttributeUrn = 'urn:oid:0.0.0.0.0.0.0.0.0';
@@ -145,11 +137,8 @@ class AttributeDictionaryTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @group AttributeDictionary
-     *
-     */
+    #[Test]
+    #[Group('AttributeDictionary')]
     public function shouldThrowExceptionForUnknownAttrib(): void
     {
         $this->expectException(UnknownUrnException::class);
@@ -165,20 +154,16 @@ class AttributeDictionaryTest extends TestCase
         $attributeDictionary->getAttributeDefinitionByUrn('unknown:0.0.0.0.0');
     }
 
-    /**
-     * @test
-     * @group AttributeDictionary
-     */
+    #[Test]
+    #[Group('AttributeDictionary')]
     public function shouldIgnoreUnknownAttributes(): void
     {
         $attributeDictionary = new AttributeDictionary(true);
         $this->assertTrue($attributeDictionary->ignoreUnknownAttributes());
     }
 
-    /**
-     * @test
-     * @group AttributeDictionary
-     */
+    #[Test]
+    #[Group('AttributeDictionary')]
     public function shouldNotIgnoreUnknownAttributes(): void
     {
         $attributeDictionary = new AttributeDictionary();

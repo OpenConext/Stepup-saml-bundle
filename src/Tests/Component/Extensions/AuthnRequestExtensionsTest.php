@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * Copyright 2021 SURF B.V.
+ * Copyright 2025 SURFnet bv
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
  * limitations under the License.
  */
 
+
 namespace Surfnet\SamlBundle\Tests\Component\Extensions;
 
 use DOMDocument;
 use DOMNode;
 use DOMXPath;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use RobRichards\XMLSecLibs\XMLSecEnc;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;

@@ -18,7 +18,6 @@
 
 namespace Surfnet\SamlBundle\SAML2;
 
-use Exception;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\Certificate\PrivateKeyLoader;
@@ -34,7 +33,7 @@ use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  */
 class AuthnRequestFactory
 {
@@ -70,7 +69,7 @@ class AuthnRequestFactory
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private static function createAuthnRequestFromHttpRequest(
         Request $httpRequest

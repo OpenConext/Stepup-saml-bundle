@@ -18,6 +18,9 @@
 
 namespace Tests\Unit\SAML2;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SAML2\AuthnRequest as SAML2AuthnRequest;
 use SAML2\DOMDocumentFactory;
@@ -42,12 +45,12 @@ class ReceivedAuthnRequestQueryStringTest extends TestCase
 AUTHNREQUEST_NO_SUBJECT;
 
     /**
-     * @test
-     * @group AuthnRequest
      *
-     * @dataProvider emptyStringProvider
      * @param $nonOrEmptyString
      */
+    #[Test]
+    #[DataProvider('emptyStringProvider')]
+    #[Group('AuthnRequest')]
     public function a_received_authn_request_query_string_cannot_be_parsed_from_empty_strings(string $nonOrEmptyString): void
     {
         $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
@@ -56,10 +59,8 @@ AUTHNREQUEST_NO_SUBJECT;
         ReceivedAuthnRequestQueryString::parse($nonOrEmptyString);
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_received_authn_request_query_string_must_contain_valid_key_value_pairs(): void
     {
         $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
@@ -68,10 +69,8 @@ AUTHNREQUEST_NO_SUBJECT;
         ReceivedAuthnRequestQueryString::parse('a-key-without-a-value');
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_received_authn_request_query_string_must_contain_a_base64_encoded_saml_request(): void
     {
         $this->expectException('\\' . InvalidRequestException::class);
@@ -85,13 +84,12 @@ AUTHNREQUEST_NO_SUBJECT;
     }
 
     /**
-     * @test
-     * @group AuthnRequest
-     *
-     * @dataProvider queryStringWithRepeatedSamlParametersProvider
      * @param $doubleParameterName
      * @param $queryStringWithDoubleParameter
      */
+    #[Test]
+    #[DataProvider('queryStringWithRepeatedSamlParametersProvider')]
+    #[Group('AuthnRequest')]
     public function a_received_authn_request_query_string_cannot_contain_a_saml_parameter_twice(
         string $doubleParameterName,
         string $queryStringWithDoubleParameter
@@ -102,10 +100,8 @@ AUTHNREQUEST_NO_SUBJECT;
         ReceivedAuthnRequestQueryString::parse($queryStringWithDoubleParameter);
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_received_authn_request_query_string_must_contain_a_saml_request(): void
     {
         $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
@@ -118,10 +114,8 @@ AUTHNREQUEST_NO_SUBJECT;
         ReceivedAuthnRequestQueryString::parse($queryStringWithoutSamlRequest);
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_received_authn_request_query_string_cannot_contain_a_signature_algorithm_without_a_signature(): void
     {
         $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
@@ -134,10 +128,8 @@ AUTHNREQUEST_NO_SUBJECT;
         ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureAlgorithmWithoutSignature);
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_received_authn_request_query_string_cannot_contain_a_signature_without_a_signature_algorithm(): void
     {
         $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
@@ -150,10 +142,8 @@ AUTHNREQUEST_NO_SUBJECT;
         ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureWithoutSignatureAlgorithm);
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_received_authn_request_query_string_cannot_contain_a_signature_that_is_not_properly_base64_encoded(): void
     {
         $this->expectException('\\' . InvalidReceivedAuthnRequestQueryStringException::class);
@@ -167,10 +157,8 @@ AUTHNREQUEST_NO_SUBJECT;
         ReceivedAuthnRequestQueryString::parse($queryStringWithSignatureWithoutSignatureAlgorithm);
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_signed_query_string_can_be_acquired_from_a_received_authn_request_query_string(): void
     {
         $expectedSignedQueryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
@@ -186,10 +174,8 @@ AUTHNREQUEST_NO_SUBJECT;
         $this->assertEquals($expectedSignedQueryString, $actualQueryString);
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function query_parameters_that_are_not_used_for_a_saml_message_are_ignored_when_creating_a_signed_query_string(): void
     {
         $arbitraryParameterToIgnore = 'arbitraryParameter=this-should-be-ignored';
@@ -211,10 +197,8 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_decoded_signature_can_be_acquired_from_a_received_authn_request_query_string(): void
     {
         $signature = 'signature';
@@ -235,10 +219,8 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_decoded_saml_request_can_be_acquired_from_a_received_authn_request_query_string(): void
     {
         $domDocument          = DOMDocumentFactory::fromString($this->authRequestNoSubject);
@@ -259,10 +241,8 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function a_saml_request_cannot_be_decoded_from_a_received_authn_request_query_string_if_it_was_not_properly_gzipped(): void
     {
         $this->expectException('\\' . InvalidRequestException::class);
@@ -276,10 +256,8 @@ AUTHNREQUEST_NO_SUBJECT;
         $query->getDecodedSamlRequest();
     }
 
-    /**
-     * @test
-     * @group AuthnRequest
-     */
+    #[Test]
+    #[Group('AuthnRequest')]
     public function parameters_can_be_queried_from_the_received_authn_request_query(): void
     {
         $samlRequest = urlencode(base64_encode('encoded-saml-request'));
@@ -317,7 +295,7 @@ AUTHNREQUEST_NO_SUBJECT;
         );
     }
 
-    public function emptyStringProvider(): array
+    public static function emptyStringProvider(): array
     {
         return [
             'empty string' => [''],
@@ -335,7 +313,7 @@ AUTHNREQUEST_NO_SUBJECT;
         ];
     }
 
-    public function queryStringWithRepeatedSamlParametersProvider(): array
+    public static function queryStringWithRepeatedSamlParametersProvider(): array
     {
         $queryString = ReceivedAuthnRequestQueryString::PARAMETER_REQUEST . '=' . urlencode(base64_encode('saml-request'))
             . '&' . ReceivedAuthnRequestQueryString::PARAMETER_RELAY_STATE . '=relay-state'

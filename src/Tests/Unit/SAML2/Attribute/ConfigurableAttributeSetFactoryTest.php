@@ -18,6 +18,9 @@
 
 namespace Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use SAML2\Assertion;
 use SAML2\Compat\ContainerSingleton;
@@ -37,11 +40,9 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
         ContainerSingleton::setContainer(new MockContainer());
     }
 
-    /**
-     * @test
-     * @group AssertionAdapter
-     * @group AttributeSet
-     */
+    #[Test]
+    #[Group('AssertionAdapter')]
+    #[Group('AttributeSet')]
     public function which_attribute_set_is_created_from_a_saml_assertion_is_configurable(): void
     {
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(self::DUMMY_ATTRIBUTE_SET_CLASS);
@@ -51,11 +52,9 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
         $this->assertInstanceOf(self::DUMMY_ATTRIBUTE_SET_CLASS, $attributeSet);
     }
 
-    /**
-     * @test
-     * @group AssertionAdapter
-     * @group AttributeSet
-     */
+    #[Test]
+    #[Group('AssertionAdapter')]
+    #[Group('AttributeSet')]
     public function which_attribute_set_is_created_from_attributes_is_configurable(): void
     {
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate(self::DUMMY_ATTRIBUTE_SET_CLASS);
@@ -65,13 +64,10 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
         $this->assertInstanceOf(self::DUMMY_ATTRIBUTE_SET_CLASS, $attributeSet);
     }
 
-    /**
-     * @test
-     * @group AssertionAdapter
-     * @group AttributeSet
-     *
-     * @dataProvider nonOrEmptyStringProvider()
-     */
+    #[Test]
+    #[DataProvider('nonOrEmptyStringProvider')]
+    #[Group('AssertionAdapter')]
+    #[Group('AttributeSet')]
     public function the_attribute_set_to_use_can_only_be_represented_as_a_non_empty_string(int|float|bool|array|stdClass|string $nonOrEmptyString): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -80,11 +76,9 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate($nonOrEmptyString);
     }
 
-    /**
-     * @test
-     * @group AssertionAdapter
-     * @group AttributeSet
-     */
+    #[Test]
+    #[Group('AssertionAdapter')]
+    #[Group('AttributeSet')]
     public function the_attribute_set_to_use_has_to_implement_attribute_set_factory(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -93,7 +87,7 @@ class ConfigurableAttributeSetFactoryTest extends TestCase
         ConfigurableAttributeSetFactory::configureWhichAttributeSetToCreate('Non\Existent\Class');
     }
 
-    public function nonOrEmptyStringProvider(): array
+    public static function nonOrEmptyStringProvider(): array
     {
         return [
             'integer'      => [1],

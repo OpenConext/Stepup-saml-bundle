@@ -107,7 +107,7 @@ class AttributeDictionary
 
     public function findAttributeDefinitionByUrn(string $urn): ?AttributeDefinition
     {
-        if (!is_string($urn) || $urn === '') {
+        if ($urn === '') {
             throw InvalidArgumentException::invalidType('non-empty string', $urn, 'urn');
         }
 
