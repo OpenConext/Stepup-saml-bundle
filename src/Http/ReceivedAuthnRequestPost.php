@@ -18,6 +18,7 @@
 
 namespace Surfnet\SamlBundle\Http;
 
+use Exception;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 use Surfnet\SamlBundle\Http\Exception\InvalidRequestException;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
@@ -80,7 +81,7 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
     }
 
     /**
-     * @throws \Exception when signature is invalid (@see SAML2\Utils::validateSignature)
+     * @throws Exception when signature is invalid (@see SAML2\Utils::validateSignature)
      */
     public function verify(XMLSecurityKey $key): bool
     {

@@ -2,6 +2,9 @@
 - Add SF 7 support
 - Upgrade dev & qa tooling
 
+Backward compatibility breaks:  
+ * Minor: `\Surfnet\SamlBundle\SAML2\BridgeContainer::debugMessage` Will now throw a `\Surfnet\SamlBundle\Exception\InvalidArgumentException` instead of 'Fatal error: Uncaught TypeError' if an invalid `$message` is debugged.
+
 # 6.0.0
 - Add SF 6 support
 - Require PHP 8.1
