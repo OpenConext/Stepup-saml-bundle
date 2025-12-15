@@ -18,6 +18,9 @@
         "symfony/templating": "^6.3|7.0",
         "twig/twig": "^3"
     },
+    "conflict": {
+        "symfony/http-foundation": ">=8.0"
+    },
     "require-dev": {
         "ext-libxml": "*",
         "ext-zlib": "*",
