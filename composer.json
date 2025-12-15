@@ -10,13 +10,16 @@
         "ext-dom": "*",
         "ext-openssl": "*",
         "psr/log": "^3.0",
-        "robrichards/xmlseclibs": "^3.1.1",
+        "robrichards/xmlseclibs": "^3.1.4",
         "simplesamlphp/saml2": "^4.6",
         "symfony/dependency-injection": "^6.3|^7.0",
         "symfony/framework-bundle": "^6.3|^7.0",
         "symfony/security-bundle": "^6.3|^7.0",
         "symfony/templating": "^6.3|7.0",
         "twig/twig": "^3"
+    },
+    "conflict": {
+        "symfony/http-foundation": ">=8.0"
     },
     "require-dev": {
         "ext-libxml": "*",
