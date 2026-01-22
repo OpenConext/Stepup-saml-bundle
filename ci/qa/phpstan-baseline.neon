@@ -25,42 +25,6 @@ parameters:
 			path: ../../src/DependencyInjection/Configuration.php
 
 		-
-			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\Configuration\:\:addHostedSection\(\) has parameter \$node with generic class Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition but does not specify its types\: TParent$#'
-			identifier: missingType.generics
-			count: 1
-			path: ../../src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\Configuration\:\:addRemoteIdentityProviderConfiguration\(\) has parameter \$arrayNode with generic class Symfony\\Component\\Config\\Definition\\Builder\\NodeBuilder but does not specify its types\: TParent$#'
-			identifier: missingType.generics
-			count: 1
-			path: ../../src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\Configuration\:\:addRemoteIdentityProviderSection\(\) has parameter \$remoteNode with generic class Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition but does not specify its types\: TParent$#'
-			identifier: missingType.generics
-			count: 1
-			path: ../../src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\Configuration\:\:addRemoteIdentityProvidersSection\(\) has parameter \$remoteNode with generic class Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition but does not specify its types\: TParent$#'
-			identifier: missingType.generics
-			count: 1
-			path: ../../src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\Configuration\:\:addRemoteSection\(\) has parameter \$rootNode with generic class Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition but does not specify its types\: TParent$#'
-			identifier: missingType.generics
-			count: 1
-			path: ../../src/DependencyInjection/Configuration.php
-
-		-
-			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\Configuration\:\:addRemoteServiceProvidersSection\(\) has parameter \$remoteNode with generic class Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition but does not specify its types\: TParent$#'
-			identifier: missingType.generics
-			count: 1
-			path: ../../src/DependencyInjection/Configuration.php
-
-		-
 			message: '#^Method Surfnet\\SamlBundle\\DependencyInjection\\SurfnetSamlExtension\:\:parseCertificateData\(\) has parameter \$provider with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1

@@ -75,11 +75,15 @@ class AttributeDictionary
         $this->attributeDefinitionsByName[$attributeDefinition->getName()] = $attributeDefinition;
 
         if ($attributeDefinition->hasUrnMace()) {
-            $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnMace()] = $attributeDefinition;
+            $urnMace = $attributeDefinition->getUrnMace();
+            assert(is_string($urnMace));
+            $this->attributeDefinitionsByUrn[$urnMace] = $attributeDefinition;
         }
 
         if ($attributeDefinition->hasUrnOid()) {
-            $this->attributeDefinitionsByUrn[$attributeDefinition->getUrnOid()] = $attributeDefinition;
+            $urnOid = $attributeDefinition->getUrnOid();
+            assert(is_string($urnOid));
+            $this->attributeDefinitionsByUrn[$urnOid] = $attributeDefinition;
         }
     }
 
