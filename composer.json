@@ -15,7 +15,7 @@
         "symfony/dependency-injection": "^6.3|^7.0",
         "symfony/framework-bundle": "^6.3|^7.0",
         "symfony/security-bundle": "^6.3|^7.0",
-        "symfony/templating": "^6.3|7.0",
+        "symfony/templating": "^6.3|^7.0",
         "twig/twig": "^3"
     },
     "conflict": {

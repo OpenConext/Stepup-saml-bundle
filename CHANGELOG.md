@@ -1,3 +1,11 @@
+# 7.0.2
+- Fix version constraint error in `symfony/templating` requirement
+
+# 7.0.1 
+- Update xmlseclibs to version 3.1.4
+- Mark as incompatible with symfony/http-foundation >=8.0
+
+
 # 7.0.0
 - Add SF 7 support
 - Upgrade dev & qa tooling
