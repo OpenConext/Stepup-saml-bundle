@@ -487,12 +487,6 @@ parameters:
 			path: ../../src/SAML2/AuthnRequest.php
 
 		-
-			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:getAuthenticationContextClassRef\(\) should return string\|null but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../src/SAML2/AuthnRequest.php
-
-		-
 			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:getDestination\(\) should return string but returns string\|null\.$#'
 			identifier: return.type
 			count: 1
@@ -525,12 +519,6 @@ parameters:
 		-
 			message: '#^Method Surfnet\\SamlBundle\\SAML2\\AuthnRequest\:\:signRequestQuery\(\) has parameter \$queryParams with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: ../../src/SAML2/AuthnRequest.php
-
-		-
-			message: '#^Parameter \#1 \$array of function reset expects array\|object, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/AuthnRequest.php
 
@@ -679,12 +667,6 @@ parameters:
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 
 		-
-			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:getAuthenticationContextClassRef\(\) should return string\|null but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../src/SAML2/ReceivedAuthnRequest.php
-
-		-
 			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:getScopingRequesterIds\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -705,12 +687,6 @@ parameters:
 		-
 			message: '#^Method Surfnet\\SamlBundle\\SAML2\\ReceivedAuthnRequest\:\:setScoping\(\) has parameter \$requesterIds with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: ../../src/SAML2/ReceivedAuthnRequest.php
-
-		-
-			message: '#^Parameter \#1 \$array of function reset expects array\|object, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: ../../src/SAML2/ReceivedAuthnRequest.php
 

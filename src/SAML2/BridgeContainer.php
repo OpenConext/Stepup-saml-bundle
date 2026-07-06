@@ -50,7 +50,7 @@ class BridgeContainer extends AbstractContainer
         return '_' . bin2hex(openssl_random_pseudo_bytes(30));
     }
 
-    public function debugMessage($message, $type): void
+    public function debugMessage($message, string $type): void
     {
         if ($message instanceof DOMElement) {
             $message = $message->ownerDocument->saveXML($message);
@@ -63,12 +63,12 @@ class BridgeContainer extends AbstractContainer
         $this->logger->debug($message, ['type' => $type]);
     }
 
-    public function redirect($url, $data = []): void
+    public function redirect(string $url, array $data = []): void
     {
         $this->notSupported(__METHOD__);
     }
 
-    public function postRedirect($url, $data = []): void
+    public function postRedirect(string $url, array $data = []): void
     {
         $this->notSupported(__METHOD__);
     }
@@ -77,7 +77,6 @@ class BridgeContainer extends AbstractContainer
     public function getTempDir(): string
     {
         $this->notSupported(__METHOD__);
-        return '';
     }
 
     public function writeFile(string $filename, string $data, ?int $mode = null): void
@@ -85,7 +84,7 @@ class BridgeContainer extends AbstractContainer
         $this->notSupported(__METHOD__);
     }
 
-    public function notSupported(string $method): void
+    public function notSupported(string $method): never
     {
         throw new BadMethodCallException(sprintf(
             "%s:%s may not be called in the Surfnet\\SamlBundle",
