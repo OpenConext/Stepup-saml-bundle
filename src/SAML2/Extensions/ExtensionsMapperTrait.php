@@ -18,7 +18,7 @@
 
 namespace Surfnet\SamlBundle\SAML2\Extensions;
 
-use SAML2\XML\Chunk as SAML2Chunk;
+use SimpleSAML\XML\Chunk as SAML2Chunk;
 
 trait ExtensionsMapperTrait
 {
