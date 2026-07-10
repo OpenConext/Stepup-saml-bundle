@@ -48,4 +48,17 @@ class Extensions
     {
         return array_key_exists('UserAttributes', $this->chunks);
     }
+
+    public function getMduiChunk(): ?MduiChunk
+    {
+        if (!$this->hasMduiChunk()) {
+            return null;
+        }
+        return new MduiChunk($this->chunks['UIInfo']->getValue());
+    }
+
+    public function hasMduiChunk(): bool
+    {
+        return array_key_exists('UIInfo', $this->chunks);
+    }
 }

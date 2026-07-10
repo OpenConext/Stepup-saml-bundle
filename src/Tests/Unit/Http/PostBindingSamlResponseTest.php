@@ -32,6 +32,7 @@ use Surfnet\SamlBundle\Entity\ServiceProvider;
 use Surfnet\SamlBundle\Entity\ServiceProviderRepository;
 use Surfnet\SamlBundle\Http\Exception\AuthnFailedSamlResponseException;
 use Surfnet\SamlBundle\Http\Exception\NoAuthnContextSamlResponseException;
+use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
 use Surfnet\SamlBundle\Http\PostBinding;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,6 +96,31 @@ MESSAGE;
         $samlResponse = $this->postBinding->processResponse($request, $idp, $sp);
 
         self::assertInstanceOf(Assertion::class, $samlResponse);
+    }
+
+    public function test_process_response_rejects_forbidden_signature_transform_before_processing(): void
+    {
+        $maliciousMessage = <<<MESSAGE
+<?xml version="1.0"?>
+<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" ID="_response" Version="2.0" IssueInstant="2014-07-17T01:01:48Z" Destination="http://sp.example.com/demo1/index.php?acs" InResponseTo="ONELOGIN_4fee3b046395c4e751011e97f8900b5273d56685"><saml:Issuer>http://idp.example.com/metadata.php</saml:Issuer><ds:Signature><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/><ds:Reference URI="#_response"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/TR/1999/REC-xpath-19991116"><ds:XPath>count(//. | //@* | //namespace::*) &gt; 1000000</ds:XPath></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>irrelevant</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>irrelevant</ds:SignatureValue></ds:Signature><samlp:Status><samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/></samlp:Status></samlp:Response>
+MESSAGE;
+        $requestUri = 'https://stepup.example.com/';
+        $post = [
+            'SAMLResponse' => base64_encode($maliciousMessage),
+            'RelayState' => '',
+        ];
+        $request = new Request([], $post, [], [], [], ['REQUEST_URI' => $requestUri]);
+        $request->setMethod(Request::METHOD_POST);
+        $idp = m::mock(IdentityProvider::class);
+        $sp = m::mock(ServiceProvider::class);
+
+        // The mocked processor must never be reached: the guard must reject before it is called.
+        $this->processor->shouldNotReceive('process');
+
+        self::expectException(SignatureValidationFailedException::class);
+        self::expectExceptionMessage('http://www.w3.org/TR/1999/REC-xpath-19991116');
+
+        $this->postBinding->processResponse($request, $idp, $sp);
     }
 
     public function test_process_response_must_have_saml_response(): void

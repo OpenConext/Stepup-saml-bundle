@@ -35,6 +35,9 @@ trait ExtensionsMapperTrait
                     'UserAttributes' => $this->extensions->addChunk(
                         new GsspUserAttributesChunk($rawChunk->getXML())
                     ),
+                    'UIInfo' => $this->extensions->addChunk(
+                        new MduiChunk($rawChunk->getXML())
+                    ),
                     default => $this->extensions->addChunk(
                         new Chunk(
                             $rawChunk->getLocalName(),

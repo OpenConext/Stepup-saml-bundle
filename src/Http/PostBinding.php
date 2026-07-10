@@ -36,6 +36,7 @@ use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
 use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
 use Surfnet\SamlBundle\SAML2\AuthnRequest;
 use Surfnet\SamlBundle\SAML2\ReceivedAuthnRequest;
+use Surfnet\SamlBundle\Signing\SignatureTransformGuard;
 use Surfnet\SamlBundle\Signing\SignatureVerifier;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,6 +72,8 @@ class PostBinding implements HttpBinding
         $response = base64_decode($response);
 
         $asXml    = DOMDocumentFactory::fromString($response);
+
+        SignatureTransformGuard::assertNoForbiddenTransforms($asXml);
 
         try {
             $assertions = $this->responseProcessor->process(
