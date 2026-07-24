@@ -11,7 +11,7 @@
         "ext-openssl": "*",
         "psr/log": "^3.0",
         "robrichards/xmlseclibs": "^3.1.4",
-        "simplesamlphp/saml2": ">=4.6 <4.20",
+        "simplesamlphp/saml2": ">=4.16.16 <4.20",
         "symfony/dependency-injection": "^6.3|^7.0",
         "symfony/framework-bundle": "^6.4|^7.4",
         "symfony/security-bundle": "^6.4|^7.4",
@@ -86,9 +86,7 @@
         "audit": {
             "ignore": {
                 "PKSA-1fc7-xrz7-vw78": "GHSA-5cjr-mxj5-wmrx: DoS via XPath Transform in ds:Signature processing. No patched simplesamlphp/saml2 4.x release exists or is planned; 5.x/6.x are a ground-up rewrite without the SP/IdP response processing this bundle needs. Mitigated in application code: Surfnet\\SamlBundle\\Signing\\SignatureTransformGuard rejects any XPath Transform algorithm before the vulnerable code path is reached, called from Http/PostBinding.php::processResponse() before every signature verification. See src/Tests/Component/Signing/SignatureTransformGuardTest.php.",
-                "PKSA-yk3g-3g3t-ts6q": "GHSA-6929-8p9f-26jx: TLS validator confusion in HTTP-Artifact binding resolution. This bundle implements only HTTP-Redirect (Http/RedirectBinding.php) and HTTP-POST (Http/PostBinding.php) bindings; HTTP-Artifact binding is not implemented and this code path is unreachable.",
-                "PKSA-rxdv-j1j4-96fj": "GHSA-46r4-f8gj-xg56: HTTP-Redirect signature verification bypass, fixed in simplesamlphp/saml2 >=4.16.16. Locked version is 4.19.2 (see composer.lock), already patched.",
-                "PKSA-1983-c8jn-trgm": "GHSA-pxm4-r5ph-q2m2: XXE in SAML message parsing, fixed in simplesamlphp/saml2 >=4.6.14. Locked version is 4.19.2 (see composer.lock), already patched."
+                "PKSA-yk3g-3g3t-ts6q": "GHSA-6929-8p9f-26jx: TLS validator confusion in HTTP-Artifact binding resolution. This bundle implements only HTTP-Redirect (Http/RedirectBinding.php) and HTTP-POST (Http/PostBinding.php) bindings; HTTP-Artifact binding is not implemented and this code path is unreachable."
             }
         }
     }

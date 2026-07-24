@@ -47,4 +47,11 @@ class MduiChunkTest extends TestCase
 
         MduiChunk::fromXML('<mdui:UIInfo unclosed');
     }
+
+    public function test_empty_ui_info_yields_no_display_names(): void
+    {
+        $chunk = new MduiChunk(null);
+
+        $this->assertSame([], $chunk->getDisplayNames());
+    }
 }
