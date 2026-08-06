@@ -37,8 +37,8 @@ trait ExtensionsMapperTrait
                     ),
                     $rawChunk->getLocalName() === 'UIInfo'
                         && $rawChunk->getNamespaceURI() === MduiChunk::MDUI_NAMESPACE => $this->extensions->addChunk(
-                        new MduiChunk($rawChunk->getXML())
-                    ),
+                            new MduiChunk($rawChunk->getXML())
+                        ),
                     default => $this->extensions->addChunk(
                         new Chunk(
                             $rawChunk->getLocalName(),
