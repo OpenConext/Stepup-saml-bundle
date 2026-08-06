@@ -1,3 +1,11 @@
+# Unreleased
+- Add `MduiChunk` to parse and expose `mdui:UIInfo` / `mdui:DisplayName` from AuthnRequest SAML extensions
+- Add `Extensions::getMduiChunk()` and `Extensions::hasMduiChunk()`
+- Raise minimum Symfony 6 support from 6.3 (EOL) to 6.4 LTS
+- Pin `simplesamlphp/saml2` to `<4.20` to avoid class redeclaration conflict with `xml-common`
+- Remove `irstea/phpcpd-shim` (source unreachable from CI runners)
+- CI matrix updated to PHP 8.2/8.5 and Symfony 6.4/7.4
+
 # 7.0.2
 - Fix version constraint error in `symfony/templating` requirement
 
