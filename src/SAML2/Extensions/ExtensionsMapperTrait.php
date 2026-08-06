@@ -31,11 +31,12 @@ trait ExtensionsMapperTrait
             $rawExtensions = $this->request->getExtensions();
             /** @var SAML2Chunk $rawChunk */
             foreach ($rawExtensions as $rawChunk) {
-                match ($rawChunk->getLocalName()) {
-                    'UserAttributes' => $this->extensions->addChunk(
+                match (true) {
+                    $rawChunk->getLocalName() === 'UserAttributes' => $this->extensions->addChunk(
                         new GsspUserAttributesChunk($rawChunk->getXML())
                     ),
-                    'UIInfo' => $this->extensions->addChunk(
+                    $rawChunk->getLocalName() === 'UIInfo'
+                        && $rawChunk->getNamespaceURI() === MduiChunk::MDUI_NAMESPACE => $this->extensions->addChunk(
                         new MduiChunk($rawChunk->getXML())
                     ),
                     default => $this->extensions->addChunk(

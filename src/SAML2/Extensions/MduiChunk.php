@@ -24,7 +24,7 @@ use RuntimeException;
 
 class MduiChunk extends Chunk
 {
-    private const MDUI_NAMESPACE = 'urn:oasis:names:tc:SAML:metadata:ui';
+    public const MDUI_NAMESPACE = 'urn:oasis:names:tc:SAML:metadata:ui';
     private const DISPLAY_NAME_ELEMENT = 'DisplayName';
 
     public function __construct(?DOMElement $value = null)
@@ -62,7 +62,7 @@ class MduiChunk extends Chunk
             $lang = $child->getAttribute('xml:lang');
             $value = $child->textContent;
             if ($lang !== '' && $value !== '') {
-                $names[$lang] = $value;
+                $names[$lang] ??= $value;
             }
         }
         return $names;
