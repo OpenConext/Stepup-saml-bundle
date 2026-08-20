@@ -24,7 +24,6 @@
     "require-dev": {
         "ext-libxml": "*",
         "ext-zlib": "*",
-        "irstea/phpcpd-shim": "^6.0",
         "malukenho/docheader": "^1.1",
         "mockery/mockery": "^1.5",
         "overtrue/phplint": "*",
@@ -47,7 +46,6 @@
           "@composer-validate",
           "@license-headers",
           "@phplint",
-          "@phpcpd",
           "@phpcs",
           "@phpmd",
           "@test",
@@ -57,7 +55,6 @@
         "composer-validate": "./ci/qa/validate",
         "phplint": "./ci/qa/phplint",
         "phpcs": "./ci/qa/phpcs",
-        "phpcpd": "./ci/qa/phpcpd",
         "phpmd": "./ci/qa/phpmd",
         "phpstan": "./ci/qa/phpstan",
         "phpstan-baseline": "./ci/qa/phpstan-update-baseline",
