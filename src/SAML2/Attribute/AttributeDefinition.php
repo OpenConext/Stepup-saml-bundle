@@ -32,9 +32,10 @@ class AttributeDefinition
      */
     private readonly ?string $urnOid;
 
-    public function __construct(/**
-         * @var string the name of the saml attribute
-         */
+    /**
+     * @param string $name the name of the saml attribute
+     */
+    public function __construct(
         private readonly string $name,
         ?string $urnMace = null,
         ?string $urnOid = null

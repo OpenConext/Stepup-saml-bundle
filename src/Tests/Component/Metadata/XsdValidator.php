@@ -33,7 +33,7 @@ class XsdValidator
 
         if (!$isValid) {
             $errors = libxml_get_errors();
-            $errorMessages = array_map(fn($error) => sprintf(
+            $errorMessages = array_map(fn($error): string => sprintf(
                 "Line %d: %s",
                 $error->line,
                 trim($error->message)
