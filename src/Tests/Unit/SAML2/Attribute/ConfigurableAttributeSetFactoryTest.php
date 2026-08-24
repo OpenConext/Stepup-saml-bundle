@@ -30,10 +30,11 @@ use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeDictionary;
 use Surfnet\SamlBundle\SAML2\Attribute\AttributeSet;
 use Surfnet\SamlBundle\SAML2\Attribute\ConfigurableAttributeSetFactory;
+use Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock\DummyAttributeSet;
 
 class ConfigurableAttributeSetFactoryTest extends TestCase
 {
-    private const DUMMY_ATTRIBUTE_SET_CLASS = '\Surfnet\SamlBundle\Tests\Unit\SAML2\Attribute\Mock\DummyAttributeSet';
+    private const DUMMY_ATTRIBUTE_SET_CLASS = DummyAttributeSet::class;
 
     protected function setUp(): void
     {

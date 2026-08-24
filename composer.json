@@ -31,7 +31,7 @@
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.0.0",
-        "rector/rector": "^2.2",
+        "rector/rector": "^2.4",
         "sebastian/exporter": "^6.3",
         "slevomat/coding-standard": "^8.24",
         "squizlabs/php_codesniffer": "^4.0",

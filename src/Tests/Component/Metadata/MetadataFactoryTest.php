@@ -150,7 +150,7 @@ XML;
         $this->assertXmlIsValidAgainstXsd($metadata->document, __DIR__ . '/xsd/metadata.xsd');
     }
 
-    private function buildFactory(MetadataConfiguration $metadata, SigningService $signingService = null): void
+    private function buildFactory(MetadataConfiguration $metadata, ?SigningService $signingService = null): void
     {
         $metadata->entityIdRoute = 'https://foobar.example.com';
         if (!$signingService instanceof SigningService) {

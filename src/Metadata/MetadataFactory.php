@@ -29,7 +29,7 @@ use Twig\Environment;
 
 class MetadataFactory
 {
-    private Metadata $metadata;
+    private readonly Metadata $metadata;
 
     public function __construct(
         private readonly Environment $templateEngine,

@@ -62,7 +62,7 @@ class Metadata implements Signable, Stringable
      */
     public $spCertificate;
 
-    public ?DOMDocument $document;
+    public ?DOMDocument $document = null;
 
     public function getRootDomElement(): DOMElement
     {
