@@ -34,11 +34,8 @@ final class ReceivedAuthnRequest
 {
     use ExtensionsMapperTrait;
 
-    private readonly SAML2AuthnRequest $request;
-
-    private function __construct(SAML2AuthnRequest $request)
+    private function __construct(private readonly SAML2AuthnRequest $request)
     {
-        $this->request = $request;
         $this->loadExtensionsFromSaml2AuthNRequest();
     }
 

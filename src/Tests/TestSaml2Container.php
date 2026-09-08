@@ -73,7 +73,7 @@ class TestSaml2Container extends AbstractContainer
         // TODO: Implement getTempDir() method.
     }
 
-    public function writeFile(string $filename, string $data, int $mode = null): void
+    public function writeFile(string $filename, string $data, ?int $mode = null): void
     {
         // TODO: Implement writeFile() method.
     }

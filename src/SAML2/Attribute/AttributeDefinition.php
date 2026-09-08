@@ -23,27 +23,26 @@ use Surfnet\SamlBundle\Exception\LogicException;
 class AttributeDefinition
 {
     /**
-     * @var string the name of the saml attribute
-     */
-    private readonly string $name;
-
-    /**
      * @var string the urn:mace identifier of this attribute
      */
-    private ?string $urnMace = null;
+    private readonly ?string $urnMace;
 
     /**
      * @var string the urn:oid identifier of this attribute
      */
-    private ?string $urnOid = null;
+    private readonly ?string $urnOid;
 
-    public function __construct(string $name, ?string $urnMace = null, ?string $urnOid = null)
-    {
+    /**
+     * @param string $name the name of the saml attribute
+     */
+    public function __construct(
+        private readonly string $name,
+        ?string $urnMace = null,
+        ?string $urnOid = null
+    ) {
         if (is_null($urnOid) && is_null($urnMace)) {
             throw new LogicException('An AttributeDefinition should have at least either a mace or an oid urn');
         }
-
-        $this->name         = $name;
         $this->urnMace      = $urnMace;
         $this->urnOid       = $urnOid;
     }

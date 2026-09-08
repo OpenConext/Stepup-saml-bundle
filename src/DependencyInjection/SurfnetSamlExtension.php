@@ -167,7 +167,7 @@ class SurfnetSamlExtension extends Extension
      */
     private function parseRemoteIdentityProviderConfigurations(array $identityProviders, ContainerBuilder $container): void
     {
-        $definitions = array_map(fn($config): Definition => $this->parseRemoteIdentityProviderConfiguration($config), $identityProviders);
+        $definitions = array_map($this->parseRemoteIdentityProviderConfiguration(...), $identityProviders);
 
         $definition = new Definition(StaticIdentityProviderRepository::class, [
             $definitions
@@ -200,7 +200,7 @@ class SurfnetSamlExtension extends Extension
      */
     private function parseRemoteServiceProviderConfigurations(array $serviceProviders, ContainerBuilder $container): void
     {
-        $definitions = array_map(fn($config): Definition => $this->parseRemoteServiceProviderConfiguration($config), $serviceProviders);
+        $definitions = array_map($this->parseRemoteServiceProviderConfiguration(...), $serviceProviders);
 
         $definition = new Definition(StaticServiceProviderRepository::class, [
             $definitions
