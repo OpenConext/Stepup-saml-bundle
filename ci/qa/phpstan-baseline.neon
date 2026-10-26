@@ -631,18 +631,6 @@ parameters:
 			path: ../../src/SAML2/Extensions/Extensions.php
 
 		-
-			message: '#^Cannot call method saveXML\(\) on DOMDocument\|null\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: ../../src/SAML2/Extensions/GsspUserAttributesChunk.php
-
-		-
-			message: '#^Method Surfnet\\SamlBundle\\SAML2\\Extensions\\GsspUserAttributesChunk\:\:toXML\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: ../../src/SAML2/Extensions/GsspUserAttributesChunk.php
-
-		-
 			message: '#^Parameter \#1 \$element of method Surfnet\\SamlBundle\\SAML2\\Extensions\\Chunk\:\:append\(\) expects DOMElement, DOMElement\|null given\.$#'
 			identifier: argument.type
 			count: 1

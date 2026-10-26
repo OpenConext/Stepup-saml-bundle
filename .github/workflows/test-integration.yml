@@ -6,10 +6,11 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        php-versions: [ '8.2', '8.4']
+        php-versions: [ '8.2', '8.5']
+        symfony-versions: [ '6.4.*', '7.4.*']
         experimental: [false]
     timeout-minutes: 15
-    name: PHP ${{ matrix.php-versions }} on Ubuntu latest. Experimental == ${{ matrix.experimental }}
+    name: PHP ${{ matrix.php-versions }} / Symfony ${{ matrix.symfony-versions }} on Ubuntu latest. Experimental == ${{ matrix.experimental }}
     steps:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -17,8 +18,10 @@ jobs:
           php-version: ${{ matrix.php-versions }}
       - name: Checkout
         uses: actions/checkout@master
-      - name: Install dependencies
-        run: composer install
+      - name: Install Symfony ${{ matrix.symfony-versions }}
+        run: |
+          composer require symfony/framework-bundle:${{ matrix.symfony-versions }} symfony/security-bundle:${{ matrix.symfony-versions }} --no-update --no-interaction
+          composer update --prefer-dist --no-interaction
         continue-on-error: ${{ matrix.experimental }}
       - id: checks
         name: Run CI tests

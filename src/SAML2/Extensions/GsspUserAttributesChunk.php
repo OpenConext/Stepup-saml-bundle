@@ -19,6 +19,7 @@ namespace Surfnet\SamlBundle\SAML2\Extensions;
 
 use DOMDocument;
 use DOMElement;
+use RuntimeException;
 use SAML2\Utils;
 
 class GsspUserAttributesChunk extends Chunk
@@ -65,9 +66,17 @@ class GsspUserAttributesChunk extends Chunk
         $this->append($doc->documentElement);
     }
 
-    public function toXML()
+    public function toXML(): string
     {
-        return $this->getValue()->ownerDocument->saveXML();
+        $doc = $this->getValue()->ownerDocument;
+        if ($doc === null) {
+            throw new RuntimeException('DOMElement has no ownerDocument');
+        }
+        $xml = $doc->saveXML();
+        if ($xml === false) {
+            throw new RuntimeException('Failed to serialize XML document');
+        }
+        return $xml;
     }
 
     public static function fromXML(string $xmlString): GsspUserAttributesChunk
