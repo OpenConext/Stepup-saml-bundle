@@ -34,15 +34,12 @@ class AuthnRequest
 
     private ?string $rawRequest = null;
 
-    private readonly SAML2AuthnRequest $request;
-
     private ?string $signature = null;
 
     private ?string $signatureAlgorithm = null;
 
-    private function __construct(SAML2AuthnRequest $request)
+    private function __construct(private readonly SAML2AuthnRequest $request)
     {
-        $this->request = $request;
         $this->loadExtensionsFromSaml2AuthNRequest();
     }
 

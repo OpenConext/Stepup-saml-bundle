@@ -32,11 +32,8 @@ final class ReceivedAuthnRequestPost implements SignatureVerifiable
 
     private ?ReceivedAuthnRequest $receivedRequest = null;
 
-    private readonly string $samlRequest;
-
-    private function __construct(string $samlRequest)
+    private function __construct(private readonly string $samlRequest)
     {
-        $this->samlRequest = $samlRequest;
     }
 
     public static function parse(array $parameters): self
