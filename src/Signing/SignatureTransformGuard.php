@@ -19,6 +19,7 @@
 namespace Surfnet\SamlBundle\Signing;
 
 use DOMDocument;
+use DOMElement;
 use DOMXPath;
 use RuntimeException;
 use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
@@ -64,8 +65,12 @@ final class SignatureTransformGuard
         }
 
         foreach ($nodes as $node) {
-            $algorithm = $node->attributes?->getNamedItem('Algorithm')?->nodeValue;
-            if ($algorithm === null || in_array($algorithm, self::ALLOWED_TRANSFORM_ALGORITHMS, true)) {
+            if (!$node instanceof DOMElement || !$node->hasAttribute('Algorithm')) {
+                continue;
+            }
+
+            $algorithm = $node->getAttribute('Algorithm');
+            if (in_array($algorithm, self::ALLOWED_TRANSFORM_ALGORITHMS, true)) {
                 continue;
             }
 
