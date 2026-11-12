@@ -1,4 +1,4 @@
-# Unreleased
+# 7.1.0
 - Add `MduiChunk` to parse and expose `mdui:UIInfo` / `mdui:DisplayName` from AuthnRequest SAML extensions
 - Add `Extensions::getMduiChunk()` and `Extensions::hasMduiChunk()`
 - Raise minimum Symfony 6 support from 6.3 (EOL) to 6.4 LTS
