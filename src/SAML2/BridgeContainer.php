@@ -85,6 +85,11 @@ class BridgeContainer extends AbstractContainer
         $this->notSupported(__METHOD__);
     }
 
+    public function getInflateSizeLimit(): int
+    {
+        return 100 * 1024;
+    }
+
     public function notSupported(string $method): void
     {
         throw new BadMethodCallException(sprintf(
