@@ -1,3 +1,9 @@
+# Unreleased
+- Apply Rector PHP 8.5 cleanup (constructor property promotion, first-class callables, `readonly`)
+- Update composer dependencies for PHP 8.5: pin `simplesamlphp/saml2` to `~4.19.0`, bump `rector/rector` to `^2.4`
+- Remove `sebastian/phpcpd` QA script (source host no longer reachable)
+- Harden `SignatureTransformGuard` against non-element nodes and missing `Algorithm` attributes
+
 # 7.1.0
 - Add `MduiChunk` to parse and expose `mdui:UIInfo` / `mdui:DisplayName` from AuthnRequest SAML extensions
 - Add `Extensions::getMduiChunk()` and `Extensions::hasMduiChunk()`
