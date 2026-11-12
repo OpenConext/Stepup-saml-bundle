@@ -77,4 +77,9 @@ class TestSaml2Container extends AbstractContainer
     {
         // TODO: Implement writeFile() method.
     }
+
+    public function getInflateSizeLimit(): int
+    {
+        return 100 * 1024;
+    }
 }
