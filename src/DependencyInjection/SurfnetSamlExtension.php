@@ -38,9 +38,10 @@ class SurfnetSamlExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+        // Process lower-priority configurations first so the earliest configuration takes precedence.
+        $configs = array_reverse($configs);
         $mergedConfig = [];
-        // Read the configs (in reverse order to align to the override mechanism) and parse them
-        foreach (array_reverse($configs) as $config) {
+        foreach ($configs as $config) {
             $mergedConfig = array_merge($mergedConfig, $config);
         }
         if (array_key_exists('enable_authentication', $mergedConfig) && $mergedConfig['enable_authentication'] === true) {
@@ -245,7 +246,7 @@ class SurfnetSamlExtension extends Extension
         $metadataConfiguration = [
             'entityIdRoute' => $configuration['metadata']['entity_id_route'],
             'publicKey'     => $configuration['metadata']['public_key'],
-            'privateKey'    => $configuration['metadata']['private_key'],
+            'privateKey'    => $configuration['metadata']['private_key'] ?? null,
             'usePrivateKeyAgent' => ($configuration['metadata']['use_private_key_agent'] ?? false) === true,
             'isSp'          => false,
             'isIdP'         => false
