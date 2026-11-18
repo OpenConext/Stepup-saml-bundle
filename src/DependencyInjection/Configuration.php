@@ -89,7 +89,10 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->booleanNode('use_private_key_agent')
                                 ->defaultFalse()
-                                ->info('Use the Private Key Agent key of public_key instead of a local private_key')
+                                ->info(
+                                    'Sign through the Private Key Agent using the key matching public_key.'
+                                    . ' When false, sign locally using private_key.'
+                                )
                             ->end()
                         ->end()
                     ->end()
@@ -124,7 +127,10 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->booleanNode('use_private_key_agent')
                                 ->defaultFalse()
-                                ->info('Use the Private Key Agent key of public_key instead of a local private_key')
+                                ->info(
+                                    'Sign through the Private Key Agent using the key matching public_key.'
+                                    . ' When false, sign locally using private_key.'
+                                )
                             ->end()
                         ->end()
                     ->end()
@@ -144,7 +150,10 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->booleanNode('use_private_key_agent')
                             ->defaultFalse()
-                            ->info('Use the Private Key Agent key of public_key instead of a local private_key')
+                            ->info(
+                                'Sign through the Private Key Agent using the key matching public_key.'
+                                . ' When false, sign locally using private_key.'
+                            )
                         ->end()
                     ->end()
                 ->end()
