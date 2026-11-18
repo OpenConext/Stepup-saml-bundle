@@ -67,10 +67,15 @@ class ResponseProcessor
         ?KeyMap $keyMap = null,
         ?AssertionDecrypter $assertionDecrypter = null,
     ) {
+        if ($assertionDecrypter !== null) {
+            $this->assertionDecrypter = $assertionDecrypter;
+            return;
+        }
+
         $localDecrypter = new LocalAssertionDecrypter($privateKeyLoader);
-        $this->assertionDecrypter = $assertionDecrypter ?? ($keyMap === null
+        $this->assertionDecrypter = $keyMap === null
             ? $localDecrypter
-            : new AgentAssertionDecrypter($localDecrypter, static fn (): KeyMap => $keyMap, $logger));
+            : new AgentAssertionDecrypter($localDecrypter, static fn (): KeyMap => $keyMap, $logger);
     }
 
     /**
