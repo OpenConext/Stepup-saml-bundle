@@ -86,7 +86,11 @@ class Metadata implements Signable, Stringable
 
     public function __toString(): string
     {
+        if ($this->document === null) {
+            throw new LogicException('Cannot serialize Metadata before the document has been generated');
+        }
+
         // Keep the trailing newline that the legacy DOMDocument::saveXML() produced.
-        return $this->document?->saveXml() . "\n";
+        return $this->document->saveXml() . "\n";
     }
 }
